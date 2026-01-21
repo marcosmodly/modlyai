@@ -7,7 +7,7 @@ interface ConversationInterfaceProps {
     onOpenRoomPlanner?: () => void;
     onOpenCustomizer?: () => void;
     onShowCatalog?: () => void;
-    onViewInCatalog?: (itemId: string) => void;
+    onViewInCatalog?: (item: FurnitureItem) => void;
 }
 export declare function ConversationInterface({ aiService, onCustomizeItem, onAddToRoomPlanner, onOpenRoomPlanner, onOpenCustomizer, onShowCatalog, onViewInCatalog, }: ConversationInterfaceProps): import("react/jsx-runtime").JSX.Element;
 export {};

@@ -10,7 +10,7 @@
     "styles"
   ],
   "scripts": {
-    "build": "npx rollup -c",
+    "build": "node ./node_modules/rollup/dist/bin/rollup -c",
     "dev": "rollup -c -w",
     "prepublishOnly": "npm run build"
   },
@@ -34,11 +34,9 @@
     "@rollup/plugin-typescript": "^11.1.6",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
-    "rollup": "^4.9.0",
+    "rollup": "^4.55.3",
     "rollup-plugin-dts": "^6.1.0",
     "rollup-plugin-postcss": "^4.0.2",
     "typescript": "^5.5.4"
-  },
-  "dependencies": {
   }
 }
