@@ -1,0 +1,1 @@
+{"version":3,"file":"widget-loader.d.ts","sourceRoot":"","sources":["../src/widget-loader.ts"],"names":[],"mappings":"AAGA,OAAO,EAAE,YAAY,EAAkC,MAAM,gBAAgB,CAAC;AAE9E,OAAO,CAAC,MAAM,CAAC;IACb,UAAU,MAAM;QACd,WAAW,CAAC,EAAE;YACZ,IAAI,EAAE,CAAC,MAAM,CAAC,EAAE,OAAO,CAAC,YAAY,CAAC,KAAK,IAAI,CAAC;YAC/C,OAAO,EAAE,MAAM,IAAI,CAAC;SACrB,CAAC;KACH;CACF"}

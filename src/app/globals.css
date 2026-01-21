@@ -1,0 +1,87 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 227, 229, 226;
+  --background-rgb: 26, 28, 25;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: #1A1C19;
+  min-height: 100vh;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  /* Soft glow effect for AI accents */
+  .glow-soft {
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.2);
+  }
+  
+  .glow-soft-hover:hover {
+    box-shadow: 0 0 30px rgba(99, 102, 241, 0.4);
+    transition: box-shadow 0.3s ease;
+  }
+  
+  /* Gradient text */
+  .text-gradient-ai {
+    background: linear-gradient(135deg, #3D543F 0%, #8DA38E 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  /* Subtle border utility */
+  .border-subtle {
+    border-color: #3A3F38;
+  }
+}
+
+/* Ensure dark text on white/light input backgrounds */
+@layer base {
+  /* Input fields - default to black text for visibility */
+  input[type="text"],
+  input[type="number"],
+  input[type="email"],
+  input[type="password"],
+  input[type="search"],
+  input[type="tel"],
+  input[type="url"],
+  textarea {
+    color: #1A1C19;
+  }
+  
+  /* Placeholder text - medium grey for visibility */
+  input::placeholder,
+  textarea::placeholder {
+    color: #757575;
+  }
+  
+  /* Select dropdown - dark text on light backgrounds */
+  select {
+    color: #1A1C19;
+  }
+  
+  /* Select option elements - dark text on white background */
+  select option {
+    background-color: white;
+    color: #1A1C19;
+  }
+  
+  /* White backgrounds - ensure black text */
+  input.bg-white,
+  select.bg-white,
+  textarea.bg-white {
+    color: #1A1C19;
+  }
+  
+  input.bg-white::placeholder,
+  textarea.bg-white::placeholder {
+    color: #757575;
+  }
+}

@@ -1,0 +1,1 @@
+{"version":3,"file":"useWebsiteColors.d.ts","sourceRoot":"","sources":["../../src/utils/useWebsiteColors.ts"],"names":[],"mappings":"AAEA,MAAM,WAAW,aAAa;IAC5B,OAAO,EAAE,MAAM,CAAC;IAChB,SAAS,EAAE,MAAM,CAAC;IAClB,UAAU,EAAE,MAAM,CAAC;IACnB,IAAI,EAAE,MAAM,CAAC;IACb,MAAM,EAAE,MAAM,CAAC;IACf,MAAM,EAAE,MAAM,CAAC;CAChB;AAED;;;GAGG;AACH,wBAAgB,gBAAgB,IAAI,aAAa,CAiNhD"}

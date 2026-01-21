@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ModlyAI Widget - React Test</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 2rem;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .info {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="info">
+        <h1>ModlyAI Widget - React Test</h1>
+        <p>After building the widget, you'll need to use it in a proper React application.</p>
+        <p><strong>To test the widget:</strong></p>
+        <ol>
+            <li>Run <code>npm run build</code> in the widget directory</li>
+            <li>Create a React app (using Create React App, Vite, or Next.js)</li>
+            <li>Import the widget: <code>import { FurnitureAIWidgetButton } from '@modlyai/furniture-widget'</code></li>
+            <li>Use it in your component</li>
+        </ol>
+    </div>
+    
+    <div id="root"></div>
+    
+    <!-- Note: This requires a proper React setup. For a quick test, use the test.html file instead. -->
+    <script>
+        document.getElementById('root').innerHTML = '<p style="text-align: center; color: white;">This page requires a React build setup. Use test.html for a quick demo, or set up a React app to test the actual widget component.</p>';
+    </script>
+</body>
+</html>

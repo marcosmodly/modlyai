@@ -1,0 +1,262 @@
+'use client';
+
+/**
+ * HTML template for printable spec sheet
+ */
+
+import { SpecSheetData } from '../types';
+
+interface SpecSheetHTMLProps {
+  data: SpecSheetData;
+}
+
+export function SpecSheetHTML({ data }: SpecSheetHTMLProps) {
+  return (
+    <div className="spec-sheet-print">
+      <style jsx>{`
+        .spec-sheet-print {
+          max-width: 800px;
+          margin: 0 auto;
+          padding: 40px;
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+          color: #1a1c19;
+          background: white;
+        }
+        .header {
+          border-bottom: 3px solid #2d312c;
+          padding-bottom: 20px;
+          margin-bottom: 30px;
+        }
+        .header h1 {
+          margin: 0 0 10px 0;
+          font-size: 28px;
+          font-weight: 700;
+          color: #2d312c;
+        }
+        .header .meta {
+          display: flex;
+          gap: 30px;
+          font-size: 14px;
+          color: #666;
+        }
+        .section {
+          margin-bottom: 30px;
+        }
+        .section-title {
+          font-size: 18px;
+          font-weight: 600;
+          color: #2d312c;
+          border-bottom: 2px solid #e5e7e0;
+          padding-bottom: 8px;
+          margin-bottom: 15px;
+        }
+        .selection-item {
+          display: flex;
+          justify-content: space-between;
+          padding: 10px 0;
+          border-bottom: 1px solid #f0f0f0;
+        }
+        .selection-label {
+          font-weight: 500;
+          color: #555;
+        }
+        .selection-value {
+          color: #2d312c;
+          font-weight: 600;
+        }
+        .dimensions-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 20px;
+          margin-top: 15px;
+        }
+        .dimension-item {
+          text-align: center;
+          padding: 15px;
+          background: #f8f9f7;
+          border-radius: 8px;
+        }
+        .dimension-value {
+          font-size: 24px;
+          font-weight: 700;
+          color: #2d312c;
+          margin-bottom: 5px;
+        }
+        .dimension-label {
+          font-size: 12px;
+          color: #666;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+        }
+        .notes {
+          padding: 15px;
+          background: #f8f9f7;
+          border-left: 4px solid #2d312c;
+          border-radius: 4px;
+          margin-top: 15px;
+        }
+        .footer {
+          margin-top: 40px;
+          padding-top: 20px;
+          border-top: 2px solid #e5e7e0;
+          text-align: center;
+          font-size: 12px;
+          color: #999;
+        }
+        @media print {
+          .spec-sheet-print {
+            padding: 20px;
+          }
+          .no-print {
+            display: none;
+          }
+        }
+      `}</style>
+
+      <div className="header">
+        <h1>Product Specification Sheet</h1>
+        <div className="meta">
+          <div>
+            <strong>Product:</strong> {data.productName}
+          </div>
+          <div>
+            <strong>SKU:</strong> {data.sku}
+          </div>
+          <div>
+            <strong>Quote ID:</strong> {data.quoteId || 'N/A'}
+          </div>
+          <div>
+            <strong>Date:</strong> {new Date(data.timestamp).toLocaleDateString()}
+          </div>
+        </div>
+      </div>
+
+      <div className="section">
+        <h2 className="section-title">Configuration</h2>
+        {Object.entries(data.selections).map(([groupId, selection]) => (
+          <div key={groupId} className="selection-item">
+            <span className="selection-label">{selection.groupLabel}:</span>
+            <span className="selection-value">{selection.selectedLabel}</span>
+          </div>
+        ))}
+      </div>
+
+      <div className="section">
+        <h2 className="section-title">Dimensions</h2>
+        <div className="dimensions-grid">
+          <div className="dimension-item">
+            <div className="dimension-value">{data.dimensions.length}</div>
+            <div className="dimension-label">Length ({data.dimensions.unit || 'cm'})</div>
+          </div>
+          <div className="dimension-item">
+            <div className="dimension-value">{data.dimensions.width}</div>
+            <div className="dimension-label">Width ({data.dimensions.unit || 'cm'})</div>
+          </div>
+          <div className="dimension-item">
+            <div className="dimension-value">{data.dimensions.height}</div>
+            <div className="dimension-label">Height ({data.dimensions.unit || 'cm'})</div>
+          </div>
+        </div>
+      </div>
+
+      {data.notes && (
+        <div className="section">
+          <h2 className="section-title">Notes</h2>
+          <div className="notes">{data.notes}</div>
+        </div>
+      )}
+
+      <div className="footer">
+        <p>Generated by ModlyAI Configurator</p>
+        <p>Timestamp: {new Date(data.timestamp).toISOString()}</p>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Render spec sheet HTML as a string for download/export
+ */
+export function renderSpecSheetHTML(data: SpecSheetData): string {
+  // This would be used for server-side rendering or download
+  // For now, we'll use the React component in the browser
+  return `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Spec Sheet - ${data.productName}</title>
+  <style>
+    body {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 40px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: #1a1c19;
+      background: white;
+    }
+    .header {
+      border-bottom: 3px solid #2d312c;
+      padding-bottom: 20px;
+      margin-bottom: 30px;
+    }
+    .header h1 {
+      margin: 0 0 10px 0;
+      font-size: 28px;
+      font-weight: 700;
+    }
+    .section {
+      margin-bottom: 30px;
+    }
+    .section-title {
+      font-size: 18px;
+      font-weight: 600;
+      border-bottom: 2px solid #e5e7e0;
+      padding-bottom: 8px;
+      margin-bottom: 15px;
+    }
+    .selection-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid #f0f0f0;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Product Specification Sheet</h1>
+    <div>
+      <strong>Product:</strong> ${data.productName} | 
+      <strong>SKU:</strong> ${data.sku} | 
+      <strong>Quote ID:</strong> ${data.quoteId || 'N/A'} | 
+      <strong>Date:</strong> ${new Date(data.timestamp).toLocaleDateString()}
+    </div>
+  </div>
+  <div class="section">
+    <h2 class="section-title">Configuration</h2>
+    ${Object.entries(data.selections).map(([_, s]) => 
+      `<div class="selection-item">
+        <span>${s.groupLabel}:</span>
+        <span><strong>${s.selectedLabel}</strong></span>
+      </div>`
+    ).join('')}
+  </div>
+  <div class="section">
+    <h2 class="section-title">Dimensions</h2>
+    <div>
+      Length: ${data.dimensions.length} ${data.dimensions.unit || 'cm'} | 
+      Width: ${data.dimensions.width} ${data.dimensions.unit || 'cm'} | 
+      Height: ${data.dimensions.height} ${data.dimensions.unit || 'cm'}
+    </div>
+  </div>
+  ${data.notes ? `
+  <div class="section">
+    <h2 class="section-title">Notes</h2>
+    <div>${data.notes}</div>
+  </div>
+  ` : ''}
+</body>
+</html>
+  `.trim();
+}

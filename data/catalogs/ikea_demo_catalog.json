@@ -1,0 +1,301 @@
+[
+  {
+    "id": "demo-chair-001",
+    "brand": "Demo Catalog",
+    "source": "Public product pages / demo",
+    "name": "Nordic Slatback Dining Chair",
+    "category": "Chairs",
+    "shortDescription": "Slim solid-wood dining chair with a curved slat back for everyday seating.",
+    "price": 89,
+    "currency": "USD",
+    "imageUrls": [
+      "https://images.unsplash.com/photo-1449247709967-d4461a6a6103?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "variants": [
+      { "label": "Finish", "options": ["Natural", "Walnut"] },
+      { "label": "Seat Pad", "options": ["Linen", "Microfiber"] }
+    ],
+    "materials": ["Solid birch", "Linen"],
+    "colors": ["Natural wood", "Light gray"],
+    "dimensions": { "width": 470, "depth": 520, "height": 820 },
+    "tags": ["Scandinavian", "Dining", "Minimal"],
+    "productUrl": null
+  },
+  {
+    "id": "demo-chair-002",
+    "brand": "Demo Catalog",
+    "source": "Public product pages / demo",
+    "name": "Compact Padded Task Chair",
+    "category": "Chairs",
+    "shortDescription": "Small-space task chair with breathable upholstery and low-profile arms.",
+    "price": 129,
+    "currency": "USD",
+    "imageUrls": [
+      "https://images.unsplash.com/photo-1503602642458-232111445657?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "variants": [
+      { "label": "Base", "options": ["Black", "Chrome"] },
+      { "label": "Upholstery", "options": ["Charcoal", "Navy", "Sand"] }
+    ],
+    "materials": ["Metal", "Polyester"],
+    "colors": ["Charcoal"],
+    "dimensions": { "width": 520, "depth": 540, "height": 860 },
+    "tags": ["Office", "Compact", "Modern"],
+    "productUrl": null
+  },
+  {
+    "id": "demo-chair-003",
+    "brand": "Demo Catalog",
+    "source": "Public product pages / demo",
+    "name": "Woven Accent Lounge Chair",
+    "category": "Chairs",
+    "shortDescription": "Relaxed lounge chair with a woven seat and airy frame.",
+    "price": 199,
+    "currency": "USD",
+    "imageUrls": [
+      "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "variants": [
+      { "label": "Frame Finish", "options": ["Black", "Warm oak"] }
+    ],
+    "materials": ["Rattan", "Steel"],
+    "colors": ["Natural", "Black"],
+    "dimensions": { "width": 720, "depth": 760, "height": 780 },
+    "tags": ["Lounge", "Boho", "Lightweight"],
+    "productUrl": null
+  },
+  {
+    "id": "demo-table-001",
+    "brand": "Demo Catalog",
+    "source": "Public product pages / demo",
+    "name": "Round Oak Dining Table",
+    "category": "Tables",
+    "shortDescription": "Round dining table sized for four, with a simple pedestal base.",
+    "price": 399,
+    "currency": "USD",
+    "imageUrls": [
+      "https://images.unsplash.com/photo-1501045661006-fcebe0257c3f?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "variants": [
+      { "label": "Top Finish", "options": ["Natural oak", "Smoked oak"] }
+    ],
+    "materials": ["Oak veneer", "Engineered wood"],
+    "colors": ["Natural oak"],
+    "dimensions": { "width": 1050, "depth": 1050, "height": 750 },
+    "tags": ["Dining", "Round", "Scandinavian"],
+    "productUrl": null
+  },
+  {
+    "id": "demo-table-002",
+    "brand": "Demo Catalog",
+    "source": "Public product pages / demo",
+    "name": "Slim Console Table",
+    "category": "Tables",
+    "shortDescription": "Narrow console table for entryways or behind sofas.",
+    "price": 169,
+    "currency": "USD",
+    "imageUrls": [
+      "https://images.unsplash.com/photo-1470309864661-68328b2cd0a5?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "variants": [
+      { "label": "Leg Color", "options": ["Matte black", "Brass"] }
+    ],
+    "materials": ["Engineered wood", "Steel"],
+    "colors": ["Black", "Walnut"],
+    "dimensions": { "width": 1100, "depth": 300, "height": 760 },
+    "tags": ["Entryway", "Slim", "Modern"],
+    "productUrl": null
+  },
+  {
+    "id": "demo-table-003",
+    "brand": "Demo Catalog",
+    "source": "Public product pages / demo",
+    "name": "Low Profile Coffee Table",
+    "category": "Tables",
+    "shortDescription": "Low coffee table with open shelf storage.",
+    "price": 219,
+    "currency": "USD",
+    "imageUrls": [
+      "https://images.unsplash.com/photo-1477764250597-dffe9f601ae8?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "variants": [
+      { "label": "Top Color", "options": ["White", "Sand", "Graphite"] }
+    ],
+    "materials": ["Engineered wood"],
+    "colors": ["Sand"],
+    "dimensions": { "width": 1200, "depth": 600, "height": 420 },
+    "tags": ["Living room", "Storage", "Minimal"],
+    "productUrl": null
+  },
+  {
+    "id": "demo-sofa-001",
+    "brand": "Demo Catalog",
+    "source": "Public product pages / demo",
+    "name": "Two-Seat Linen Sofa",
+    "category": "Sofas",
+    "shortDescription": "Compact two-seater with removable linen covers.",
+    "price": 699,
+    "currency": "USD",
+    "imageUrls": [
+      "https://images.unsplash.com/photo-1493666438817-866a91353ca9?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "variants": [
+      { "label": "Cover", "options": ["Oat", "Mist", "Charcoal"] },
+      { "label": "Legs", "options": ["Oak", "Black"] }
+    ],
+    "materials": ["Linen", "Pine frame"],
+    "colors": ["Oat"],
+    "dimensions": { "width": 1720, "depth": 880, "height": 840 },
+    "tags": ["Compact", "Living room", "Scandinavian"],
+    "productUrl": null
+  },
+  {
+    "id": "demo-sofa-002",
+    "brand": "Demo Catalog",
+    "source": "Public product pages / demo",
+    "name": "Modular Corner Sofa",
+    "category": "Sofas",
+    "shortDescription": "Modular sectional with reversible chaise for flexible layouts.",
+    "price": 1099,
+    "currency": "USD",
+    "imageUrls": [
+      "https://images.unsplash.com/photo-1505691723518-36a5ac3be353?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "variants": [
+      { "label": "Chaise Side", "options": ["Left", "Right"] },
+      { "label": "Fabric", "options": ["Pebble", "Slate"] }
+    ],
+    "materials": ["Polyester", "Engineered wood"],
+    "colors": ["Pebble"],
+    "dimensions": { "width": 2400, "depth": 1550, "height": 840 },
+    "tags": ["Sectional", "Family", "Modern"],
+    "productUrl": null
+  },
+  {
+    "id": "demo-bed-001",
+    "brand": "Demo Catalog",
+    "source": "Public product pages / demo",
+    "name": "Platform Bed Frame",
+    "category": "Beds",
+    "shortDescription": "Low platform frame with a simple headboard and slatted base.",
+    "price": 499,
+    "currency": "USD",
+    "imageUrls": [
+      "https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "variants": [
+      { "label": "Size", "options": ["Full", "Queen", "King"] },
+      { "label": "Finish", "options": ["Natural", "Walnut"] }
+    ],
+    "materials": ["Pine", "Oak veneer"],
+    "colors": ["Natural wood"],
+    "dimensions": { "width": 1650, "depth": 2090, "height": 900 },
+    "tags": ["Bedroom", "Minimal", "Platform"],
+    "productUrl": null
+  },
+  {
+    "id": "demo-bed-002",
+    "brand": "Demo Catalog",
+    "source": "Public product pages / demo",
+    "name": "Upholstered Storage Bed",
+    "category": "Beds",
+    "shortDescription": "Soft upholstered bed frame with under-bed storage drawers.",
+    "price": 799,
+    "currency": "USD",
+    "imageUrls": [
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "variants": [
+      { "label": "Fabric Color", "options": ["Stone", "Dusty blue", "Charcoal"] }
+    ],
+    "materials": ["Polyester", "Engineered wood"],
+    "colors": ["Stone"],
+    "dimensions": { "width": 1690, "depth": 2140, "height": 1100 },
+    "tags": ["Bedroom", "Storage", "Soft"],
+    "productUrl": null
+  },
+  {
+    "id": "demo-storage-001",
+    "brand": "Demo Catalog",
+    "source": "Public product pages / demo",
+    "name": "Open Ladder Bookcase",
+    "category": "Storage",
+    "shortDescription": "Five-tier ladder bookcase with open shelves.",
+    "price": 149,
+    "currency": "USD",
+    "imageUrls": [
+      "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "variants": [
+      { "label": "Finish", "options": ["Light oak", "Black"] }
+    ],
+    "materials": ["Engineered wood", "Steel"],
+    "colors": ["Light oak"],
+    "dimensions": { "width": 800, "depth": 350, "height": 1800 },
+    "tags": ["Bookcase", "Vertical", "Modern"],
+    "productUrl": null
+  },
+  {
+    "id": "demo-storage-002",
+    "brand": "Demo Catalog",
+    "source": "Public product pages / demo",
+    "name": "Six-Drawer Dresser",
+    "category": "Storage",
+    "shortDescription": "Wide dresser with smooth-glide drawers for bedroom storage.",
+    "price": 329,
+    "currency": "USD",
+    "imageUrls": [
+      "https://images.unsplash.com/photo-1519710164239-da123dc03ef4?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "variants": [
+      { "label": "Handle Style", "options": ["Inset", "Bar pull"] }
+    ],
+    "materials": ["Engineered wood"],
+    "colors": ["Matte white"],
+    "dimensions": { "width": 1400, "depth": 480, "height": 760 },
+    "tags": ["Bedroom", "Storage", "Clean lines"],
+    "productUrl": null
+  },
+  {
+    "id": "demo-storage-003",
+    "brand": "Demo Catalog",
+    "source": "Public product pages / demo",
+    "name": "Media Console with Doors",
+    "category": "Storage",
+    "shortDescription": "Low media console with cord cutouts and two cabinet doors.",
+    "price": 279,
+    "currency": "USD",
+    "imageUrls": [
+      "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "variants": [
+      { "label": "Door Finish", "options": ["Oak", "Charcoal"] }
+    ],
+    "materials": ["Engineered wood"],
+    "colors": ["Oak"],
+    "dimensions": { "width": 1600, "depth": 420, "height": 520 },
+    "tags": ["Living room", "Media", "Minimal"],
+    "productUrl": null
+  },
+  {
+    "id": "demo-storage-004",
+    "brand": "Demo Catalog",
+    "source": "Public product pages / demo",
+    "name": "Sideboard with Sliding Doors",
+    "category": "Storage",
+    "shortDescription": "Mid-century inspired sideboard with sliding door storage.",
+    "price": 459,
+    "currency": "USD",
+    "imageUrls": [
+      "https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "variants": [
+      { "label": "Leg Finish", "options": ["Walnut", "Black"] }
+    ],
+    "materials": ["Walnut veneer", "Engineered wood"],
+    "colors": ["Walnut"],
+    "dimensions": { "width": 1500, "depth": 420, "height": 720 },
+    "tags": ["Dining", "Storage", "Mid-century"],
+    "productUrl": null
+  }
+]

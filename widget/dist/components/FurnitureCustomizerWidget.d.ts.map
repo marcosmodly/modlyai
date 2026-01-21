@@ -1,0 +1,1 @@
+{"version":3,"file":"FurnitureCustomizerWidget.d.ts","sourceRoot":"","sources":["../../src/components/FurnitureCustomizerWidget.tsx"],"names":[],"mappings":"AAEA,OAAO,EAAe,YAAY,EAAE,MAAM,iBAAiB,CAAC;AAQ5D,UAAU,8BAA8B;IACtC,MAAM,CAAC,EAAE,YAAY,CAAC;IACtB,uBAAuB,CAAC,EAAE,MAAM,IAAI,CAAC;CACtC;AAED,wBAAgB,yBAAyB,CAAC,EAAE,MAAW,EAAE,uBAAuB,EAAE,EAAE,8BAA8B,2CAqajH"}

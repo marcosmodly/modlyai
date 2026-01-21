@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ModlyAI Widget Button Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            min-height: 100vh;
+            padding: 2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        p {
+            color: #666;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .test-section {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: #f5f5f5;
+            border-radius: 8px;
+        }
+
+        .test-section h2 {
+            color: #444;
+            margin-bottom: 1rem;
+        }
+
+        code {
+            background: #e5e7eb;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+        }
+
+        /* Widget Button Styles */
+        .modly-widget-button {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            z-index: 50;
+            background-color: var(--primary-color, #667eea);
+            color: var(--button-text, #ffffff);
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+            font-size: 1.125rem;
+        }
+
+        .modly-widget-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .modly-widget-button svg {
+            width: 1.25rem;
+            height: 1.25rem;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .modal-overlay.open {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            width: 100%;
+            max-width: 72rem;
+            max-height: 90vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            z-index: 10;
+            background-color: #f3f4f6;
+            border-radius: 9999px;
+            padding: 0.5rem;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .modal-close:hover {
+            background-color: #e5e7eb;
+        }
+
+        .modal-close svg {
+            width: 1.5rem;
+            height: 1.5rem;
+            color: #4b5563;
+        }
+
+        .modal-body {
+            overflow-y: auto;
+            flex: 1;
+            padding: 2rem;
+        }
+
+        /* Test different color schemes */
+        :root {
+            --primary-color: #667eea;
+            --button-text: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>ModlyAI Widget Button Test</h1>
+        <p>
+            This is a test page for the ModlyAI Widget Button. 
+            You should see a floating button in the bottom-right corner.
+            Click it to open the widget in a modal popup.
+        </p>
+
+        <div class="test-section">
+            <h2>Test Instructions:</h2>
+            <ul style="color: #666; line-height: 1.8; margin-left: 1.5rem;">
+                <li>Look for the floating button in the bottom-right corner</li>
+                <li>Click the button to open the widget modal</li>
+                <li>Try closing the modal by clicking the X button, clicking outside, or pressing ESC</li>
+                <li>The button color should adapt to the website's color scheme (currently using CSS variable --primary-color)</li>
+            </ul>
+        </div>
+
+        <div class="test-section">
+            <h2>Color Customization:</h2>
+            <p style="color: #666;">
+                The button automatically detects colors from CSS variables. 
+                Try changing the <code>--primary-color</code> variable in the style tag above to see it adapt.
+            </p>
+        </div>
+    </div>
+
+    <!-- Widget Button -->
+    <button class="modly-widget-button" id="widgetButton" aria-label="Open ModlyAI Widget">
+        <span>ModlyAI</span>
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+        </svg>
+    </button>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose" aria-label="Close modal">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+            <div class="modal-body">
+                <h2 style="margin-bottom: 1rem; color: #333;">Widget Modal</h2>
+                <p style="color: #666; margin-bottom: 1rem;">
+                    This is where the FurnitureAIWidget would appear.
+                </p>
+                <p style="color: #666; margin-top: 1rem;">
+                    To test the full widget, you'll need to build it first with <code>npm run build</code> 
+                    and then import it properly in a React application.
+                </p>
+                <div style="margin-top: 2rem; padding: 1.5rem; background: #f5f5f5; border-radius: 8px;">
+                    <h3 style="margin-bottom: 0.5rem; color: #444;">Modal Features:</h3>
+                    <ul style="color: #666; line-height: 1.8; margin-left: 1.5rem;">
+                        <li>Click outside to close</li>
+                        <li>Press ESC to close</li>
+                        <li>Click X button to close</li>
+                        <li>Scrollable content area</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Wait for DOM to be ready
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Page loaded, initializing widget...');
+            
+            // Get elements
+            const widgetButton = document.getElementById('widgetButton');
+            const modalOverlay = document.getElementById('modalOverlay');
+            const modalClose = document.getElementById('modalClose');
+
+            // Check if elements exist
+            if (!widgetButton || !modalOverlay || !modalClose) {
+                console.error('Required elements not found!', {
+                    widgetButton: !!widgetButton,
+                    modalOverlay: !!modalOverlay,
+                    modalClose: !!modalClose
+                });
+                return;
+            }
+
+            console.log('All elements found, setting up event listeners...');
+
+            // Open modal
+            widgetButton.addEventListener('click', function() {
+                console.log('Button clicked, opening modal...');
+                modalOverlay.classList.add('open');
+                document.body.style.overflow = 'hidden';
+            });
+
+            // Close modal functions
+            function closeModal() {
+                console.log('Closing modal...');
+                modalOverlay.classList.remove('open');
+                document.body.style.overflow = 'unset';
+            }
+
+            // Close on X button click
+            modalClose.addEventListener('click', closeModal);
+
+            // Close on overlay click (outside modal)
+            modalOverlay.addEventListener('click', function(e) {
+                if (e.target === modalOverlay) {
+                    closeModal();
+                }
+            });
+
+            // Close on ESC key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && modalOverlay.classList.contains('open')) {
+                    closeModal();
+                }
+            });
+
+            // Detect website colors (optional enhancement)
+            function detectColors() {
+                try {
+                    const root = document.documentElement;
+                    const computed = window.getComputedStyle(root);
+                    
+                    const primaryColor = computed.getPropertyValue('--primary-color') || 
+                                        computed.getPropertyValue('--color-primary') || 
+                                        '#667eea';
+                    
+                    const buttonText = computed.getPropertyValue('--button-text') || 
+                                      computed.getPropertyValue('--on-primary') || 
+                                      '#ffffff';
+                    
+                    // Update button if colors are detected
+                    if (primaryColor && primaryColor.trim() !== '' && primaryColor.trim() !== '#667eea') {
+                        widgetButton.style.backgroundColor = primaryColor.trim();
+                    }
+                    if (buttonText && buttonText.trim() !== '' && buttonText.trim() !== '#ffffff') {
+                        widgetButton.style.color = buttonText.trim();
+                    }
+                } catch (error) {
+                    console.error('Error detecting colors:', error);
+                }
+            }
+
+            // Run color detection on load
+            detectColors();
+            
+            console.log('Widget initialized successfully!');
+        });
+    </script>
+</body>
+</html>
