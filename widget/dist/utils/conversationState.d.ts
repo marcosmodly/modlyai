@@ -7,6 +7,7 @@ export declare class ConversationStateManager {
     getState(): ConversationState;
     addMessage(message: ConversationMessage): void;
     getMessages(): ConversationMessage[];
+    updateMessages(messages: ConversationMessage[]): void;
     updateIntent(intent: ConversationState['currentIntent']): void;
     updatePreferences(preferences: Partial<ConversationState['userPreferences']>): void;
     updateContext(context: Partial<ConversationState['context']>): void;

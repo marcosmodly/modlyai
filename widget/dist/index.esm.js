@@ -1,4 +1,4 @@
-import require$$0, { createContext, useContext, useRef, useEffect, useState, useMemo } from 'react';
+import require$$0, { useContext, createContext, forwardRef, createElement, useState, useEffect, useMemo, useRef, useCallback } from 'react';
 
 var jsxRuntime = {exports: {}};
 
@@ -1355,36 +1355,417 @@ if (process.env.NODE_ENV === 'production') {
 
 var jsxRuntimeExports = jsxRuntime.exports;
 
-const defaultConfig = {
-    apiEndpoints: {
-        roomAnalyze: '/api/rooms/analyze',
-        furnitureCustomize: '/api/furniture/customize',
-        chat: '/api/widget/chat',
-        catalog: '/api/catalog/items',
-        recommendationsMatch: '/api/recommendations/match',
-        cartAdd: '/api/cart/add',
-        quoteRequest: '/api/quotes/request',
-    },
-    features: {
-        roomPlanner: true,
-        customizer: true,
-    },
-    storageKey: 'modly-customized-furniture',
+/**
+ * @license lucide-react v1.8.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+
+const mergeClasses = (...classes) => classes.filter((className, index, array) => {
+  return Boolean(className) && className.trim() !== "" && array.indexOf(className) === index;
+}).join(" ").trim();
+
+/**
+ * @license lucide-react v1.8.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+
+const toKebabCase = (string) => string.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase();
+
+/**
+ * @license lucide-react v1.8.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+
+const toCamelCase = (string) => string.replace(
+  /^([A-Z])|[\s-_]+(\w)/g,
+  (match, p1, p2) => p2 ? p2.toUpperCase() : p1.toLowerCase()
+);
+
+/**
+ * @license lucide-react v1.8.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+
+
+const toPascalCase = (string) => {
+  const camelCase = toCamelCase(string);
+  return camelCase.charAt(0).toUpperCase() + camelCase.slice(1);
 };
-function mergeConfig(userConfig = {}) {
-    return {
-        ...defaultConfig,
-        ...userConfig,
-        apiEndpoints: {
-            ...defaultConfig.apiEndpoints,
-            ...userConfig.apiEndpoints,
-        },
-        features: {
-            ...defaultConfig.features,
-            ...userConfig.features,
-        },
-    };
-}
+
+/**
+ * @license lucide-react v1.8.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+
+var defaultAttributes = {
+  xmlns: "http://www.w3.org/2000/svg",
+  width: 24,
+  height: 24,
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: 2,
+  strokeLinecap: "round",
+  strokeLinejoin: "round"
+};
+
+/**
+ * @license lucide-react v1.8.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+
+const hasA11yProp = (props) => {
+  for (const prop in props) {
+    if (prop.startsWith("aria-") || prop === "role" || prop === "title") {
+      return true;
+    }
+  }
+  return false;
+};
+
+const LucideContext = createContext({});
+const useLucideContext = () => useContext(LucideContext);
+
+const Icon = forwardRef(
+  ({ color, size, strokeWidth, absoluteStrokeWidth, className = "", children, iconNode, ...rest }, ref) => {
+    const {
+      size: contextSize = 24,
+      strokeWidth: contextStrokeWidth = 2,
+      absoluteStrokeWidth: contextAbsoluteStrokeWidth = false,
+      color: contextColor = "currentColor",
+      className: contextClass = ""
+    } = useLucideContext() ?? {};
+    const calculatedStrokeWidth = absoluteStrokeWidth ?? contextAbsoluteStrokeWidth ? Number(strokeWidth ?? contextStrokeWidth) * 24 / Number(size ?? contextSize) : strokeWidth ?? contextStrokeWidth;
+    return createElement(
+      "svg",
+      {
+        ref,
+        ...defaultAttributes,
+        width: size ?? contextSize ?? defaultAttributes.width,
+        height: size ?? contextSize ?? defaultAttributes.height,
+        stroke: color ?? contextColor,
+        strokeWidth: calculatedStrokeWidth,
+        className: mergeClasses("lucide", contextClass, className),
+        ...!children && !hasA11yProp(rest) && { "aria-hidden": "true" },
+        ...rest
+      },
+      [
+        ...iconNode.map(([tag, attrs]) => createElement(tag, attrs)),
+        ...Array.isArray(children) ? children : [children]
+      ]
+    );
+  }
+);
+
+/**
+ * @license lucide-react v1.8.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+
+
+const createLucideIcon = (iconName, iconNode) => {
+  const Component = forwardRef(
+    ({ className, ...props }, ref) => createElement(Icon, {
+      ref,
+      iconNode,
+      className: mergeClasses(
+        `lucide-${toKebabCase(toPascalCase(iconName))}`,
+        `lucide-${iconName}`,
+        className
+      ),
+      ...props
+    })
+  );
+  Component.displayName = toPascalCase(iconName);
+  return Component;
+};
+
+/**
+ * @license lucide-react v1.8.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+
+
+const __iconNode$e = [
+  ["path", { d: "M5 12h14", key: "1ays0h" }],
+  ["path", { d: "m12 5 7 7-7 7", key: "xquz4c" }]
+];
+const ArrowRight = createLucideIcon("arrow-right", __iconNode$e);
+
+/**
+ * @license lucide-react v1.8.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+
+
+const __iconNode$d = [
+  [
+    "path",
+    {
+      d: "M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z",
+      key: "18u6gg"
+    }
+  ],
+  ["circle", { cx: "12", cy: "13", r: "3", key: "1vg3eu" }]
+];
+const Camera = createLucideIcon("camera", __iconNode$d);
+
+/**
+ * @license lucide-react v1.8.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+
+
+const __iconNode$c = [["path", { d: "M20 6 9 17l-5-5", key: "1gmf2c" }]];
+const Check = createLucideIcon("check", __iconNode$c);
+
+/**
+ * @license lucide-react v1.8.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+
+
+const __iconNode$b = [
+  [
+    "path",
+    {
+      d: "M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z",
+      key: "1oefj6"
+    }
+  ],
+  ["path", { d: "M14 2v5a1 1 0 0 0 1 1h5", key: "wfsgrz" }],
+  ["path", { d: "M12 18v-6", key: "17g6i2" }],
+  ["path", { d: "m9 15 3 3 3-3", key: "1npd3o" }]
+];
+const FileDown = createLucideIcon("file-down", __iconNode$b);
+
+/**
+ * @license lucide-react v1.8.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+
+
+const __iconNode$a = [
+  ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
+  ["path", { d: "M12 16v-4", key: "1dtifu" }],
+  ["path", { d: "M12 8h.01", key: "e9boi3" }]
+];
+const Info = createLucideIcon("info", __iconNode$a);
+
+/**
+ * @license lucide-react v1.8.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+
+
+const __iconNode$9 = [
+  [
+    "path",
+    {
+      d: "M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z",
+      key: "zw3jo"
+    }
+  ],
+  [
+    "path",
+    {
+      d: "M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12",
+      key: "1wduqc"
+    }
+  ],
+  [
+    "path",
+    {
+      d: "M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17",
+      key: "kqbvx6"
+    }
+  ]
+];
+const Layers = createLucideIcon("layers", __iconNode$9);
+
+/**
+ * @license lucide-react v1.8.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+
+
+const __iconNode$8 = [
+  ["path", { d: "M9 17H7A5 5 0 0 1 7 7h2", key: "8i5ue5" }],
+  ["path", { d: "M15 7h2a5 5 0 1 1 0 10h-2", key: "1b9ql8" }],
+  ["line", { x1: "8", x2: "16", y1: "12", y2: "12", key: "1jonct" }]
+];
+const Link2 = createLucideIcon("link-2", __iconNode$8);
+
+/**
+ * @license lucide-react v1.8.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+
+
+const __iconNode$7 = [
+  ["path", { d: "M15 3h6v6", key: "1q9fwt" }],
+  ["path", { d: "m21 3-7 7", key: "1l2asr" }],
+  ["path", { d: "m3 21 7-7", key: "tjx5ai" }],
+  ["path", { d: "M9 21H3v-6", key: "wtvkvv" }]
+];
+const Maximize2 = createLucideIcon("maximize-2", __iconNode$7);
+
+/**
+ * @license lucide-react v1.8.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+
+
+const __iconNode$6 = [
+  [
+    "path",
+    {
+      d: "M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719",
+      key: "1sd12s"
+    }
+  ]
+];
+const MessageCircle = createLucideIcon("message-circle", __iconNode$6);
+
+/**
+ * @license lucide-react v1.8.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+
+
+const __iconNode$5 = [
+  [
+    "path",
+    {
+      d: "M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z",
+      key: "e79jfc"
+    }
+  ],
+  ["circle", { cx: "13.5", cy: "6.5", r: ".5", fill: "currentColor", key: "1okk4w" }],
+  ["circle", { cx: "17.5", cy: "10.5", r: ".5", fill: "currentColor", key: "f64h9f" }],
+  ["circle", { cx: "6.5", cy: "12.5", r: ".5", fill: "currentColor", key: "qy21gx" }],
+  ["circle", { cx: "8.5", cy: "7.5", r: ".5", fill: "currentColor", key: "fotxhn" }]
+];
+const Palette = createLucideIcon("palette", __iconNode$5);
+
+/**
+ * @license lucide-react v1.8.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+
+
+const __iconNode$4 = [
+  [
+    "path",
+    {
+      d: "M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z",
+      key: "1a8usu"
+    }
+  ],
+  ["path", { d: "m15 5 4 4", key: "1mk7zo" }]
+];
+const Pencil = createLucideIcon("pencil", __iconNode$4);
+
+/**
+ * @license lucide-react v1.8.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+
+
+const __iconNode$3 = [
+  ["path", { d: "m15 14 5-5-5-5", key: "12vg1m" }],
+  ["path", { d: "M20 9H9.5A5.5 5.5 0 0 0 4 14.5A5.5 5.5 0 0 0 9.5 20H13", key: "6uklza" }]
+];
+const Redo2 = createLucideIcon("redo-2", __iconNode$3);
+
+/**
+ * @license lucide-react v1.8.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+
+
+const __iconNode$2 = [
+  [
+    "path",
+    {
+      d: "M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z",
+      key: "1s2grr"
+    }
+  ],
+  ["path", { d: "M20 2v4", key: "1rf3ol" }],
+  ["path", { d: "M22 4h-4", key: "gwowj6" }],
+  ["circle", { cx: "4", cy: "20", r: "2", key: "6kqj1y" }]
+];
+const Sparkles = createLucideIcon("sparkles", __iconNode$2);
+
+/**
+ * @license lucide-react v1.8.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+
+
+const __iconNode$1 = [
+  ["path", { d: "M9 14 4 9l5-5", key: "102s5s" }],
+  ["path", { d: "M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5a5.5 5.5 0 0 1-5.5 5.5H11", key: "f3b9sd" }]
+];
+const Undo2 = createLucideIcon("undo-2", __iconNode$1);
+
+/**
+ * @license lucide-react v1.8.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+
+
+const __iconNode = [
+  ["path", { d: "M12 3v12", key: "1x0j5s" }],
+  ["path", { d: "m17 8-5-5-5 5", key: "7q97r8" }],
+  ["path", { d: "M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4", key: "ih7n3h" }]
+];
+const Upload = createLucideIcon("upload", __iconNode);
 
 class ApiClient {
     constructor(config) {
@@ -1397,14 +1778,134 @@ class ApiClient {
         const baseUrl = this.getBaseUrl();
         return `${baseUrl}${path}`;
     }
+    withStoreQuery(url) {
+        const parsed = new URL(url, this.getBaseUrl() || 'http://localhost');
+        if (this.config.storeId || this.config.widgetId) {
+            parsed.searchParams.set('storeId', String(this.config.storeId || this.config.widgetId));
+        }
+        if (this.config.apiKey) {
+            parsed.searchParams.set('apiKey', this.config.apiKey);
+        }
+        else if (this.config.publicApiKey) {
+            parsed.searchParams.set('apiKey', this.config.publicApiKey);
+        }
+        if (this.config.storeDomain) {
+            parsed.searchParams.set('domain', this.config.storeDomain);
+        }
+        return parsed.toString();
+    }
+    withStorePayload(payload) {
+        return {
+            ...payload,
+            ...((this.config.storeId || this.config.widgetId) ? { storeId: this.config.storeId || this.config.widgetId } : {}),
+            ...(this.config.widgetId ? { widgetId: this.config.widgetId } : {}),
+            ...(this.config.apiKey ? { apiKey: this.config.apiKey } : {}),
+            ...(this.config.publicApiKey ? { publicApiKey: this.config.publicApiKey } : {}),
+            ...(this.config.storeDomain ? { storeDomain: this.config.storeDomain } : {}),
+        };
+    }
+    normalizeCatalogProductForChat(product, index) {
+        const title = String(product?.title ?? product?.name ?? '').trim();
+        if (!title)
+            return null;
+        const dimensions = typeof product?.dimensions === 'string'
+            ? product.dimensions
+            : product?.dimensions
+                ? [
+                    product.dimensions.length !== undefined ? `${product.dimensions.length} in L` : null,
+                    product.dimensions.width !== undefined ? `${product.dimensions.width} in W` : null,
+                    product.dimensions.height !== undefined ? `${product.dimensions.height} in H` : null,
+                ].filter(Boolean).join(' x ')
+                : undefined;
+        return {
+            id: String(product?.id ?? `catalog-product-${index + 1}`),
+            title,
+            name: title,
+            category: product?.category ? String(product.category) : undefined,
+            description: product?.description ? String(product.description) : undefined,
+            price: product?.price ?? product?.priceRange?.min,
+            sku: product?.sku ? String(product.sku) : undefined,
+            dimensions: dimensions || undefined,
+            image: product?.image ?? product?.imageUrl ?? product?.images?.[0],
+            imageUrl: product?.imageUrl ?? product?.image ?? product?.images?.[0],
+            tags: Array.isArray(product?.tags)
+                ? product.tags
+                : Array.isArray(product?.styleTags)
+                    ? product.styleTags
+                    : undefined,
+            source: product?.source ? String(product.source) : undefined,
+            length: product?.length ?? product?.dimensions?.length,
+            width: product?.width ?? product?.dimensions?.width,
+            height: product?.height ?? product?.dimensions?.height,
+            productUrl: product?.productUrl ? String(product.productUrl) : product?.url ? String(product.url) : undefined,
+            url: product?.url ? String(product.url) : product?.productUrl ? String(product.productUrl) : undefined,
+            handle: product?.handle ? String(product.handle) : undefined,
+        };
+    }
+    async getCatalogForChat() {
+        try {
+            const catalogResponse = await this.getCatalog();
+            const source = catalogResponse.catalog?.source ?? catalogResponse.meta?.catalogSource ?? catalogResponse.meta?.source;
+            const rawProducts = Array.isArray(catalogResponse.catalog?.products)
+                ? catalogResponse.catalog.products
+                : Array.isArray(catalogResponse.items)
+                    ? catalogResponse.items
+                    : [];
+            const products = rawProducts
+                .map((product, index) => this.normalizeCatalogProductForChat(product, index))
+                .filter(Boolean);
+            return {
+                source: products.length > 0 ? 'instantdb' : (source ?? 'none'),
+                products,
+            };
+        }
+        catch (error) {
+            console.warn('Failed to load catalog before chat request:', error);
+            return {
+                source: 'none',
+                products: [],
+            };
+        }
+    }
+    normalizeChatResponse(data) {
+        if (data?.message && typeof data.message === 'object') {
+            return data;
+        }
+        const content = typeof data?.reply === 'string' ? data.reply :
+            typeof data?.message === 'string' ? data.message :
+                typeof data?.content === 'string' ? data.content :
+                    typeof data?.text === 'string' ? data.text :
+                        '';
+        if (!content.trim()) {
+            throw new Error('Chat response did not include a readable assistant message.');
+        }
+        const message = {
+            id: `msg-assistant-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+            role: 'assistant',
+            type: 'text',
+            content,
+            timestamp: Date.now(),
+        };
+        return {
+            message,
+            updatedPreferences: data?.updatedPreferences,
+            shouldTriggerAction: data?.shouldTriggerAction,
+        };
+    }
     async analyzeRoom(photos, dimensions, preferences) {
         const endpoint = this.config.apiEndpoints?.roomAnalyze || '/api/rooms/analyze';
-        const url = this.getEndpoint(endpoint);
+        const url = this.withStoreQuery(this.getEndpoint(endpoint));
         const formData = new FormData();
         photos.forEach((photo) => {
             formData.append('photos', photo);
         });
         formData.append('dimensions', JSON.stringify(dimensions));
+        if (this.config.apiKey) {
+            formData.append('apiKey', this.config.apiKey);
+        }
+        if (this.config.storeDomain) {
+            formData.append('storeDomain', this.config.storeDomain);
+        }
         if (preferences) {
             formData.append('preferences', JSON.stringify(preferences));
         }
@@ -1442,19 +1943,26 @@ class ApiClient {
     }
     async chat(request) {
         const endpoint = this.config.apiEndpoints?.chat || '/api/widget/chat';
-        const url = this.getEndpoint(endpoint);
+        const url = this.withStoreQuery(this.getEndpoint(endpoint));
+        const catalog = request.catalog ?? await this.getCatalogForChat();
+        const payload = this.withStorePayload({
+            ...request,
+            history: request.history ?? request.conversationHistory,
+            catalog,
+        });
         try {
             const response = await fetch(url, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(request),
+                body: JSON.stringify(payload),
             });
             if (!response.ok) {
                 let errorMessage = `Failed to get chat response: ${response.statusText}`;
                 try {
                     const errorData = await response.json();
+                    console.warn('ModlyAI chat error response:', errorData);
                     if (errorData.error) {
                         errorMessage = errorData.error;
                     }
@@ -1466,9 +1974,11 @@ class ApiClient {
                 this.config.onError?.(error);
                 throw error;
             }
-            return await response.json();
+            const data = await response.json();
+            return this.normalizeChatResponse(data);
         }
         catch (error) {
+            console.error('Chat request failed:', error);
             // Re-throw with more context if it's a network error
             if (error instanceof TypeError && error.message.includes('fetch')) {
                 const networkError = new Error('Network error: Unable to connect to the server. Please check your connection.');
@@ -1480,7 +1990,7 @@ class ApiClient {
     }
     async getCatalog() {
         const endpoint = this.config.apiEndpoints?.catalog || '/api/catalog/items';
-        const url = this.getEndpoint(endpoint);
+        const url = this.withStoreQuery(this.getEndpoint(endpoint));
         const response = await fetch(url, {
             method: 'GET',
         });
@@ -1489,17 +1999,22 @@ class ApiClient {
             this.config.onError?.(error);
             throw error;
         }
-        return await response.json();
+        const data = await response.json();
+        return Array.isArray(data) ? { items: data } : data;
     }
     async submitQuoteRequest(quoteRequest) {
         const endpoint = this.config.apiEndpoints?.quoteRequest || '/api/quotes/request';
         const url = this.getEndpoint(endpoint);
+        const payload = {
+            ...quoteRequest,
+            ...(this.config.quoteEmail ? { quoteEmail: this.config.quoteEmail } : {}),
+        };
         const response = await fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(quoteRequest),
+            body: JSON.stringify(this.withStorePayload(payload)),
         });
         if (!response.ok) {
             const error = new Error(`Failed to submit quote request: ${response.statusText}`);
@@ -1516,7 +2031,7 @@ class ApiClient {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(request),
+            body: JSON.stringify(this.withStorePayload(request)),
         });
         if (!response.ok) {
             const error = new Error(`Failed to get recommendations: ${response.statusText}`);
@@ -1533,7 +2048,7 @@ class ApiClient {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(item),
+            body: JSON.stringify(this.withStorePayload(item)),
         });
         if (!response.ok) {
             const error = new Error(`Failed to add to cart: ${response.statusText}`);
@@ -1542,6 +2057,135 @@ class ApiClient {
         }
         return await response.json();
     }
+}
+
+const DEFAULT_WIDGET_TITLE = 'ModlyAI';
+const DEFAULT_PRIMARY_COLOR = '#3B82F6';
+const DEFAULT_WELCOME_MESSAGE = "Hello! I'm your furniture assistant. I can help you choose the right products, plan your room, or customize items from this store's catalog.";
+const DEFAULT_ENABLED_ACTIONS = {
+    viewInCatalog: true,
+    customize: true,
+    requestQuote: true,
+};
+function hasText(value) {
+    return typeof value === 'string' && value.trim().length > 0;
+}
+const defaultConfig = {
+    storeName: '',
+    storeUrl: '',
+    supportEmail: '',
+    widgetTitle: DEFAULT_WIDGET_TITLE,
+    primaryColor: DEFAULT_PRIMARY_COLOR,
+    welcomeMessage: DEFAULT_WELCOME_MESSAGE,
+    enabledActions: DEFAULT_ENABLED_ACTIONS,
+    quoteEmail: '',
+    apiEndpoints: {
+        roomAnalyze: '/api/rooms/analyze',
+        furnitureCustomize: '/api/furniture/customize',
+        chat: '/api/widget/chat',
+        catalog: '/api/catalog/items',
+        recommendationsMatch: '/api/recommendations/match',
+        cartAdd: '/api/cart/add',
+        quoteRequest: '/api/quotes/request',
+    },
+    features: {
+        roomPlanner: true,
+        customizer: true,
+    },
+    storageKey: 'modly-customized-furniture',
+};
+function mergeConfig(userConfig = {}) {
+    const widgetTitle = hasText(userConfig.widgetTitle)
+        ? userConfig.widgetTitle.trim()
+        : hasText(userConfig.theme?.buttonText)
+            ? userConfig.theme.buttonText.trim()
+            : DEFAULT_WIDGET_TITLE;
+    const primaryColor = hasText(userConfig.primaryColor)
+        ? userConfig.primaryColor.trim()
+        : hasText(userConfig.theme?.primaryColor)
+            ? userConfig.theme.primaryColor.trim()
+            : DEFAULT_PRIMARY_COLOR;
+    const welcomeMessage = hasText(userConfig.welcomeMessage)
+        ? userConfig.welcomeMessage.trim()
+        : DEFAULT_WELCOME_MESSAGE;
+    return {
+        ...defaultConfig,
+        ...userConfig,
+        storeId: userConfig.storeId || userConfig.widgetId,
+        widgetTitle,
+        primaryColor,
+        welcomeMessage,
+        enabledActions: {
+            ...DEFAULT_ENABLED_ACTIONS,
+            ...userConfig.enabledActions,
+        },
+        apiEndpoints: {
+            ...defaultConfig.apiEndpoints,
+            ...userConfig.apiEndpoints,
+        },
+        theme: {
+            ...userConfig.theme,
+            primaryColor,
+            buttonText: widgetTitle,
+        },
+        features: {
+            ...defaultConfig.features,
+            ...userConfig.features,
+        },
+    };
+}
+function getPrimaryColor(config = {}) {
+    return hasText(config.primaryColor)
+        ? config.primaryColor.trim()
+        : hasText(config.theme?.primaryColor)
+            ? config.theme.primaryColor.trim()
+            : DEFAULT_PRIMARY_COLOR;
+}
+function isDarkColor(color) {
+    if (!color || color === 'transparent' || color === 'rgba(0, 0, 0, 0)') {
+        return false;
+    }
+    const rgbMatch = color.match(/\d+/g);
+    if (rgbMatch && rgbMatch.length >= 3) {
+        const r = parseInt(rgbMatch[0], 10);
+        const g = parseInt(rgbMatch[1], 10);
+        const b = parseInt(rgbMatch[2], 10);
+        const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+        return luminance < 0.5;
+    }
+    if (color.startsWith('#')) {
+        const hex = color.length === 4
+            ? `#${color[1]}${color[1]}${color[2]}${color[2]}${color[3]}${color[3]}`
+            : color;
+        if (hex.length >= 7) {
+            const r = parseInt(hex.slice(1, 3), 16);
+            const g = parseInt(hex.slice(3, 5), 16);
+            const b = parseInt(hex.slice(5, 7), 16);
+            const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+            return luminance < 0.5;
+        }
+    }
+    const darkColors = ['black', 'navy', 'darkblue', 'dark', 'darkslategray', 'darkslategrey'];
+    return darkColors.includes(color.toLowerCase());
+}
+function getReadableTextColor(backgroundColor) {
+    return isDarkColor(backgroundColor) ? '#ffffff' : '#111827';
+}
+function getWelcomeMessage(config = {}) {
+    return hasText(config.welcomeMessage) ? config.welcomeMessage.trim() : DEFAULT_WELCOME_MESSAGE;
+}
+function getEnabledActions(config = {}) {
+    return {
+        viewInCatalog: typeof config.enabledActions?.viewInCatalog === 'boolean'
+            ? config.enabledActions.viewInCatalog
+            : DEFAULT_ENABLED_ACTIONS.viewInCatalog,
+        customize: typeof config.enabledActions?.customize === 'boolean'
+            ? config.enabledActions.customize
+            : DEFAULT_ENABLED_ACTIONS.customize,
+        requestQuote: typeof config.enabledActions?.requestQuote === 'boolean'
+            ? config.enabledActions.requestQuote
+            : DEFAULT_ENABLED_ACTIONS.requestQuote,
+    };
 }
 
 class Storage {
@@ -1623,234 +2267,41 @@ function useWidgetContext() {
     return context;
 }
 
-const feetToMeters = (feet) => feet / 3.28084;
-const metersToInches = (meters) => meters * 39.3701;
-const inchesToMeters = (inches) => inches / 39.3701;
-// Convert feet and inches to meters
-const feetInchesToMeters = (feet, inches) => {
-    return feetToMeters(feet) + inchesToMeters(inches);
-};
-// Convert meters to feet and inches
-const metersToFeetInches = (meters) => {
-    const totalInches = metersToInches(meters);
-    const feet = Math.floor(totalInches / 12);
-    const inches = Math.round(totalInches % 12);
-    return { feet, inches };
-};
-function RoomUploadForm({ onUpload, isLoading, onPhotosChange, formRef, initialDimensions, initialPreferences, onDimensionsChange, onPreferencesChange, }) {
-    const formElementRef = useRef(null);
-    // Expose form ref to parent
-    useEffect(() => {
-        if (formRef && formElementRef.current) {
-            formRef(formElementRef.current);
-        }
-    }, [formRef]);
-    // Initialize dimensions from props or defaults
-    const getInitialDimensions = () => {
-        if (initialDimensions) {
-            return initialDimensions;
-        }
-        return {
-            length: 0,
-            width: 0,
-            height: 2.4,
-            roomType: 'living',
-        };
-    };
-    const [photos, setPhotos] = useState([]);
-    const [unitSystem, setUnitSystem] = useState('meters');
-    const [dimensions, setDimensions] = useState(getInitialDimensions());
-    // Initialize feet/inches from initial dimensions
-    const initFeetInches = () => {
-        const initDims = getInitialDimensions();
-        if (initDims.length > 0 || initDims.width > 0 || initDims.height > 0) {
-            const lengthFI = metersToFeetInches(initDims.length);
-            const widthFI = metersToFeetInches(initDims.width);
-            const heightFI = metersToFeetInches(initDims.height);
-            return { lengthFI, widthFI, heightFI };
-        }
-        return {
-            lengthFI: { feet: 0, inches: 0 },
-            widthFI: { feet: 0, inches: 0 },
-            heightFI: { feet: 8, inches: 0 },
-        };
-    };
-    const initialFeetInches = initFeetInches();
-    const [lengthFeet, setLengthFeet] = useState(initialFeetInches.lengthFI.feet);
-    const [lengthInches, setLengthInches] = useState(initialFeetInches.lengthFI.inches);
-    const [widthFeet, setWidthFeet] = useState(initialFeetInches.widthFI.feet);
-    const [widthInches, setWidthInches] = useState(initialFeetInches.widthFI.inches);
-    const [heightFeet, setHeightFeet] = useState(initialFeetInches.heightFI.feet);
-    const [heightInches, setHeightInches] = useState(initialFeetInches.heightFI.inches);
-    const [preferences, setPreferences] = useState(initialPreferences || {});
-    const [showAdvanced, setShowAdvanced] = useState(false);
-    const fileInputRef = useRef(null);
-    // Update dimensions when initialDimensions prop changes
-    useEffect(() => {
-        if (initialDimensions) {
-            setDimensions(initialDimensions);
-            const lengthFI = metersToFeetInches(initialDimensions.length);
-            const widthFI = metersToFeetInches(initialDimensions.width);
-            const heightFI = metersToFeetInches(initialDimensions.height);
-            setLengthFeet(lengthFI.feet);
-            setLengthInches(lengthFI.inches);
-            setWidthFeet(widthFI.feet);
-            setWidthInches(widthFI.inches);
-            setHeightFeet(heightFI.feet);
-            setHeightInches(heightFI.inches);
-        }
-    }, [initialDimensions]);
-    // Update preferences when initialPreferences prop changes
-    useEffect(() => {
-        if (initialPreferences) {
-            setPreferences(initialPreferences);
-        }
-    }, [initialPreferences]);
-    // Note: Dimension and preference changes are handled directly in updateDimensions and setPreferences
-    // to avoid infinite loops from useEffect dependencies
-    const handleFileChange = (e) => {
-        if (e.target.files) {
-            const newPhotos = Array.from(e.target.files);
-            setPhotos(newPhotos);
-            onPhotosChange?.(newPhotos);
-        }
-    };
-    const updateDimensions = (newDimensions) => {
-        setDimensions(newDimensions);
-        if (onDimensionsChange) {
-            onDimensionsChange(newDimensions);
-        }
-    };
-    const handleDragOver = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-    };
-    const handleDrop = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        if (e.dataTransfer.files) {
-            const newPhotos = Array.from(e.dataTransfer.files);
-            setPhotos(newPhotos);
-            onPhotosChange?.(newPhotos);
-        }
-    };
-    const handleUnitToggle = () => {
-        const newUnit = unitSystem === 'meters' ? 'feet' : 'meters';
-        if (newUnit === 'feet') {
-            // Convert from meters to feet/inches
-            const lengthFI = metersToFeetInches(dimensions.length);
-            const widthFI = metersToFeetInches(dimensions.width);
-            const heightFI = metersToFeetInches(dimensions.height);
-            setLengthFeet(lengthFI.feet);
-            setLengthInches(lengthFI.inches);
-            setWidthFeet(widthFI.feet);
-            setWidthInches(widthFI.inches);
-            setHeightFeet(heightFI.feet);
-            setHeightInches(heightFI.inches);
-        }
-        else {
-            // Convert from feet/inches to meters
-            updateDimensions({
-                ...dimensions,
-                length: feetInchesToMeters(lengthFeet, lengthInches),
-                width: feetInchesToMeters(widthFeet, widthInches),
-                height: feetInchesToMeters(heightFeet, heightInches),
-            });
-        }
-        setUnitSystem(newUnit);
-    };
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        if (photos.length === 0) {
-            alert('Please upload at least one room photo');
+function CustomizedFurnitureList({ items, onItemRemoved, onNavigateToCustomizer, }) {
+    const { storage } = useWidgetContext();
+    const [removingId, setRemovingId] = useState(null);
+    const handleRemove = async (id) => {
+        if (!confirm('Are you sure you want to remove this customized furniture item?')) {
             return;
         }
-        // Convert to meters if in feet/inches
-        let finalDimensions = dimensions;
-        if (unitSystem === 'feet') {
-            finalDimensions = {
-                ...dimensions,
-                length: feetInchesToMeters(lengthFeet, lengthInches),
-                width: feetInchesToMeters(widthFeet, widthInches),
-                height: feetInchesToMeters(heightFeet, heightInches),
-            };
+        setRemovingId(id);
+        try {
+            storage.removeCustomizedFurniture(id);
+            onItemRemoved?.();
         }
-        if (finalDimensions.length <= 0 || finalDimensions.width <= 0) {
-            alert('Please provide valid room dimensions');
+        catch (error) {
+            console.error('Failed to remove item:', error);
+        }
+        finally {
+            setRemovingId(null);
+        }
+    };
+    const handleNavigateToCustomizer = () => {
+        if (onNavigateToCustomizer) {
+            onNavigateToCustomizer();
             return;
         }
-        onUpload(photos, finalDimensions, preferences);
+        window.dispatchEvent(new CustomEvent('modly:navigate-to-customizer'));
     };
-    const removePhoto = (index) => {
-        setPhotos(photos.filter((_, i) => i !== index));
-    };
-    const toggleStyle = (style) => {
-        const currentStyles = preferences.style || [];
-        const newPreferences = currentStyles.includes(style)
-            ? { ...preferences, style: currentStyles.filter(s => s !== style) }
-            : { ...preferences, style: [...currentStyles, style] };
-        setPreferences(newPreferences);
-        if (onPreferencesChange) {
-            onPreferencesChange(newPreferences);
-        }
-    };
-    const styleOptions = [
-        { id: 'modern', label: 'Modern', icon: '⚡' },
-        { id: 'scandi', label: 'Scandi', icon: '🌲' },
-        { id: 'industrial', label: 'Industrial', icon: '🏭' },
-        { id: 'boho', label: 'Boho', icon: '🌿' },
-    ];
-    return (jsxRuntimeExports.jsxs("form", { ref: formElementRef, onSubmit: handleSubmit, className: "space-y-6", children: [jsxRuntimeExports.jsxs("div", { className: "bg-[#242723] border border-[#3A3F38] rounded-xl p-6", children: [jsxRuntimeExports.jsx("label", { className: "block text-base font-bold text-text-heading mb-3", children: "Upload Room Photos" }), jsxRuntimeExports.jsxs("div", { onClick: () => fileInputRef.current?.click(), onDragOver: handleDragOver, onDrop: handleDrop, className: "border-2 border-dashed border-earth-border rounded-lg p-6 md:p-8 text-center cursor-pointer hover:border-earth-sage transition-all duration-300 bg-earth-input relative min-h-[200px] flex flex-col items-center justify-center", children: [jsxRuntimeExports.jsx("input", { ref: fileInputRef, type: "file", accept: "image/*", multiple: true, onChange: handleFileChange, className: "hidden" }), photos.length === 0 ? (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsx("div", { className: "text-4xl mb-3", children: "\uD83D\uDCF8" }), jsxRuntimeExports.jsx("p", { className: "text-text-primary mb-1", children: "Click to upload or drag and drop" }), jsxRuntimeExports.jsx("p", { className: "text-sm text-text-muted", children: "Multiple photos recommended for better analysis" })] })) : (jsxRuntimeExports.jsx("div", { className: "w-full", children: jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap gap-3 justify-center items-center", children: [photos.map((photo, index) => (jsxRuntimeExports.jsxs("div", { className: "relative group", children: [jsxRuntimeExports.jsx("img", { src: URL.createObjectURL(photo), alt: `Room photo ${index + 1}`, className: "w-20 h-20 md:w-24 md:h-24 object-cover rounded-lg border border-earth-border group-hover:border-earth-sage transition-colors" }), jsxRuntimeExports.jsx("button", { type: "button", onClick: (e) => {
-                                                        e.stopPropagation();
-                                                        removePhoto(index);
-                                                    }, className: "absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm hover:bg-red-600 transition-colors shadow-lg", children: "\u00D7" })] }, index))), jsxRuntimeExports.jsx("button", { type: "button", onClick: () => fileInputRef.current?.click(), className: "w-20 h-20 md:w-24 md:h-24 border-2 border-dashed border-earth-border rounded-lg flex items-center justify-center text-text-muted hover:border-earth-sage hover:text-text-primary transition-colors", children: jsxRuntimeExports.jsx("span", { className: "text-2xl", children: "+" }) })] }) }))] })] }), jsxRuntimeExports.jsxs("div", { className: "bg-[#242723] border border-[#3A3F38] rounded-xl p-6", children: [jsxRuntimeExports.jsx("label", { className: "block text-base font-bold text-text-heading mb-3", children: "Room Type" }), jsxRuntimeExports.jsxs("select", { value: dimensions.roomType, onChange: (e) => updateDimensions({ ...dimensions, roomType: e.target.value }), className: "w-full px-4 py-2.5 border border-earth-border rounded-lg bg-white text-[#1A1C19] focus:outline-none focus:ring-2 focus:ring-earth-sage focus:ring-opacity-50 focus:border-earth-sage transition-all placeholder:text-[#757575] [&>option]:bg-white [&>option]:text-[#1A1C19]", children: [jsxRuntimeExports.jsx("option", { value: "living", children: "Living Room" }), jsxRuntimeExports.jsx("option", { value: "bedroom", children: "Bedroom" }), jsxRuntimeExports.jsx("option", { value: "office", children: "Office" }), jsxRuntimeExports.jsx("option", { value: "dining", children: "Dining Room" }), jsxRuntimeExports.jsx("option", { value: "kitchen", children: "Kitchen" }), jsxRuntimeExports.jsx("option", { value: "other", children: "Other" })] })] }), jsxRuntimeExports.jsxs("div", { className: "bg-[#242723] border border-[#3A3F38] rounded-xl p-6", children: [jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mb-3", children: [jsxRuntimeExports.jsx("label", { className: "block text-base font-bold text-text-heading", children: "Room Dimensions" }), jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [jsxRuntimeExports.jsx("span", { className: `text-sm ${unitSystem === 'meters' ? 'text-text-heading' : 'text-text-muted'}`, children: "Meters" }), jsxRuntimeExports.jsx("button", { type: "button", onClick: handleUnitToggle, className: `relative w-12 h-6 rounded-full transition-colors duration-300 ${unitSystem === 'feet' ? 'bg-earth-sage' : 'bg-earth-border'}`, children: jsxRuntimeExports.jsx("span", { className: `absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition-transform duration-300 shadow-md ${unitSystem === 'feet' ? 'translate-x-6' : 'translate-x-0'}` }) }), jsxRuntimeExports.jsx("span", { className: `text-sm ${unitSystem === 'feet' ? 'text-text-heading' : 'text-text-muted'}`, children: "Feet/Inches" })] })] }), jsxRuntimeExports.jsx("div", { className: "grid grid-cols-1 md:grid-cols-2 gap-4", children: unitSystem === 'meters' ? (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("label", { className: "block text-xs font-bold text-text-primary mb-2", children: "Length" }), jsxRuntimeExports.jsx("input", { type: "number", step: "0.1", min: "0", value: dimensions.length || '', onChange: (e) => updateDimensions({ ...dimensions, length: parseFloat(e.target.value) || 0 }), className: "w-full px-4 py-2.5 border border-earth-border rounded-lg bg-white text-[#1A1C19] focus:outline-none focus:ring-2 focus:ring-earth-sage focus:ring-opacity-50 focus:border-earth-sage transition-all placeholder:text-[#757575]", required: true })] }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("label", { className: "block text-xs font-bold text-text-primary mb-2", children: "Width" }), jsxRuntimeExports.jsx("input", { type: "number", step: "0.1", min: "0", value: dimensions.width || '', onChange: (e) => updateDimensions({ ...dimensions, width: parseFloat(e.target.value) || 0 }), className: "w-full px-4 py-2.5 border border-earth-border rounded-lg bg-white text-[#1A1C19] focus:outline-none focus:ring-2 focus:ring-earth-sage focus:ring-opacity-50 focus:border-earth-sage transition-all placeholder:text-[#757575]", required: true })] }), jsxRuntimeExports.jsxs("div", { className: "md:col-span-2", children: [jsxRuntimeExports.jsx("label", { className: "block text-xs font-bold text-text-primary mb-2", children: jsxRuntimeExports.jsxs("span", { className: "flex items-center gap-1 whitespace-nowrap", children: ["Ceiling Height", jsxRuntimeExports.jsxs("div", { className: "group relative flex-shrink-0", children: [jsxRuntimeExports.jsx("svg", { className: "w-4 h-4 text-text-icon cursor-help", fill: "currentColor", viewBox: "0 0 20 20", children: jsxRuntimeExports.jsx("path", { fillRule: "evenodd", d: "M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z", clipRule: "evenodd" }) }), jsxRuntimeExports.jsx("div", { className: "absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-48 p-2 bg-earth-card border border-earth-border rounded-xl text-xs text-text-primary opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-10 shadow-soft", children: "Helps AI recommend furniture that fits your vertical space and proportions" })] })] }) }), jsxRuntimeExports.jsx("input", { type: "number", step: "0.1", min: "0", value: dimensions.height || '', onChange: (e) => updateDimensions({ ...dimensions, height: parseFloat(e.target.value) || 0 }), className: "w-full px-4 py-2.5 border border-earth-border rounded-lg bg-white text-[#1A1C19] focus:outline-none focus:ring-2 focus:ring-earth-sage focus:ring-opacity-50 focus:border-earth-sage transition-all placeholder:text-[#757575]", required: true })] })] })) : (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("label", { className: "block text-xs font-bold text-text-primary mb-2", children: "Length" }), jsxRuntimeExports.jsxs("div", { className: "flex gap-2", children: [jsxRuntimeExports.jsx("input", { type: "number", min: "0", value: lengthFeet || '', onChange: (e) => {
-                                                        const feet = parseInt(e.target.value) || 0;
-                                                        setLengthFeet(feet);
-                                                        updateDimensions({ ...dimensions, length: feetInchesToMeters(feet, lengthInches) });
-                                                    }, placeholder: "ft", className: "w-full px-4 py-2.5 border border-earth-border rounded-lg bg-white text-[#1A1C19] focus:outline-none focus:ring-2 focus:ring-earth-sage focus:ring-opacity-50 focus:border-earth-sage transition-all placeholder:text-[#757575]", required: true }), jsxRuntimeExports.jsx("input", { type: "number", min: "0", max: "11", value: lengthInches || '', onChange: (e) => {
-                                                        const inches = Math.min(11, parseInt(e.target.value) || 0);
-                                                        setLengthInches(inches);
-                                                        updateDimensions({ ...dimensions, length: feetInchesToMeters(lengthFeet, inches) });
-                                                    }, placeholder: "in", className: "w-full px-4 py-2.5 border border-earth-border rounded-lg bg-white text-[#1A1C19] focus:outline-none focus:ring-2 focus:ring-earth-sage focus:ring-opacity-50 focus:border-earth-sage transition-all placeholder:text-[#757575]" })] })] }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("label", { className: "block text-xs font-bold text-text-primary mb-2", children: "Width" }), jsxRuntimeExports.jsxs("div", { className: "flex gap-2", children: [jsxRuntimeExports.jsx("input", { type: "number", min: "0", value: widthFeet || '', onChange: (e) => {
-                                                        const feet = parseInt(e.target.value) || 0;
-                                                        setWidthFeet(feet);
-                                                        updateDimensions({ ...dimensions, width: feetInchesToMeters(feet, widthInches) });
-                                                    }, placeholder: "ft", className: "w-full px-4 py-2.5 border border-earth-border rounded-lg bg-white text-[#1A1C19] focus:outline-none focus:ring-2 focus:ring-earth-sage focus:ring-opacity-50 focus:border-earth-sage transition-all placeholder:text-[#757575]", required: true }), jsxRuntimeExports.jsx("input", { type: "number", min: "0", max: "11", value: widthInches || '', onChange: (e) => {
-                                                        const inches = Math.min(11, parseInt(e.target.value) || 0);
-                                                        setWidthInches(inches);
-                                                        updateDimensions({ ...dimensions, width: feetInchesToMeters(widthFeet, inches) });
-                                                    }, placeholder: "in", className: "w-full px-4 py-2.5 border border-earth-border rounded-lg bg-white text-[#1A1C19] focus:outline-none focus:ring-2 focus:ring-earth-sage focus:ring-opacity-50 focus:border-earth-sage transition-all placeholder:text-[#757575]" })] })] }), jsxRuntimeExports.jsxs("div", { className: "md:col-span-2", children: [jsxRuntimeExports.jsx("label", { className: "block text-xs font-bold text-text-primary mb-2", children: jsxRuntimeExports.jsxs("span", { className: "flex items-center gap-1 whitespace-nowrap", children: ["Ceiling Height", jsxRuntimeExports.jsxs("div", { className: "group relative flex-shrink-0", children: [jsxRuntimeExports.jsx("svg", { className: "w-4 h-4 text-text-icon cursor-help", fill: "currentColor", viewBox: "0 0 20 20", children: jsxRuntimeExports.jsx("path", { fillRule: "evenodd", d: "M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z", clipRule: "evenodd" }) }), jsxRuntimeExports.jsx("div", { className: "absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-48 p-2 bg-earth-card border border-earth-border rounded-xl text-xs text-text-primary opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-10 shadow-soft", children: "Helps AI recommend furniture that fits your vertical space and proportions" })] })] }) }), jsxRuntimeExports.jsxs("div", { className: "flex gap-2", children: [jsxRuntimeExports.jsx("input", { type: "number", min: "0", value: heightFeet || '', onChange: (e) => {
-                                                        const feet = parseInt(e.target.value) || 0;
-                                                        setHeightFeet(feet);
-                                                        updateDimensions({ ...dimensions, height: feetInchesToMeters(feet, heightInches) });
-                                                    }, placeholder: "ft", className: "w-full px-4 py-2.5 border border-earth-border rounded-lg bg-white text-[#1A1C19] focus:outline-none focus:ring-2 focus:ring-earth-sage focus:ring-opacity-50 focus:border-earth-sage transition-all placeholder:text-[#757575]", required: true }), jsxRuntimeExports.jsx("input", { type: "number", min: "0", max: "11", value: heightInches || '', onChange: (e) => {
-                                                        const inches = Math.min(11, parseInt(e.target.value) || 0);
-                                                        setHeightInches(inches);
-                                                        updateDimensions({ ...dimensions, height: feetInchesToMeters(heightFeet, inches) });
-                                                    }, placeholder: "in", className: "w-full px-4 py-2.5 border border-earth-border rounded-lg bg-white text-[#1A1C19] focus:outline-none focus:ring-2 focus:ring-earth-sage focus:ring-opacity-50 focus:border-earth-sage transition-all placeholder:text-[#757575]" })] })] })] })) })] }), jsxRuntimeExports.jsxs("div", { className: "bg-[#242723] border border-[#3A3F38] rounded-xl", children: [jsxRuntimeExports.jsxs("button", { type: "button", onClick: () => setShowAdvanced(!showAdvanced), className: "w-full flex items-center justify-between p-4 hover:bg-[#2A2F28] transition-all duration-300 rounded-t-xl", children: [jsxRuntimeExports.jsx("span", { className: "text-base font-bold text-text-heading", children: "Advanced Preferences (Optional)" }), jsxRuntimeExports.jsx("svg", { className: `w-5 h-5 text-text-primary transition-transform duration-300 ${showAdvanced ? 'rotate-180' : ''}`, fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M19 9l-7 7-7-7" }) })] }), showAdvanced && (jsxRuntimeExports.jsxs("div", { className: "px-6 pb-6 pt-4 space-y-6 border-t border-[#3A3F38]", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("label", { className: "block text-xs font-bold text-text-primary mb-4", children: "Preferred Styles" }), jsxRuntimeExports.jsx("div", { className: "grid grid-cols-2 md:grid-cols-4 gap-4", children: styleOptions.map((style) => {
-                                            const isSelected = preferences.style?.includes(style.id);
-                                            return (jsxRuntimeExports.jsxs("button", { type: "button", onClick: () => toggleStyle(style.id), className: `p-4 rounded-lg border transition-all duration-300 flex flex-col items-center justify-center ${isSelected
-                                                    ? 'border-earth-sage bg-gradient-ai-subtle text-text-primary'
-                                                    : 'border-earth-border bg-earth-input text-text-primary hover:border-earth-sage/50'}`, children: [jsxRuntimeExports.jsx("div", { className: "text-2xl mb-2", children: style.icon }), jsxRuntimeExports.jsx("div", { className: "text-sm font-medium", children: style.label })] }, style.id));
-                                        }) })] }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("label", { className: "block text-xs font-bold text-text-primary mb-2", children: "Preferred Colors (comma-separated)" }), jsxRuntimeExports.jsx("input", { type: "text", placeholder: "e.g., Beige, Forest Green, Terracotta", value: preferences.colors?.join(', ') || '', onChange: (e) => {
-                                            const newPreferences = { ...preferences, colors: e.target.value.split(',').map(s => s.trim()).filter(Boolean) };
-                                            setPreferences(newPreferences);
-                                            if (onPreferencesChange) {
-                                                onPreferencesChange(newPreferences);
-                                            }
-                                        }, className: "w-full px-4 py-2.5 border border-earth-border rounded-lg bg-white text-[#1A1C19] focus:outline-none focus:ring-2 focus:ring-earth-sage focus:ring-opacity-50 focus:border-earth-sage transition-all placeholder:text-[#757575]" })] }), jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-2 gap-4", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("label", { className: "block text-xs font-bold text-text-primary mb-2", children: "Budget Min ($)" }), jsxRuntimeExports.jsx("input", { type: "number", min: "0", value: preferences.budget?.min || '', onChange: (e) => {
-                                                    const newPreferences = { ...preferences, budget: { ...preferences.budget, min: parseInt(e.target.value) || undefined } };
-                                                    setPreferences(newPreferences);
-                                                    if (onPreferencesChange) {
-                                                        onPreferencesChange(newPreferences);
-                                                    }
-                                                }, className: "w-full px-4 py-2.5 border border-earth-border rounded-lg bg-white text-[#1A1C19] focus:outline-none focus:ring-2 focus:ring-earth-sage focus:ring-opacity-50 focus:border-earth-sage transition-all placeholder:text-[#757575]" })] }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("label", { className: "block text-xs font-bold text-text-primary mb-2", children: "Budget Max ($)" }), jsxRuntimeExports.jsx("input", { type: "number", min: "0", value: preferences.budget?.max || '', onChange: (e) => {
-                                                    const newPreferences = { ...preferences, budget: { ...preferences.budget, max: parseInt(e.target.value) || undefined } };
-                                                    setPreferences(newPreferences);
-                                                    if (onPreferencesChange) {
-                                                        onPreferencesChange(newPreferences);
-                                                    }
-                                                }, className: "w-full px-4 py-2.5 border border-earth-border rounded-lg bg-white text-[#1A1C19] focus:outline-none focus:ring-2 focus:ring-earth-sage focus:ring-opacity-50 focus:border-earth-sage transition-all placeholder:text-[#757575]" })] })] })] }))] })] }));
+    if (items.length === 0) {
+        return (jsxRuntimeExports.jsxs("div", { className: "text-center py-12 relative", children: [jsxRuntimeExports.jsx("div", { className: "mb-4", children: jsxRuntimeExports.jsx("svg", { className: "w-16 h-16 mx-auto text-text-muted", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 1.5, d: "M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" }) }) }), jsxRuntimeExports.jsx("p", { className: "text-lg text-text-primary mb-2", children: "No customized furniture yet" }), jsxRuntimeExports.jsx("p", { className: "text-sm text-text-muted mb-4", children: "Customize furniture in the Customizer to see your creations here" }), jsxRuntimeExports.jsx("button", { type: "button", onClick: handleNavigateToCustomizer, className: "px-6 py-3 bg-earth-forest text-white rounded-xl font-semibold hover:bg-earth-forest/90 transition-all duration-300 cursor-pointer relative z-10", children: "Go to Customizer" })] }));
+    }
+    return (jsxRuntimeExports.jsxs("div", { className: "space-y-6", children: [jsxRuntimeExports.jsx("h2", { className: "text-3xl font-bold text-text-heading mb-6", children: "My Customized Furniture" }), jsxRuntimeExports.jsx("div", { className: "grid md:grid-cols-2 lg:grid-cols-3 gap-6", children: items.map((item) => {
+                    const displayName = item.name;
+                    const displayCategory = item.baseItemType;
+                    const displayMaterials = item.materials;
+                    return (jsxRuntimeExports.jsxs("div", { className: "bg-earth-card rounded-xl shadow-soft border border-earth-border overflow-hidden hover:shadow-lg transition-shadow relative", children: [jsxRuntimeExports.jsx("div", { className: "absolute top-4 right-4 z-10", children: jsxRuntimeExports.jsx("span", { className: "px-3 py-1 bg-earth-sage text-text-primary rounded-lg text-xs font-semibold", children: "Custom" }) }), jsxRuntimeExports.jsx("div", { className: "w-full h-48 bg-earth-input flex items-center justify-center", children: jsxRuntimeExports.jsx("svg", { className: "w-16 h-16 text-text-muted", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" }) }) }), jsxRuntimeExports.jsxs("div", { className: "p-6", children: [jsxRuntimeExports.jsxs("div", { className: "mb-4", children: [jsxRuntimeExports.jsx("h3", { className: "text-xl font-semibold text-text-heading mb-1", children: displayName }), jsxRuntimeExports.jsx("p", { className: "text-sm text-text-muted capitalize", children: displayCategory }), jsxRuntimeExports.jsxs("p", { className: "text-xs text-text-muted mt-1", children: ["Saved ", new Date(item.savedAt).toLocaleDateString()] })] }), jsxRuntimeExports.jsxs("div", { className: "mb-4 p-3 bg-earth-input rounded-xl border border-earth-border", children: [jsxRuntimeExports.jsx("h4", { className: "text-sm font-semibold text-text-heading mb-2", children: "Dimensions:" }), jsxRuntimeExports.jsxs("div", { className: "text-sm text-text-primary space-y-1", children: [jsxRuntimeExports.jsxs("div", { children: ["Length: ", jsxRuntimeExports.jsxs("strong", { children: [item.dimensions.length.toFixed(2), "m"] })] }), jsxRuntimeExports.jsxs("div", { children: ["Width: ", jsxRuntimeExports.jsxs("strong", { children: [item.dimensions.width.toFixed(2), "m"] })] }), jsxRuntimeExports.jsxs("div", { children: ["Height: ", jsxRuntimeExports.jsxs("strong", { children: [item.dimensions.height.toFixed(2), "m"] })] })] })] }), jsxRuntimeExports.jsxs("div", { className: "mb-4", children: [jsxRuntimeExports.jsx("h4", { className: "text-sm font-semibold text-text-heading mb-2", children: "Colors:" }), jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap gap-2", children: [jsxRuntimeExports.jsx("span", { className: "px-3 py-1 bg-earth-input border border-earth-border rounded-lg text-sm text-text-primary", children: item.colorScheme.primary }), item.colorScheme.secondary && (jsxRuntimeExports.jsx("span", { className: "px-3 py-1 bg-earth-input border border-earth-border rounded-lg text-sm text-text-primary", children: item.colorScheme.secondary })), item.colorScheme.accent && (jsxRuntimeExports.jsx("span", { className: "px-3 py-1 bg-earth-input border border-earth-border rounded-lg text-sm text-text-primary", children: item.colorScheme.accent }))] })] }), (displayMaterials.primary || displayMaterials.legs || displayMaterials.upholstery) && (jsxRuntimeExports.jsxs("div", { className: "mb-4", children: [jsxRuntimeExports.jsx("h4", { className: "text-sm font-semibold text-text-heading mb-1", children: "Materials:" }), jsxRuntimeExports.jsxs("p", { className: "text-sm text-text-primary", children: [displayMaterials.primary, displayMaterials.legs && ` | Legs: ${displayMaterials.legs}`, displayMaterials.upholstery && ` | Upholstery: ${displayMaterials.upholstery}`] })] })), item.ornamentDetails && item.ornamentDetails.length > 0 && (jsxRuntimeExports.jsxs("div", { className: "mb-4", children: [jsxRuntimeExports.jsx("h4", { className: "text-sm font-semibold text-text-heading mb-2", children: "Details:" }), jsxRuntimeExports.jsx("div", { className: "flex flex-wrap gap-2", children: item.ornamentDetails.map((detail, index) => (jsxRuntimeExports.jsx("span", { className: "text-xs bg-earth-sage/20 text-text-primary px-2 py-1 rounded", children: detail }, index))) })] })), item.aiNotes && (jsxRuntimeExports.jsx("div", { className: "mb-4 pt-4 border-t border-earth-border", children: jsxRuntimeExports.jsx("p", { className: "text-xs text-text-muted line-clamp-2", children: item.aiNotes }) })), jsxRuntimeExports.jsx("div", { className: "flex gap-2 pt-4 border-t border-earth-border", children: jsxRuntimeExports.jsx("button", { onClick: () => handleRemove(item.id), disabled: removingId === item.id, className: "flex-1 px-4 py-2 bg-red-500/10 border border-red-500/30 text-red-400 rounded-xl font-medium hover:bg-red-500/20 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed text-sm", children: removingId === item.id ? 'Removing...' : 'Remove' }) })] })] }, item.id));
+                }) })] }));
 }
 
 /**
@@ -2047,112 +2498,6 @@ function useWebsiteColors() {
     return colors;
 }
 
-function ProductDetailsModal({ isOpen, onClose, onCustomize, onFinalize, item, recommendation, }) {
-    const websiteColors = useWebsiteColors();
-    if (!isOpen)
-        return null;
-    const displayItem = item || recommendation?.item;
-    if (!displayItem)
-        return null;
-    return (jsxRuntimeExports.jsx("div", { className: "fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4", children: jsxRuntimeExports.jsxs("div", { className: "bg-[#2A2D28] rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto border border-white/10", children: [jsxRuntimeExports.jsxs("div", { className: "sticky top-0 bg-[#2A2D28] border-b border-white/10 px-6 py-4 flex items-center justify-between", children: [jsxRuntimeExports.jsx("h2", { className: "text-2xl font-bold text-white", children: "Product Details" }), jsxRuntimeExports.jsx("button", { onClick: onClose, className: "text-white/60 hover:text-white transition-colors", children: jsxRuntimeExports.jsx("svg", { className: "w-6 h-6", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M6 18L18 6M6 6l12 12" }) }) })] }), jsxRuntimeExports.jsxs("div", { className: "p-6 space-y-6", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h3", { className: "text-2xl font-semibold text-white mb-2", children: displayItem.name }), jsxRuntimeExports.jsxs("p", { className: "text-white/60 text-sm", children: [displayItem.category, displayItem.subCategory && ` • ${displayItem.subCategory}`, displayItem.brand && ` • ${displayItem.brand}`] })] }), recommendation?.reasoning && (jsxRuntimeExports.jsxs("div", { className: "bg-white/5 rounded-lg p-4 border border-white/10", children: [jsxRuntimeExports.jsx("h4", { className: "text-sm font-semibold text-white/80 mb-2", children: "Why this fits:" }), jsxRuntimeExports.jsx("p", { className: "text-white/90 text-sm", children: recommendation.reasoning })] })), jsxRuntimeExports.jsxs("div", { className: "bg-white/5 rounded-lg p-4 border border-white/10", children: [jsxRuntimeExports.jsx("h4", { className: "text-sm font-semibold text-white/80 mb-3", children: "Dimensions" }), jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-3 gap-4 text-sm", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("span", { className: "text-white/60", children: "Length:" }), jsxRuntimeExports.jsxs("p", { className: "text-white font-medium", children: [displayItem.dimensions.length, "m"] })] }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("span", { className: "text-white/60", children: "Width:" }), jsxRuntimeExports.jsxs("p", { className: "text-white font-medium", children: [displayItem.dimensions.width, "m"] })] }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("span", { className: "text-white/60", children: "Height:" }), jsxRuntimeExports.jsxs("p", { className: "text-white font-medium", children: [displayItem.dimensions.height, "m"] })] })] }), displayItem.dimensions.seatHeight && (jsxRuntimeExports.jsxs("div", { className: "mt-3 text-sm", children: [jsxRuntimeExports.jsx("span", { className: "text-white/60", children: "Seat Height: " }), jsxRuntimeExports.jsxs("span", { className: "text-white font-medium", children: [displayItem.dimensions.seatHeight, "m"] })] }))] }), jsxRuntimeExports.jsxs("div", { className: "bg-white/5 rounded-lg p-4 border border-white/10", children: [jsxRuntimeExports.jsx("h4", { className: "text-sm font-semibold text-white/80 mb-3", children: "Materials" }), jsxRuntimeExports.jsxs("div", { className: "space-y-2 text-sm", children: [displayItem.materials.primary && (jsxRuntimeExports.jsxs("div", { className: "flex justify-between", children: [jsxRuntimeExports.jsx("span", { className: "text-white/60", children: "Primary:" }), jsxRuntimeExports.jsx("span", { className: "text-white font-medium", children: displayItem.materials.primary })] })), displayItem.materials.secondary && (jsxRuntimeExports.jsxs("div", { className: "flex justify-between", children: [jsxRuntimeExports.jsx("span", { className: "text-white/60", children: "Secondary:" }), jsxRuntimeExports.jsx("span", { className: "text-white font-medium", children: displayItem.materials.secondary })] })), displayItem.materials.upholstery && (jsxRuntimeExports.jsxs("div", { className: "flex justify-between", children: [jsxRuntimeExports.jsx("span", { className: "text-white/60", children: "Upholstery:" }), jsxRuntimeExports.jsx("span", { className: "text-white font-medium", children: displayItem.materials.upholstery })] })), displayItem.materials.legs && (jsxRuntimeExports.jsxs("div", { className: "flex justify-between", children: [jsxRuntimeExports.jsx("span", { className: "text-white/60", children: "Legs:" }), jsxRuntimeExports.jsx("span", { className: "text-white font-medium", children: displayItem.materials.legs })] }))] })] }), jsxRuntimeExports.jsxs("div", { className: "bg-white/5 rounded-lg p-4 border border-white/10", children: [jsxRuntimeExports.jsx("h4", { className: "text-sm font-semibold text-white/80 mb-3", children: "Colors" }), jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap gap-3", children: [displayItem.colors.main && (jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [jsxRuntimeExports.jsx("span", { className: "text-white/60 text-sm", children: "Main:" }), jsxRuntimeExports.jsx("span", { className: "text-white font-medium text-sm", children: displayItem.colors.main })] })), displayItem.colors.accent && (jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [jsxRuntimeExports.jsx("span", { className: "text-white/60 text-sm", children: "Accent:" }), jsxRuntimeExports.jsx("span", { className: "text-white font-medium text-sm", children: displayItem.colors.accent })] }))] })] }), displayItem.styleTags && displayItem.styleTags.length > 0 && (jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h4", { className: "text-sm font-semibold text-white/80 mb-2", children: "Style" }), jsxRuntimeExports.jsx("div", { className: "flex flex-wrap gap-2", children: displayItem.styleTags.map((tag, i) => (jsxRuntimeExports.jsx("span", { className: "text-xs px-3 py-1 rounded-full bg-purple-500/15 text-purple-200 font-medium", children: tag }, i))) })] })), displayItem.priceRange && (jsxRuntimeExports.jsxs("div", { className: "bg-white/5 rounded-lg p-4 border border-white/10", children: [jsxRuntimeExports.jsx("h4", { className: "text-sm font-semibold text-white/80 mb-2", children: "Price Range" }), jsxRuntimeExports.jsxs("p", { className: "text-lg font-semibold text-white", children: ["$", displayItem.priceRange.min?.toLocaleString(), displayItem.priceRange.max && displayItem.priceRange.max !== displayItem.priceRange.min
-                                            ? ` - $${displayItem.priceRange.max.toLocaleString()}`
-                                            : ''] })] })), jsxRuntimeExports.jsx("div", { className: "bg-blue-500/10 border border-blue-500/30 rounded-lg p-4", children: jsxRuntimeExports.jsxs("div", { className: "flex items-start gap-3", children: [jsxRuntimeExports.jsx("svg", { className: "w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" }) }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("p", { className: "text-blue-200 text-sm font-medium mb-1", children: "Catalog coming soon" }), jsxRuntimeExports.jsx("p", { className: "text-blue-200/80 text-sm", children: "For now, you can customize this item or finalize a quote to get started." })] })] }) })] }), jsxRuntimeExports.jsxs("div", { className: "sticky bottom-0 bg-[#2A2D28] border-t border-white/10 px-6 py-4 space-y-3", children: [jsxRuntimeExports.jsxs("button", { onClick: onCustomize, className: "w-full px-6 py-3 rounded-lg font-semibold text-white transition-colors shadow-lg flex items-center justify-center gap-2", style: {
-                                backgroundColor: websiteColors.primary,
-                            }, children: [jsxRuntimeExports.jsx("svg", { className: "w-5 h-5", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" }) }), "Customize this"] }), jsxRuntimeExports.jsxs("button", { onClick: onFinalize, className: "w-full px-6 py-3 bg-emerald-600 text-white rounded-lg font-semibold hover:bg-emerald-700 transition-colors shadow-lg flex items-center justify-center gap-2", children: [jsxRuntimeExports.jsx("svg", { className: "w-5 h-5", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" }) }), "Finalize & Request Quote"] }), jsxRuntimeExports.jsx("button", { onClick: onClose, className: "w-full text-center text-white/60 hover:text-white transition-colors text-sm py-2", children: "Close" })] })] }) }));
-}
-
-function RecommendationsList({ recommendations, onCustomize, onFinalize }) {
-    const websiteColors = useWebsiteColors();
-    const [selectedRecommendation, setSelectedRecommendation] = useState(null);
-    const [showDetailsModal, setShowDetailsModal] = useState(false);
-    // Use website colors for button only
-    websiteColors.primary;
-    const handleViewDetails = (recommendation) => {
-        setSelectedRecommendation(recommendation);
-        setShowDetailsModal(true);
-    };
-    const handleCustomizeFromModal = () => {
-        if (selectedRecommendation && onCustomize) {
-            setShowDetailsModal(false);
-            onCustomize(selectedRecommendation.item);
-        }
-    };
-    const handleFinalizeFromModal = () => {
-        if (selectedRecommendation && onFinalize) {
-            setShowDetailsModal(false);
-            onFinalize(selectedRecommendation);
-        }
-    };
-    if (recommendations.length === 0) {
-        return (jsxRuntimeExports.jsx("div", { className: "text-center py-12 text-white/60", children: jsxRuntimeExports.jsx("p", { className: "text-lg", children: "No recommendations available yet." }) }));
-    }
-    return (jsxRuntimeExports.jsxs("div", { className: "space-y-6", children: [jsxRuntimeExports.jsx("h2", { className: "text-3xl font-bold mb-6 text-white", children: "AI Recommendations" }), jsxRuntimeExports.jsx("div", { className: "grid md:grid-cols-2 lg:grid-cols-3 gap-6", children: recommendations.map((rec, index) => (jsxRuntimeExports.jsx("div", { className: "bg-zinc-900 rounded-lg shadow-md border border-white/10 overflow-hidden hover:shadow-lg transition-shadow", children: jsxRuntimeExports.jsxs("div", { className: "p-6", children: [jsxRuntimeExports.jsxs("div", { className: "flex items-start justify-between mb-2", children: [jsxRuntimeExports.jsx("h3", { className: "text-xl font-semibold text-white", children: rec.item.name }), rec.matchScore && (jsxRuntimeExports.jsxs("span", { className: "text-sm px-2 py-1 rounded bg-emerald-500/15 text-emerald-200 font-medium", children: [Math.round(rec.matchScore * 100), "% match"] }))] }), jsxRuntimeExports.jsxs("p", { className: "text-sm mb-4 text-white/60", children: [rec.item.category, " ", rec.item.subCategory && `• ${rec.item.subCategory}`] }), jsxRuntimeExports.jsxs("div", { className: "mb-4 p-3 rounded bg-white/5 border border-white/10", children: [jsxRuntimeExports.jsx("h4", { className: "text-sm font-medium mb-2 text-white/80", children: "Dimensions:" }), jsxRuntimeExports.jsxs("div", { className: "text-sm space-y-1 text-white", children: [jsxRuntimeExports.jsxs("div", { children: ["Length: ", jsxRuntimeExports.jsxs("strong", { children: [rec.item.dimensions.length, "m"] })] }), jsxRuntimeExports.jsxs("div", { children: ["Width: ", jsxRuntimeExports.jsxs("strong", { children: [rec.item.dimensions.width, "m"] })] }), jsxRuntimeExports.jsxs("div", { children: ["Height: ", jsxRuntimeExports.jsxs("strong", { children: [rec.item.dimensions.height, "m"] })] }), rec.item.dimensions.seatHeight && (jsxRuntimeExports.jsxs("div", { children: ["Seat Height: ", jsxRuntimeExports.jsxs("strong", { children: [rec.item.dimensions.seatHeight, "m"] })] })), rec.item.dimensions.clearance && (jsxRuntimeExports.jsxs("div", { className: "text-xs mt-2 text-white/60", children: ["Clearance: Front ", rec.item.dimensions.clearance.front || 'N/A', "m"] }))] })] }), jsxRuntimeExports.jsxs("div", { className: "mb-4", children: [jsxRuntimeExports.jsx("h4", { className: "text-sm font-medium mb-1 text-white/80", children: "Materials:" }), jsxRuntimeExports.jsxs("p", { className: "text-sm text-white", children: [rec.item.materials.primary, rec.item.materials.secondary && `, ${rec.item.materials.secondary}`, rec.item.materials.upholstery && ` • Upholstery: ${rec.item.materials.upholstery}`] })] }), jsxRuntimeExports.jsxs("div", { className: "mb-4", children: [jsxRuntimeExports.jsx("h4", { className: "text-sm font-medium mb-1 text-white/80", children: "Colors:" }), jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [jsxRuntimeExports.jsx("span", { className: "text-sm text-white", children: rec.item.colors.main }), rec.item.colors.accent && (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsx("span", { className: "text-white/40", children: "\u2022" }), jsxRuntimeExports.jsx("span", { className: "text-sm text-white", children: rec.item.colors.accent })] }))] })] }), rec.item.styleTags && rec.item.styleTags.length > 0 && (jsxRuntimeExports.jsx("div", { className: "mb-4 flex flex-wrap gap-2", children: rec.item.styleTags.map((tag, i) => (jsxRuntimeExports.jsx("span", { className: "text-xs px-2 py-1 rounded bg-purple-500/15 text-purple-200 font-medium", children: tag }, i))) })), rec.placement && (jsxRuntimeExports.jsxs("div", { className: "mb-4 p-3 rounded bg-white/5 border border-white/10", children: [jsxRuntimeExports.jsx("h4", { className: "text-sm font-medium mb-2 text-white/80", children: "Placement:" }), rec.placement.coordinates && (jsxRuntimeExports.jsxs("div", { className: "mb-2 text-xs text-white", children: [jsxRuntimeExports.jsx("span", { className: "font-semibold", children: "Position: " }), "(", rec.placement.coordinates.x.toFixed(2), "m, ", rec.placement.coordinates.y.toFixed(2), "m)", jsxRuntimeExports.jsx("span", { className: "ml-2 text-white/60", children: "from southwest corner" })] })), rec.placement.distanceFromWalls && (jsxRuntimeExports.jsxs("div", { className: "mb-2 text-xs space-y-1 text-white", children: [jsxRuntimeExports.jsx("div", { className: "font-semibold mb-1", children: "Distance from walls:" }), jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-2 gap-1", children: [rec.placement.distanceFromWalls.north !== undefined && (jsxRuntimeExports.jsxs("div", { children: ["North: ", jsxRuntimeExports.jsxs("strong", { children: [rec.placement.distanceFromWalls.north.toFixed(2), "m"] })] })), rec.placement.distanceFromWalls.south !== undefined && (jsxRuntimeExports.jsxs("div", { children: ["South: ", jsxRuntimeExports.jsxs("strong", { children: [rec.placement.distanceFromWalls.south.toFixed(2), "m"] })] })), rec.placement.distanceFromWalls.east !== undefined && (jsxRuntimeExports.jsxs("div", { children: ["East: ", jsxRuntimeExports.jsxs("strong", { children: [rec.placement.distanceFromWalls.east.toFixed(2), "m"] })] })), rec.placement.distanceFromWalls.west !== undefined && (jsxRuntimeExports.jsxs("div", { children: ["West: ", jsxRuntimeExports.jsxs("strong", { children: [rec.placement.distanceFromWalls.west.toFixed(2), "m"] })] }))] })] })), rec.placement.rotation !== undefined && rec.placement.rotation !== 0 && (jsxRuntimeExports.jsxs("div", { className: "mb-2 text-xs text-white", children: [jsxRuntimeExports.jsx("span", { className: "font-semibold", children: "Rotation: " }), rec.placement.rotation, "\u00B0"] })), (rec.placement.wall || rec.placement.position) && (jsxRuntimeExports.jsxs("div", { className: "mb-2 text-xs text-white", children: [jsxRuntimeExports.jsx("span", { className: "font-semibold", children: "Location: " }), rec.placement.position || (rec.placement.wall ? `Against ${rec.placement.wall} wall` : 'Centered')] })), jsxRuntimeExports.jsx("p", { className: "text-sm mt-2 pt-2 border-t border-white/10 text-white", children: rec.placement.reasoning })] })), jsxRuntimeExports.jsxs("div", { className: "pt-4 border-t border-white/10", children: [jsxRuntimeExports.jsx("h4", { className: "text-sm font-medium mb-1 text-white/80", children: "Why this fits:" }), jsxRuntimeExports.jsx("p", { className: "text-sm text-white", children: rec.reasoning })] }), rec.item.priceRange && (jsxRuntimeExports.jsx("div", { className: "mt-4 pt-4 border-t border-white/10", children: jsxRuntimeExports.jsxs("p", { className: "text-sm text-white/80", children: ["Price: ", jsxRuntimeExports.jsxs("strong", { className: "text-white", children: ["$", rec.item.priceRange.min?.toLocaleString(), rec.item.priceRange.max && rec.item.priceRange.max !== rec.item.priceRange.min
-                                                    ? ` - $${rec.item.priceRange.max.toLocaleString()}`
-                                                    : ''] })] }) })), jsxRuntimeExports.jsxs("div", { className: "mt-4 pt-4 border-t border-white/10 space-y-2", children: [onCustomize && (jsxRuntimeExports.jsxs("button", { onClick: () => onCustomize(rec.item), className: "w-full py-2.5 px-4 rounded-lg font-medium text-sm transition-all duration-200 border border-white/20 bg-white/5 hover:bg-white/10 text-white flex items-center justify-center gap-2", children: [jsxRuntimeExports.jsx("svg", { className: "w-4 h-4", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" }) }), "Customize this"] })), jsxRuntimeExports.jsxs("button", { onClick: () => handleViewDetails(rec), className: "w-full py-2.5 px-4 rounded-lg font-medium text-sm transition-all duration-200 border border-white/20 bg-white/5 hover:bg-white/10 text-white flex items-center justify-center gap-2", children: [jsxRuntimeExports.jsx("svg", { className: "w-4 h-4", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" }) }), "View in Catalog"] })] })] }) }, rec.item.id || index))) }), jsxRuntimeExports.jsx(ProductDetailsModal, { isOpen: showDetailsModal, onClose: () => {
-                    setShowDetailsModal(false);
-                    setSelectedRecommendation(null);
-                }, onCustomize: handleCustomizeFromModal, onFinalize: handleFinalizeFromModal, recommendation: selectedRecommendation })] }));
-}
-
-function RoomPhotoPreview({ photoUrl, showFurniture = false }) {
-    const [isFullscreen, setIsFullscreen] = useState(false);
-    const handleFullscreen = () => {
-        if (!document.fullscreenElement && photoUrl) {
-            const element = document.getElementById('room-preview-image');
-            if (element?.requestFullscreen) {
-                element.requestFullscreen();
-                setIsFullscreen(true);
-            }
-        }
-        else {
-            if (document.exitFullscreen) {
-                document.exitFullscreen();
-                setIsFullscreen(false);
-            }
-        }
-    };
-    return (jsxRuntimeExports.jsxs("div", { className: "bg-[#2D312C] rounded-xl border border-earth-border p-4 md:p-6 h-full flex flex-col", children: [jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mb-4", children: [jsxRuntimeExports.jsx("h3", { className: "text-lg font-semibold text-text-heading", children: "Your Room Preview" }), photoUrl && (jsxRuntimeExports.jsx("button", { onClick: handleFullscreen, className: "p-2 rounded-lg bg-earth-card border border-earth-border hover:border-earth-sage transition-colors", title: "Full Screen", children: jsxRuntimeExports.jsx("svg", { className: "w-5 h-5 text-text-primary", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" }) }) }))] }), jsxRuntimeExports.jsx("div", { className: "flex-1 bg-earth-background rounded-lg border border-earth-border relative overflow-hidden min-h-[300px] flex items-center justify-center", children: photoUrl ? (jsxRuntimeExports.jsxs("div", { id: "room-preview-image", className: "relative w-full h-full", children: [jsxRuntimeExports.jsx("img", { src: photoUrl, alt: "Room preview with AI furniture placement", className: "w-full h-full object-contain" }), showFurniture && (jsxRuntimeExports.jsxs("div", { className: "absolute inset-0 pointer-events-none", children: [jsxRuntimeExports.jsx("div", { className: "absolute top-1/4 left-1/4 w-20 h-20 border-2 border-earth-sage rounded-lg flex items-center justify-center bg-earth-sage/20", children: jsxRuntimeExports.jsx("svg", { className: "w-10 h-10 text-earth-sage", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" }) }) }), jsxRuntimeExports.jsx("div", { className: "absolute top-1/3 right-1/4 w-16 h-16 border-2 border-earth-sage rounded-lg flex items-center justify-center bg-earth-sage/20", children: jsxRuntimeExports.jsx("svg", { className: "w-8 h-8 text-earth-sage", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" }) }) })] }))] })) : (jsxRuntimeExports.jsxs("div", { className: "text-center p-8", children: [jsxRuntimeExports.jsx("div", { className: "text-5xl mb-4", children: "\uD83D\uDCF8" }), jsxRuntimeExports.jsx("p", { className: "text-text-primary mb-2", children: "Upload a room photo to see preview" }), jsxRuntimeExports.jsx("p", { className: "text-text-muted text-sm", children: "AI will place recommended furniture here" })] })) }), photoUrl && (jsxRuntimeExports.jsx("div", { className: "mt-3 text-xs text-text-muted text-center", children: jsxRuntimeExports.jsx("p", { children: "AI-recommended furniture placement visualization" }) }))] }));
-}
-
-function CustomizedFurnitureList({ items, onItemRemoved, onNavigateToCustomizer }) {
-    const { storage } = useWidgetContext();
-    const [removingId, setRemovingId] = useState(null);
-    const handleRemove = async (id) => {
-        if (!confirm('Are you sure you want to remove this customized furniture item?')) {
-            return;
-        }
-        setRemovingId(id);
-        try {
-            storage.removeCustomizedFurniture(id);
-            if (onItemRemoved) {
-                onItemRemoved();
-            }
-        }
-        catch (error) {
-            console.error('Failed to remove item:', error);
-        }
-        finally {
-            setRemovingId(null);
-        }
-    };
-    const handleNavigateToCustomizer = () => {
-        console.log('[CustomizedFurnitureList] Navigate to Customizer button clicked');
-        if (onNavigateToCustomizer) {
-            console.log('[CustomizedFurnitureList] Calling onNavigateToCustomizer callback');
-            onNavigateToCustomizer();
-        }
-        else {
-            console.log('[CustomizedFurnitureList] Dispatching modly:navigate-to-customizer event');
-            // Fallback: dispatch custom event for parent widget
-            window.dispatchEvent(new CustomEvent('modly:navigate-to-customizer'));
-        }
-    };
-    if (items.length === 0) {
-        return (jsxRuntimeExports.jsxs("div", { className: "text-center py-12 relative", children: [jsxRuntimeExports.jsx("div", { className: "mb-4", children: jsxRuntimeExports.jsx("svg", { className: "w-16 h-16 mx-auto text-text-muted", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 1.5, d: "M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" }) }) }), jsxRuntimeExports.jsx("p", { className: "text-lg text-text-primary mb-2", children: "No customized furniture yet" }), jsxRuntimeExports.jsx("p", { className: "text-sm text-text-muted mb-4", children: "Customize furniture in the Customizer to see your creations here" }), jsxRuntimeExports.jsx("button", { type: "button", onClick: handleNavigateToCustomizer, className: "px-6 py-3 bg-earth-forest text-white rounded-xl font-semibold hover:bg-earth-forest/90 transition-all duration-300 cursor-pointer relative z-10", children: "Go to Customizer" })] }));
-    }
-    return (jsxRuntimeExports.jsxs("div", { className: "space-y-6", children: [jsxRuntimeExports.jsx("h2", { className: "text-3xl font-bold text-text-heading mb-6", children: "My Customized Furniture" }), jsxRuntimeExports.jsx("div", { className: "grid md:grid-cols-2 lg:grid-cols-3 gap-6", children: items.map((item) => (jsxRuntimeExports.jsxs("div", { className: "bg-earth-card rounded-xl shadow-soft border border-earth-border overflow-hidden hover:shadow-lg transition-shadow relative", children: [jsxRuntimeExports.jsx("div", { className: "absolute top-4 right-4 z-10", children: jsxRuntimeExports.jsx("span", { className: "px-3 py-1 bg-earth-sage text-text-primary rounded-lg text-xs font-semibold", children: "Custom" }) }), jsxRuntimeExports.jsx("div", { className: "w-full h-48 bg-earth-input flex items-center justify-center", children: jsxRuntimeExports.jsx("svg", { className: "w-16 h-16 text-text-muted", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" }) }) }), jsxRuntimeExports.jsxs("div", { className: "p-6", children: [jsxRuntimeExports.jsxs("div", { className: "mb-4", children: [jsxRuntimeExports.jsx("h3", { className: "text-xl font-semibold text-text-heading mb-1", children: item.name }), jsxRuntimeExports.jsx("p", { className: "text-sm text-text-muted capitalize", children: item.baseItemType }), jsxRuntimeExports.jsxs("p", { className: "text-xs text-text-muted mt-1", children: ["Saved ", new Date(item.savedAt).toLocaleDateString()] })] }), jsxRuntimeExports.jsxs("div", { className: "mb-4 p-3 bg-earth-input rounded-xl border border-earth-border", children: [jsxRuntimeExports.jsx("h4", { className: "text-sm font-semibold text-text-heading mb-2", children: "Dimensions:" }), jsxRuntimeExports.jsxs("div", { className: "text-sm text-text-primary space-y-1", children: [jsxRuntimeExports.jsxs("div", { children: ["Length: ", jsxRuntimeExports.jsxs("strong", { children: [item.dimensions.length.toFixed(2), "m"] })] }), jsxRuntimeExports.jsxs("div", { children: ["Width: ", jsxRuntimeExports.jsxs("strong", { children: [item.dimensions.width.toFixed(2), "m"] })] }), jsxRuntimeExports.jsxs("div", { children: ["Height: ", jsxRuntimeExports.jsxs("strong", { children: [item.dimensions.height.toFixed(2), "m"] })] })] })] }), jsxRuntimeExports.jsxs("div", { className: "mb-4", children: [jsxRuntimeExports.jsx("h4", { className: "text-sm font-semibold text-text-heading mb-2", children: "Colors:" }), jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap gap-2", children: [jsxRuntimeExports.jsx("span", { className: "px-3 py-1 bg-earth-input border border-earth-border rounded-lg text-sm text-text-primary", children: item.colorScheme.primary }), item.colorScheme.secondary && (jsxRuntimeExports.jsx("span", { className: "px-3 py-1 bg-earth-input border border-earth-border rounded-lg text-sm text-text-primary", children: item.colorScheme.secondary })), item.colorScheme.accent && (jsxRuntimeExports.jsx("span", { className: "px-3 py-1 bg-earth-input border border-earth-border rounded-lg text-sm text-text-primary", children: item.colorScheme.accent }))] })] }), (item.materials.primary || item.materials.legs || item.materials.upholstery) && (jsxRuntimeExports.jsxs("div", { className: "mb-4", children: [jsxRuntimeExports.jsx("h4", { className: "text-sm font-semibold text-text-heading mb-1", children: "Materials:" }), jsxRuntimeExports.jsxs("p", { className: "text-sm text-text-primary", children: [item.materials.primary, item.materials.legs && ` • Legs: ${item.materials.legs}`, item.materials.upholstery && ` • Upholstery: ${item.materials.upholstery}`] })] })), item.ornamentDetails && item.ornamentDetails.length > 0 && (jsxRuntimeExports.jsxs("div", { className: "mb-4", children: [jsxRuntimeExports.jsx("h4", { className: "text-sm font-semibold text-text-heading mb-2", children: "Details:" }), jsxRuntimeExports.jsx("div", { className: "flex flex-wrap gap-2", children: item.ornamentDetails.map((detail, i) => (jsxRuntimeExports.jsx("span", { className: "text-xs bg-earth-sage/20 text-text-primary px-2 py-1 rounded", children: detail }, i))) })] })), item.aiNotes && (jsxRuntimeExports.jsx("div", { className: "mb-4 pt-4 border-t border-earth-border", children: jsxRuntimeExports.jsx("p", { className: "text-xs text-text-muted line-clamp-2", children: item.aiNotes }) })), jsxRuntimeExports.jsx("div", { className: "flex gap-2 pt-4 border-t border-earth-border", children: jsxRuntimeExports.jsx("button", { onClick: () => handleRemove(item.id), disabled: removingId === item.id, className: "flex-1 px-4 py-2 bg-red-500/10 border border-red-500/30 text-red-400 rounded-xl font-medium hover:bg-red-500/20 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed text-sm", children: removingId === item.id ? 'Removing...' : 'Remove' }) })] })] }, item.id))) })] }));
-}
-
 function FinalizeQuoteModal({ isOpen, onClose, onProceed, item, recommendation, }) {
     const websiteColors = useWebsiteColors();
     if (!isOpen)
@@ -2271,32 +2616,164 @@ function QuoteRequestForm({ isOpen, onClose, onSubmit, item, recommendation, }) 
                                     }, children: isSubmitting ? (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsxs("svg", { className: "animate-spin h-5 w-5", xmlns: "http://www.w3.org/2000/svg", fill: "none", viewBox: "0 0 24 24", children: [jsxRuntimeExports.jsx("circle", { className: "opacity-25", cx: "12", cy: "12", r: "10", stroke: "currentColor", strokeWidth: "4" }), jsxRuntimeExports.jsx("path", { className: "opacity-75", fill: "currentColor", d: "M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" })] }), jsxRuntimeExports.jsx("span", { children: "Submitting..." })] })) : ('Submit Quote Request') })] })] })] }) }));
 }
 
+const PLACEHOLDER_HOSTS = new Set([
+    'yourstore.com',
+    'www.yourstore.com',
+    'example.com',
+    'www.example.com',
+    'example.org',
+    'www.example.org',
+    'example.net',
+    'www.example.net',
+    'test.com',
+    'www.test.com',
+    'demo.com',
+    'www.demo.com',
+    'placeholder.com',
+    'www.placeholder.com',
+]);
+const LOCAL_HOSTS = new Set([
+    'localhost',
+    '127.0.0.1',
+    '0.0.0.0',
+    '::1',
+]);
+function parseProductUrl(url) {
+    const trimmed = url.trim();
+    if (!trimmed)
+        return null;
+    try {
+        return new URL(trimmed);
+    }
+    catch {
+        try {
+            return new URL(`https://${trimmed}`);
+        }
+        catch {
+            return null;
+        }
+    }
+}
+function isRealProductUrl(url) {
+    if (!url)
+        return false;
+    const parsed = parseProductUrl(url);
+    if (!parsed)
+        return false;
+    if (!['http:', 'https:'].includes(parsed.protocol))
+        return false;
+    const hostname = parsed.hostname.toLowerCase();
+    if (!hostname || LOCAL_HOSTS.has(hostname) || PLACEHOLDER_HOSTS.has(hostname))
+        return false;
+    if (hostname.endsWith('.yourstore.com'))
+        return false;
+    if (hostname.endsWith('.example.com') || hostname.endsWith('.example.org') || hostname.endsWith('.example.net')) {
+        return false;
+    }
+    if (hostname.endsWith('.localhost'))
+        return false;
+    if (hostname.endsWith('.test') || hostname.endsWith('.example') || hostname.endsWith('.invalid'))
+        return false;
+    const fullUrl = parsed.href.toLowerCase();
+    return ![
+        'yourstore',
+        'example',
+        'placeholder',
+        'demo-only',
+        'fake-store',
+        'test-store',
+    ].some((marker) => fullUrl.includes(marker));
+}
+function getRealProductUrl(product) {
+    const productUrl = product.productUrl?.trim();
+    if (isRealProductUrl(productUrl))
+        return productUrl;
+    const url = product.url?.trim();
+    if (isRealProductUrl(url))
+        return url;
+    return undefined;
+}
+
+function getProductCatalogUrl$1(item) {
+    return getRealProductUrl(item);
+}
+function RecommendationsList({ recommendations, onCustomize, onFinalize, enabledActions, primaryColor }) {
+    const actions = enabledActions ?? { viewInCatalog: true, customize: true, requestQuote: true };
+    const primaryTextColor = primaryColor ? getReadableTextColor(primaryColor) : undefined;
+    if (recommendations.length === 0) {
+        return (jsxRuntimeExports.jsx("div", { className: "text-center py-12 text-gray-500", children: jsxRuntimeExports.jsx("p", { className: "text-lg", children: "No recommendations available yet." }) }));
+    }
+    return (jsxRuntimeExports.jsxs("div", { className: "space-y-6", children: [jsxRuntimeExports.jsx("h2", { className: "text-3xl font-bold mb-6 text-gray-900", children: "AI Recommendations" }), jsxRuntimeExports.jsx("div", { className: "grid md:grid-cols-2 lg:grid-cols-3 gap-6", children: recommendations.map((rec, index) => {
+                    const catalogUrl = getProductCatalogUrl$1(rec.item);
+                    return (jsxRuntimeExports.jsx("div", { className: "bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow", children: jsxRuntimeExports.jsxs("div", { className: "p-6", children: [jsxRuntimeExports.jsxs("div", { className: "flex items-start justify-between gap-3 mb-2", children: [jsxRuntimeExports.jsx("h3", { className: "text-xl font-semibold text-gray-900", children: rec.item.name }), rec.matchScore && (jsxRuntimeExports.jsxs("span", { className: "shrink-0 text-sm px-2 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-medium", children: [Math.round(rec.matchScore * 100), "% match"] }))] }), jsxRuntimeExports.jsxs("p", { className: "text-sm mb-4 text-gray-500", children: [rec.item.category, " ", rec.item.subCategory && `- ${rec.item.subCategory}`] }), jsxRuntimeExports.jsxs("div", { className: "mb-4 p-3 rounded bg-gray-50 border border-gray-200", children: [jsxRuntimeExports.jsx("h4", { className: "text-sm font-medium mb-2 text-gray-700", children: "Dimensions:" }), jsxRuntimeExports.jsxs("div", { className: "text-sm space-y-1 text-gray-800", children: [jsxRuntimeExports.jsxs("div", { children: ["Length: ", jsxRuntimeExports.jsxs("strong", { children: [rec.item.dimensions.length, "m"] })] }), jsxRuntimeExports.jsxs("div", { children: ["Width: ", jsxRuntimeExports.jsxs("strong", { children: [rec.item.dimensions.width, "m"] })] }), jsxRuntimeExports.jsxs("div", { children: ["Height: ", jsxRuntimeExports.jsxs("strong", { children: [rec.item.dimensions.height, "m"] })] }), rec.item.dimensions.seatHeight && (jsxRuntimeExports.jsxs("div", { children: ["Seat Height: ", jsxRuntimeExports.jsxs("strong", { children: [rec.item.dimensions.seatHeight, "m"] })] })), rec.item.dimensions.clearance && (jsxRuntimeExports.jsxs("div", { className: "text-xs mt-2 text-gray-500", children: ["Clearance: Front ", rec.item.dimensions.clearance.front || 'N/A', "m"] }))] })] }), jsxRuntimeExports.jsxs("div", { className: "mb-4", children: [jsxRuntimeExports.jsx("h4", { className: "text-sm font-medium mb-1 text-gray-700", children: "Materials:" }), jsxRuntimeExports.jsxs("p", { className: "text-sm text-gray-800", children: [rec.item.materials.primary, rec.item.materials.secondary && `, ${rec.item.materials.secondary}`, rec.item.materials.upholstery && ` - Upholstery: ${rec.item.materials.upholstery}`] })] }), jsxRuntimeExports.jsxs("div", { className: "mb-4", children: [jsxRuntimeExports.jsx("h4", { className: "text-sm font-medium mb-1 text-gray-700", children: "Colors:" }), jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [jsxRuntimeExports.jsx("span", { className: "text-sm text-gray-800", children: rec.item.colors.main }), rec.item.colors.accent && (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsx("span", { className: "text-gray-400", children: "-" }), jsxRuntimeExports.jsx("span", { className: "text-sm text-gray-800", children: rec.item.colors.accent })] }))] })] }), rec.item.styleTags && rec.item.styleTags.length > 0 && (jsxRuntimeExports.jsx("div", { className: "mb-4 flex flex-wrap gap-2", children: rec.item.styleTags.map((tag, i) => (jsxRuntimeExports.jsx("span", { className: "text-xs px-2 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-100 font-medium", children: tag }, i))) })), rec.placement && (jsxRuntimeExports.jsxs("div", { className: "mb-4 p-3 rounded bg-gray-50 border border-gray-200", children: [jsxRuntimeExports.jsx("h4", { className: "text-sm font-medium mb-2 text-gray-700", children: "Placement:" }), rec.placement.coordinates && (jsxRuntimeExports.jsxs("div", { className: "mb-2 text-xs text-gray-800", children: [jsxRuntimeExports.jsx("span", { className: "font-semibold", children: "Position: " }), "(", rec.placement.coordinates.x.toFixed(2), "m, ", rec.placement.coordinates.y.toFixed(2), "m)", jsxRuntimeExports.jsx("span", { className: "ml-2 text-gray-500", children: "from southwest corner" })] })), rec.placement.distanceFromWalls && (jsxRuntimeExports.jsxs("div", { className: "mb-2 text-xs space-y-1 text-gray-800", children: [jsxRuntimeExports.jsx("div", { className: "font-semibold mb-1", children: "Distance from walls:" }), jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-2 gap-1", children: [rec.placement.distanceFromWalls.north !== undefined && (jsxRuntimeExports.jsxs("div", { children: ["North: ", jsxRuntimeExports.jsxs("strong", { children: [rec.placement.distanceFromWalls.north.toFixed(2), "m"] })] })), rec.placement.distanceFromWalls.south !== undefined && (jsxRuntimeExports.jsxs("div", { children: ["South: ", jsxRuntimeExports.jsxs("strong", { children: [rec.placement.distanceFromWalls.south.toFixed(2), "m"] })] })), rec.placement.distanceFromWalls.east !== undefined && (jsxRuntimeExports.jsxs("div", { children: ["East: ", jsxRuntimeExports.jsxs("strong", { children: [rec.placement.distanceFromWalls.east.toFixed(2), "m"] })] })), rec.placement.distanceFromWalls.west !== undefined && (jsxRuntimeExports.jsxs("div", { children: ["West: ", jsxRuntimeExports.jsxs("strong", { children: [rec.placement.distanceFromWalls.west.toFixed(2), "m"] })] }))] })] })), rec.placement.rotation !== undefined && rec.placement.rotation !== 0 && (jsxRuntimeExports.jsxs("div", { className: "mb-2 text-xs text-gray-800", children: [jsxRuntimeExports.jsx("span", { className: "font-semibold", children: "Rotation: " }), rec.placement.rotation, " deg"] })), (rec.placement.wall || rec.placement.position) && (jsxRuntimeExports.jsxs("div", { className: "mb-2 text-xs text-gray-800", children: [jsxRuntimeExports.jsx("span", { className: "font-semibold", children: "Location: " }), rec.placement.position || (rec.placement.wall ? `Against ${rec.placement.wall} wall` : 'Centered')] })), jsxRuntimeExports.jsx("p", { className: "text-sm mt-2 pt-2 border-t border-gray-200 text-gray-800", children: rec.placement.reasoning })] })), jsxRuntimeExports.jsxs("div", { className: "pt-4 border-t border-gray-200", children: [jsxRuntimeExports.jsx("h4", { className: "text-sm font-medium mb-1 text-gray-700", children: "Why this fits:" }), jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-800", children: rec.reasoning })] }), rec.item.priceRange && (jsxRuntimeExports.jsx("div", { className: "mt-4 pt-4 border-t border-gray-200", children: jsxRuntimeExports.jsxs("p", { className: "text-sm text-gray-700", children: ["Price: ", jsxRuntimeExports.jsxs("strong", { className: "text-gray-900", children: ["$", rec.item.priceRange.min?.toLocaleString(), rec.item.priceRange.max && rec.item.priceRange.max !== rec.item.priceRange.min
+                                                        ? ` - $${rec.item.priceRange.max.toLocaleString()}`
+                                                        : ''] })] }) })), jsxRuntimeExports.jsxs("div", { className: "mt-4 pt-4 border-t border-gray-200 space-y-2", children: [actions.customize && onCustomize && (jsxRuntimeExports.jsxs("button", { onClick: () => onCustomize(rec.item), className: "w-full py-2.5 px-4 rounded-lg font-medium text-sm transition-all duration-200 border border-blue-200 bg-blue-50 hover:bg-blue-100 text-blue-700 flex items-center justify-center gap-2", style: primaryColor ? { borderColor: primaryColor, color: primaryColor } : undefined, children: [jsxRuntimeExports.jsx(Pencil, { className: "w-4 h-4" }), "Customize this"] })), actions.viewInCatalog && catalogUrl ? (jsxRuntimeExports.jsxs("a", { href: catalogUrl, target: "_blank", rel: "noopener noreferrer", className: "w-full py-2.5 px-4 rounded-lg font-medium text-sm transition-all duration-200 border border-gray-300 bg-white hover:bg-gray-50 text-gray-700 flex items-center justify-center gap-2", children: [jsxRuntimeExports.jsx(Info, { className: "w-4 h-4" }), "View in Catalog"] })) : actions.viewInCatalog ? (jsxRuntimeExports.jsx("button", { type: "button", disabled: true, className: "w-full py-2.5 px-4 rounded-lg font-medium text-sm transition-all duration-200 border border-gray-200 bg-gray-50 text-gray-400 flex items-center justify-center gap-2 cursor-not-allowed", children: "Catalog link unavailable" })) : null, actions.requestQuote && onFinalize && (jsxRuntimeExports.jsx("button", { onClick: () => onFinalize(rec), className: "w-full py-2.5 px-4 rounded-lg font-medium text-sm transition-all duration-200 text-white flex items-center justify-center gap-2", style: {
+                                                backgroundColor: primaryColor || '#10B981',
+                                                color: primaryColor ? primaryTextColor : '#ffffff',
+                                            }, children: "Request Quote" }))] })] }) }, rec.item.id || index));
+                }) })] }));
+}
+
 const STORAGE_KEY$1 = 'modly-room-planner-state';
-function FurnitureRoomPlannerWidget({ config = {}, onCustomizeItem, onNavigateToCustomizer }) {
+const FEET_PER_METER = 3.28084;
+const styleOptions = [
+    { id: 'modern', label: 'Modern', icon: '⚡' },
+    { id: 'scandi', label: 'Scandi', icon: '🌲' },
+    { id: 'industrial', label: 'Industrial', icon: '🏭' },
+    { id: 'boho', label: 'Boho', icon: '🌿' },
+];
+async function base64ToFile(base64, filename) {
+    const response = await fetch(base64);
+    const blob = await response.blob();
+    return new File([blob], filename, { type: blob.type });
+}
+function formatDimensionForUnit(valueMeters, unitSystem) {
+    if (!valueMeters || valueMeters <= 0)
+        return '';
+    const value = unitSystem === 'meters' ? valueMeters : valueMeters * FEET_PER_METER;
+    return value.toFixed(1).replace(/\.0$/, '');
+}
+function parseDimensionToMeters(value, unitSystem) {
+    const numericValue = Number(value);
+    if (!numericValue || numericValue <= 0)
+        return 0;
+    return unitSystem === 'meters' ? numericValue : numericValue / FEET_PER_METER;
+}
+function FurnitureRoomPlannerWidget({ config = {}, onCustomizeItem, onNavigateToCustomizer, }) {
     const mergedConfig = useMemo(() => mergeConfig(config), [config]);
     const apiClient = useMemo(() => new ApiClient(mergedConfig), [mergedConfig]);
     const storage = useMemo(() => new Storage(mergedConfig.storageKey), [mergedConfig.storageKey]);
+    const enabledActions = useMemo(() => getEnabledActions(mergedConfig), [mergedConfig]);
+    const primaryColor = getPrimaryColor(mergedConfig);
     const [recommendations, setRecommendations] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [shareMessage, setShareMessage] = useState(null);
     const [uploadedPhotos, setUploadedPhotos] = useState([]);
     const [customizedFurniture, setCustomizedFurniture] = useState([]);
     const [savedDimensions, setSavedDimensions] = useState(undefined);
     const [savedPreferences, setSavedPreferences] = useState(undefined);
-    const formRef = useRef(null);
-    // Finalize & Quote state
+    const [roomType, setRoomType] = useState('living');
+    const [unitSystem, setUnitSystem] = useState('meters');
+    const [lengthValue, setLengthValue] = useState('');
+    const [widthValue, setWidthValue] = useState('');
+    const [heightValue, setHeightValue] = useState('2.4');
+    const [colorInput, setColorInput] = useState('');
+    const [budgetMin, setBudgetMin] = useState('');
+    const [budgetMax, setBudgetMax] = useState('');
+    const [selectedStyles, setSelectedStyles] = useState(['modern']);
     const [showFinalizeModal, setShowFinalizeModal] = useState(false);
     const [showQuoteForm, setShowQuoteForm] = useState(false);
     const [quoteSuccess, setQuoteSuccess] = useState(false);
     const [selectedRecommendation, setSelectedRecommendation] = useState(null);
-    // Load persisted state on mount
+    const fileInputRef = useRef(null);
     useEffect(() => {
         try {
             if (typeof window !== 'undefined') {
                 const saved = sessionStorage.getItem(STORAGE_KEY$1);
                 if (saved) {
                     const state = JSON.parse(saved);
-                    if (state.uploadedPhotos && state.uploadedPhotos.length > 0) {
+                    if (state.uploadedPhotos?.length) {
                         setUploadedPhotos(state.uploadedPhotos);
                     }
                     if (state.recommendations) {
@@ -2304,9 +2781,17 @@ function FurnitureRoomPlannerWidget({ config = {}, onCustomizeItem, onNavigateTo
                     }
                     if (state.lastDimensions) {
                         setSavedDimensions(state.lastDimensions);
+                        setRoomType(state.lastDimensions.roomType);
+                        setLengthValue(formatDimensionForUnit(state.lastDimensions.length, 'meters'));
+                        setWidthValue(formatDimensionForUnit(state.lastDimensions.width, 'meters'));
+                        setHeightValue(formatDimensionForUnit(state.lastDimensions.height, 'meters'));
                     }
                     if (state.lastPreferences) {
                         setSavedPreferences(state.lastPreferences);
+                        setSelectedStyles(state.lastPreferences.style?.length ? state.lastPreferences.style : ['modern']);
+                        setColorInput(state.lastPreferences.colors?.join(', ') || '');
+                        setBudgetMin(state.lastPreferences.budget?.min ? String(state.lastPreferences.budget.min) : '');
+                        setBudgetMax(state.lastPreferences.budget?.max ? String(state.lastPreferences.budget.max) : '');
                     }
                 }
             }
@@ -2315,7 +2800,6 @@ function FurnitureRoomPlannerWidget({ config = {}, onCustomizeItem, onNavigateTo
             console.warn('Failed to load persisted room planner state:', e);
         }
     }, []);
-    // Save state whenever it changes
     useEffect(() => {
         try {
             if (typeof window !== 'undefined') {
@@ -2333,64 +2817,42 @@ function FurnitureRoomPlannerWidget({ config = {}, onCustomizeItem, onNavigateTo
         }
     }, [uploadedPhotos, recommendations, savedDimensions, savedPreferences]);
     useEffect(() => {
-        const loadCustomizedFurniture = () => {
-            const items = storage.getCustomizedFurniture();
-            setCustomizedFurniture(items);
-        };
-        loadCustomizedFurniture();
+        const items = storage.getCustomizedFurniture();
+        setCustomizedFurniture(items);
     }, [storage]);
     const handleItemRemoved = () => {
         const items = storage.getCustomizedFurniture();
         setCustomizedFurniture(items);
     };
     const handleCustomize = (item) => {
-        // Store the item in sessionStorage for the customizer to pick up
         if (typeof window !== 'undefined') {
             sessionStorage.setItem('modly-customize-item', JSON.stringify(item));
         }
-        // Trigger callback if provided (for parent widget to switch tabs)
         if (onCustomizeItem) {
             onCustomizeItem(item);
         }
-        else {
-            // Fallback: dispatch custom event for parent widget
-            if (typeof window !== 'undefined') {
-                window.dispatchEvent(new CustomEvent('modly:customize-item', { detail: item }));
-            }
+        else if (typeof window !== 'undefined') {
+            window.dispatchEvent(new CustomEvent('modly:customize-item', { detail: item }));
         }
     };
     const handleNavigateToCustomizer = () => {
-        console.log('[FurnitureRoomPlannerWidget] handleNavigateToCustomizer called');
-        // Trigger callback if provided (for parent widget to switch tabs)
         if (onNavigateToCustomizer) {
-            console.log('[FurnitureRoomPlannerWidget] Calling parent onNavigateToCustomizer');
             onNavigateToCustomizer();
         }
         else {
-            console.log('[FurnitureRoomPlannerWidget] Dispatching modly:navigate-to-customizer event');
-            // Fallback: dispatch custom event for parent widget
             window.dispatchEvent(new CustomEvent('modly:navigate-to-customizer'));
         }
     };
     const handlePhotosChange = async (photos) => {
-        // Convert files to base64 for persistence
-        const photoPromises = photos.map((photo) => {
-            return new Promise((resolve) => {
-                const reader = new FileReader();
-                reader.onloadend = () => {
-                    resolve(reader.result);
-                };
-                reader.readAsDataURL(photo);
-            });
-        });
+        const photoPromises = photos.map((photo) => new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onloadend = () => resolve(reader.result);
+            reader.readAsDataURL(photo);
+        }));
         const base64Photos = await Promise.all(photoPromises);
         setUploadedPhotos(base64Photos);
-    };
-    const handleDimensionsChange = (dimensions) => {
-        setSavedDimensions(dimensions);
-    };
-    const handlePreferencesChange = (preferences) => {
-        setSavedPreferences(preferences);
+        setError(null);
+        setShareMessage(null);
     };
     const handleUpload = async (photos, dimensions, preferences) => {
         setIsLoading(true);
@@ -2398,7 +2860,8 @@ function FurnitureRoomPlannerWidget({ config = {}, onCustomizeItem, onNavigateTo
         try {
             const data = await apiClient.analyzeRoom(photos, dimensions, preferences);
             setRecommendations(data);
-            // Dimensions and preferences are already saved via handleDimensionsChange and handlePreferencesChange
+            setSavedDimensions(dimensions);
+            setSavedPreferences(preferences);
         }
         catch (err) {
             const errorMessage = err instanceof Error ? err.message : 'An error occurred';
@@ -2410,18 +2873,20 @@ function FurnitureRoomPlannerWidget({ config = {}, onCustomizeItem, onNavigateTo
         }
     };
     const handleFinalizeRecommendation = (recommendation) => {
+        if (!enabledActions.requestQuote)
+            return;
         setSelectedRecommendation(recommendation);
         setShowFinalizeModal(true);
     };
     const handleProceedToQuote = () => {
+        if (!enabledActions.requestQuote)
+            return;
         setShowFinalizeModal(false);
         setShowQuoteForm(true);
     };
     const handleQuoteSubmit = async (quoteRequest) => {
         try {
-            // Send quote request to API using apiClient
             await apiClient.submitQuoteRequest(quoteRequest);
-            // Show success
             setShowQuoteForm(false);
             setQuoteSuccess(true);
             setSelectedRecommendation(null);
@@ -2430,392 +2895,1069 @@ function FurnitureRoomPlannerWidget({ config = {}, onCustomizeItem, onNavigateTo
             }, 5000);
         }
         catch (err) {
-            throw err; // Let the form handle the error display
+            throw err;
         }
     };
-    return (jsxRuntimeExports.jsxs(WidgetProvider, { apiClient: apiClient, storage: storage, config: mergedConfig, children: [jsxRuntimeExports.jsx("div", { className: "furniture-widget-room-planner min-h-screen bg-[#1A1C19] py-12 px-6", children: jsxRuntimeExports.jsxs("div", { className: "max-w-7xl mx-auto", children: [jsxRuntimeExports.jsxs("div", { className: "text-center mb-8", children: [jsxRuntimeExports.jsx("h1", { className: "text-4xl md:text-5xl font-bold text-[#F0EFEA] mb-4", children: "Room Planner" }), jsxRuntimeExports.jsx("p", { className: "text-lg md:text-xl text-[#F0EFEA] max-w-2xl mx-auto", children: "Upload photos of your room and provide dimensions. Our AI will recommend the perfect furniture with detailed measurements and placement suggestions." })] }), jsxRuntimeExports.jsxs("div", { className: "grid lg:grid-cols-2 gap-6 mb-8 items-stretch", children: [jsxRuntimeExports.jsx("div", { className: "flex flex-col", children: jsxRuntimeExports.jsx("div", { className: "bg-earth-card p-6 md:p-8 rounded-xl shadow-soft border border-[#3A3F38] h-full flex flex-col", children: jsxRuntimeExports.jsx(RoomUploadForm, { onUpload: handleUpload, isLoading: isLoading, onPhotosChange: handlePhotosChange, formRef: (form) => { formRef.current = form; }, initialDimensions: savedDimensions, initialPreferences: savedPreferences, onDimensionsChange: handleDimensionsChange, onPreferencesChange: handlePreferencesChange }) }) }), jsxRuntimeExports.jsx("div", { className: "flex flex-col", children: jsxRuntimeExports.jsx(RoomPhotoPreview, { photoUrl: uploadedPhotos[0], showFurniture: !!recommendations }) })] }), jsxRuntimeExports.jsx("div", { className: "mb-12 flex justify-center", children: jsxRuntimeExports.jsx("button", { type: "button", onClick: () => formRef.current?.requestSubmit(), disabled: isLoading, className: "px-8 py-4 bg-earth-forest text-white rounded-xl font-semibold text-lg hover:bg-earth-forest/90 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg flex items-center justify-center gap-2", children: isLoading ? (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsxs("svg", { className: "animate-spin h-5 w-5", xmlns: "http://www.w3.org/2000/svg", fill: "none", viewBox: "0 0 24 24", children: [jsxRuntimeExports.jsx("circle", { className: "opacity-25", cx: "12", cy: "12", r: "10", stroke: "currentColor", strokeWidth: "4" }), jsxRuntimeExports.jsx("path", { className: "opacity-75", fill: "currentColor", d: "M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" })] }), jsxRuntimeExports.jsx("span", { children: "Analyzing Room..." })] })) : (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsx("svg", { className: "w-5 h-5", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" }) }), jsxRuntimeExports.jsx("span", { children: "Get AI Recommendations" })] })) }) }), error && (jsxRuntimeExports.jsxs("div", { className: "bg-red-500/10 border border-red-500/30 text-red-400 p-4 rounded-xl mb-6", children: [jsxRuntimeExports.jsx("p", { className: "font-semibold", children: "Error:" }), jsxRuntimeExports.jsx("p", { children: error })] })), jsxRuntimeExports.jsx("div", { className: "mb-12 bg-earth-card p-6 md:p-8 rounded-xl shadow-soft border border-earth-border", children: jsxRuntimeExports.jsx(CustomizedFurnitureList, { items: customizedFurniture, onItemRemoved: handleItemRemoved, onNavigateToCustomizer: handleNavigateToCustomizer }) }), recommendations && (jsxRuntimeExports.jsxs("div", { className: "bg-earth-card p-6 md:p-8 rounded-xl shadow-soft border border-earth-border", children: [recommendations.roomAnalysis && (jsxRuntimeExports.jsxs("div", { className: "mb-8 p-6 bg-earth-background rounded-xl border border-earth-border", children: [jsxRuntimeExports.jsx("h2", { className: "text-2xl font-semibold text-text-heading mb-4", children: "Room Analysis" }), jsxRuntimeExports.jsxs("div", { className: "grid md:grid-cols-2 gap-4", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("p", { className: "text-sm text-text-muted mb-1", children: "Detected Style:" }), jsxRuntimeExports.jsx("p", { className: "text-lg font-semibold text-text-primary", children: recommendations.roomAnalysis.detectedStyle })] }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("p", { className: "text-sm text-text-muted mb-1", children: "Dominant Colors:" }), jsxRuntimeExports.jsx("div", { className: "flex flex-wrap gap-2 mt-1", children: recommendations.roomAnalysis.dominantColors.map((color, i) => (jsxRuntimeExports.jsx("span", { className: "px-3 py-1 bg-earth-input border border-earth-border rounded-xl text-sm text-text-primary", children: color }, i))) })] }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("p", { className: "text-sm text-text-muted mb-1", children: "Free Space:" }), jsxRuntimeExports.jsx("p", { className: "text-lg font-semibold text-text-primary", children: recommendations.roomAnalysis.freeSpace.description })] })] })] })), jsxRuntimeExports.jsx(RecommendationsList, { recommendations: recommendations.recommendations, onCustomize: handleCustomize, onFinalize: handleFinalizeRecommendation }), recommendations.recommendations && recommendations.recommendations.length > 0 && (jsxRuntimeExports.jsxs("div", { className: "mt-8 pt-6 border-t border-earth-border text-center", children: [jsxRuntimeExports.jsx("p", { className: "text-white/80 mb-4", children: "Found the perfect piece?" }), jsxRuntimeExports.jsx("div", { className: "flex flex-wrap gap-3 justify-center", children: recommendations.recommendations.slice(0, 3).map((rec, idx) => (jsxRuntimeExports.jsxs("button", { onClick: () => handleFinalizeRecommendation(rec), className: "px-6 py-3 bg-emerald-600 text-white rounded-xl font-semibold hover:bg-emerald-700 transition-all duration-300 flex items-center gap-2 shadow-lg", children: [jsxRuntimeExports.jsx("svg", { className: "w-5 h-5", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" }) }), jsxRuntimeExports.jsxs("span", { children: ["Request Quote for ", rec.item.name] })] }, rec.item.id || idx))) })] }))] }))] }) }), jsxRuntimeExports.jsx(FinalizeQuoteModal, { isOpen: showFinalizeModal, onClose: () => {
+    const handleExportPdf = () => {
+        if (typeof window !== 'undefined')
+            window.print();
+    };
+    const buildShareText = () => {
+        const dimText = savedDimensions
+            ? `L ${savedDimensions.length.toFixed(1)}m x W ${savedDimensions.width.toFixed(1)}m x H ${savedDimensions.height.toFixed(1)}m`
+            : 'Dimensions: (not provided)';
+        const items = recommendations?.recommendations?.slice(0, 5).map((r) => r.item.name).join(', ') ||
+            'No matches yet';
+        return `Room Planner results\n${dimText}\nTop matches: ${items}`;
+    };
+    const handleShare = async () => {
+        try {
+            const text = buildShareText();
+            const nav = navigator;
+            if (typeof nav.share === 'function') {
+                await nav.share({ title: 'Room Planner', text });
+                setShareMessage('Shared successfully.');
+                return;
+            }
+            await navigator.clipboard.writeText(text);
+            setShareMessage('Copied share summary to clipboard.');
+        }
+        catch (e) {
+            console.warn('Share failed:', e);
+            setShareMessage('Could not share automatically. Please copy the details manually.');
+        }
+    };
+    const handleFileChange = async (e) => {
+        if (!e.target.files)
+            return;
+        await handlePhotosChange(Array.from(e.target.files));
+    };
+    const handleDrop = async (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (e.dataTransfer.files?.length) {
+            await handlePhotosChange(Array.from(e.dataTransfer.files));
+        }
+    };
+    const handleUnitToggle = () => {
+        const nextUnitSystem = unitSystem === 'meters' ? 'feet' : 'meters';
+        const lengthMeters = parseDimensionToMeters(lengthValue, unitSystem);
+        const widthMeters = parseDimensionToMeters(widthValue, unitSystem);
+        const heightMeters = parseDimensionToMeters(heightValue, unitSystem);
+        setUnitSystem(nextUnitSystem);
+        setLengthValue(formatDimensionForUnit(lengthMeters, nextUnitSystem));
+        setWidthValue(formatDimensionForUnit(widthMeters, nextUnitSystem));
+        setHeightValue(formatDimensionForUnit(heightMeters, nextUnitSystem));
+    };
+    const toggleStyle = (style) => {
+        setSelectedStyles((currentStyles) => currentStyles.includes(style)
+            ? currentStyles.filter((currentStyle) => currentStyle !== style)
+            : [...currentStyles, style]);
+    };
+    const handleAnalyze = async () => {
+        setError(null);
+        setShareMessage(null);
+        if (uploadedPhotos.length === 0) {
+            setError('Please upload at least one room photo.');
+            return;
+        }
+        const dimensions = {
+            roomType,
+            length: parseDimensionToMeters(lengthValue, unitSystem),
+            width: parseDimensionToMeters(widthValue, unitSystem),
+            height: parseDimensionToMeters(heightValue, unitSystem),
+        };
+        if (dimensions.length <= 0 || dimensions.width <= 0 || dimensions.height <= 0) {
+            setError('Please provide valid room dimensions.');
+            return;
+        }
+        const preferences = {
+            style: selectedStyles,
+            colors: colorInput
+                .split(',')
+                .map((value) => value.trim())
+                .filter(Boolean),
+            budget: {
+                min: budgetMin ? Number(budgetMin) : undefined,
+                max: budgetMax ? Number(budgetMax) : undefined,
+            },
+        };
+        setSavedDimensions(dimensions);
+        setSavedPreferences(preferences);
+        const files = await Promise.all(uploadedPhotos.map((photo, index) => base64ToFile(photo, `room-photo-${index + 1}.png`)));
+        await handleUpload(files, dimensions, preferences);
+    };
+    return (jsxRuntimeExports.jsxs(WidgetProvider, { apiClient: apiClient, storage: storage, config: mergedConfig, children: [jsxRuntimeExports.jsxs("div", { className: "furniture-widget-room-planner min-h-screen bg-[linear-gradient(180deg,#f8fbff_0%,#eef4ff_100%)]", children: [jsxRuntimeExports.jsx("style", { children: `
+          @media print {
+            .no-print { display: none !important; }
+            .print-only { display: block !important; }
+            body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+          }
+        ` }), jsxRuntimeExports.jsx("section", { className: "py-12 bg-gradient-to-br from-blue-600 to-blue-800 text-white", children: jsxRuntimeExports.jsx("div", { className: "max-w-7xl mx-auto px-4", children: jsxRuntimeExports.jsxs("div", { className: "max-w-3xl", children: [jsxRuntimeExports.jsxs("div", { className: "inline-flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full mb-4", children: [jsxRuntimeExports.jsx(Sparkles, { className: "w-4 h-4" }), jsxRuntimeExports.jsx("span", { className: "text-sm font-medium", children: "AI-Powered Room Analysis" })] }), jsxRuntimeExports.jsx("h1", { className: "text-5xl font-bold mb-4", children: "Room Planner" }), jsxRuntimeExports.jsx("p", { className: "text-xl text-blue-100 mb-8", children: "Upload a photo of your room and get catalog-based furniture and customization suggestions based on your space and style." }), jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap gap-4", children: [jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 text-sm", children: [jsxRuntimeExports.jsx(Check, { className: "w-5 h-5 text-green-300" }), jsxRuntimeExports.jsx("span", { children: "Room photo upload" })] }), jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 text-sm", children: [jsxRuntimeExports.jsx(Check, { className: "w-5 h-5 text-green-300" }), jsxRuntimeExports.jsx("span", { children: "Catalog-based product suggestions" })] }), jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 text-sm", children: [jsxRuntimeExports.jsx(Check, { className: "w-5 h-5 text-green-300" }), jsxRuntimeExports.jsx("span", { children: "Style-aware recommendations" })] }), jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 text-sm", children: [jsxRuntimeExports.jsx(Check, { className: "w-5 h-5 text-green-300" }), jsxRuntimeExports.jsx("span", { children: "Placement guidance" })] })] })] }) }) }), jsxRuntimeExports.jsx("section", { className: "py-12 bg-gray-50", children: jsxRuntimeExports.jsxs("div", { className: "max-w-7xl mx-auto px-4", children: [jsxRuntimeExports.jsxs("div", { className: "rounded-[28px] border border-gray-200 bg-white p-5 shadow-xl md:p-6", children: [recommendations && (jsxRuntimeExports.jsx("div", { className: "mb-4 flex justify-end", children: jsxRuntimeExports.jsx("div", { className: "inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-sm font-medium text-green-700", children: "Suggested analysis" }) })), jsxRuntimeExports.jsx("input", { ref: fileInputRef, type: "file", accept: "image/*", multiple: true, onChange: handleFileChange, className: "hidden" }), jsxRuntimeExports.jsxs("div", { className: "mt-6 grid gap-4 lg:grid-cols-2", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsxs("div", { className: "mb-3 flex items-center justify-between gap-3", children: [jsxRuntimeExports.jsx("h2", { className: "text-lg font-semibold text-gray-900", children: "Upload Room Photos" }), uploadedPhotos.length > 0 && (jsxRuntimeExports.jsx("button", { type: "button", onClick: () => setUploadedPhotos([]), className: "text-sm font-medium text-gray-500 transition hover:text-gray-900", children: "Remove" }))] }), jsxRuntimeExports.jsx("div", { role: "button", tabIndex: 0, onClick: () => fileInputRef.current?.click(), onKeyDown: (e) => {
+                                                                if (e.key === 'Enter' || e.key === ' ')
+                                                                    fileInputRef.current?.click();
+                                                            }, onDragOver: (e) => {
+                                                                e.preventDefault();
+                                                                e.stopPropagation();
+                                                            }, onDrop: handleDrop, className: "w-full aspect-video rounded-xl border-2 border-dashed border-gray-300 bg-gray-50 px-6 text-center transition-colors hover:border-blue-500 hover:bg-blue-50/50 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 flex items-center justify-center cursor-pointer outline-none", children: jsxRuntimeExports.jsxs("div", { className: "flex max-w-sm flex-col items-center gap-4", children: [jsxRuntimeExports.jsx("div", { className: "flex h-16 w-16 items-center justify-center rounded-full bg-blue-100", children: jsxRuntimeExports.jsx(Upload, { className: "h-8 w-8 text-blue-600" }) }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("p", { className: "text-lg font-semibold text-gray-900", children: uploadedPhotos.length > 0
+                                                                                    ? `${uploadedPhotos.length} photo${uploadedPhotos.length > 1 ? 's' : ''} ready`
+                                                                                    : 'Drop your room photo here' }), jsxRuntimeExports.jsx("p", { className: "mt-1 text-sm text-gray-500", children: "Click to browse or drag and drop a JPG or PNG." })] }), jsxRuntimeExports.jsx("button", { type: "button", onClick: (e) => {
+                                                                            e.stopPropagation();
+                                                                            fileInputRef.current?.click();
+                                                                        }, className: "rounded-lg bg-blue-600 px-6 py-3 font-semibold text-white transition hover:bg-blue-700", children: "Choose File" })] }) })] }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsxs("div", { className: "mb-3 flex items-center justify-between gap-3", children: [jsxRuntimeExports.jsx("h2", { className: "text-lg font-semibold text-gray-900", children: "Room Preview" }), jsxRuntimeExports.jsx("span", { className: "text-sm text-gray-500", children: uploadedPhotos[0] ? 'Photo loaded' : 'Awaiting upload' })] }), jsxRuntimeExports.jsx("div", { className: "w-full aspect-video rounded-xl bg-gray-100 border border-gray-200 overflow-hidden flex items-center justify-center", children: uploadedPhotos[0] ? (jsxRuntimeExports.jsx("img", { src: uploadedPhotos[0], alt: "Uploaded room preview", className: "w-full aspect-video object-cover rounded-xl" })) : (jsxRuntimeExports.jsxs("div", { className: "px-6 text-center text-gray-400", children: [jsxRuntimeExports.jsx(Camera, { className: "mx-auto mb-2 h-12 w-12" }), jsxRuntimeExports.jsx("p", { className: "text-sm font-medium", children: "Your room photo will appear here" })] })) })] })] }), jsxRuntimeExports.jsx("div", { className: "mt-6 bg-white rounded-2xl border border-gray-200 p-8 shadow-lg", children: jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-1 lg:grid-cols-12 gap-6", children: [jsxRuntimeExports.jsx("div", { className: "lg:col-span-4 space-y-6", children: jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h3", { className: "text-lg font-bold text-gray-900 mb-4", children: "Room Details" }), jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-gray-700 mb-2", children: "Room Type" }), jsxRuntimeExports.jsxs("select", { value: roomType, onChange: (e) => setRoomType(e.target.value), className: "w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500", children: [jsxRuntimeExports.jsx("option", { value: "living", children: "Living Room" }), jsxRuntimeExports.jsx("option", { value: "bedroom", children: "Bedroom" }), jsxRuntimeExports.jsx("option", { value: "dining", children: "Dining Room" }), jsxRuntimeExports.jsx("option", { value: "office", children: "Office" }), jsxRuntimeExports.jsx("option", { value: "kitchen", children: "Kitchen" }), jsxRuntimeExports.jsx("option", { value: "other", children: "Other" })] }), jsxRuntimeExports.jsx("p", { className: "mt-2 text-xs text-gray-500", children: "Select the room type that best matches the uploaded photo." })] }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mb-2", children: [jsxRuntimeExports.jsx("label", { className: "text-sm font-medium text-gray-700", children: "Room Dimensions" }), jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 text-xs text-gray-600", children: [jsxRuntimeExports.jsx("span", { children: "Meters" }), jsxRuntimeExports.jsx("button", { type: "button", onClick: handleUnitToggle, className: `relative inline-flex h-6 w-11 items-center rounded-full transition ${unitSystem === 'feet' ? 'bg-blue-600' : 'bg-gray-200'}`, children: jsxRuntimeExports.jsx("span", { className: `inline-block h-4 w-4 transform rounded-full bg-white transition ${unitSystem === 'feet' ? 'translate-x-6' : 'translate-x-1'}` }) }), jsxRuntimeExports.jsx("span", { children: "Feet" })] })] }), jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-2 gap-3", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("label", { className: "block text-xs text-gray-600 mb-1", children: "Length" }), jsxRuntimeExports.jsx("input", { type: "number", placeholder: unitSystem === 'meters' ? '12' : '39.4', value: lengthValue, onChange: (e) => setLengthValue(e.target.value), className: "w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" })] }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("label", { className: "block text-xs text-gray-600 mb-1", children: "Width" }), jsxRuntimeExports.jsx("input", { type: "number", placeholder: unitSystem === 'meters' ? '15' : '49.2', value: widthValue, onChange: (e) => setWidthValue(e.target.value), className: "w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" })] })] }), jsxRuntimeExports.jsxs("div", { className: "mt-3", children: [jsxRuntimeExports.jsx("label", { className: "block text-xs text-gray-600 mb-1", children: "Ceiling Height" }), jsxRuntimeExports.jsx("input", { type: "number", placeholder: unitSystem === 'meters' ? '2.4' : '8', value: heightValue, onChange: (e) => setHeightValue(e.target.value), className: "w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" })] })] })] })] }) }), jsxRuntimeExports.jsx("div", { className: "lg:col-span-4 space-y-6", children: jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h3", { className: "text-lg font-bold text-gray-900 mb-4", children: "Preferences" }), jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-gray-700 mb-3", children: "Preferred Styles" }), jsxRuntimeExports.jsx("div", { className: "grid grid-cols-2 gap-3", children: styleOptions.map((styleOption) => {
+                                                                                        const isSelected = selectedStyles.includes(styleOption.id);
+                                                                                        return (jsxRuntimeExports.jsxs("button", { type: "button", onClick: () => toggleStyle(styleOption.id), className: [
+                                                                                                'p-3 rounded-lg text-center transition border',
+                                                                                                isSelected
+                                                                                                    ? 'border-2 border-blue-600 bg-blue-50 hover:bg-blue-100'
+                                                                                                    : 'border-gray-300 hover:bg-gray-50',
+                                                                                            ].join(' '), children: [jsxRuntimeExports.jsx("span", { className: "text-2xl mb-1 block", children: styleOption.icon }), jsxRuntimeExports.jsx("span", { className: [
+                                                                                                        'text-sm font-medium',
+                                                                                                        isSelected ? 'text-blue-900' : 'text-gray-700',
+                                                                                                    ].join(' '), children: styleOption.label })] }, styleOption.id));
+                                                                                    }) })] }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-gray-700 mb-2", children: "Preferred Colors" }), jsxRuntimeExports.jsx("input", { type: "text", value: colorInput, onChange: (e) => setColorInput(e.target.value), placeholder: "e.g., Beige, Forest Green, Terracotta", className: "w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm" }), jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500 mt-1", children: "Comma-separated" })] })] })] }) }), jsxRuntimeExports.jsx("div", { className: "lg:col-span-4 space-y-6", children: jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h3", { className: "text-lg font-bold text-gray-900 mb-4", children: "Budget & Actions" }), jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-2 gap-3", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-gray-700 mb-2", children: "Budget Min ($)" }), jsxRuntimeExports.jsx("input", { type: "number", value: budgetMin, onChange: (e) => setBudgetMin(e.target.value), placeholder: "500", className: "w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" })] }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-gray-700 mb-2", children: "Budget Max ($)" }), jsxRuntimeExports.jsx("input", { type: "number", value: budgetMax, onChange: (e) => setBudgetMax(e.target.value), placeholder: "2000", className: "w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" })] })] }), jsxRuntimeExports.jsxs("div", { className: "space-y-3 pt-4", children: [jsxRuntimeExports.jsx("button", { type: "button", onClick: handleAnalyze, disabled: isLoading, className: "w-full py-4 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition shadow-lg shadow-blue-600/30 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed", style: { backgroundColor: primaryColor }, children: isLoading ? (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsx("span", { className: "h-5 w-5 rounded-full border-2 border-white/50 border-t-white animate-spin" }), "Analyzing..."] })) : (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsx(Sparkles, { className: "w-5 h-5" }), "Analyze Room"] })) }), jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-2 gap-3", children: [jsxRuntimeExports.jsx("button", { type: "button", onClick: handleExportPdf, className: "px-4 py-3 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition text-sm", children: "Export PDF" }), jsxRuntimeExports.jsx("button", { type: "button", onClick: handleShare, className: "px-4 py-3 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition text-sm", children: "Share" })] }), jsxRuntimeExports.jsxs("div", { className: "rounded-xl border border-blue-100 bg-blue-50 px-4 py-3 text-sm text-blue-900", children: [jsxRuntimeExports.jsx("p", { className: "font-medium", children: "All options are visible at once." }), jsxRuntimeExports.jsx("p", { className: "mt-1 text-blue-800/80", children: "No collapsible sections, less scrolling, and faster setup on desktop." })] })] })] })] }) })] }) }), shareMessage && (jsxRuntimeExports.jsx("div", { className: "mt-4 rounded-lg border border-blue-200 bg-blue-50 px-4 py-3 text-sm text-blue-900", children: shareMessage })), error && (jsxRuntimeExports.jsxs("div", { className: "mt-4 rounded-xl border border-red-200 bg-red-50 p-4 text-red-700", children: [jsxRuntimeExports.jsx("p", { className: "font-semibold", children: "Error" }), jsxRuntimeExports.jsx("p", { className: "text-sm", children: error })] })), jsxRuntimeExports.jsxs("div", { className: "print-only hidden mt-6 text-left", children: [jsxRuntimeExports.jsx("h3", { className: "text-xl font-semibold text-gray-900", children: "Room Planner Share Summary" }), jsxRuntimeExports.jsx("pre", { className: "mt-2 whitespace-pre-wrap text-sm text-gray-700", children: buildShareText() })] })] }), jsxRuntimeExports.jsx("div", { className: "mt-8 bg-white p-6 md:p-8 rounded-2xl shadow-lg border border-gray-200", children: jsxRuntimeExports.jsx(CustomizedFurnitureList, { items: customizedFurniture, onItemRemoved: handleItemRemoved, onNavigateToCustomizer: handleNavigateToCustomizer }) }), recommendations && (jsxRuntimeExports.jsxs("div", { className: "mt-8 bg-white p-6 md:p-8 rounded-2xl shadow-lg border border-gray-200 transition-all", children: [recommendations.roomAnalysis && (jsxRuntimeExports.jsxs("div", { className: "mb-8 p-6 bg-blue-50 rounded-xl border border-blue-200", children: [jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between gap-4 mb-4", children: [jsxRuntimeExports.jsx("h2", { className: "text-2xl font-semibold text-gray-900", children: "Room Analysis" }), jsxRuntimeExports.jsx("span", { className: "px-3 py-1 bg-green-100 text-green-700 text-sm font-medium rounded-full", children: "Success" })] }), jsxRuntimeExports.jsxs("div", { className: "grid md:grid-cols-2 gap-4", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-600 mb-1", children: "Detected Style" }), jsxRuntimeExports.jsx("p", { className: "text-lg font-semibold text-gray-900", children: recommendations.roomAnalysis.detectedStyle })] }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-600 mb-1", children: "Dominant Colors" }), jsxRuntimeExports.jsx("div", { className: "flex flex-wrap gap-2 mt-1", children: recommendations.roomAnalysis.dominantColors.map((color, i) => (jsxRuntimeExports.jsx("span", { className: "px-3 py-1 bg-white border border-blue-200 rounded-full text-sm text-gray-900", children: color }, i))) })] }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-600 mb-1", children: "Free Space" }), jsxRuntimeExports.jsx("p", { className: "text-lg font-semibold text-gray-900", children: recommendations.roomAnalysis.freeSpace.description })] })] })] })), jsxRuntimeExports.jsx(RecommendationsList, { recommendations: recommendations.recommendations, onCustomize: enabledActions.customize ? handleCustomize : undefined, onFinalize: enabledActions.requestQuote ? handleFinalizeRecommendation : undefined, enabledActions: enabledActions, primaryColor: primaryColor }), enabledActions.requestQuote && recommendations.recommendations && recommendations.recommendations.length > 0 && (jsxRuntimeExports.jsxs("div", { className: "mt-8 pt-6 border-t border-gray-200 text-center", children: [jsxRuntimeExports.jsx("p", { className: "text-gray-700 mb-4 font-medium", children: "Ready to convert this into a quote?" }), jsxRuntimeExports.jsx("div", { className: "grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3", children: recommendations.recommendations.slice(0, 3).map((rec, idx) => (jsxRuntimeExports.jsxs("button", { onClick: () => handleFinalizeRecommendation(rec), className: "w-full px-4 py-3 text-white rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2 shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2", style: { backgroundColor: primaryColor }, children: [jsxRuntimeExports.jsxs("span", { className: "text-center leading-snug", children: ["Request Quote for ", rec.item.name] }), jsxRuntimeExports.jsx(ArrowRight, { className: "w-5 h-5 flex-shrink-0" })] }, rec.item.id || idx))) })] }))] }))] }) })] }), jsxRuntimeExports.jsx(FinalizeQuoteModal, { isOpen: enabledActions.requestQuote && showFinalizeModal, onClose: () => {
                     setShowFinalizeModal(false);
                     setSelectedRecommendation(null);
-                }, onProceed: handleProceedToQuote, recommendation: selectedRecommendation }), jsxRuntimeExports.jsx(QuoteRequestForm, { isOpen: showQuoteForm, onClose: () => {
+                }, onProceed: handleProceedToQuote, recommendation: selectedRecommendation }), jsxRuntimeExports.jsx(QuoteRequestForm, { isOpen: enabledActions.requestQuote && showQuoteForm, onClose: () => {
                     setShowQuoteForm(false);
                     setSelectedRecommendation(null);
-                }, onSubmit: handleQuoteSubmit, recommendation: selectedRecommendation }), quoteSuccess && (jsxRuntimeExports.jsxs("div", { className: "fixed bottom-6 right-6 bg-emerald-600 text-white px-6 py-4 rounded-xl shadow-2xl flex items-center gap-3 z-50 animate-slide-up", children: [jsxRuntimeExports.jsx("svg", { className: "w-6 h-6", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" }) }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("p", { className: "font-semibold", children: "Quote Request Submitted!" }), jsxRuntimeExports.jsx("p", { className: "text-sm text-white/90", children: "We'll contact you soon with details." })] })] }))] }));
+                }, onSubmit: handleQuoteSubmit, recommendation: selectedRecommendation }), quoteSuccess && (jsxRuntimeExports.jsxs("div", { className: "fixed bottom-6 right-6 bg-emerald-600 text-white px-6 py-4 rounded-xl shadow-2xl flex items-center gap-3 z-50", children: [jsxRuntimeExports.jsx(Sparkles, { className: "w-6 h-6" }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("p", { className: "font-semibold", children: "Quote Request Submitted!" }), jsxRuntimeExports.jsx("p", { className: "text-sm text-white/90", children: "We'll contact you soon with details." })] })] }))] }));
 }
 
-function ColorComboBox({ label, value, onChange, options, placeholder = '', disabled = false, }) {
-    const [isOpen, setIsOpen] = useState(false);
-    const [filteredOptions, setFilteredOptions] = useState(options);
-    const wrapperRef = useRef(null);
-    const inputRef = useRef(null);
-    // Filter options based on input value
-    useEffect(() => {
-        if (value.trim() === '') {
-            setFilteredOptions(options);
-        }
-        else {
-            const filtered = options.filter((option) => option.toLowerCase().includes(value.toLowerCase()));
-            setFilteredOptions(filtered);
-        }
-    }, [value, options]);
-    // Handle click outside to close dropdown
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
-                setIsOpen(false);
-            }
-        };
-        const handleEscape = (event) => {
-            if (event.key === 'Escape') {
-                setIsOpen(false);
-                inputRef.current?.blur();
-            }
-        };
-        if (isOpen) {
-            document.addEventListener('mousedown', handleClickOutside);
-            document.addEventListener('keydown', handleEscape);
-        }
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-            document.removeEventListener('keydown', handleEscape);
-        };
-    }, [isOpen]);
-    const handleInputChange = (e) => {
-        onChange(e.target.value);
-        setIsOpen(true);
+const FALLBACK_COLOR_HEX = ['#9CA3AF', '#1F2937', '#D4B896', '#D4C5B9', '#6B7280', '#C2410C'];
+const COLOR_HEX_BY_NAME = {
+    beige: '#F5F0E8',
+    gray: '#9CA3AF',
+    grey: '#9CA3AF',
+    charcoal: '#374151',
+    white: '#FFFFFF',
+    black: '#111827',
+    brown: '#92400E',
+    navy_blue: '#1E3A5F',
+    navy: '#1E3A5F',
+    forest_green: '#166534',
+    sage: '#84A98C',
+    sage_green: '#84A98C',
+    emerald: '#065F46',
+    midnight_blue: '#1E3A8A',
+    burgundy: '#7F1D1D',
+    cream: '#FEFCE8',
+    gold: '#D97706',
+    walnut: '#7C3D12',
+    oak: '#A16207',
+    natural: '#D4B896',
+    caramel: '#B45309',
+    cognac: '#9A3412',
+    rustic_brown: '#78350F',
+    dark_walnut: '#431407',
+    gray_wash: '#D1D5DB',
+    smoked: '#6B7280',
+    dusty_rose: '#FDA4AF',
+    blush_pink: '#FBCFE8',
+    clear: '#E0F2FE',
+    white_oak: '#FEF9C3',
+    pebble: '#C4B8AE',
+    slate: '#475569',
+    sand: '#D4C5B9',
+    oat: '#D8CCB8',
+    mist: '#CBD5E1',
+    warm_oak: '#A16207',
+    warmoak: '#A16207',
+    blue: '#3B82F6',
+    green: '#10B981',
+    terracotta: '#C2410C',
+    graphite: '#4B5563',
+    chrome: '#9CA3AF',
+    brass: '#B45309',
+};
+const getColorHex = (colorName) => {
+    const normalized = colorName.toLowerCase().replace(/\s+/g, '_');
+    return COLOR_HEX_BY_NAME[normalized] ?? '#E5E7EB';
+};
+const getMaterialDescription = (material) => {
+    const descriptions = {
+        Fabric: 'Soft and breathable, easy to maintain',
+        Velvet: 'Luxurious feel, rich appearance',
+        Leather: 'Durable and easy to clean, ages beautifully',
+        Linen: 'Natural fiber, cool and textured',
+        Bouclé: 'Cozy looped texture, on-trend',
+        Boucle: 'Cozy looped texture, on-trend',
+        Marble: 'Premium natural stone, unique patterns',
+        'Tempered Glass': 'Modern and sleek, easy to clean',
+        'Solid Wood': 'Long lasting, natural grain beauty',
+        MDF: 'Smooth finish, affordable and sturdy',
+        Metal: 'Industrial look, very durable',
+        Rattan: 'Natural and lightweight, boho aesthetic',
+        Wicker: 'Woven natural material, casual style',
+        'Reclaimed Wood': 'Eco-friendly, unique character',
+        Microfiber: 'Stain resistant, soft to touch',
+        'Performance Fabric': 'Kid and pet friendly, highly durable',
+        'Full Grain Leather': 'Top quality leather, develops patina',
+        'PU Leather': 'Vegan leather, easy to wipe clean',
+        Acrylic: 'Clear modern material, lightweight',
+        Bamboo: 'Sustainable, strong natural material',
+        'Engineered Wood': 'Consistent quality, moisture resistant',
+        Upholstered: 'Padded and fabric wrapped, comfortable',
     };
-    const handleInputFocus = () => {
-        setIsOpen(true);
-    };
-    const handleOptionClick = (option) => {
-        onChange(option);
-        setIsOpen(false);
-        inputRef.current?.blur();
-    };
-    const toggleDropdown = () => {
-        if (!disabled) {
-            setIsOpen(!isOpen);
-            if (!isOpen) {
-                inputRef.current?.focus();
-            }
-        }
-    };
-    return (jsxRuntimeExports.jsxs("div", { ref: wrapperRef, className: "relative", children: [jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-text-primary mb-2", children: label }), jsxRuntimeExports.jsxs("div", { className: "relative", children: [jsxRuntimeExports.jsx("input", { ref: inputRef, type: "text", value: value, onChange: handleInputChange, onFocus: handleInputFocus, placeholder: placeholder, disabled: disabled, className: "w-full px-4 py-2.5 pr-10 border border-earth-border rounded-xl bg-white text-black focus:outline-none focus:ring-2 focus:ring-earth-sage focus:ring-opacity-50 focus:border-earth-sage transition-all placeholder:text-[#757575]" }), jsxRuntimeExports.jsx("button", { type: "button", onClick: toggleDropdown, disabled: disabled, className: "absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed", tabIndex: -1, children: jsxRuntimeExports.jsx("svg", { className: `w-5 h-5 transition-transform ${isOpen ? 'rotate-180' : ''}`, fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M19 9l-7 7-7-7" }) }) })] }), isOpen && !disabled && (jsxRuntimeExports.jsx("div", { className: "absolute z-50 w-full mt-1 bg-white border border-earth-border rounded-xl shadow-lg max-h-60 overflow-y-auto", children: filteredOptions.length > 0 ? (jsxRuntimeExports.jsx("ul", { className: "py-1", children: filteredOptions.map((option) => (jsxRuntimeExports.jsx("li", { children: jsxRuntimeExports.jsx("button", { type: "button", onClick: () => handleOptionClick(option), className: "w-full px-4 py-2.5 text-left text-[#1A1C19] hover:bg-earth-sage/10 transition-colors", children: option }) }, option))) })) : (jsxRuntimeExports.jsx("div", { className: "px-4 py-2.5 text-[#757575] text-sm", children: "No matching colors" })) }))] }));
-}
-
-function FurnitureCustomizerPanel({ baseItem, onCustomize, isLoading, }) {
-    const [config, setConfig] = useState({
-        baseItemId: baseItem?.id,
-        baseItemType: baseItem?.type || 'sofa',
-        baseItemName: baseItem?.name,
-        colorScheme: {
-            primary: baseItem?.currentConfig?.colorScheme?.primary || 'Beige',
-            secondary: baseItem?.currentConfig?.colorScheme?.secondary || 'Forest Green',
-            accent: baseItem?.currentConfig?.colorScheme?.accent || 'Terracotta',
+    return descriptions[material] || 'Premium quality material';
+};
+const productMaterialOptions = (materials) => {
+    const uniqueMaterials = Array.from(new Set(materials.filter(Boolean)));
+    if (uniqueMaterials.length === 0) {
+        return [
+            {
+                id: 'standard_material',
+                name: 'Standard Material',
+                priceDelta: 0,
+                description: 'Factory-standard finish for this product.',
+            },
+        ];
+    }
+    return uniqueMaterials.map((material, index) => ({
+        id: material
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, '_')
+            .replace(/^_+|_+$/g, ''),
+        name: material,
+        priceDelta: index === 0 ? 0 : index * 75,
+        description: getMaterialDescription(material),
+    }));
+};
+const resolveColorHex = (colorName, index) => {
+    const hex = getColorHex(colorName);
+    return hex === '#E5E7EB' ? FALLBACK_COLOR_HEX[index % FALLBACK_COLOR_HEX.length] : hex;
+};
+const metersToInches = (value) => Number((value / 0.0254).toFixed(1));
+const twentyPercentRange = (base, minimum) => {
+    const min = Math.max(minimum, Math.round(base * 0.8));
+    const max = Math.max(min + 1, Math.round(base * 1.2));
+    return [min, max];
+};
+const normalizeProductType = (category) => {
+    const value = category.toLowerCase();
+    if (value.endsWith('ies')) {
+        return `${value.slice(0, -3)}y`;
+    }
+    if (value.endsWith('s')) {
+        return value.slice(0, -1);
+    }
+    return value;
+};
+const products = [
+    {
+        id: 'demo-sofa-002',
+        name: 'Modular Corner Sofa',
+        category: 'Sofas',
+        basePrice: 1099,
+        dimensions: {
+            length: 1.55,
+            width: 2.4,
+            height: 0.84,
+            unit: 'm',
         },
-        materialOverrides: baseItem?.currentConfig?.materialOverrides || {},
-        ornamentDetails: baseItem?.currentConfig?.ornamentDetails || [],
-        dimensionAdjustments: baseItem?.currentConfig?.dimensionAdjustments || {},
-    });
-    const [customPrompt, setCustomPrompt] = useState('');
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        onCustomize(config);
+        materials: ['Polyester', 'Engineered wood'],
+        colors: [
+            { name: 'Pebble', hex: '#C4B8AE', available: true },
+            { name: 'Slate', hex: '#475569', available: true },
+        ],
+        images: {
+            front: '/products/modular-corner-sofa-front.jpg',
+            side: '/products/modular-corner-sofa-side.jpg',
+            angle: '/products/modular-corner-sofa-angle.jpg',
+            thumbnail: '/products/modular-corner-sofa-thumb.jpg',
+        },
+        tags: ['Sectional', 'Family', 'Modern'],
+        customizer: {
+            type: 'sofa',
+            thumbnailLabel: 'Sectional',
+            defaultWidthIn: 94.5,
+            defaultDepthIn: 61,
+            widthRangeIn: [84, 108],
+            depthRangeIn: [54, 72],
+            materialOptions: productMaterialOptions(['Polyester', 'Engineered wood']),
+        },
+    },
+    {
+        id: 'demo-chair-003',
+        name: 'Woven Accent Lounge Chair',
+        category: 'Chairs',
+        basePrice: 199,
+        dimensions: {
+            length: 0.76,
+            width: 0.72,
+            height: 0.78,
+            unit: 'm',
+        },
+        materials: ['Rattan', 'Steel'],
+        colors: [
+            { name: 'Natural', hex: '#D4B896', available: true },
+            { name: 'Black', hex: '#1A1A1A', available: true },
+        ],
+        images: {
+            front: '/products/woven-chair-front.jpg',
+            side: '/products/woven-chair-side.jpg',
+            angle: '/products/woven-chair-angle.jpg',
+            thumbnail: '/products/woven-chair-thumb.jpg',
+        },
+        tags: ['Lounge', 'Boho', 'Lightweight'],
+        customizer: {
+            type: 'chair',
+            thumbnailLabel: 'Lounge Chair',
+            defaultWidthIn: 28.3,
+            defaultDepthIn: 29.9,
+            widthRangeIn: [24, 36],
+            depthRangeIn: [24, 38],
+            materialOptions: productMaterialOptions(['Rattan', 'Steel']),
+        },
+    },
+    {
+        id: 'demo-table-003',
+        name: 'Low Profile Coffee Table',
+        category: 'Tables',
+        basePrice: 219,
+        dimensions: {
+            length: 0.6,
+            width: 1.2,
+            height: 0.42,
+            unit: 'm',
+        },
+        materials: ['Engineered wood'],
+        colors: [
+            { name: 'Sand', hex: '#D4C5B9', available: true },
+            { name: 'Graphite', hex: '#4B5563', available: true },
+            { name: 'White', hex: '#F9FAFB', available: true },
+        ],
+        images: {
+            front: '/products/low-profile-coffee-table-front.jpg',
+            side: '/products/low-profile-coffee-table-side.jpg',
+            angle: '/products/low-profile-coffee-table-angle.jpg',
+            thumbnail: '/products/low-profile-coffee-table-thumb.jpg',
+        },
+        tags: ['Living room', 'Storage', 'Minimal'],
+        customizer: {
+            type: 'table',
+            thumbnailLabel: 'Coffee Table',
+            defaultWidthIn: 47.2,
+            defaultDepthIn: 23.6,
+            widthRangeIn: [40, 56],
+            depthRangeIn: [20, 32],
+            materialOptions: productMaterialOptions(['Engineered wood']),
+        },
+    },
+    {
+        id: 'custom-sofa',
+        name: 'Custom Sofa',
+        category: 'Sofas',
+        basePrice: 899,
+        dimensions: {
+            length: 0.9,
+            width: 2.2,
+            height: 0.85,
+            unit: 'm',
+        },
+        materials: ['Premium Fabric', 'Oak Wood Legs', 'Leather'],
+        colors: [
+            { name: 'Beige', hex: '#D4C5B9', available: true },
+            { name: 'Navy', hex: '#1E293B', available: true },
+            { name: 'Gray', hex: '#6B7280', available: true },
+        ],
+        images: {
+            front: '/products/custom-sofa-front.jpg',
+            side: '/products/custom-sofa-side.jpg',
+            angle: '/products/custom-sofa-angle.jpg',
+            thumbnail: '/products/custom-sofa-thumb.jpg',
+        },
+        tags: ['Custom', 'Configurable'],
+        customizer: {
+            type: 'sofa',
+            thumbnailLabel: 'Custom Sofa',
+            defaultWidthIn: 86.6,
+            defaultDepthIn: 35.4,
+            widthRangeIn: [72, 100],
+            depthRangeIn: [30, 44],
+            materialOptions: productMaterialOptions(['Premium Fabric', 'Leather', 'Oak Wood Legs']),
+        },
+    },
+];
+function getProductById(id) {
+    return products.find((product) => product.id === id);
+}
+function productFromFurnitureItem(item) {
+    const existing = getProductById(item.id);
+    if (existing) {
+        return existing;
+    }
+    const baseMaterials = Array.from(new Set([
+        item.materials.primary,
+        item.materials.secondary,
+        item.materials.upholstery,
+        item.materials.legs,
+    ].filter((value) => Boolean(value))));
+    const baseColors = Array.from(new Set([item.colors.main, item.colors.accent].filter((value) => Boolean(value))));
+    const widthIn = Math.max(18, Math.round(metersToInches(item.dimensions.width || 0.9)));
+    const depthIn = Math.max(18, Math.round(metersToInches(item.dimensions.depth || item.dimensions.length || 0.9)));
+    return {
+        id: item.id,
+        name: item.name,
+        category: item.category,
+        basePrice: item.priceRange?.min ?? 0,
+        dimensions: {
+            length: item.dimensions.length || item.dimensions.depth || 0,
+            width: item.dimensions.width || 0,
+            height: item.dimensions.height || 0,
+            unit: 'm',
+        },
+        materials: baseMaterials.length > 0 ? baseMaterials : ['Custom'],
+        colors: baseColors.length > 0
+            ? baseColors.map((color, index) => ({
+                name: color,
+                hex: resolveColorHex(color, index),
+                available: true,
+            }))
+            : [{ name: 'Custom', hex: FALLBACK_COLOR_HEX[0], available: true }],
+        images: {
+            front: item.images[0] ?? '',
+            side: item.images[1] ?? item.images[0] ?? '',
+            angle: item.images[2] ?? item.images[0] ?? '',
+            thumbnail: item.images[0] ?? '',
+        },
+        tags: item.styleTags ?? [],
+        customizer: {
+            type: normalizeProductType(item.subCategory || item.category),
+            thumbnailLabel: item.subCategory || item.category,
+            defaultWidthIn: widthIn,
+            defaultDepthIn: depthIn,
+            widthRangeIn: twentyPercentRange(widthIn, 18),
+            depthRangeIn: twentyPercentRange(depthIn, 18),
+            materialOptions: productMaterialOptions(baseMaterials),
+        },
     };
-    const handlePromptCustomize = async () => {
-        if (!customPrompt.trim())
-            return;
-        console.log('Apply AI clicked', { promptText: customPrompt });
-        // In a real implementation, this would call the API
-        // For now, we'll just update the config based on common keywords
-        const prompt = customPrompt.toLowerCase();
-        // Create a proper deep copy of config to avoid mutations
-        const newConfig = {
-            ...config,
-            colorScheme: { ...config.colorScheme },
-            materialOverrides: { ...config.materialOverrides },
-            dimensionAdjustments: { ...(config.dimensionAdjustments || {}) },
-            ornamentDetails: [...(config.ornamentDetails || [])],
-        };
-        // Color adjustments
-        if (prompt.includes('darker') || prompt.includes('dark')) {
-            newConfig.colorScheme.primary = 'Dark Brown';
-        }
-        if (prompt.includes('lighter') || prompt.includes('light')) {
-            newConfig.colorScheme.primary = 'Light Beige';
-        }
-        if (prompt.includes('green')) {
-            newConfig.colorScheme.accent = 'Forest Green';
-        }
-        if (prompt.includes('terracotta') || prompt.includes('orange')) {
-            newConfig.colorScheme.accent = 'Terracotta';
-        }
-        // Material adjustments
-        if (prompt.includes('wood') || prompt.includes('oak')) {
-            newConfig.materialOverrides.legs = 'Oak Wood';
-            if (!newConfig.materialOverrides.primary) {
-                newConfig.materialOverrides.primary = 'Solid Oak';
-            }
-        }
-        if (prompt.includes('walnut')) {
-            newConfig.materialOverrides.primary = 'Walnut Wood';
-        }
-        if (prompt.includes('metal')) {
-            newConfig.materialOverrides.legs = 'Metal';
-        }
-        // Dimension adjustments
-        if (prompt.includes('longer') || prompt.includes('extend')) {
-            if (newConfig.dimensionAdjustments) {
-                newConfig.dimensionAdjustments.length = (newConfig.dimensionAdjustments.length || 0) + 0.2;
-            }
-        }
-        if (prompt.includes('shorter')) {
-            if (newConfig.dimensionAdjustments) {
-                newConfig.dimensionAdjustments.length = Math.max(-1, (newConfig.dimensionAdjustments.length || 0) - 0.2);
-            }
-        }
-        if (prompt.includes('wider')) {
-            if (newConfig.dimensionAdjustments) {
-                newConfig.dimensionAdjustments.width = (newConfig.dimensionAdjustments.width || 0) + 0.2;
-            }
-        }
-        if (prompt.includes('narrower')) {
-            if (newConfig.dimensionAdjustments) {
-                newConfig.dimensionAdjustments.width = Math.max(-1, (newConfig.dimensionAdjustments.width || 0) - 0.2);
-            }
-        }
-        if (prompt.includes('taller') || prompt.includes('higher')) {
-            if (newConfig.dimensionAdjustments) {
-                newConfig.dimensionAdjustments.height = (newConfig.dimensionAdjustments.height || 0) + 0.1;
-            }
-        }
-        if (prompt.includes('lower') || prompt.includes('shorter height')) {
-            if (newConfig.dimensionAdjustments) {
-                newConfig.dimensionAdjustments.height = Math.max(-1, (newConfig.dimensionAdjustments.height || 0) - 0.1);
-            }
-        }
-        console.log('AI response', { aiResult: newConfig });
-        // Update both the form state and trigger the API call
-        setConfig(newConfig);
-        setCustomPrompt('');
-        console.log('Applied customization updated', { nextCustomization: newConfig });
-        onCustomize(newConfig);
-    };
-    const colorOptions = [
-        'Beige', 'Sand', 'Taupe', 'Cream', 'Ivory', 'White', 'Black', 'Charcoal',
-        'Gray', 'Navy', 'Forest Green', 'Olive Green', 'Terracotta', 'Rust',
-        'Walnut', 'Oak', 'Dark Brown', 'Light Brown', 'Brass', 'Gold', 'Silver',
-    ];
-    const materialOptions = [
-        'Solid Oak', 'Walnut Wood', 'Pine Wood', 'Metal',
-        'Rattan', 'Cotton Blend', 'Linen', 'Leather',
-    ];
-    return (jsxRuntimeExports.jsxs("div", { className: "space-y-6", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("label", { className: "block text-lg font-semibold text-text-heading mb-3", children: "Describe Your Customization (AI-powered)" }), jsxRuntimeExports.jsxs("div", { className: "flex gap-2", children: [jsxRuntimeExports.jsx("input", { type: "text", value: customPrompt, onChange: (e) => setCustomPrompt(e.target.value), placeholder: "e.g., Make it darker with oak legs and add terracotta accents", className: "flex-1 px-4 py-2.5 border border-earth-border rounded-xl bg-white text-black focus:outline-none focus:ring-2 focus:ring-earth-sage focus:ring-opacity-50 focus:border-earth-sage transition-all placeholder:text-[#757575]" }), jsxRuntimeExports.jsx("button", { type: "button", onClick: handlePromptCustomize, disabled: isLoading || !customPrompt.trim(), className: "px-6 py-2 bg-earth-forest text-white rounded-xl font-medium hover:bg-earth-forest/90 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed", children: "Apply AI" })] })] }), jsxRuntimeExports.jsxs("form", { onSubmit: handleSubmit, className: "space-y-6", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("label", { className: "block text-lg font-semibold text-text-heading mb-3", children: "Color Scheme" }), jsxRuntimeExports.jsxs("div", { className: "grid md:grid-cols-3 gap-4", children: [jsxRuntimeExports.jsx(ColorComboBox, { label: "Primary Color", value: config.colorScheme.primary, onChange: (value) => setConfig({
-                                            ...config,
-                                            colorScheme: { ...config.colorScheme, primary: value },
-                                        }), options: colorOptions, placeholder: "e.g. Warm beige, ivory, charcoal", disabled: isLoading }), jsxRuntimeExports.jsx(ColorComboBox, { label: "Secondary Color", value: config.colorScheme.secondary || '', onChange: (value) => setConfig({
-                                            ...config,
-                                            colorScheme: { ...config.colorScheme, secondary: value },
-                                        }), options: colorOptions, placeholder: "e.g. Walnut brown, dark gray", disabled: isLoading }), jsxRuntimeExports.jsx(ColorComboBox, { label: "Accent Color", value: config.colorScheme.accent || '', onChange: (value) => setConfig({
-                                            ...config,
-                                            colorScheme: { ...config.colorScheme, accent: value },
-                                        }), options: colorOptions, placeholder: "e.g. Terracotta, brass, muted gold", disabled: isLoading })] })] }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("label", { className: "block text-lg font-semibold text-text-heading mb-3", children: "Material Overrides" }), jsxRuntimeExports.jsxs("div", { className: "grid md:grid-cols-2 gap-4", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-text-primary mb-2", children: "Primary Material" }), jsxRuntimeExports.jsxs("select", { value: config.materialOverrides.primary || '', onChange: (e) => setConfig({
-                                                    ...config,
-                                                    materialOverrides: {
-                                                        ...config.materialOverrides,
-                                                        primary: e.target.value,
-                                                    },
-                                                }), className: "w-full px-4 py-2.5 border border-earth-border rounded-xl bg-white text-black focus:outline-none focus:ring-2 focus:ring-earth-sage focus:ring-opacity-50 focus:border-earth-sage transition-all [&>option]:bg-white [&>option]:text-[#1A1C19]", children: [jsxRuntimeExports.jsx("option", { value: "", children: "Keep Original" }), materialOptions.map((material) => (jsxRuntimeExports.jsx("option", { value: material, children: material }, material)))] })] }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-text-primary mb-2", children: "Legs Material" }), jsxRuntimeExports.jsxs("select", { value: config.materialOverrides.legs || '', onChange: (e) => setConfig({
-                                                    ...config,
-                                                    materialOverrides: {
-                                                        ...config.materialOverrides,
-                                                        legs: e.target.value,
-                                                    },
-                                                }), className: "w-full px-4 py-2.5 border border-earth-border rounded-xl bg-white text-black focus:outline-none focus:ring-2 focus:ring-earth-sage focus:ring-opacity-50 focus:border-earth-sage transition-all [&>option]:bg-white [&>option]:text-[#1A1C19]", children: [jsxRuntimeExports.jsx("option", { value: "", children: "Keep Original" }), materialOptions.map((material) => (jsxRuntimeExports.jsx("option", { value: material, children: material }, material)))] })] })] })] }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("label", { className: "block text-lg font-semibold text-text-heading mb-3", children: "Dimension Adjustments (meters)" }), jsxRuntimeExports.jsxs("div", { className: "grid md:grid-cols-3 gap-4", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-text-primary mb-2", children: "Length Adjustment" }), jsxRuntimeExports.jsx("input", { type: "number", step: "0.1", value: config.dimensionAdjustments?.length || 0, onChange: (e) => setConfig({
-                                                    ...config,
-                                                    dimensionAdjustments: {
-                                                        ...config.dimensionAdjustments,
-                                                        length: parseFloat(e.target.value) || 0,
-                                                    },
-                                                }), className: "w-full px-4 py-2.5 border border-earth-border rounded-xl bg-white text-black focus:outline-none focus:ring-2 focus:ring-earth-sage focus:ring-opacity-50 focus:border-earth-sage transition-all placeholder:text-[#757575]" })] }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-text-primary mb-2", children: "Width Adjustment" }), jsxRuntimeExports.jsx("input", { type: "number", step: "0.1", value: config.dimensionAdjustments?.width || 0, onChange: (e) => setConfig({
-                                                    ...config,
-                                                    dimensionAdjustments: {
-                                                        ...config.dimensionAdjustments,
-                                                        width: parseFloat(e.target.value) || 0,
-                                                    },
-                                                }), className: "w-full px-4 py-2.5 border border-earth-border rounded-xl bg-white text-black focus:outline-none focus:ring-2 focus:ring-earth-sage focus:ring-opacity-50 focus:border-earth-sage transition-all placeholder:text-[#757575]" })] }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-text-primary mb-2", children: "Height Adjustment" }), jsxRuntimeExports.jsx("input", { type: "number", step: "0.1", value: config.dimensionAdjustments?.height || 0, onChange: (e) => setConfig({
-                                                    ...config,
-                                                    dimensionAdjustments: {
-                                                        ...config.dimensionAdjustments,
-                                                        height: parseFloat(e.target.value) || 0,
-                                                    },
-                                                }), className: "w-full px-4 py-2.5 border border-earth-border rounded-xl bg-white text-black focus:outline-none focus:ring-2 focus:ring-earth-sage focus:ring-opacity-50 focus:border-earth-sage transition-all placeholder:text-[#757575]" })] })] })] }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("label", { className: "block text-lg font-semibold text-text-primary mb-3", children: "Ornaments & Details" }), jsxRuntimeExports.jsx("textarea", { value: config.ornamentDetails?.join(', ') || '', onChange: (e) => setConfig({
-                                    ...config,
-                                    ornamentDetails: e.target.value.split(',').map(s => s.trim()).filter(Boolean),
-                                }), placeholder: "e.g., Carved legs, Decorative buttons, Tufted back", className: "w-full px-4 py-2.5 border border-earth-border rounded-xl bg-white text-black focus:outline-none focus:ring-2 focus:ring-earth-sage focus:ring-opacity-50 focus:border-earth-sage transition-all placeholder:text-[#757575]", rows: 3 })] }), jsxRuntimeExports.jsx("button", { type: "submit", disabled: isLoading, className: "w-full px-8 py-4 bg-earth-forest text-white rounded-xl font-semibold text-lg hover:bg-earth-forest/90 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg", children: isLoading ? 'Processing Customization...' : 'Apply Customization' })] })] }));
 }
 
-function FurnitureCustomizerWidget({ config = {}, onNavigateToRoomPlanner }) {
+const ROOM_PLANNER_STORAGE_KEY = 'modly-room-planner-state';
+function FurnitureCustomizerPanel({ products, draft, setDraft, isApplying, validationErrors, price, onApply, onUndo, onRedo, canUndo, canRedo, onSaveConfig, onShareLink, onExportPdf, }) {
+    const selectedProduct = useMemo(() => products.find((p) => p.id === draft.productId) ?? products[0], [draft.productId, products]);
+    const materialOptions = useMemo(() => selectedProduct?.customizer.materialOptions ?? [], [selectedProduct]);
+    const colorSwatches = useMemo(() => selectedProduct?.colors.filter((color) => color.available) ?? [], [selectedProduct]);
+    const baseDimensions = {
+        width: selectedProduct?.customizer.defaultWidthIn || 36,
+        length: selectedProduct?.customizer.defaultDepthIn || 60,
+        height: selectedProduct?.dimensions.height || 30,
+    };
+    const widthMin = Math.round(baseDimensions.width * 0.8);
+    const widthMax = Math.round(baseDimensions.width * 1.2);
+    const lengthMin = Math.round(baseDimensions.length * 0.8);
+    const lengthMax = Math.round(baseDimensions.length * 1.2);
+    const [additionalDetails, setAdditionalDetails] = useState('');
+    const [charCount, setCharCount] = useState(0);
+    const [roomPlannerPhoto, setRoomPlannerPhoto] = useState(null);
+    const [roomPlannerRecommendations, setRoomPlannerRecommendations] = useState(null);
+    const [aiSuggestions, setAiSuggestions] = useState(null);
+    const [analyzing, setAnalyzing] = useState(false);
+    const roomPlannerSuggestions = useMemo(() => {
+        if (!roomPlannerRecommendations)
+            return null;
+        const topRecommendation = roomPlannerRecommendations.recommendations?.[0];
+        return {
+            fitScore: topRecommendation?.matchScore ?? 0,
+            fitReason: topRecommendation?.reasoning ||
+                roomPlannerRecommendations.roomAnalysis?.freeSpace?.description ||
+                'Room Planner analysis is ready for this space.',
+            roomStyle: roomPlannerRecommendations.roomAnalysis?.detectedStyle || 'Unknown',
+            dominantColors: roomPlannerRecommendations.roomAnalysis?.dominantColors || [],
+            recommendations: roomPlannerRecommendations.recommendations?.slice(0, 4).map((rec) => ({
+                type: rec.item.category || 'recommendation',
+                suggestion: rec.item.name,
+                reason: rec.reasoning || rec.placement?.reasoning || 'Recommended by Room Planner.',
+            })) || [],
+            warning: roomPlannerPhoto
+                ? undefined
+                : 'Room Planner analysis was found, but the uploaded photo is not available.',
+        };
+    }, [roomPlannerPhoto, roomPlannerRecommendations]);
+    useEffect(() => {
+        const loadRoomPlannerState = () => {
+            if (typeof window === 'undefined')
+                return;
+            try {
+                const saved = sessionStorage.getItem(ROOM_PLANNER_STORAGE_KEY);
+                if (!saved) {
+                    setRoomPlannerPhoto(null);
+                    setRoomPlannerRecommendations(null);
+                    return;
+                }
+                const state = JSON.parse(saved);
+                setRoomPlannerPhoto(state.uploadedPhotos?.[0] || null);
+                setRoomPlannerRecommendations(state.recommendations || null);
+            }
+            catch (error) {
+                console.warn('Failed to load Room Planner state for customizer:', error);
+            }
+        };
+        loadRoomPlannerState();
+        window.addEventListener('focus', loadRoomPlannerState);
+        return () => {
+            window.removeEventListener('focus', loadRoomPlannerState);
+        };
+    }, []);
+    useEffect(() => {
+        setAiSuggestions(roomPlannerSuggestions);
+    }, [roomPlannerSuggestions]);
+    const getRoomPlannerImagePayload = () => {
+        if (!roomPlannerPhoto)
+            return null;
+        const match = roomPlannerPhoto.match(/^data:(.*?);base64,(.*)$/);
+        if (!match)
+            return null;
+        return {
+            imageType: match[1] || 'image/jpeg',
+            imageBase64: match[2] || '',
+        };
+    };
+    const analyzeRoom = async (base64, imageType) => {
+        setAnalyzing(true);
+        setAiSuggestions(null);
+        try {
+            const res = await fetch('/api/ai/suggestions', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    imageBase64: base64,
+                    imageType,
+                    productName: selectedProduct?.name || 'furniture piece',
+                    productCategory: selectedProduct?.category || 'furniture',
+                    colors: selectedProduct?.colors?.map((c) => c.name) || [],
+                    materials: selectedProduct?.materials || [],
+                    additionalDetails: additionalDetails || null,
+                })
+            });
+            const data = await res.json();
+            if (data.success)
+                setAiSuggestions(data.suggestions);
+        }
+        catch (error) {
+            console.error('Analysis error:', error);
+        }
+        finally {
+            setAnalyzing(false);
+        }
+    };
+    const handleAnalyzeWithRoomPlannerPhoto = () => {
+        const payload = getRoomPlannerImagePayload();
+        if (!payload)
+            return;
+        analyzeRoom(payload.imageBase64, payload.imageType);
+    };
+    return (jsxRuntimeExports.jsx("section", { className: "py-12 bg-gray-50 min-h-screen", children: jsxRuntimeExports.jsx("div", { className: "max-w-7xl mx-auto px-4", children: jsxRuntimeExports.jsxs("div", { className: "grid lg:grid-cols-12 gap-6", children: [jsxRuntimeExports.jsx("div", { className: "lg:col-span-3", children: jsxRuntimeExports.jsxs("div", { className: "bg-white rounded-2xl border border-gray-200 p-6 shadow-lg sticky top-6", children: [jsxRuntimeExports.jsxs("div", { className: "flex items-start justify-between gap-4 mb-4", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h3", { className: "text-lg font-bold text-gray-900 mb-4", children: "Select Product" }), jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-600 mb-4", children: "B2B-ready configs with instant pricing" })] }), jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [jsxRuntimeExports.jsx("button", { type: "button", onClick: onUndo, disabled: !canUndo || isApplying, className: "p-2 border border-gray-200 rounded-lg hover:bg-gray-50 transition disabled:opacity-50 disabled:cursor-not-allowed", title: "Undo", children: jsxRuntimeExports.jsx(Undo2, { className: "w-4 h-4 text-gray-600" }) }), jsxRuntimeExports.jsx("button", { type: "button", onClick: onRedo, disabled: !canRedo || isApplying, className: "p-2 border border-gray-200 rounded-lg hover:bg-gray-50 transition disabled:opacity-50 disabled:cursor-not-allowed", title: "Redo", children: jsxRuntimeExports.jsx(Redo2, { className: "w-4 h-4 text-gray-600" }) })] })] }), jsxRuntimeExports.jsx("select", { value: draft.productId, onChange: (e) => {
+                                        const nextProduct = products.find((product) => product.id === e.target.value);
+                                        if (!nextProduct) {
+                                            return;
+                                        }
+                                        setDraft({
+                                            ...draft,
+                                            productId: nextProduct.id,
+                                            fabricColor: nextProduct.colors[0]?.hex ?? draft.fabricColor,
+                                            materialId: nextProduct.customizer.materialOptions[0]?.id ?? draft.materialId,
+                                            widthIn: nextProduct.customizer.defaultWidthIn,
+                                            depthIn: nextProduct.customizer.defaultDepthIn,
+                                        });
+                                    }, disabled: isApplying, className: "w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 mb-6 disabled:opacity-60", children: products.map((p) => (jsxRuntimeExports.jsx("option", { value: p.id, children: p.name }, p.id))) }), jsxRuntimeExports.jsxs("div", { className: "aspect-square bg-purple-50 rounded-lg mb-6 flex flex-col items-center justify-center border border-purple-200 text-center px-4", children: [jsxRuntimeExports.jsx(Layers, { className: "w-12 h-12 text-purple-400 mb-2" }), jsxRuntimeExports.jsx("p", { className: "text-sm text-purple-600 font-medium", children: selectedProduct?.customizer.thumbnailLabel ?? 'Sectional' }), jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500", children: "Instantly updates with your selections" })] }), jsxRuntimeExports.jsxs("div", { className: "space-y-3 text-sm border-t border-gray-200 pt-4", children: [jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-gray-600", children: [jsxRuntimeExports.jsx("span", { children: "Base Price:" }), jsxRuntimeExports.jsxs("span", { className: "font-medium text-gray-900", children: ["$", price.base.toLocaleString()] })] }), jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-gray-600", children: [jsxRuntimeExports.jsx("span", { children: "Base Size:" }), jsxRuntimeExports.jsxs("span", { className: "font-medium text-gray-900", children: [selectedProduct?.dimensions.width, selectedProduct?.dimensions.unit, " W"] })] }), jsxRuntimeExports.jsxs("div", { className: "text-gray-600", children: [jsxRuntimeExports.jsx("span", { className: "block mb-1", children: "Materials:" }), jsxRuntimeExports.jsx("span", { className: "font-medium text-gray-900", children: selectedProduct?.materials.join(', ') || 'Custom' })] }), jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-gray-600", children: [jsxRuntimeExports.jsx("span", { children: "Customizations:" }), jsxRuntimeExports.jsxs("span", { className: "font-medium text-purple-600", children: ["+$", price.customizations.toLocaleString()] })] }), jsxRuntimeExports.jsxs("div", { className: "border-t border-gray-200 pt-3 flex justify-between", children: [jsxRuntimeExports.jsx("span", { className: "font-bold text-gray-900", children: "Total:" }), jsxRuntimeExports.jsxs("span", { className: "font-bold text-lg text-gray-900", children: ["$", price.total.toLocaleString()] })] })] }), jsxRuntimeExports.jsxs("div", { className: "mt-6 grid grid-cols-3 gap-2", children: [jsxRuntimeExports.jsx("button", { type: "button", onClick: onSaveConfig, disabled: isApplying, className: "px-3 py-2 border border-gray-200 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gray-50 transition disabled:opacity-50", children: "Save" }), jsxRuntimeExports.jsxs("button", { type: "button", onClick: onShareLink, disabled: isApplying, className: "px-3 py-2 border border-gray-200 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gray-50 transition disabled:opacity-50 inline-flex items-center justify-center gap-2", children: [jsxRuntimeExports.jsx(Link2, { className: "w-4 h-4" }), "Share"] }), jsxRuntimeExports.jsxs("button", { type: "button", onClick: onExportPdf, disabled: isApplying, className: "px-3 py-2 border border-gray-200 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gray-50 transition disabled:opacity-50 inline-flex items-center justify-center gap-2", children: [jsxRuntimeExports.jsx(FileDown, { className: "w-4 h-4" }), "PDF"] })] })] }) }), jsxRuntimeExports.jsx("div", { className: "lg:col-span-4", children: jsxRuntimeExports.jsxs("div", { className: "bg-white rounded-2xl border border-gray-200 p-6 shadow-lg", children: [jsxRuntimeExports.jsxs("h3", { className: "text-lg font-bold text-gray-900 mb-6 flex items-center gap-2", children: [jsxRuntimeExports.jsx(Palette, { className: "w-5 h-5 text-purple-600" }), "Customization Options"] }), jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-gray-900 mb-3", children: "Fabric Color" }), colorSwatches.length > 0 ? (jsxRuntimeExports.jsx("div", { className: "flex flex-wrap gap-2", children: colorSwatches.map((color) => {
+                                                const isSelected = draft.fabricColor.toLowerCase() === color.hex.toLowerCase();
+                                                return (jsxRuntimeExports.jsxs("button", { type: "button", onClick: () => setDraft({ ...draft, fabricColor: color.hex }), disabled: isApplying, className: [
+                                                        'flex items-center gap-2 px-3 py-2 rounded-xl border-2 text-sm transition-all',
+                                                        isSelected
+                                                            ? 'border-blue-500 bg-blue-50'
+                                                            : 'border-gray-200 hover:border-gray-300',
+                                                        isApplying ? 'opacity-60 cursor-not-allowed' : '',
+                                                    ].join(' '), "aria-label": `Select color ${color.name}`, title: color.name, children: [jsxRuntimeExports.jsx("div", { className: "w-4 h-4 rounded-full border border-gray-200", style: { backgroundColor: color.hex } }), color.name] }, color.name));
+                                            }) })) : (jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-400", children: "No colors available for this product" }))] }), jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-gray-900 mb-3", children: "Material" }), materialOptions.length > 0 ? (jsxRuntimeExports.jsx("div", { className: "space-y-2", children: materialOptions.map((m) => {
+                                                const isSelected = draft.materialId === m.id;
+                                                return (jsxRuntimeExports.jsxs("button", { type: "button", onClick: () => setDraft({ ...draft, materialId: m.id }), disabled: isApplying, className: [
+                                                        'w-full flex items-center justify-between px-4 py-3 rounded-xl border-2 text-sm transition-all text-left',
+                                                        isSelected
+                                                            ? 'border-purple-500 bg-purple-50'
+                                                            : 'border-gray-200 hover:border-gray-300',
+                                                        isApplying ? 'opacity-60 cursor-not-allowed' : '',
+                                                    ].join(' '), children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsxs("p", { className: "font-medium text-gray-900", children: [m.name, " (", m.priceDelta === 0 ? '+$0' : `+$${m.priceDelta}`, ")"] }), jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500", children: m.description || getMaterialDescription(m.name) })] }), isSelected && jsxRuntimeExports.jsx(Check, { className: "w-4 h-4 text-purple-500" })] }, m.id));
+                                            }) })) : (jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-400", children: "No materials available for this product" }))] }), jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [jsxRuntimeExports.jsxs("label", { className: "block text-sm font-medium text-gray-900 mb-3 flex items-center gap-2", children: [jsxRuntimeExports.jsx(Maximize2, { className: "w-4 h-4 text-purple-600" }), "Dimensions"] }), jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-sm mb-2", children: [jsxRuntimeExports.jsx("span", { className: "text-gray-600", children: "Width" }), jsxRuntimeExports.jsxs("span", { className: "font-medium text-gray-900", children: [draft.widthIn, " inches"] })] }), jsxRuntimeExports.jsx("input", { type: "range", min: widthMin, max: widthMax, value: draft.widthIn, onChange: (e) => setDraft({ ...draft, widthIn: Number(e.target.value) }), disabled: isApplying, className: "w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-600" }), jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-xs text-gray-500 mt-1", children: [jsxRuntimeExports.jsxs("span", { children: [widthMin, "\""] }), jsxRuntimeExports.jsxs("span", { children: [widthMax, "\""] })] })] }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-sm mb-2", children: [jsxRuntimeExports.jsx("span", { className: "text-gray-600", children: "Length" }), jsxRuntimeExports.jsxs("span", { className: "font-medium text-gray-900", children: [draft.depthIn, " inches"] })] }), jsxRuntimeExports.jsx("input", { type: "range", min: lengthMin, max: lengthMax, value: draft.depthIn, onChange: (e) => setDraft({ ...draft, depthIn: Number(e.target.value) }), disabled: isApplying, className: "w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-600" }), jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-xs text-gray-500 mt-1", children: [jsxRuntimeExports.jsxs("span", { children: [lengthMin, "\""] }), jsxRuntimeExports.jsxs("span", { children: [lengthMax, "\""] })] })] })] }), validationErrors && validationErrors.length > 0 && (jsxRuntimeExports.jsxs("div", { className: "mt-4 bg-red-50 border border-red-200 text-red-700 rounded-lg p-3 text-sm", children: [jsxRuntimeExports.jsx("div", { className: "font-semibold mb-1", children: "Adjustments need review" }), jsxRuntimeExports.jsx("ul", { className: "list-disc pl-5 space-y-1", children: validationErrors.map((e, i) => (jsxRuntimeExports.jsx("li", { children: e }, i))) })] }))] }), jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [jsxRuntimeExports.jsxs("label", { className: "block text-sm font-medium text-gray-900 mb-3 flex items-center gap-2", children: [jsxRuntimeExports.jsx(Layers, { className: "w-4 h-4 text-purple-600" }), "Add-ons"] }), jsxRuntimeExports.jsxs("div", { className: "space-y-2", children: [jsxRuntimeExports.jsxs("label", { className: "flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition", children: [jsxRuntimeExports.jsx("input", { type: "checkbox", checked: draft.addons.throwPillows, onChange: (e) => setDraft({
+                                                                ...draft,
+                                                                addons: { ...draft.addons, throwPillows: e.target.checked },
+                                                            }), disabled: isApplying, className: "w-4 h-4 text-purple-600 rounded accent-purple-600" }), jsxRuntimeExports.jsx("span", { className: "flex-1 text-sm text-gray-900", children: "Throw Pillows (2)" }), jsxRuntimeExports.jsx("span", { className: "text-sm font-medium text-gray-900", children: "+$60" })] }), jsxRuntimeExports.jsxs("label", { className: "flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition", children: [jsxRuntimeExports.jsx("input", { type: "checkbox", checked: draft.addons.ottoman, onChange: (e) => setDraft({
+                                                                ...draft,
+                                                                addons: { ...draft.addons, ottoman: e.target.checked },
+                                                            }), disabled: isApplying, className: "w-4 h-4 text-purple-600 rounded accent-purple-600" }), jsxRuntimeExports.jsx("span", { className: "flex-1 text-sm text-gray-900", children: "Ottoman" }), jsxRuntimeExports.jsx("span", { className: "text-sm font-medium text-gray-900", children: "+$350" })] })] })] }), jsxRuntimeExports.jsxs("button", { type: "button", onClick: onApply, disabled: isApplying || (validationErrors?.length ?? 0) > 0, className: "w-full py-4 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-700 transition shadow-lg shadow-purple-600/30 flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed", children: [jsxRuntimeExports.jsx(Sparkles, { className: "w-5 h-5" }), isApplying ? 'Applying...' : 'Apply Customizations'] })] }) }), jsxRuntimeExports.jsx("div", { className: "lg:col-span-5", children: jsxRuntimeExports.jsxs("div", { className: "bg-white rounded-2xl border border-gray-200 p-6 shadow-lg sticky top-6", children: [jsxRuntimeExports.jsxs("div", { className: "bg-white rounded-xl border border-gray-200 p-5 mb-4", children: [jsxRuntimeExports.jsx("h3", { className: "font-semibold text-gray-900 mb-1", children: "Tell Us What You Want" }), jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500 mb-3", children: "Describe exactly what you need - AI will tailor suggestions to your specific request" }), jsxRuntimeExports.jsx("textarea", { value: additionalDetails, onChange: (e) => {
+                                                setAdditionalDetails(e.target.value);
+                                                setCharCount(e.target.value.length);
+                                            }, maxLength: 500, rows: 5, placeholder: `Examples:
+- I want something that matches my grey walls
+- Need storage space underneath
+- Looking for pet-friendly fabric
+- Want it to feel cozy but modern
+- Must fit through a 32 inch doorway`, className: "w-full border border-gray-300 rounded-xl px-4 py-3 text-sm text-gray-700 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400" }), jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mt-2", children: [jsxRuntimeExports.jsxs("span", { className: "text-xs text-gray-400", children: [charCount, "/500 characters"] }), additionalDetails && (jsxRuntimeExports.jsx("button", { onClick: () => { setAdditionalDetails(''); setCharCount(0); }, className: "text-xs text-gray-400 hover:text-gray-600", children: "Clear" }))] }), jsxRuntimeExports.jsxs("div", { className: "mt-3", children: [jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-400 mb-2", children: "Quick adds:" }), jsxRuntimeExports.jsx("div", { className: "flex flex-wrap gap-2", children: [
+                                                        'Pet-friendly fabric',
+                                                        'Easy to clean',
+                                                        'Extra storage',
+                                                        'Child-safe',
+                                                        'Matches grey walls',
+                                                        'Cozy and warm feel',
+                                                        'Minimalist style',
+                                                        'Must fit small space',
+                                                    ].map((chip) => (jsxRuntimeExports.jsxs("button", { onClick: () => {
+                                                            const newText = additionalDetails
+                                                                ? `${additionalDetails}, ${chip.toLowerCase()}`
+                                                                : chip;
+                                                            setAdditionalDetails(newText);
+                                                            setCharCount(newText.length);
+                                                        }, className: "text-xs bg-gray-100 hover:bg-blue-50 hover:text-blue-600 text-gray-600 px-3 py-1 rounded-full transition-colors", children: ["+ ", chip] }, chip))) })] })] }), roomPlannerPhoto && (jsxRuntimeExports.jsx("button", { onClick: handleAnalyzeWithRoomPlannerPhoto, disabled: analyzing, className: "w-full bg-blue-600 text-white py-3 rounded-xl font-medium hover:bg-blue-700 disabled:opacity-50 flex items-center justify-center gap-2 mb-4", children: analyzing ? (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsx("div", { className: "animate-spin rounded-full h-4 w-4 border-b-2 border-white" }), "Analyzing your room..."] })) : ('✨ Get AI Suggestions') })), jsxRuntimeExports.jsxs("div", { className: "bg-white rounded-xl border border-gray-200 p-5", children: [jsxRuntimeExports.jsx("h3", { className: "font-semibold text-gray-900 mb-4", children: "AI Suggestions" }), !roomPlannerPhoto && !analyzing && (jsxRuntimeExports.jsxs("div", { className: "text-center py-8", children: [jsxRuntimeExports.jsx("p", { className: "text-3xl mb-2", children: "\uD83C\uDFE0" }), jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-500", children: "Use Room Planner first to upload a room photo and get personalized suggestions" })] })), analyzing && (jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center py-8 gap-3", children: [jsxRuntimeExports.jsx("div", { className: "animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600" }), jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-500", children: "Analyzing your room and requirements..." })] })), aiSuggestions && !analyzing && (jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [jsxRuntimeExports.jsxs("div", { className: "bg-blue-50 rounded-xl p-4", children: [jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mb-1", children: [jsxRuntimeExports.jsx("span", { className: "text-sm font-medium text-blue-900", children: "Room Fit Score" }), jsxRuntimeExports.jsxs("span", { className: "text-lg font-bold text-blue-600", children: [aiSuggestions.fitScore, "%"] })] }), jsxRuntimeExports.jsx("div", { className: "w-full bg-blue-200 rounded-full h-2", children: jsxRuntimeExports.jsx("div", { className: "bg-blue-600 h-2 rounded-full transition-all", style: { width: `${aiSuggestions.fitScore}%` } }) }), jsxRuntimeExports.jsx("p", { className: "text-xs text-blue-700 mt-2", children: aiSuggestions.fitReason })] }), jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [jsxRuntimeExports.jsx("span", { className: "text-xs text-gray-500", children: "Room style detected:" }), jsxRuntimeExports.jsx("span", { className: "text-xs font-medium bg-gray-100 text-gray-700 px-2 py-1 rounded-full", children: aiSuggestions.roomStyle })] }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500 mb-2", children: "Room colors:" }), jsxRuntimeExports.jsx("div", { className: "flex flex-wrap gap-2", children: aiSuggestions.dominantColors?.map((color, i) => (jsxRuntimeExports.jsx("span", { className: "text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded-full", children: color }, i))) })] }), jsxRuntimeExports.jsx("div", { className: "space-y-3", children: aiSuggestions.recommendations?.map((rec, i) => (jsxRuntimeExports.jsxs("div", { className: "border border-gray-100 rounded-xl p-3", children: [jsxRuntimeExports.jsx("span", { className: `text-xs font-medium px-2 py-0.5 rounded-full ${rec.type === 'color'
+                                                                    ? 'bg-purple-100 text-purple-700'
+                                                                    : rec.type === 'material'
+                                                                        ? 'bg-green-100 text-green-700'
+                                                                        : rec.type === 'customization'
+                                                                            ? 'bg-blue-100 text-blue-700'
+                                                                            : 'bg-orange-100 text-orange-700'}`, children: rec.type }), jsxRuntimeExports.jsx("p", { className: "text-sm font-medium text-gray-900 mt-2", children: rec.suggestion }), jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500 mt-0.5", children: rec.reason })] }, i))) }), aiSuggestions.warning && (jsxRuntimeExports.jsx("div", { className: "bg-yellow-50 border border-yellow-200 rounded-xl p-3", children: jsxRuntimeExports.jsxs("p", { className: "text-xs text-yellow-800", children: ["\u26A0\uFE0F ", aiSuggestions.warning] }) })), roomPlannerPhoto && (jsxRuntimeExports.jsx("button", { onClick: handleAnalyzeWithRoomPlannerPhoto, className: "w-full text-sm text-blue-600 hover:underline text-center mt-2", children: "Re-analyze with updated details" }))] }))] })] }) })] }) }) }));
+}
+
+const createDraftForProduct = (product) => ({
+    productId: product.id,
+    fabricColor: product.colors[0]?.hex ?? '#9CA3AF',
+    materialId: product.customizer.materialOptions[0]?.id ?? 'standard_material',
+    widthIn: product.customizer.defaultWidthIn,
+    depthIn: product.customizer.defaultDepthIn,
+    addons: { throwPillows: false, ottoman: false },
+    rotationDeg: 0,
+    zoom: 1,
+    roomContext: { lengthFt: 12.5, widthFt: 15.2 },
+});
+const getColorName = (product, hex) => product.colors.find((color) => color.hex.toLowerCase() === hex.toLowerCase())?.name ?? hex;
+const getMaterialOption = (product, materialId) => product.customizer.materialOptions.find((option) => option.id === materialId) ??
+    product.customizer.materialOptions[0];
+const dimensionRange = (base) => [
+    Math.round(base * 0.8),
+    Math.round(base * 1.2),
+];
+function FurnitureCustomizerWidget({ config = {}, onNavigateToRoomPlanner, selectedProduct: sharedSelectedProduct, onSelectedProductChange, }) {
     const mergedConfig = useMemo(() => mergeConfig(config), [config]);
     const apiClient = useMemo(() => new ApiClient(mergedConfig), [mergedConfig]);
     const storage = useMemo(() => new Storage(mergedConfig.storageKey), [mergedConfig.storageKey]);
+    const enabledActions = useMemo(() => getEnabledActions(mergedConfig), [mergedConfig]);
+    const primaryColor = getPrimaryColor(mergedConfig);
+    const [catalogProducts, setCatalogProducts] = useState([]);
+    const availableProducts = useMemo(() => {
+        const baseProducts = catalogProducts.length > 0 ? catalogProducts : products;
+        if (!sharedSelectedProduct) {
+            return baseProducts;
+        }
+        const existing = baseProducts.find((product) => product.id === sharedSelectedProduct.id);
+        return existing ? baseProducts : [sharedSelectedProduct, ...baseProducts];
+    }, [catalogProducts, sharedSelectedProduct]);
+    const defaultProduct = useMemo(() => sharedSelectedProduct ?? availableProducts[0] ?? products[0], [availableProducts, sharedSelectedProduct]);
     const [customizedItem, setCustomizedItem] = useState(null);
     const [savedItem, setSavedItem] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
     const [saveNotification, setSaveNotification] = useState(null);
     const [lastConfig, setLastConfig] = useState(null);
-    const [selectedMaterial, setSelectedMaterial] = useState('fabric');
-    const [baseItem, setBaseItem] = useState({
-        id: 'custom-1',
-        name: 'Customizable Sofa',
-        type: 'sofa',
-    });
-    // Finalize & Quote state
+    const [baseProduct, setBaseProduct] = useState(defaultProduct);
+    const [draft, setDraft] = useState(() => createDraftForProduct(defaultProduct));
+    const [history, setHistory] = useState(() => [createDraftForProduct(defaultProduct)]);
+    const [historyIndex, setHistoryIndex] = useState(0);
     const [showFinalizeModal, setShowFinalizeModal] = useState(false);
     const [showQuoteForm, setShowQuoteForm] = useState(false);
     const [quoteSuccess, setQuoteSuccess] = useState(false);
-    // Load item from sessionStorage on mount
+    const canUndo = historyIndex > 0;
+    const canRedo = historyIndex < history.length - 1;
+    const setDraftWithHistory = useCallback((next) => {
+        setDraft(next);
+        setHistory((prev) => {
+            const sliced = prev.slice(0, historyIndex + 1);
+            const nextHistory = [...sliced, next];
+            return nextHistory.length > 60 ? nextHistory.slice(nextHistory.length - 60) : nextHistory;
+        });
+        setHistoryIndex((prev) => Math.min(prev + 1, 59));
+    }, [historyIndex]);
+    const applySelectedProduct = useCallback((product, clearSessionStorage = false) => {
+        const nextDraft = createDraftForProduct(product);
+        setBaseProduct(product);
+        setDraft(nextDraft);
+        setHistory([nextDraft]);
+        setHistoryIndex(0);
+        setCustomizedItem(null);
+        setSavedItem(null);
+        setError(null);
+        setSaveNotification(null);
+        setLastConfig(null);
+        onSelectedProductChange?.(product);
+        if (clearSessionStorage && typeof window !== 'undefined') {
+            sessionStorage.removeItem('modly-customize-item');
+        }
+    }, [onSelectedProductChange]);
+    useEffect(() => {
+        let cancelled = false;
+        const loadCatalogProducts = async () => {
+            try {
+                const response = await apiClient.getCatalog();
+                if (cancelled) {
+                    return;
+                }
+                const nextProducts = Array.isArray(response.items)
+                    ? response.items.map((item) => productFromFurnitureItem(item))
+                    : [];
+                setCatalogProducts(nextProducts.filter(Boolean));
+            }
+            catch (catalogError) {
+                if (!cancelled) {
+                    console.warn('Failed to load catalog products for customizer:', catalogError);
+                    setCatalogProducts([]);
+                }
+            }
+        };
+        loadCatalogProducts();
+        return () => {
+            cancelled = true;
+        };
+    }, [apiClient]);
+    useEffect(() => {
+        if (defaultProduct.id !== baseProduct.id) {
+            applySelectedProduct(defaultProduct);
+        }
+    }, [applySelectedProduct, baseProduct.id, defaultProduct]);
     useEffect(() => {
         const loadFromSessionStorage = () => {
             if (typeof window === 'undefined') {
-                return false;
+                return;
             }
             const stored = sessionStorage.getItem('modly-customize-item');
             if (!stored) {
-                return false;
+                return;
             }
             try {
                 const item = JSON.parse(stored);
-                // Check if this is a different item than what we currently have
-                if (baseItem && baseItem.id === item.id) {
-                    return false;
+                const product = productFromFurnitureItem(item);
+                if (product.id !== baseProduct.id) {
+                    applySelectedProduct(product, true);
                 }
-                const currentConfig = {
-                    baseItemId: item.id,
-                    baseItemType: item.category || item.subCategory || 'furniture',
-                    baseItemName: item.name,
-                    colorScheme: {
-                        primary: item.colors?.main || 'Beige',
-                        secondary: item.colors?.accent || undefined,
-                    },
-                    materialOverrides: {
-                        primary: item.materials?.primary || undefined,
-                        legs: item.materials?.legs || undefined,
-                        upholstery: item.materials?.upholstery || undefined,
-                    },
-                };
-                const newBaseItem = {
-                    id: item.id,
-                    name: item.name,
-                    type: item.category || item.subCategory || 'furniture',
-                    currentConfig,
-                };
-                setBaseItem(newBaseItem);
-                // Clear sessionStorage after reading
-                sessionStorage.removeItem('modly-customize-item');
-                // Reset customization state when loading a new item
-                setCustomizedItem(null);
-                setError(null);
-                setSaveNotification(null);
-                setLastConfig(null);
-                return true;
+                else {
+                    sessionStorage.removeItem('modly-customize-item');
+                }
             }
-            catch (error) {
-                console.warn('Failed to parse selected catalog item:', error);
-                return false;
+            catch (sessionError) {
+                console.warn('Failed to parse selected catalog item:', sessionError);
             }
         };
-        // Load on mount
         loadFromSessionStorage();
-        // Set up an interval to check for new items
-        const interval = setInterval(() => {
-            loadFromSessionStorage();
-        }, 500);
-        // Also check when the window gains focus
-        const handleFocus = () => {
-            loadFromSessionStorage();
-        };
-        window.addEventListener('focus', handleFocus);
+        window.addEventListener('focus', loadFromSessionStorage);
         return () => {
-            clearInterval(interval);
-            window.removeEventListener('focus', handleFocus);
+            window.removeEventListener('focus', loadFromSessionStorage);
         };
-    }, [baseItem]);
+    }, [applySelectedProduct, baseProduct.id]);
+    const handleUndo = useCallback(() => {
+        setHistoryIndex((idx) => {
+            const nextIdx = Math.max(0, idx - 1);
+            setDraft(history[nextIdx] ?? createDraftForProduct(baseProduct));
+            return nextIdx;
+        });
+    }, [baseProduct, history]);
+    const handleRedo = useCallback(() => {
+        setHistoryIndex((idx) => {
+            const nextIdx = Math.min(history.length - 1, idx + 1);
+            setDraft(history[nextIdx] ?? createDraftForProduct(baseProduct));
+            return nextIdx;
+        });
+    }, [baseProduct, history]);
+    const selectedProduct = useMemo(() => availableProducts.find((product) => product.id === draft.productId) ?? baseProduct, [availableProducts, baseProduct, draft.productId]);
+    useEffect(() => {
+        if (selectedProduct.id !== baseProduct.id) {
+            setBaseProduct(selectedProduct);
+            onSelectedProductChange?.(selectedProduct);
+        }
+    }, [baseProduct.id, onSelectedProductChange, selectedProduct]);
+    const validationErrors = useMemo(() => {
+        const errs = [];
+        const widthRange = dimensionRange(selectedProduct.customizer.defaultWidthIn);
+        const depthRange = dimensionRange(selectedProduct.customizer.defaultDepthIn);
+        if (draft.widthIn < widthRange[0] || draft.widthIn > widthRange[1]) {
+            errs.push(`Width must be between ${widthRange[0]} and ${widthRange[1]} inches.`);
+        }
+        if (draft.depthIn < depthRange[0] || draft.depthIn > depthRange[1]) {
+            errs.push(`Depth must be between ${depthRange[0]} and ${depthRange[1]} inches.`);
+        }
+        if (draft.zoom < 0.8 || draft.zoom > 1.4) {
+            errs.push('Zoom must be between 0.8x and 1.4x.');
+        }
+        return errs;
+    }, [draft.depthIn, draft.widthIn, draft.zoom, selectedProduct]);
+    const price = useMemo(() => {
+        const materialUpcharge = getMaterialOption(selectedProduct, draft.materialId)?.priceDelta ?? 0;
+        const addonsUpcharge = (draft.addons.throwPillows ? 60 : 0) + (draft.addons.ottoman ? 350 : 0);
+        const deltaW = Math.abs(draft.widthIn - selectedProduct.customizer.defaultWidthIn);
+        const deltaD = Math.abs(draft.depthIn - selectedProduct.customizer.defaultDepthIn);
+        const dimensionUpcharge = Math.round(deltaW * 6 + deltaD * 10);
+        const customizations = materialUpcharge + addonsUpcharge + dimensionUpcharge;
+        const total = selectedProduct.basePrice + customizations;
+        const lineItems = [
+            { label: 'Material', amount: materialUpcharge },
+            { label: 'Add-ons', amount: addonsUpcharge },
+            { label: 'Dimensions', amount: dimensionUpcharge },
+        ].filter((lineItem) => lineItem.amount !== 0);
+        return {
+            base: selectedProduct.basePrice,
+            customizations,
+            total,
+            lineItems,
+        };
+    }, [draft.addons.ottoman, draft.addons.throwPillows, draft.depthIn, draft.materialId, draft.widthIn, selectedProduct]);
+    const configStorageKey = useMemo(() => `${mergedConfig.storageKey}:customizer-configs`, [mergedConfig.storageKey]);
+    const saveDraftConfig = useCallback(() => {
+        try {
+            if (typeof window === 'undefined')
+                return;
+            const existingRaw = localStorage.getItem(configStorageKey);
+            const existing = existingRaw
+                ? JSON.parse(existingRaw)
+                : [];
+            const materialName = getMaterialOption(selectedProduct, draft.materialId)?.name ?? 'Custom';
+            const entry = {
+                id: `cfg-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+                savedAt: new Date().toISOString(),
+                productId: selectedProduct.id,
+                name: `${selectedProduct.name} · ${materialName}`,
+                draft,
+                price: price.total,
+            };
+            localStorage.setItem(configStorageKey, JSON.stringify([entry, ...existing].slice(0, 25)));
+            setSaveNotification('Configuration saved!');
+            setTimeout(() => setSaveNotification(null), 2500);
+        }
+        catch (saveError) {
+            console.error('Failed to save configuration:', saveError);
+            setError('Failed to save configuration.');
+        }
+    }, [configStorageKey, draft, price.total, selectedProduct]);
+    const encodeSharePayload = useCallback((payload) => {
+        const json = JSON.stringify(payload);
+        const b64 = typeof window !== 'undefined' ? window.btoa(unescape(encodeURIComponent(json))) : '';
+        return b64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/g, '');
+    }, []);
+    const shareLink = useMemo(() => {
+        if (typeof window === 'undefined')
+            return '';
+        const url = new URL(window.location.href);
+        url.searchParams.set('modlyConfig', encodeSharePayload({ v: 1, productId: selectedProduct.id, draft, total: price.total }));
+        return url.toString();
+    }, [draft, encodeSharePayload, price.total, selectedProduct.id]);
+    const copyShareLink = useCallback(async () => {
+        try {
+            if (typeof window === 'undefined')
+                return;
+            if (navigator.clipboard?.writeText) {
+                await navigator.clipboard.writeText(shareLink);
+            }
+            else {
+                const textarea = document.createElement('textarea');
+                textarea.value = shareLink;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                textarea.remove();
+            }
+            setSaveNotification('Share link copied to clipboard!');
+            setTimeout(() => setSaveNotification(null), 2500);
+        }
+        catch (copyError) {
+            console.error('Failed to copy share link:', copyError);
+            setError('Failed to copy share link.');
+        }
+    }, [shareLink]);
+    const exportAsPdf = useCallback(() => {
+        if (typeof window === 'undefined')
+            return;
+        const materialName = getMaterialOption(selectedProduct, draft.materialId)?.name ?? draft.materialId;
+        const colorName = getColorName(selectedProduct, draft.fabricColor);
+        const previewWindow = window.open('', '_blank', 'noopener,noreferrer,width=900,height=700');
+        if (!previewWindow) {
+            setError('Popup blocked. Please allow popups to export PDF.');
+            return;
+        }
+        const html = `
+      <html>
+        <head>
+          <title>Furniture Configuration</title>
+          <meta charset="utf-8" />
+          <style>
+            body { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial; padding: 24px; color: #111827; }
+            .card { border: 1px solid #E5E7EB; border-radius: 16px; padding: 18px; margin-bottom: 14px; }
+            h1 { margin: 0 0 8px 0; font-size: 22px; }
+            h2 { margin: 0 0 10px 0; font-size: 14px; color: #6B7280; text-transform: uppercase; letter-spacing: .08em; }
+            .row { display: flex; justify-content: space-between; gap: 12px; margin: 8px 0; }
+            .muted { color: #6B7280; }
+            .total { font-size: 18px; font-weight: 800; }
+            .swatch { width: 16px; height: 16px; border-radius: 4px; border: 1px solid #E5E7EB; display:inline-block; vertical-align: middle; margin-right: 8px; }
+            @media print { body { padding: 0; } }
+          </style>
+        </head>
+        <body>
+          <div class="card">
+            <h1>${selectedProduct.name.replace(/</g, '&lt;')}</h1>
+            <div class="muted">Generated: ${new Date().toLocaleString()}</div>
+          </div>
+          <div class="card">
+            <h2>Configuration</h2>
+            <div class="row"><div class="muted">Material</div><div>${materialName}</div></div>
+            <div class="row"><div class="muted">Color</div><div><span class="swatch" style="background:${draft.fabricColor}"></span>${colorName}</div></div>
+            <div class="row"><div class="muted">Width</div><div>${draft.widthIn} in</div></div>
+            <div class="row"><div class="muted">Depth</div><div>${draft.depthIn} in</div></div>
+            <div class="row"><div class="muted">Base Dimensions</div><div>${selectedProduct.dimensions.length}${selectedProduct.dimensions.unit} L × ${selectedProduct.dimensions.width}${selectedProduct.dimensions.unit} W × ${selectedProduct.dimensions.height}${selectedProduct.dimensions.unit} H</div></div>
+            <div class="row"><div class="muted">Add-ons</div><div>${[
+            draft.addons.throwPillows ? 'Throw pillows (2)' : '',
+            draft.addons.ottoman ? 'Ottoman' : '',
+        ]
+            .filter(Boolean)
+            .join(', ') || 'None'}</div></div>
+          </div>
+          <div class="card">
+            <h2>Pricing</h2>
+            <div class="row"><div class="muted">Base</div><div>$${price.base.toLocaleString()}</div></div>
+            ${price.lineItems
+            .map((lineItem) => `<div class="row"><div class="muted">${lineItem.label}</div><div>+$${lineItem.amount.toLocaleString()}</div></div>`)
+            .join('')}
+            <div class="row total"><div>Total</div><div>$${price.total.toLocaleString()}</div></div>
+          </div>
+          <script>
+            window.focus();
+            setTimeout(() => window.print(), 250);
+          </script>
+        </body>
+      </html>
+    `;
+        previewWindow.document.open();
+        previewWindow.document.write(html);
+        previewWindow.document.close();
+    }, [draft, price, selectedProduct]);
     const handleNavigateToRoomPlanner = () => {
         if (onNavigateToRoomPlanner) {
             onNavigateToRoomPlanner();
         }
         else {
-            // Fallback: dispatch custom event for parent widget
             window.dispatchEvent(new CustomEvent('modly:navigate-to-room-planner'));
         }
     };
-    const handleCustomize = async (config) => {
+    const buildCustomizationConfig = useCallback(() => {
+        const currentMaterial = getMaterialOption(selectedProduct, draft.materialId);
+        const widthDeltaIn = draft.widthIn - selectedProduct.customizer.defaultWidthIn;
+        const depthDeltaIn = draft.depthIn - selectedProduct.customizer.defaultDepthIn;
+        const inchToMeters = 0.0254;
+        const ornamentDetails = [];
+        if (draft.addons.throwPillows)
+            ornamentDetails.push('Throw Pillows (2)');
+        if (draft.addons.ottoman)
+            ornamentDetails.push('Ottoman');
+        return {
+            baseItemId: selectedProduct.id,
+            baseItemType: selectedProduct.customizer.type,
+            baseItemName: selectedProduct.name,
+            colorScheme: {
+                primary: draft.fabricColor,
+                secondary: selectedProduct.colors[1]?.hex,
+            },
+            materialOverrides: {
+                primary: currentMaterial?.name,
+                upholstery: currentMaterial?.name,
+                legs: selectedProduct.materials[1],
+            },
+            ornamentDetails,
+            dimensionAdjustments: {
+                width: Number((widthDeltaIn * inchToMeters).toFixed(3)),
+                length: Number((depthDeltaIn * inchToMeters).toFixed(3)),
+            },
+            aiNotes: `Configurator snapshot · ${selectedProduct.name} · Total $${price.total.toLocaleString()}`,
+        };
+    }, [draft.addons.ottoman, draft.addons.throwPillows, draft.depthIn, draft.fabricColor, draft.materialId, draft.widthIn, price.total, selectedProduct]);
+    const handleCustomize = useCallback(async (customizationConfig) => {
         setIsLoading(true);
         setError(null);
         setSaveNotification(null);
-        setLastConfig(config);
-        // Immediately update preview with the config data (single source of truth)
+        setLastConfig(customizationConfig);
         const immediatePreview = {
-            name: `Custom ${config.baseItemName || config.baseItemType || 'Furniture'}`,
-            colorScheme: config.colorScheme,
+            name: selectedProduct.name,
+            colorScheme: customizationConfig.colorScheme,
             materials: {
-                primary: config.materialOverrides.primary,
-                legs: config.materialOverrides.legs,
-                upholstery: config.materialOverrides.upholstery,
+                primary: customizationConfig.materialOverrides.primary,
+                legs: customizationConfig.materialOverrides.legs,
+                upholstery: customizationConfig.materialOverrides.upholstery,
             },
-            ornamentDetails: config.ornamentDetails || [],
-            dimensionAdjustments: config.dimensionAdjustments,
+            ornamentDetails: customizationConfig.ornamentDetails || [],
+            dimensionAdjustments: customizationConfig.dimensionAdjustments,
             aiNotes: 'Processing AI customization...',
         };
-        console.log('Applied customization updated', { nextCustomization: immediatePreview });
         setCustomizedItem(immediatePreview);
         try {
-            const data = await apiClient.customizeFurniture(config);
-            console.log('AI response', { aiResult: data });
-            // Merge API response with the config to ensure all fields are included
+            const data = await apiClient.customizeFurniture(customizationConfig);
+            const mergedDimensions = data.dimensions || {
+                length: Number((selectedProduct.dimensions.length +
+                    (customizationConfig.dimensionAdjustments?.length ?? 0)).toFixed(3)),
+                width: Number((selectedProduct.dimensions.width +
+                    (customizationConfig.dimensionAdjustments?.width ?? 0)).toFixed(3)),
+                height: Number((selectedProduct.dimensions.height +
+                    (customizationConfig.dimensionAdjustments?.height ?? 0)).toFixed(3)),
+            };
             const mergedData = {
                 ...immediatePreview,
                 ...data,
-                colorScheme: data.colorScheme || config.colorScheme,
+                name: selectedProduct.name,
+                dimensions: mergedDimensions,
+                colorScheme: data.colorScheme || customizationConfig.colorScheme,
                 materials: data.materials || {
-                    primary: config.materialOverrides.primary,
-                    legs: config.materialOverrides.legs,
-                    upholstery: config.materialOverrides.upholstery,
+                    primary: customizationConfig.materialOverrides.primary,
+                    legs: customizationConfig.materialOverrides.legs,
+                    upholstery: customizationConfig.materialOverrides.upholstery,
                 },
-                ornamentDetails: data.ornamentDetails || config.ornamentDetails,
-                dimensionAdjustments: data.dimensionAdjustments || config.dimensionAdjustments,
+                ornamentDetails: data.ornamentDetails || customizationConfig.ornamentDetails,
+                dimensionAdjustments: data.dimensionAdjustments || customizationConfig.dimensionAdjustments,
             };
             setCustomizedItem(mergedData);
             try {
                 const saved = storage.saveCustomizedFurniture({
-                    name: mergedData.name || `Custom ${config.baseItemName || config.baseItemType || 'Furniture'}`,
-                    baseItemType: config.baseItemType || 'furniture',
+                    productId: selectedProduct.id,
+                    name: selectedProduct.name,
+                    baseItemType: selectedProduct.category,
                     dimensions: mergedData.dimensions,
-                    colorScheme: mergedData.colorScheme,
+                    colorScheme: {
+                        primary: getColorName(selectedProduct, draft.fabricColor),
+                        secondary: selectedProduct.colors[1]?.name,
+                    },
                     materials: mergedData.materials,
                     ornamentDetails: mergedData.ornamentDetails,
                     aiNotes: mergedData.aiNotes,
-                    dimensionChanges: mergedData.dimensionChanges,
+                    dimensionChanges: mergedData.dimensionAdjustments,
                 });
                 setSavedItem(saved);
                 setSaveNotification('Customized furniture saved automatically!');
                 setTimeout(() => setSaveNotification(null), 3000);
             }
-            catch (saveErr) {
-                console.error('Failed to auto-save:', saveErr);
+            catch (saveError) {
+                console.error('Failed to auto-save:', saveError);
             }
         }
-        catch (err) {
-            const errorMessage = err instanceof Error ? err.message : 'An error occurred';
+        catch (customizeError) {
+            const errorMessage = customizeError instanceof Error ? customizeError.message : 'An error occurred';
             setError(errorMessage);
-            mergedConfig.onError?.(err instanceof Error ? err : new Error(errorMessage));
+            mergedConfig.onError?.(customizeError instanceof Error ? customizeError : new Error(errorMessage));
         }
         finally {
             setIsLoading(false);
         }
-    };
+    }, [apiClient, draft.fabricColor, mergedConfig, selectedProduct, storage]);
+    const handleApply = useCallback(() => {
+        setError(null);
+        if (validationErrors.length > 0) {
+            setError(validationErrors[0] ?? 'Please review your customizations.');
+            return;
+        }
+        handleCustomize(buildCustomizationConfig());
+    }, [buildCustomizationConfig, handleCustomize, validationErrors]);
     const handleFinalize = () => {
+        if (!enabledActions.requestQuote)
+            return;
         if (!savedItem && !customizedItem) {
             setError('Please customize an item first before requesting a quote.');
             return;
@@ -2823,55 +3965,63 @@ function FurnitureCustomizerWidget({ config = {}, onNavigateToRoomPlanner }) {
         setShowFinalizeModal(true);
     };
     const handleProceedToQuote = () => {
+        if (!enabledActions.requestQuote)
+            return;
         setShowFinalizeModal(false);
         setShowQuoteForm(true);
     };
     const handleQuoteSubmit = async (quoteRequest) => {
         try {
-            // Send quote request to API using apiClient
             await apiClient.submitQuoteRequest(quoteRequest);
-            // Show success
             setShowQuoteForm(false);
             setQuoteSuccess(true);
-            setSaveNotification('Quote request submitted successfully! We\'ll contact you soon.');
+            setSaveNotification("Quote request submitted successfully! We'll contact you soon.");
             setTimeout(() => {
                 setQuoteSuccess(false);
                 setSaveNotification(null);
             }, 5000);
         }
-        catch (err) {
-            throw err; // Let the form handle the error display
+        catch (quoteError) {
+            throw quoteError;
         }
     };
-    return (jsxRuntimeExports.jsxs(WidgetProvider, { apiClient: apiClient, storage: storage, config: mergedConfig, children: [jsxRuntimeExports.jsx("div", { className: "furniture-widget-customizer min-h-screen bg-earth-background py-12 px-6", children: jsxRuntimeExports.jsxs("div", { className: "max-w-5xl mx-auto", children: [jsxRuntimeExports.jsxs("div", { className: "text-center mb-12", children: [jsxRuntimeExports.jsx("h1", { className: "text-4xl md:text-5xl font-bold text-text-heading mb-4", children: "Furniture Customizer" }), jsxRuntimeExports.jsx("p", { className: "text-lg md:text-xl text-text-primary max-w-2xl mx-auto", children: "Use AI to customize furniture designs. Change colors, materials, add ornaments, and adjust dimensions to match your vision." })] }), jsxRuntimeExports.jsxs("div", { className: "space-y-8", children: [jsxRuntimeExports.jsx("div", { className: "bg-earth-card p-6 md:p-8 rounded-xl shadow-soft border border-earth-border", children: jsxRuntimeExports.jsx(FurnitureCustomizerPanel, { baseItem: baseItem ?? undefined, onCustomize: handleCustomize, isLoading: isLoading }, baseItem?.id || baseItem?.name || 'empty') }), jsxRuntimeExports.jsxs("div", { className: "bg-earth-card p-6 md:p-8 rounded-xl shadow-soft border border-earth-border", children: [jsxRuntimeExports.jsx("h2", { className: "text-2xl font-semibold text-text-heading mb-6", children: "Customization Preview" }), saveNotification && (jsxRuntimeExports.jsxs("div", { className: "mb-4 bg-earth-sage/20 border border-earth-sage/50 text-text-primary p-4 rounded-xl flex items-center gap-3", children: [jsxRuntimeExports.jsx("svg", { className: "w-5 h-5 text-earth-sage", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M5 13l4 4L19 7" }) }), jsxRuntimeExports.jsx("span", { children: saveNotification })] })), error && (jsxRuntimeExports.jsx("div", { className: "bg-red-500/10 border border-red-500/30 text-red-400 p-4 rounded-xl mb-4", children: jsxRuntimeExports.jsx("p", { children: error }) })), isLoading && (jsxRuntimeExports.jsx("div", { className: "text-center py-12 text-text-primary", children: jsxRuntimeExports.jsx("p", { className: "text-lg", children: "Processing your customization..." }) })), customizedItem && !isLoading && (jsxRuntimeExports.jsx("div", { className: "space-y-4", children: jsxRuntimeExports.jsxs("div", { className: "bg-earth-input p-6 rounded-xl border border-earth-border", children: [jsxRuntimeExports.jsx("h3", { className: "text-xl font-semibold text-text-heading mb-4", children: customizedItem.name || `Custom ${lastConfig?.baseItemName || lastConfig?.baseItemType || 'Furniture'}` }), customizedItem.dimensions && (jsxRuntimeExports.jsxs("div", { className: "mb-4", children: [jsxRuntimeExports.jsx("h4", { className: "text-sm font-semibold text-text-primary mb-2", children: "Updated Dimensions:" }), jsxRuntimeExports.jsxs("div", { className: "text-sm text-text-primary space-y-1", children: [jsxRuntimeExports.jsxs("div", { children: ["Length: ", jsxRuntimeExports.jsxs("strong", { className: "text-text-heading", children: [customizedItem.dimensions.length, "m"] })] }), jsxRuntimeExports.jsxs("div", { children: ["Width: ", jsxRuntimeExports.jsxs("strong", { className: "text-text-heading", children: [customizedItem.dimensions.width, "m"] })] }), jsxRuntimeExports.jsxs("div", { children: ["Height: ", jsxRuntimeExports.jsxs("strong", { className: "text-text-heading", children: [customizedItem.dimensions.height, "m"] })] })] })] })), customizedItem.colorScheme && (jsxRuntimeExports.jsxs("div", { className: "mb-4", children: [jsxRuntimeExports.jsx("h4", { className: "text-sm font-semibold text-text-heading mb-2", children: "Color Scheme:" }), jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap gap-2", children: [customizedItem.colorScheme.primary && (jsxRuntimeExports.jsxs("span", { className: "px-3 py-1 bg-earth-card border border-earth-border text-text-primary rounded-xl text-sm", children: ["Primary: ", customizedItem.colorScheme.primary] })), customizedItem.colorScheme.secondary && (jsxRuntimeExports.jsxs("span", { className: "px-3 py-1 bg-earth-card border border-earth-border text-text-primary rounded-xl text-sm", children: ["Secondary: ", customizedItem.colorScheme.secondary] })), customizedItem.colorScheme.accent && (jsxRuntimeExports.jsxs("span", { className: "px-3 py-1 bg-earth-card border border-earth-border text-text-primary rounded-xl text-sm", children: ["Accent: ", customizedItem.colorScheme.accent] }))] })] })), customizedItem.materials && (jsxRuntimeExports.jsxs("div", { className: "mb-4", children: [jsxRuntimeExports.jsx("h4", { className: "text-sm font-semibold text-text-heading mb-2", children: "Materials:" }), jsxRuntimeExports.jsx("p", { className: "text-sm text-text-primary", children: Object.values(customizedItem.materials).filter(Boolean).join(', ') })] })), customizedItem.ornamentDetails && customizedItem.ornamentDetails.length > 0 && (jsxRuntimeExports.jsxs("div", { className: "mb-4", children: [jsxRuntimeExports.jsx("h4", { className: "text-sm font-semibold text-text-heading mb-2", children: "Ornaments & Details:" }), jsxRuntimeExports.jsx("div", { className: "flex flex-wrap gap-2", children: customizedItem.ornamentDetails.map((detail, i) => (jsxRuntimeExports.jsx("span", { className: "px-2 py-1 bg-earth-card border border-earth-border text-text-primary rounded-xl text-xs", children: detail }, i))) })] })), customizedItem.aiNotes && (jsxRuntimeExports.jsxs("div", { className: "mt-4 pt-4 border-t border-earth-border", children: [jsxRuntimeExports.jsx("h4", { className: "text-sm font-semibold text-text-heading mb-2", children: "AI Notes:" }), jsxRuntimeExports.jsx("p", { className: "text-sm text-text-primary", children: customizedItem.aiNotes })] })), jsxRuntimeExports.jsxs("div", { className: "mt-6 pt-4 border-t border-earth-border space-y-3", children: [jsxRuntimeExports.jsxs("button", { onClick: handleFinalize, className: "w-full py-3 px-6 bg-emerald-600 text-white rounded-xl font-semibold text-base hover:bg-emerald-700 transition-all duration-300 flex items-center justify-center gap-2 shadow-lg", children: [jsxRuntimeExports.jsx("svg", { className: "w-5 h-5", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" }) }), jsxRuntimeExports.jsx("span", { children: "Finalize & Request Quote" })] }), jsxRuntimeExports.jsxs("button", { onClick: handleNavigateToRoomPlanner, className: "w-full py-3 px-6 bg-earth-forest text-white rounded-xl font-semibold text-base hover:bg-earth-forest/90 transition-all duration-300 flex items-center justify-center gap-2 shadow-lg", children: [jsxRuntimeExports.jsx("svg", { className: "w-5 h-5", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" }) }), jsxRuntimeExports.jsx("span", { children: "View in Room Planner" })] })] })] }) })), !customizedItem && !isLoading && (jsxRuntimeExports.jsx("div", { className: "text-center py-12 text-text-muted", children: jsxRuntimeExports.jsx("p", { children: "Your customization preview will appear here" }) }))] })] })] }) }), jsxRuntimeExports.jsx(FinalizeQuoteModal, { isOpen: showFinalizeModal, onClose: () => setShowFinalizeModal(false), onProceed: handleProceedToQuote, item: savedItem }), jsxRuntimeExports.jsx(QuoteRequestForm, { isOpen: showQuoteForm, onClose: () => setShowQuoteForm(false), onSubmit: handleQuoteSubmit, item: savedItem }), quoteSuccess && (jsxRuntimeExports.jsxs("div", { className: "fixed bottom-6 right-6 bg-emerald-600 text-white px-6 py-4 rounded-xl shadow-2xl flex items-center gap-3 z-50 animate-slide-up", children: [jsxRuntimeExports.jsx("svg", { className: "w-6 h-6", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" }) }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("p", { className: "font-semibold", children: "Quote Request Submitted!" }), jsxRuntimeExports.jsx("p", { className: "text-sm text-white/90", children: "We'll contact you soon with details." })] })] }))] }));
+    return (jsxRuntimeExports.jsxs(WidgetProvider, { apiClient: apiClient, storage: storage, config: mergedConfig, children: [jsxRuntimeExports.jsxs("div", { className: "min-h-screen bg-white", children: [jsxRuntimeExports.jsx("section", { className: "py-12 bg-gradient-to-br from-purple-600 to-purple-800 text-white", children: jsxRuntimeExports.jsx("div", { className: "max-w-7xl mx-auto px-4", children: jsxRuntimeExports.jsxs("div", { className: "max-w-3xl", children: [jsxRuntimeExports.jsxs("div", { className: "inline-flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full mb-4", children: [jsxRuntimeExports.jsx(Palette, { className: "w-4 h-4" }), jsxRuntimeExports.jsx("span", { className: "text-sm font-medium", children: "AI-Powered Customization" })] }), jsxRuntimeExports.jsx("h1", { className: "text-5xl font-bold mb-4", children: "Furniture Customizer" }), jsxRuntimeExports.jsx("p", { className: "text-xl text-purple-100 mb-8", children: "Customize furniture colors, materials, and dimensions with AI assistance. See changes in real-time and get instant feasibility feedback." }), jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap gap-4", children: [jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 text-sm", children: [jsxRuntimeExports.jsx(Check, { className: "w-5 h-5 text-green-300" }), jsxRuntimeExports.jsx("span", { children: "Real-time preview" })] }), jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 text-sm", children: [jsxRuntimeExports.jsx(Check, { className: "w-5 h-5 text-green-300" }), jsxRuntimeExports.jsx("span", { children: "Factory-approved options" })] }), jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 text-sm", children: [jsxRuntimeExports.jsx(Check, { className: "w-5 h-5 text-green-300" }), jsxRuntimeExports.jsx("span", { children: "Instant pricing" })] })] })] }) }) }), jsxRuntimeExports.jsxs("div", { className: "max-w-7xl mx-auto px-4", children: [saveNotification && (jsxRuntimeExports.jsxs("div", { className: "mt-6 bg-emerald-50 border border-emerald-200 text-emerald-800 p-4 rounded-xl flex items-center gap-3", children: [jsxRuntimeExports.jsx(Check, { className: "w-5 h-5" }), jsxRuntimeExports.jsx("span", { className: "font-medium", children: saveNotification })] })), error && (jsxRuntimeExports.jsx("div", { className: "mt-6 bg-red-50 border border-red-200 text-red-700 p-4 rounded-xl", children: jsxRuntimeExports.jsxs("div", { className: "flex items-start gap-2", children: [jsxRuntimeExports.jsx(Info, { className: "w-5 h-5 mt-0.5" }), jsxRuntimeExports.jsx("div", { children: error })] }) }))] }), jsxRuntimeExports.jsx(FurnitureCustomizerPanel, { products: availableProducts, draft: draft, setDraft: setDraftWithHistory, isApplying: isLoading, validationErrors: validationErrors, price: price, onApply: handleApply, onUndo: handleUndo, onRedo: handleRedo, canUndo: canUndo, canRedo: canRedo, onSaveConfig: saveDraftConfig, onShareLink: copyShareLink, onExportPdf: exportAsPdf }), jsxRuntimeExports.jsx("section", { className: "py-12 bg-white border-t border-gray-200", children: jsxRuntimeExports.jsxs("div", { className: "max-w-5xl mx-auto px-4 text-center", children: [jsxRuntimeExports.jsx("h2", { className: "text-2xl font-bold text-gray-900 mb-4", children: "Love Your Custom Design?" }), jsxRuntimeExports.jsx("p", { className: "text-gray-600 mb-8", children: "Save your configuration or share it with others" }), jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap justify-center gap-4", children: [enabledActions.requestQuote && (jsxRuntimeExports.jsxs("button", { type: "button", onClick: handleFinalize, className: "px-8 py-4 text-white rounded-lg font-semibold transition shadow-lg", style: { backgroundColor: primaryColor }, children: ["Add to Quote - $", price.total.toLocaleString()] })), jsxRuntimeExports.jsx("button", { type: "button", onClick: saveDraftConfig, className: "px-8 py-4 border-2 border-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-50 transition", children: "Save Configuration" }), jsxRuntimeExports.jsx("button", { type: "button", onClick: copyShareLink, className: "px-8 py-4 border-2 border-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-50 transition", children: "Share Design" }), jsxRuntimeExports.jsx("button", { type: "button", onClick: exportAsPdf, className: "px-8 py-4 border-2 border-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-50 transition", children: "Export PDF" }), jsxRuntimeExports.jsx("button", { type: "button", onClick: handleNavigateToRoomPlanner, className: "px-8 py-4 border-2 border-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-50 transition", children: "View in Room Planner" })] })] }) })] }), jsxRuntimeExports.jsx(FinalizeQuoteModal, { isOpen: enabledActions.requestQuote && showFinalizeModal, onClose: () => setShowFinalizeModal(false), onProceed: handleProceedToQuote, item: savedItem }), jsxRuntimeExports.jsx(QuoteRequestForm, { isOpen: enabledActions.requestQuote && showQuoteForm, onClose: () => setShowQuoteForm(false), onSubmit: handleQuoteSubmit, item: savedItem }), quoteSuccess && (jsxRuntimeExports.jsxs("div", { className: "fixed bottom-6 right-6 bg-emerald-600 text-white px-6 py-4 rounded-xl shadow-2xl flex items-center gap-3 z-50 animate-slide-up", children: [jsxRuntimeExports.jsx("svg", { className: "w-6 h-6", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" }) }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("p", { className: "font-semibold", children: "Quote Request Submitted!" }), jsxRuntimeExports.jsx("p", { className: "text-sm text-white/90", children: "We'll contact you soon with details." })] })] }))] }));
 }
 
-function MessageBubble({ message, onCustomizeItem, onAddToRoomPlanner, onViewInCatalog }) {
+function MessageBubble({ message, onCustomizeItem, onAddToRoomPlanner, onViewInCatalog, enabledActions, primaryColor }) {
     const isUser = message.role === 'user';
     const isThinking = message.type === 'thinking';
+    const actions = enabledActions ?? { viewInCatalog: true, customize: true, requestQuote: true };
     return (jsxRuntimeExports.jsx("div", { className: `flex ${isUser ? 'justify-end' : 'justify-start'} mb-4`, children: jsxRuntimeExports.jsx("div", { className: `max-w-[80%] rounded-2xl px-4 py-3 ${isUser
                 ? 'bg-blue-500 text-white'
                 : isThinking
                     ? 'bg-gray-100 text-gray-600'
-                    : 'bg-gray-50 text-gray-900 border border-gray-200'}`, children: isThinking ? (jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [jsxRuntimeExports.jsxs("div", { className: "flex gap-1", children: [jsxRuntimeExports.jsx("div", { className: "w-2 h-2 bg-gray-400 rounded-full animate-bounce", style: { animationDelay: '0ms' } }), jsxRuntimeExports.jsx("div", { className: "w-2 h-2 bg-gray-400 rounded-full animate-bounce", style: { animationDelay: '150ms' } }), jsxRuntimeExports.jsx("div", { className: "w-2 h-2 bg-gray-400 rounded-full animate-bounce", style: { animationDelay: '300ms' } })] }), jsxRuntimeExports.jsx("span", { className: "text-sm", children: "Thinking..." })] })) : (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsx("div", { className: "whitespace-pre-wrap text-sm leading-relaxed", children: message.content }), message.metadata?.recommendations && message.metadata?.recommendations.length > 0 && (jsxRuntimeExports.jsx("div", { className: "mt-4 space-y-3", children: message.metadata?.recommendations.map((rec, index) => (jsxRuntimeExports.jsx(RecommendationCard, { recommendation: rec, onCustomize: onCustomizeItem, onAddToRoomPlanner: onAddToRoomPlanner, onViewInCatalog: onViewInCatalog }, rec.item.id || index))) })), message.metadata?.action && (jsxRuntimeExports.jsx("div", { className: "mt-3 pt-3 border-t border-gray-200", children: jsxRuntimeExports.jsxs("div", { className: "text-xs text-gray-500", children: [message.metadata?.action?.type === 'open_room_planner' && 'Ready to analyze your room', message.metadata?.action?.type === 'open_customizer' && 'Ready to customize', message.metadata?.action?.type === 'show_catalog' && 'Ready to browse catalog'] }) }))] })) }) }));
+                    : 'bg-gray-50 text-gray-900 border border-gray-200'}`, children: isThinking ? (jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [jsxRuntimeExports.jsxs("div", { className: "flex gap-1", children: [jsxRuntimeExports.jsx("div", { className: "w-2 h-2 bg-gray-400 rounded-full animate-bounce", style: { animationDelay: '0ms' } }), jsxRuntimeExports.jsx("div", { className: "w-2 h-2 bg-gray-400 rounded-full animate-bounce", style: { animationDelay: '150ms' } }), jsxRuntimeExports.jsx("div", { className: "w-2 h-2 bg-gray-400 rounded-full animate-bounce", style: { animationDelay: '300ms' } })] }), jsxRuntimeExports.jsx("span", { className: "text-sm", children: "Thinking..." })] })) : (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsx("div", { className: "whitespace-pre-wrap text-sm leading-relaxed", children: message.content }), message.metadata?.recommendations && message.metadata?.recommendations.length > 0 && (jsxRuntimeExports.jsx("div", { className: "mt-4 space-y-3", children: message.metadata?.recommendations.map((rec, index) => (jsxRuntimeExports.jsx(RecommendationCard, { recommendation: rec, onCustomize: onCustomizeItem, onAddToRoomPlanner: onAddToRoomPlanner, onViewInCatalog: onViewInCatalog, enabledActions: actions, primaryColor: primaryColor }, rec.item.id || index))) })), message.metadata?.action && (jsxRuntimeExports.jsx("div", { className: "mt-3 pt-3 border-t border-gray-200", children: jsxRuntimeExports.jsxs("div", { className: "text-xs text-gray-500", children: [message.metadata?.action?.type === 'open_room_planner' && 'Ready to analyze your room', message.metadata?.action?.type === 'open_customizer' && 'Ready to customize', message.metadata?.action?.type === 'show_catalog' && 'Ready to browse catalog'] }) }))] })) }) }));
 }
-function RecommendationCard({ recommendation, onCustomize, onAddToRoomPlanner, onViewInCatalog }) {
+function getProductCatalogUrl(item) {
+    return getRealProductUrl(item);
+}
+function RecommendationCard({ recommendation, onCustomize, onAddToRoomPlanner, onViewInCatalog, enabledActions, primaryColor, }) {
     const item = recommendation.item;
+    const catalogUrl = getProductCatalogUrl(item);
+    const primaryTextColor = primaryColor ? getReadableTextColor(primaryColor) : undefined;
     return (jsxRuntimeExports.jsxs("div", { className: "bg-white rounded-lg border border-gray-200 p-3 shadow-sm", children: [jsxRuntimeExports.jsxs("div", { className: "flex items-start justify-between mb-2", children: [jsxRuntimeExports.jsx("h4", { className: "font-semibold text-sm text-gray-900", children: item.name }), recommendation.matchScore && (jsxRuntimeExports.jsxs("span", { className: "text-xs px-2 py-0.5 bg-blue-100 text-blue-700 rounded", children: [Math.round(recommendation.matchScore * 100), "% match"] }))] }), jsxRuntimeExports.jsxs("p", { className: "text-xs text-gray-600 mb-2", children: [item.category, item.subCategory ? ` • ${item.subCategory}` : ''] }), item.priceRange && (jsxRuntimeExports.jsxs("p", { className: "text-xs font-medium text-gray-900 mb-2", children: ["$", item.priceRange.min?.toLocaleString(), item.priceRange.max && item.priceRange.max !== item.priceRange.min
                         ? ` - $${item.priceRange.max.toLocaleString()}`
-                        : ''] })), recommendation.reasoning && (jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500 mb-2", children: recommendation.reasoning })), jsxRuntimeExports.jsxs("div", { className: "mt-3 flex gap-2", children: [onViewInCatalog && (jsxRuntimeExports.jsxs("button", { onClick: () => onViewInCatalog(item), className: "flex-1 py-1.5 px-3 bg-gray-100 text-gray-700 text-xs rounded hover:bg-gray-200 transition-colors flex items-center justify-center gap-1 border border-gray-300", children: [jsxRuntimeExports.jsxs("svg", { className: "w-3 h-3", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: [jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M15 12a3 3 0 11-6 0 3 3 0 016 0z" }), jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" })] }), "View in Catalog"] })), onCustomize && (jsxRuntimeExports.jsxs("button", { onClick: () => onCustomize(item), className: "flex-1 py-1.5 px-3 bg-blue-500 text-white text-xs rounded hover:bg-blue-600 transition-colors flex items-center justify-center gap-1", children: [jsxRuntimeExports.jsx("svg", { className: "w-3 h-3", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" }) }), "Customize this"] }))] })] }));
+                        : ''] })), recommendation.reasoning && (jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500 mb-2", children: recommendation.reasoning })), jsxRuntimeExports.jsxs("div", { className: "mt-3 flex gap-2", children: [enabledActions.viewInCatalog && catalogUrl ? (jsxRuntimeExports.jsxs("a", { href: catalogUrl, target: "_blank", rel: "noopener noreferrer", className: "flex-1 py-1.5 px-3 bg-gray-100 text-gray-700 text-xs rounded hover:bg-gray-200 transition-colors flex items-center justify-center gap-1 border border-gray-300", children: [jsxRuntimeExports.jsxs("svg", { className: "w-3 h-3", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: [jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M15 12a3 3 0 11-6 0 3 3 0 016 0z" }), jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" })] }), "View in Catalog"] })) : enabledActions.viewInCatalog ? (jsxRuntimeExports.jsx("button", { type: "button", disabled: true, className: "flex-1 py-1.5 px-3 bg-gray-100 text-gray-400 text-xs rounded cursor-not-allowed flex items-center justify-center gap-1 border border-gray-300", children: "Catalog link unavailable" })) : null, enabledActions.customize && onCustomize && (jsxRuntimeExports.jsxs("button", { onClick: () => onCustomize(item), className: "flex-1 py-1.5 px-3 bg-blue-500 text-white text-xs rounded hover:bg-blue-600 transition-colors flex items-center justify-center gap-1", style: primaryColor ? { backgroundColor: primaryColor, color: primaryTextColor } : undefined, children: [jsxRuntimeExports.jsx("svg", { className: "w-3 h-3", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" }) }), "Customize this"] }))] })] }));
 }
 
-function ConversationInterface({ aiService, onCustomizeItem, onAddToRoomPlanner, onOpenRoomPlanner, onOpenCustomizer, onShowCatalog, onViewInCatalog, }) {
+function ConversationInterface({ aiService, onCustomizeItem, onAddToRoomPlanner, onOpenRoomPlanner, onOpenCustomizer, onShowCatalog, onViewInCatalog, enabledActions, primaryColor, }) {
     const [input, setInput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [messages, setMessages] = useState([]);
     const messagesEndRef = useRef(null);
     const inputRef = useRef(null);
+    const fallbackMessage = 'Sorry, I could not generate a response right now. Please try again.';
+    const primaryTextColor = primaryColor ? getReadableTextColor(primaryColor) : undefined;
     // Load messages from AI service
     useEffect(() => {
         setMessages(aiService.getMessages());
-    }, []);
+    }, [aiService]);
     // Scroll to bottom when messages change
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -2932,8 +4082,14 @@ function ConversationInterface({ aiService, onCustomizeItem, onAddToRoomPlanner,
         }
         catch (error) {
             console.error('Error sending message:', error);
-            // Remove thinking message on error
-            setMessages((prev) => prev.filter((m) => m.type !== 'thinking'));
+            const errorMsg = {
+                id: `msg-error-${Date.now()}`,
+                role: 'assistant',
+                type: 'text',
+                content: fallbackMessage,
+                timestamp: Date.now(),
+            };
+            setMessages((prev) => [...prev.filter((m) => m.type !== 'thinking'), errorMsg]);
         }
         finally {
             setIsLoading(false);
@@ -2946,7 +4102,7 @@ function ConversationInterface({ aiService, onCustomizeItem, onAddToRoomPlanner,
             handleSend();
         }
     };
-    return (jsxRuntimeExports.jsxs("div", { className: "flex flex-col h-full bg-white", children: [jsxRuntimeExports.jsxs("div", { className: "flex-1 overflow-y-auto p-4 space-y-2", children: [messages.length === 0 ? (jsxRuntimeExports.jsx("div", { className: "text-center text-gray-500 py-8", children: jsxRuntimeExports.jsx("p", { children: "Start a conversation to get help with your furniture needs." }) })) : (messages.map((message) => (jsxRuntimeExports.jsx(MessageBubble, { message: message, onCustomizeItem: onCustomizeItem, onAddToRoomPlanner: onAddToRoomPlanner, onViewInCatalog: onViewInCatalog }, message.id)))), jsxRuntimeExports.jsx("div", { ref: messagesEndRef })] }), jsxRuntimeExports.jsxs("div", { className: "border-t border-gray-200 p-4 bg-gray-50", children: [jsxRuntimeExports.jsxs("div", { className: "flex gap-2", children: [jsxRuntimeExports.jsx("textarea", { ref: inputRef, value: input, onChange: (e) => setInput(e.target.value), onKeyPress: handleKeyPress, placeholder: "Type your message...", className: "flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none", rows: 1, style: { minHeight: '40px', maxHeight: '120px' }, disabled: isLoading }), jsxRuntimeExports.jsx("button", { onClick: handleSend, disabled: !input.trim() || isLoading, className: "px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium", children: isLoading ? (jsxRuntimeExports.jsxs("svg", { className: "animate-spin h-5 w-5", xmlns: "http://www.w3.org/2000/svg", fill: "none", viewBox: "0 0 24 24", children: [jsxRuntimeExports.jsx("circle", { className: "opacity-25", cx: "12", cy: "12", r: "10", stroke: "currentColor", strokeWidth: "4" }), jsxRuntimeExports.jsx("path", { className: "opacity-75", fill: "currentColor", d: "M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" })] })) : ('Send') })] }), jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500 mt-2 text-center", children: "Press Enter to send, Shift+Enter for new line" })] })] }));
+    return (jsxRuntimeExports.jsxs("div", { className: "flex flex-col h-full bg-white", children: [jsxRuntimeExports.jsxs("div", { className: "flex-1 overflow-y-auto p-4 space-y-2", children: [messages.length === 0 ? (jsxRuntimeExports.jsx("div", { className: "text-center text-gray-500 py-8", children: jsxRuntimeExports.jsx("p", { children: "Start a conversation to get help with your furniture needs." }) })) : (messages.map((message) => (jsxRuntimeExports.jsx(MessageBubble, { message: message, onCustomizeItem: onCustomizeItem, onAddToRoomPlanner: onAddToRoomPlanner, onViewInCatalog: onViewInCatalog, enabledActions: enabledActions, primaryColor: primaryColor }, message.id)))), jsxRuntimeExports.jsx("div", { ref: messagesEndRef })] }), jsxRuntimeExports.jsxs("div", { className: "border-t border-gray-200 p-4 bg-gray-50", children: [jsxRuntimeExports.jsxs("div", { className: "flex gap-2", children: [jsxRuntimeExports.jsx("textarea", { ref: inputRef, value: input, onChange: (e) => setInput(e.target.value), onKeyDown: handleKeyPress, placeholder: "Type your message...", className: "flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none", rows: 1, style: { minHeight: '40px', maxHeight: '120px' }, disabled: isLoading }), jsxRuntimeExports.jsx("button", { onClick: handleSend, disabled: !input.trim() || isLoading, className: "px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium", style: primaryColor ? { backgroundColor: primaryColor, color: primaryTextColor } : undefined, children: isLoading ? (jsxRuntimeExports.jsxs("svg", { className: "animate-spin h-5 w-5", xmlns: "http://www.w3.org/2000/svg", fill: "none", viewBox: "0 0 24 24", children: [jsxRuntimeExports.jsx("circle", { className: "opacity-25", cx: "12", cy: "12", r: "10", stroke: "currentColor", strokeWidth: "4" }), jsxRuntimeExports.jsx("path", { className: "opacity-75", fill: "currentColor", d: "M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" })] })) : ('Send') })] }), jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500 mt-2 text-center", children: "Press Enter to send, Shift+Enter for new line" })] })] }));
 }
 
 /**
@@ -3700,6 +4856,10 @@ class ConversationStateManager {
     getMessages() {
         return [...this.state.messages];
     }
+    updateMessages(messages) {
+        this.state.messages = messages;
+        this.saveState();
+    }
     updateIntent(intent) {
         this.state.currentIntent = intent;
         this.saveState();
@@ -3865,7 +5025,9 @@ PageContextExtractor.DATA_ATTRIBUTE_PREFIX = 'data-modly-';
 
 class AIService {
     constructor(apiClient, config) {
+        this.fallbackMessage = 'Sorry, I could not generate a response right now. Please try again.';
         this.apiClient = apiClient;
+        this.config = config;
         this.stateManager = new ConversationStateManager();
         // Extract initial page context
         this.pageContext = PageContextExtractor.extractContext();
@@ -3879,32 +5041,43 @@ class AIService {
                 currentPage: newContext.currentUrl,
             });
         });
-        // Initialize with greeting if no messages exist
-        if (this.stateManager.getMessages().length === 0) {
-            this.addGreeting();
+        this.ensureInitialWelcomeMessage();
+    }
+    ensureInitialWelcomeMessage() {
+        const welcomeText = getWelcomeMessage(this.config);
+        const messages = this.stateManager.getMessages();
+        if (messages.length === 0) {
+            this.addGreeting(welcomeText);
+            return;
+        }
+        const [first, ...rest] = messages;
+        const shouldUpdateWelcome = first.role === 'assistant' &&
+            (first.isWelcome ||
+                first.id.startsWith('msg-greeting-') ||
+                first.content === DEFAULT_WELCOME_MESSAGE);
+        if (shouldUpdateWelcome && first.content !== welcomeText) {
+            const updatedMessages = [
+                {
+                    ...first,
+                    content: welcomeText,
+                    isWelcome: true,
+                },
+                ...rest,
+            ];
+            this.stateManager.updateMessages(updatedMessages);
+            return;
         }
     }
-    addGreeting() {
+    addGreeting(welcomeText = getWelcomeMessage(this.config)) {
         const greeting = {
             id: `msg-greeting-${Date.now()}`,
             role: 'assistant',
             type: 'text',
-            content: this.getInitialGreeting(),
+            content: welcomeText,
             timestamp: Date.now(),
+            isWelcome: true,
         };
         this.stateManager.addMessage(greeting);
-    }
-    getInitialGreeting() {
-        const context = this.pageContext;
-        if (context.pageType === 'product' && context.productName) {
-            return `Hi! I'm ModlyAI, your furniture configuration assistant. I see you're looking at ${context.productName}. I can help you decide if this is the right fit, suggest similar items from our catalog, or help you configure it using our factory-approved options. What would you like to know?`;
-        }
-        else if (context.pageType === 'category' && context.category) {
-            return `Hello! I'm ModlyAI, your furniture sales and configuration assistant. I see you're browsing ${context.category}. I can help you compare products, understand their features, and configure them to match your needs. What are you looking for today?`;
-        }
-        else {
-            return `Hello! I'm ModlyAI, your furniture sales and configuration assistant. I can help you choose the right products from our catalog, plan your room, or configure items using our factory-approved options. What would you like to start with?`;
-        }
     }
     async sendMessage(userMessage) {
         // Add user message to state
@@ -3944,43 +5117,16 @@ class AIService {
         }
         catch (error) {
             console.error('Error sending message:', error);
-            // Create a more helpful error message
-            let errorMessage = 'I apologize, but I encountered an error. Please try again.';
-            if (error instanceof Error) {
-                const errorMsg = error.message;
-                if (errorMsg.includes('quota exceeded') || errorMsg.includes('insufficient_quota')) {
-                    errorMessage = 'I apologize, but the AI service has reached its usage limit. The OpenAI API quota has been exceeded. Please contact the administrator to check the billing and usage limits, or try again later.';
-                }
-                else if (errorMsg.includes('AI service not configured') || errorMsg.includes('OPENAI_API_KEY')) {
-                    errorMessage = 'The AI service is not configured. The OpenAI API key needs to be set in the server environment variables. Please contact the administrator.';
-                }
-                else if (errorMsg.includes('rate limit')) {
-                    errorMessage = 'The AI service is currently experiencing high demand. Please try again in a few moments.';
-                }
-                else if (errorMsg.includes('Network error') || errorMsg.includes('fetch')) {
-                    errorMessage = 'Unable to connect to the server. Please check your internet connection and try again.';
-                }
-                else if (errorMsg.includes('Failed to get chat response')) {
-                    errorMessage = 'The server encountered an error processing your request. Please try again in a moment.';
-                }
-                else if (errorMsg.includes('OpenAI API error')) {
-                    errorMessage = errorMsg; // Show the OpenAI error directly
-                }
-                else {
-                    // Include the actual error message
-                    errorMessage = errorMsg;
-                }
-            }
-            // Add error message
+            // Add a user-safe error message while keeping the real error in the console.
             const errorMsg = {
                 id: `msg-error-${Date.now()}`,
                 role: 'assistant',
                 type: 'text',
-                content: errorMessage,
+                content: this.fallbackMessage,
                 timestamp: Date.now(),
             };
             this.stateManager.addMessage(errorMsg);
-            throw error;
+            return { message: errorMsg };
         }
     }
     updateIntentFromMessage(message) {
@@ -4030,17 +5176,20 @@ class AIService {
     }
 }
 
-function FurnitureAIWidget({ config = {}, defaultTab }) {
+function FurnitureAIWidget({ config = {}, defaultTab, widgetTitle }) {
     const mergedConfig = useMemo(() => mergeConfig(config), [config]);
     const apiClient = useMemo(() => new ApiClient(mergedConfig), [mergedConfig]);
     const storage = useMemo(() => new Storage(mergedConfig.storageKey), [mergedConfig.storageKey]);
-    const aiServiceRef = useRef(null);
-    // Initialize AI service
-    if (!aiServiceRef.current) {
-        aiServiceRef.current = new AIService(apiClient, mergedConfig);
-    }
+    const aiService = useMemo(() => new AIService(apiClient, mergedConfig), [apiClient, mergedConfig]);
+    const enabledActions = useMemo(() => getEnabledActions(mergedConfig), [mergedConfig]);
+    const primaryColor = getPrimaryColor(mergedConfig);
+    const displayTitle = widgetTitle ||
+        config.widgetTitle ||
+        config.theme?.buttonText ||
+        DEFAULT_WIDGET_TITLE;
+    const primaryTextColor = getReadableTextColor(primaryColor);
     const [viewMode, setViewMode] = useState('conversation');
-    const [customizeItem, setCustomizeItem] = useState(null);
+    const [selectedProduct, setSelectedProduct] = useState(null);
     const [saveNotification, setSaveNotification] = useState(null);
     const [selectedCatalogItem, setSelectedCatalogItem] = useState(null);
     const [isCatalogModalOpen, setIsCatalogModalOpen] = useState(false);
@@ -4049,14 +5198,17 @@ function FurnitureAIWidget({ config = {}, defaultTab }) {
     useEffect(() => {
         // Handle external events for backward compatibility
         const handleCustomizeItem = (event) => {
-            setCustomizeItem(event.detail);
+            if (!enabledActions.customize)
+                return;
+            setSelectedProduct(productFromFurnitureItem(event.detail));
             setViewMode('customizer');
         };
         const handleNavigateToRoomPlanner = () => {
             setViewMode('room-planner');
         };
         const handleNavigateToCustomizer = () => {
-            console.log('[FurnitureAIWidget] modly:navigate-to-customizer event received, switching to customizer view');
+            if (!enabledActions.customize)
+                return;
             setViewMode('customizer');
         };
         window.addEventListener('modly:customize-item', handleCustomizeItem);
@@ -4067,18 +5219,20 @@ function FurnitureAIWidget({ config = {}, defaultTab }) {
             window.removeEventListener('modly:navigate-to-room-planner', handleNavigateToRoomPlanner);
             window.removeEventListener('modly:navigate-to-customizer', handleNavigateToCustomizer);
         };
-    }, []);
+    }, [enabledActions.customize]);
     // Cleanup AI service on unmount
     useEffect(() => {
         return () => {
-            aiServiceRef.current?.destroy();
+            aiService.destroy();
         };
-    }, []);
+    }, [aiService]);
     // Convert FurnitureItem to CustomizedFurnitureItem format
     const convertFurnitureItemToCustomized = (item) => {
+        const product = productFromFurnitureItem(item);
         return {
-            name: item.name,
-            baseItemType: item.category || item.subCategory || 'furniture',
+            productId: product.id,
+            name: product.name,
+            baseItemType: product.category || item.category || item.subCategory || 'furniture',
             dimensions: {
                 length: item.dimensions.length,
                 width: item.dimensions.width,
@@ -4109,28 +5263,28 @@ function FurnitureAIWidget({ config = {}, defaultTab }) {
         }
     };
     const handleCustomizeItem = (item) => {
-        if (typeof window !== 'undefined') {
-            sessionStorage.setItem('modly-customize-item', JSON.stringify(item));
-        }
-        setCustomizeItem(item);
+        if (!enabledActions.customize)
+            return;
+        setSelectedProduct(productFromFurnitureItem(item));
         setViewMode('customizer');
     };
     const handleOpenRoomPlanner = () => {
         setViewMode('room-planner');
     };
     const handleOpenCustomizer = () => {
-        console.log('[FurnitureAIWidget] handleOpenCustomizer called, switching to customizer view');
+        if (!enabledActions.customize)
+            return;
         setViewMode('customizer');
     };
     const handleShowCatalog = () => {
         // Catalog doesn't exist yet - show message in conversation or do nothing
-        if (aiServiceRef.current) {
-            aiServiceRef.current.sendMessage('Show me the catalog');
-        }
+        aiService.sendMessage('Show me the catalog');
     };
     const handleViewInCatalog = (item) => {
-        setSelectedCatalogItem(item);
-        setIsCatalogModalOpen(true);
+        const catalogUrl = getRealProductUrl(item);
+        if (catalogUrl && typeof window !== 'undefined') {
+            window.open(catalogUrl, '_blank', 'noopener,noreferrer');
+        }
     };
     const handleCloseCatalogModal = () => {
         setIsCatalogModalOpen(false);
@@ -4157,76 +5311,19 @@ function FurnitureAIWidget({ config = {}, defaultTab }) {
         setShowSubmitModal(false);
         setSubmitConfig(null);
     };
-    return (jsxRuntimeExports.jsxs("div", { className: "furniture-widget-ai h-full flex flex-col", children: [jsxRuntimeExports.jsxs("div", { className: "bg-gray-50 border-b border-gray-200 px-6 py-4 pr-16 flex items-center justify-between", children: [jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-4", children: [jsxRuntimeExports.jsx("h1", { className: "text-2xl font-bold text-gray-900", children: jsxRuntimeExports.jsx("span", { className: "text-blue-600", children: "ModlyAI" }) }), viewMode === 'conversation' && (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsx("button", { onClick: handleOpenRoomPlanner, className: "text-sm px-3 py-1.5 text-gray-700 hover:bg-gray-100 rounded transition-colors", children: "Room Planner" }), jsxRuntimeExports.jsx("button", { onClick: handleOpenCustomizer, className: "text-sm px-3 py-1.5 text-gray-700 hover:bg-gray-100 rounded transition-colors", children: "Customizer" })] })), viewMode !== 'conversation' && (jsxRuntimeExports.jsxs("button", { onClick: handleBackToConversation, className: "text-sm text-gray-600 hover:text-gray-900 flex items-center gap-1", children: [jsxRuntimeExports.jsx("svg", { className: "w-4 h-4", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M10 19l-7-7m0 0l7-7m-7 7h18" }) }), "Back to Chat"] }))] }), jsxRuntimeExports.jsx("div", { className: "flex gap-2" })] }), jsxRuntimeExports.jsxs("div", { className: "flex-1 overflow-hidden", children: [viewMode === 'conversation' && aiServiceRef.current && (jsxRuntimeExports.jsxs("div", { className: "h-full flex flex-col", children: [saveNotification && (jsxRuntimeExports.jsx("div", { className: "bg-green-500 text-white px-4 py-2 text-sm text-center flex-shrink-0", children: saveNotification })), jsxRuntimeExports.jsx("div", { className: "flex-1 min-h-0", children: jsxRuntimeExports.jsx(ConversationInterface, { aiService: aiServiceRef.current, onCustomizeItem: handleCustomizeItem, onAddToRoomPlanner: handleAddToRoomPlanner, onOpenRoomPlanner: handleOpenRoomPlanner, onOpenCustomizer: handleOpenCustomizer, onShowCatalog: handleShowCatalog, onViewInCatalog: handleViewInCatalog }) })] })), viewMode === 'room-planner' && (jsxRuntimeExports.jsx("div", { className: "h-full overflow-y-auto", children: jsxRuntimeExports.jsx(FurnitureRoomPlannerWidget, { config: mergedConfig, onCustomizeItem: handleCustomizeItem, onNavigateToCustomizer: handleOpenCustomizer }) })), viewMode === 'customizer' && (jsxRuntimeExports.jsx("div", { className: "h-full overflow-y-auto", children: jsxRuntimeExports.jsx(FurnitureCustomizerWidget, { config: mergedConfig, onNavigateToRoomPlanner: handleOpenRoomPlanner }) }))] }), showSubmitModal && submitConfig && (jsxRuntimeExports.jsx(SubmitFlowModal, { config: submitConfig.config, product: submitConfig.product, apiClient: apiClient, onSuccess: handleSubmitSuccess, onClose: handleCloseSubmitModal })), isCatalogModalOpen && selectedCatalogItem && (jsxRuntimeExports.jsx("div", { className: "fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4", children: jsxRuntimeExports.jsxs("div", { className: "bg-white rounded-lg shadow-xl max-w-md w-full p-6", children: [jsxRuntimeExports.jsx("h2", { className: "text-2xl font-bold text-gray-900 mb-4", children: selectedCatalogItem.name }), jsxRuntimeExports.jsxs("div", { className: "space-y-3 mb-6", children: [selectedCatalogItem.dimensions && (jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h3", { className: "text-sm font-semibold text-gray-700 mb-1", children: "Dimensions" }), jsxRuntimeExports.jsxs("p", { className: "text-sm text-gray-600", children: [selectedCatalogItem.dimensions.length, "\" L \u00D7 ", selectedCatalogItem.dimensions.width, "\" W \u00D7 ", selectedCatalogItem.dimensions.height, "\" H"] })] })), selectedCatalogItem.materials && (jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h3", { className: "text-sm font-semibold text-gray-700 mb-1", children: "Materials" }), jsxRuntimeExports.jsxs("p", { className: "text-sm text-gray-600", children: [selectedCatalogItem.materials.primary, selectedCatalogItem.materials.secondary && `, ${selectedCatalogItem.materials.secondary}`] })] })), selectedCatalogItem.colors && (jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h3", { className: "text-sm font-semibold text-gray-700 mb-1", children: "Colors" }), jsxRuntimeExports.jsxs("p", { className: "text-sm text-gray-600", children: [selectedCatalogItem.colors.main, selectedCatalogItem.colors.accent && ` / ${selectedCatalogItem.colors.accent}`] })] })), jsxRuntimeExports.jsx("div", { className: "bg-blue-50 border border-blue-200 rounded-lg p-4 mt-4", children: jsxRuntimeExports.jsxs("p", { className: "text-sm text-blue-900", children: [jsxRuntimeExports.jsx("strong", { children: "Catalog coming soon." }), " You can customize this item instead."] }) })] }), jsxRuntimeExports.jsxs("div", { className: "flex gap-3", children: [jsxRuntimeExports.jsx("button", { onClick: handleCustomizeFromCatalog, className: "flex-1 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium", children: "Customize This" }), jsxRuntimeExports.jsx("button", { onClick: handleCloseCatalogModal, className: "flex-1 bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors font-medium", children: "Close" })] })] }) }))] }));
+    return (jsxRuntimeExports.jsxs("div", { className: "furniture-widget-ai h-full flex flex-col", children: [jsxRuntimeExports.jsxs("div", { className: "bg-gray-50 border-b border-gray-200 px-6 py-4 pr-16 flex items-center justify-between", children: [jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-4", children: [jsxRuntimeExports.jsx("h1", { className: "text-2xl font-bold text-gray-900", children: displayTitle === DEFAULT_WIDGET_TITLE ? (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsx("span", { children: "Modly" }), jsxRuntimeExports.jsx("span", { style: { color: primaryColor }, children: "AI" })] })) : (jsxRuntimeExports.jsx("span", { children: displayTitle })) }), viewMode === 'conversation' && (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsx("button", { onClick: handleOpenRoomPlanner, className: "text-sm px-3 py-1.5 text-gray-700 hover:bg-gray-100 rounded transition-colors", children: "Room Planner" }), enabledActions.customize && (jsxRuntimeExports.jsx("button", { onClick: handleOpenCustomizer, className: "text-sm px-3 py-1.5 text-gray-700 hover:bg-gray-100 rounded transition-colors", children: "Customizer" }))] })), viewMode !== 'conversation' && (jsxRuntimeExports.jsxs("button", { onClick: handleBackToConversation, className: "text-sm text-gray-600 hover:text-gray-900 flex items-center gap-1", children: [jsxRuntimeExports.jsx("svg", { className: "w-4 h-4", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M10 19l-7-7m0 0l7-7m-7 7h18" }) }), "Back to Chat"] }))] }), jsxRuntimeExports.jsx("div", { className: "flex gap-2" })] }), jsxRuntimeExports.jsxs("div", { className: "flex-1 overflow-hidden", children: [viewMode === 'conversation' && (jsxRuntimeExports.jsxs("div", { className: "h-full flex flex-col", children: [saveNotification && (jsxRuntimeExports.jsx("div", { className: "bg-green-500 text-white px-4 py-2 text-sm text-center flex-shrink-0", children: saveNotification })), jsxRuntimeExports.jsx("div", { className: "flex-1 min-h-0", children: jsxRuntimeExports.jsx(ConversationInterface, { aiService: aiService, onCustomizeItem: handleCustomizeItem, onAddToRoomPlanner: handleAddToRoomPlanner, onOpenRoomPlanner: handleOpenRoomPlanner, onOpenCustomizer: handleOpenCustomizer, onShowCatalog: handleShowCatalog, onViewInCatalog: handleViewInCatalog, enabledActions: enabledActions, primaryColor: primaryColor }) })] })), viewMode === 'room-planner' && (jsxRuntimeExports.jsx("div", { className: "h-full overflow-y-auto", children: jsxRuntimeExports.jsx(FurnitureRoomPlannerWidget, { config: mergedConfig, onCustomizeItem: enabledActions.customize ? handleCustomizeItem : undefined, onNavigateToCustomizer: enabledActions.customize ? handleOpenCustomizer : undefined }) })), viewMode === 'customizer' && (jsxRuntimeExports.jsx("div", { className: "h-full overflow-y-auto", children: enabledActions.customize && (jsxRuntimeExports.jsx(FurnitureCustomizerWidget, { config: mergedConfig, onNavigateToRoomPlanner: handleOpenRoomPlanner, selectedProduct: selectedProduct, onSelectedProductChange: setSelectedProduct })) }))] }), showSubmitModal && submitConfig && (jsxRuntimeExports.jsx(SubmitFlowModal, { config: submitConfig.config, product: submitConfig.product, apiClient: apiClient, onSuccess: handleSubmitSuccess, onClose: handleCloseSubmitModal })), isCatalogModalOpen && selectedCatalogItem && (jsxRuntimeExports.jsx("div", { className: "fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4", children: jsxRuntimeExports.jsxs("div", { className: "bg-white rounded-lg shadow-xl max-w-md w-full p-6", children: [jsxRuntimeExports.jsx("h2", { className: "text-2xl font-bold text-gray-900 mb-4", children: selectedCatalogItem.name }), jsxRuntimeExports.jsxs("div", { className: "space-y-3 mb-6", children: [selectedCatalogItem.dimensions && (jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h3", { className: "text-sm font-semibold text-gray-700 mb-1", children: "Dimensions" }), jsxRuntimeExports.jsxs("p", { className: "text-sm text-gray-600", children: [selectedCatalogItem.dimensions.length, "\" L \u00D7 ", selectedCatalogItem.dimensions.width, "\" W \u00D7 ", selectedCatalogItem.dimensions.height, "\" H"] })] })), selectedCatalogItem.materials && (jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h3", { className: "text-sm font-semibold text-gray-700 mb-1", children: "Materials" }), jsxRuntimeExports.jsxs("p", { className: "text-sm text-gray-600", children: [selectedCatalogItem.materials.primary, selectedCatalogItem.materials.secondary && `, ${selectedCatalogItem.materials.secondary}`] })] })), selectedCatalogItem.colors && (jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h3", { className: "text-sm font-semibold text-gray-700 mb-1", children: "Colors" }), jsxRuntimeExports.jsxs("p", { className: "text-sm text-gray-600", children: [selectedCatalogItem.colors.main, selectedCatalogItem.colors.accent && ` / ${selectedCatalogItem.colors.accent}`] })] })), jsxRuntimeExports.jsx("div", { className: "bg-blue-50 border border-blue-200 rounded-lg p-4 mt-4", children: jsxRuntimeExports.jsxs("p", { className: "text-sm text-blue-900", children: [jsxRuntimeExports.jsx("strong", { children: "Catalog coming soon." }), " You can customize this item instead."] }) })] }), jsxRuntimeExports.jsxs("div", { className: "flex gap-3", children: [enabledActions.customize && (jsxRuntimeExports.jsx("button", { onClick: handleCustomizeFromCatalog, className: "flex-1 text-white px-4 py-2 rounded-lg transition-colors font-medium", style: { backgroundColor: primaryColor, color: primaryTextColor }, children: "Customize This" })), jsxRuntimeExports.jsx("button", { onClick: handleCloseCatalogModal, className: "flex-1 bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors font-medium", children: "Close" })] })] }) }))] }));
 }
 
-// Helper function to check if a color is dark
-const isDarkColor = (color) => {
-    if (!color || color === 'transparent' || color === 'rgba(0, 0, 0, 0)') {
-        return false;
-    }
-    // Handle rgb/rgba
-    const rgbMatch = color.match(/\d+/g);
-    if (rgbMatch && rgbMatch.length >= 3) {
-        const r = parseInt(rgbMatch[0]);
-        const g = parseInt(rgbMatch[1]);
-        const b = parseInt(rgbMatch[2]);
-        // Calculate luminance
-        const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-        return luminance < 0.5;
-    }
-    // Handle hex
-    if (color.startsWith('#')) {
-        const hex = color.length === 4
-            ? `#${color[1]}${color[1]}${color[2]}${color[2]}${color[3]}${color[3]}`
-            : color;
-        const r = parseInt(hex.slice(1, 3), 16);
-        const g = parseInt(hex.slice(3, 5), 16);
-        const b = parseInt(hex.slice(5, 7), 16);
-        const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-        return luminance < 0.5;
-    }
-    // Named colors
-    const darkColors = ['black', 'navy', 'darkblue', 'dark', 'darkslategray', 'darkslategrey'];
-    return darkColors.includes(color.toLowerCase());
-};
-function FurnitureAIWidgetButton({ config = {}, defaultTab = 'room-planner', buttonText = 'ModlyAI', buttonPosition = 'bottom-right', buttonStyle, className = '' }) {
+function FurnitureAIWidgetButton({ config = {}, defaultTab = 'room-planner', buttonText, buttonPosition = 'bottom-right', buttonStyle, className = '' }) {
     const [isOpen, setIsOpen] = useState(false);
-    const [isDarkMode, setIsDarkMode] = useState(false);
-    // Auto contrast detection: check user preference and page background
+    const displayTitle = config.widgetTitle ||
+        config.theme?.buttonText ||
+        buttonText ||
+        DEFAULT_WIDGET_TITLE;
     useEffect(() => {
-        const detectDarkMode = () => {
-            // Check user preference
-            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            // Check page background
-            const body = document.body;
-            const root = document.documentElement;
-            const bodyComputed = window.getComputedStyle(body);
-            const rootComputed = window.getComputedStyle(root);
-            const bodyBg = bodyComputed.backgroundColor || bodyComputed.getPropertyValue('background-color');
-            const rootBg = rootComputed.backgroundColor || rootComputed.getPropertyValue('background-color');
-            const isDarkBackground = isDarkColor(bodyBg) || isDarkColor(rootBg);
-            setIsDarkMode(prefersDark || isDarkBackground);
-        };
-        detectDarkMode();
-        // Listen for system preference changes
-        const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-        const handleChange = () => detectDarkMode();
-        mediaQuery.addEventListener('change', handleChange);
-        // Observe DOM changes
-        const observer = new MutationObserver(detectDarkMode);
-        observer.observe(document.documentElement, {
-            attributes: true,
-            attributeFilter: ['class', 'style', 'data-theme']
-        });
-        observer.observe(document.body, {
-            attributes: true,
-            attributeFilter: ['class', 'style']
-        });
-        return () => {
-            mediaQuery.removeEventListener('change', handleChange);
-            observer.disconnect();
-        };
+        const onOpen = () => setIsOpen(true);
+        window.addEventListener('modly:open-widget', onOpen);
+        return () => window.removeEventListener('modly:open-widget', onOpen);
     }, []);
     useEffect(() => {
         const handleEscape = (e) => {
@@ -4255,46 +5352,48 @@ function FurnitureAIWidgetButton({ config = {}, defaultTab = 'room-planner', but
         'top-left': 'top-6 left-6',
     };
     const finalButtonStyle = useMemo(() => {
+        const primaryColor = getPrimaryColor(config);
+        const textColor = getReadableTextColor(primaryColor);
+        const isDarkPrimary = isDarkColor(primaryColor);
         const baseStyle = {
             height: '44px',
-            minWidth: '140px',
-            padding: '12px 16px',
-            // Frosted glass background
-            background: isDarkMode
-                ? 'rgba(0, 0, 0, 0.35)'
-                : 'rgba(255, 255, 255, 0.14)',
-            border: isDarkMode
-                ? '1px solid rgba(255, 255, 255, 0.16)'
-                : '1px solid rgba(255, 255, 255, 0.22)',
-            backdropFilter: 'blur(12px)',
-            WebkitBackdropFilter: 'blur(12px)', // Safari support
-            // Text color
-            color: isDarkMode ? '#ffffff' : '#1a1a1a',
-            // Shadow
-            boxShadow: '0 10px 30px rgba(0, 0, 0, 0.28)',
+            minWidth: '112px',
+            padding: '0 18px',
+            background: isDarkPrimary
+                ? `linear-gradient(180deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.04) 48%, rgba(0,0,0,0.10) 100%), ${primaryColor}`
+                : `linear-gradient(180deg, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.10) 45%, rgba(17,24,39,0.06) 100%), ${primaryColor}`,
+            border: isDarkPrimary
+                ? '1px solid rgba(255, 255, 255, 0.20)'
+                : '1px solid rgba(17, 24, 39, 0.14)',
+            color: textColor,
+            boxShadow: '0 10px 24px rgba(15, 23, 42, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.20)',
             ...buttonStyle
         };
         return baseStyle;
-    }, [isDarkMode, buttonStyle]);
-    return (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsxs("button", { onClick: () => setIsOpen(true), style: finalButtonStyle, className: `modly-widget-button fixed ${positionClasses[buttonPosition]} z-50 font-semibold rounded-full flex items-center justify-center gap-2 transition-all duration-300 ${className}`, onMouseEnter: (e) => {
-                    e.currentTarget.style.transform = 'scale(1.04)';
-                    e.currentTarget.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.28)';
+    }, [config, buttonStyle]);
+    return (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsxs("button", { onClick: () => setIsOpen(true), style: finalButtonStyle, className: `modly-widget-button fixed ${positionClasses[buttonPosition]} z-50 cursor-pointer rounded-full inline-flex items-center justify-center gap-2 transition-all duration-200 ease-out ${className}`, onMouseEnter: (e) => {
+                    e.currentTarget.style.transform = 'translateY(-2px)';
+                    e.currentTarget.style.filter = 'brightness(1.04)';
+                    e.currentTarget.style.boxShadow = '0 14px 30px rgba(15, 23, 42, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.24)';
                 }, onMouseLeave: (e) => {
-                    e.currentTarget.style.transform = 'scale(1)';
-                    e.currentTarget.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.28)';
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.filter = 'brightness(1)';
+                    e.currentTarget.style.boxShadow = '0 10px 24px rgba(15, 23, 42, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.20)';
                 }, onFocus: (e) => {
                     e.currentTarget.style.outline = '2px solid rgba(99, 102, 241, 0.5)';
                     e.currentTarget.style.outlineOffset = '2px';
                 }, onBlur: (e) => {
                     e.currentTarget.style.outline = 'none';
-                }, "aria-label": "Open ModlyAI Widget", children: [jsxRuntimeExports.jsx("span", { className: "text-base font-semibold", style: {
-                            letterSpacing: '0.02em',
-                            fontWeight: 600
-                        }, children: buttonText }), jsxRuntimeExports.jsx("svg", { className: "w-4 h-4", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", style: { opacity: 0.75 }, children: jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" }) })] }), isOpen && (jsxRuntimeExports.jsx("div", { className: "fixed inset-0 z-[100] bg-black bg-opacity-50 flex items-center justify-center p-4", onClick: (e) => {
+                }, "aria-label": `Open ${displayTitle} widget`, children: [jsxRuntimeExports.jsx(MessageCircle, { "aria-hidden": "true", className: "h-4 w-4 shrink-0", strokeWidth: 2 }), jsxRuntimeExports.jsx("span", { className: "text-[14.5px] font-semibold", style: {
+                            letterSpacing: '0',
+                            lineHeight: 1,
+                            fontWeight: 600,
+                            whiteSpace: 'nowrap'
+                        }, children: displayTitle })] }), isOpen && (jsxRuntimeExports.jsx("div", { className: "fixed inset-0 z-[100] bg-black bg-opacity-50 flex items-center justify-center p-4", onClick: (e) => {
                     if (e.target === e.currentTarget) {
                         setIsOpen(false);
                     }
-                }, children: jsxRuntimeExports.jsxs("div", { className: "bg-white rounded-lg shadow-2xl w-full max-w-6xl h-[90vh] overflow-hidden flex flex-col relative", children: [jsxRuntimeExports.jsx("button", { onClick: () => setIsOpen(false), className: "absolute top-4 right-4 z-10 bg-gray-100 hover:bg-gray-200 rounded-full p-2 transition-colors", "aria-label": "Close modal", children: jsxRuntimeExports.jsx("svg", { className: "w-6 h-6 text-gray-600", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M6 18L18 6M6 6l12 12" }) }) }), jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-hidden", children: jsxRuntimeExports.jsx(FurnitureAIWidget, { config: config, defaultTab: defaultTab }) })] }) }))] }));
+                }, children: jsxRuntimeExports.jsxs("div", { className: "bg-white rounded-lg shadow-2xl w-full max-w-6xl h-[90vh] overflow-hidden flex flex-col relative", children: [jsxRuntimeExports.jsx("button", { onClick: () => setIsOpen(false), className: "absolute top-4 right-4 z-10 bg-gray-100 hover:bg-gray-200 rounded-full p-2 transition-colors", "aria-label": "Close modal", children: jsxRuntimeExports.jsx("svg", { className: "w-6 h-6 text-gray-600", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M6 18L18 6M6 6l12 12" }) }) }), jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-hidden", children: jsxRuntimeExports.jsx(FurnitureAIWidget, { config: config, defaultTab: defaultTab, widgetTitle: displayTitle }) })] }) }))] }));
 }
 
 export { FurnitureAIWidget, FurnitureAIWidgetButton, FurnitureCustomizerWidget, FurnitureRoomPlannerWidget };

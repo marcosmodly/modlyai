@@ -42,9 +42,8 @@ export default function ProductConfiguratorPage({
     );
   }
 
-  const handleSelectionChange = (selection: ProductSelection) => {
+  const handleSelectionChange = (_selection: ProductSelection) => {
     // In production, this could save to localStorage, send to API, etc.
-    console.log('Selection changed:', selection);
   };
 
   return (

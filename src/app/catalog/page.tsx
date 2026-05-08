@@ -1,5 +1,6 @@
 'use client';
 
+import { Suspense } from 'react';
 import { useState } from 'react';
 import { FurnitureItem } from '@/types';
 import CatalogGrid from '@/components/CatalogGrid';
@@ -38,7 +39,9 @@ export default function CatalogPage() {
           </p>
         </div>
 
-        <CatalogGrid onCustomizeItem={handleCustomizeItem} />
+        <Suspense fallback={<div className="text-center py-12 text-[#A0A0A0]">Loading catalog...</div>}>
+          <CatalogGrid onCustomizeItem={handleCustomizeItem} />
+        </Suspense>
       </div>
 
       {isDemoMode && isCatalogModalOpen && (

@@ -1,34 +1,208 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { ChatRequest, ChatResponse, ConversationMessage, FurnitureItem } from '@/types';
+import { ChatCatalogPayload, ChatRequest, ChatResponse, ConversationMessage, FurnitureItem } from '@/types';
+import { getCatalogForRequest, catalogProductToFurnitureItem } from '@/lib/store-catalog';
+import { getCatalogSnapshot, type CatalogSource, type NormalizedCatalogProduct } from '@/lib/catalog-source';
+import { checkAiChatLimit, findStoreForUsage, incrementUsage } from '@/lib/usage-limits';
 
-// Fetch catalog items
-async function getCatalogItems(): Promise<FurnitureItem[]> {
-  try {
-    const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 
-                   (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000');
-    const response = await fetch(`${baseUrl}/api/catalog/items`, {
-      cache: 'no-store',
-    });
-    if (response.ok) {
-      const data = await response.json();
-      return data.items || [];
-    }
-  } catch (error) {
-    console.error('Failed to fetch catalog:', error);
-  }
-  return [];
+type ChatCatalog = {
+  products: NormalizedCatalogProduct[];
+  items: FurnitureItem[];
+  source: CatalogSource;
+  count: number;
+};
+
+// Fetch the same active catalog used by dashboard/product surfaces.
+async function getChatCatalog(storeId?: string, apiKey?: string, storeDomain?: string): Promise<ChatCatalog> {
+  const { catalog } = await getCatalogForRequest({ storeId, apiKey, domain: storeDomain });
+  const products = Array.isArray(catalog.products) ? catalog.products : [];
+
+  return {
+    products,
+    items: products.map(catalogProductToFurnitureItem),
+    source: catalog.source,
+    count: catalog.count,
+  };
+}
+
+function getChatCatalogFromRequest(catalog?: ChatCatalogPayload): ChatCatalog | null {
+  const products = Array.isArray(catalog?.products) ? catalog.products : [];
+  if (products.length === 0) return null;
+
+  const snapshot = getCatalogSnapshot(products, {
+    catalogSource: catalog?.source,
+  });
+
+  return {
+    products: snapshot.products,
+    items: snapshot.products.map(catalogProductToFurnitureItem),
+    source: snapshot.source,
+    count: snapshot.count,
+  };
+}
+
+function getSourceLabel(source: CatalogSource) {
+  if (source === 'csv') return 'CSV';
+  if (source === 'shopify') return 'Shopify';
+  if (source === 'woocommerce') return 'WooCommerce';
+  if (source === 'bigcommerce') return 'BigCommerce';
+  if (source === 'manual') return 'manual catalog';
+  return 'no active catalog';
+}
+
+function tokenize(value: string) {
+  const stopWords = new Set([
+    'a', 'an', 'and', 'any', 'are', 'best', 'can', 'for', 'from', 'have', 'i',
+    'in', 'is', 'it', 'me', 'my', 'of', 'on', 'or', 'please', 'product',
+    'recommend', 'recommendation', 'show', 'that', 'the', 'to', 'with', 'you',
+  ]);
+
+  return value
+    .toLowerCase()
+    .split(/[^a-z0-9]+/)
+    .map((token) => token.trim())
+    .filter((token) => token.length > 2 && !stopWords.has(token));
+}
+
+function getSearchText(product: NormalizedCatalogProduct) {
+  return [
+    product.title,
+    product.category,
+    product.description,
+    product.sku,
+    product.dimensions,
+    ...(product.tags ?? []),
+  ].filter(Boolean).join(' ').toLowerCase();
+}
+
+function getRelevantProducts(
+  query: string,
+  products: NormalizedCatalogProduct[] | undefined,
+  limit = 15
+) {
+  const safeProducts = Array.isArray(products) ? products : [];
+
+  const tokens = tokenize(query);
+  if (tokens.length === 0) return safeProducts.slice(0, limit);
+
+  const scored = safeProducts.map((product, index) => {
+    const searchText = getSearchText(product);
+    const title = product.title.toLowerCase();
+    const score = tokens.reduce((total, token) => {
+      if (title.includes(token)) return total + 5;
+      if (searchText.includes(token)) return total + 2;
+      return total;
+    }, 0);
+
+    return { product, score, index };
+  });
+
+  const matching = scored
+    .filter((entry) => entry.score > 0)
+    .sort((a, b) => b.score - a.score || a.index - b.index)
+    .slice(0, limit)
+    .map((entry) => entry.product);
+
+  return matching.length > 0 ? matching : [];
+}
+
+function getClosestCatalogProducts(
+  query: string,
+  products: NormalizedCatalogProduct[] | undefined,
+  limit = 3
+) {
+  const safeProducts = Array.isArray(products) ? products : [];
+  const relevant = getRelevantProducts(query, safeProducts, limit);
+  return relevant.length > 0 ? relevant.slice(0, limit) : safeProducts.slice(0, limit);
+}
+
+function formatPrice(price: NormalizedCatalogProduct['price']) {
+  if (price === undefined || price === null || price === '') return undefined;
+  if (typeof price === 'number' && Number.isFinite(price)) return `$${price.toFixed(2)}`;
+
+  const parsed = Number(price);
+  if (Number.isFinite(parsed)) return `$${parsed.toFixed(2)}`;
+  return String(price);
+}
+
+function formatCatalogLine(product: NormalizedCatalogProduct, index: number) {
+  const fields = [
+    `name: ${product.title}`,
+    product.category ? `category: ${product.category}` : null,
+    product.description ? `description: ${product.description}` : null,
+    formatPrice(product.price) ? `price: ${formatPrice(product.price)}` : null,
+    product.dimensions ? `dimensions: ${product.dimensions}` : null,
+    product.sku ? `sku: ${product.sku}` : null,
+    product.tags?.length ? `tags: ${product.tags.join(', ')}` : null,
+    product.image ? `image: ${product.image}` : null,
+  ].filter(Boolean);
+
+  return `${index + 1}: ${fields.join('; ')}`;
+}
+
+function isRecommendationRequest(message: string) {
+  return /\b(recommend|suggest|best|match|looking for|need|want|fit|sofa|chair|table|bed|storage|lamp|shelf|console)\b/i.test(message);
+}
+
+function createAssistantResponse(text: string, recommendations?: FurnitureItem[], action?: any) {
+  const responseMessage: ConversationMessage = {
+    id: `msg-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+    role: 'assistant',
+    type: recommendations?.length ? 'recommendations' : action ? 'action' : 'text',
+    content: text,
+    timestamp: Date.now(),
+    metadata: {
+      recommendations: recommendations?.map(item => ({
+        item,
+        placement: { reasoning: 'Recommended from the active catalog' },
+        reasoning: `This ${item.name} is available in the active catalog.`,
+        matchScore: 0.8,
+      })),
+      action,
+    },
+  };
+
+  const response: ChatResponse = {
+    message: responseMessage,
+  };
+
+  return NextResponse.json({
+    reply: text,
+    ...response,
+  });
+}
+
+function buildNoMatchResponse(message: string, products: NormalizedCatalogProduct[]) {
+  const closest = getClosestCatalogProducts(message, products, 3);
+  const closestItems = closest.map(catalogProductToFurnitureItem);
+  const alternatives = closest
+    .map((product, index) => {
+      const details = [
+        product.category,
+        formatPrice(product.price),
+        product.dimensions,
+        product.sku ? `SKU: ${product.sku}` : null,
+      ].filter(Boolean).join(', ');
+
+      return `${index + 1}: ${product.title}${details ? ` (${details})` : ''}`;
+    })
+    .join('\n');
+
+  const text = alternatives
+    ? `1: No matching catalog product was found for that request.\n2: Closest available catalog items:\n${alternatives}`
+    : '1: No matching catalog product was found for that request.';
+
+  return createAssistantResponse(text, closestItems);
 }
 
 // Build system prompt with catalog context
-function buildSystemPrompt(catalogItems: FurnitureItem[], pageContext?: any): string {
-  const catalogSummary = catalogItems.length > 0
-    ? catalogItems.slice(0, 50).map((item, index) => {
-        const priceText = item.priceRange ? `$${item.priceRange.min}-${item.priceRange.max}` : 'price varies';
-        const subCategoryText = item.subCategory ? `/${item.subCategory}` : '';
-        const styleText = item.styleTags.join(', ');
-        return `${index + 1}: ${item.name} (${item.category}${subCategoryText}), style ${styleText}, color ${item.colors.main}, ${priceText}`;
-      }).join('\n')
-    : '0: No catalog items available.';
+function buildSystemPrompt(
+  catalogProducts: NormalizedCatalogProduct[],
+  catalogMeta: Pick<ChatCatalog, 'source' | 'count'>,
+  pageContext?: any
+): string {
+  const catalogSummary = catalogProducts.length > 0
+    ? catalogProducts.map(formatCatalogLine).join('\n')
+    : '0: No catalog products available.';
 
   return `You are ModlyAI, a sales and configuration assistant for a furniture brand.
 
@@ -59,9 +233,15 @@ What you are allowed to do:
 - Prefer standard options when possible and mention when something affects lead time or cost.
 
 Rules you must always follow:
-1) Only suggest options and combinations that exist in the provided product data and rules.
-2) If something is not available, do not pretend it is.
-3) If the user asks for something outside the allowed options:
+1) Only recommend products from the active catalog provided in INTERNAL CATALOG CONTEXT.
+2) Use exact product names from the catalog.
+3) Use exact prices, SKUs, dimensions, categories, and images only when they are present in the catalog.
+4) Do not invent product names, prices, dimensions, SKUs, categories, images, materials, colors, or availability.
+5) If no catalog product matches the user's request, say that no matching catalog product was found and suggest the closest available catalog products from the catalog.
+6) If the active catalog is empty, say no products are currently available and ask the store owner to import or connect products.
+7) Only suggest options and combinations that exist in the provided product data and rules.
+8) If something is not available, do not pretend it is.
+9) If the user asks for something outside the allowed options:
    - Explain politely that it is not part of the brand's standard, factory-approved configurations.
    - Offer:
      - The closest valid alternative, OR
@@ -97,9 +277,12 @@ Your main goals:
 - Help the user choose the right product and configuration
 - Respect the manufacturer's design and production system at all times
 
-INTERNAL CATALOG CONTEXT (DO NOT OUTPUT THIS LIST):
+ACTIVE CATALOG:
+Source: ${getSourceLabel(catalogMeta.source)}
+Count: ${catalogMeta.count}
+
+INTERNAL CATALOG CONTEXT (DO NOT OUTPUT THIS RAW LIST):
 ${catalogSummary}
-${catalogItems.length > 50 ? `\n(Total: ${catalogItems.length} items. Showing first 50 for context.)` : ''}
 
 AVAILABLE ACTIONS:
 1: recommend: Suggest furniture items from the catalog based on user needs
@@ -122,10 +305,11 @@ RESPONSE FORMAT (PLAIN TEXT ONLY):
 9: Always reference the manufacturer's approved options and designs.
 
 When recommending items, include:
-1: The item name and why it matches their needs
-2: Key features (style, color, dimensions if relevant)
-3: How it fits their constraints (budget, space, style preferences)
-4: Any factory constraints or lead time considerations
+1: Best match: exact catalog product name and price if available
+2: Why it fits: concise reason based only on catalog fields and the user's request
+3: Dimensions: include only if available
+4: SKU: include only if available
+5: Alternative options from the catalog: include exact catalog product names if available
 
 When helping with customization:
 1: You may customize products ONLY by selecting from the manufacturer's predefined option groups (materials, finishes, handles, ornaments, components, sizes)
@@ -213,8 +397,28 @@ function parseAIResponse(
 
 export async function POST(request: NextRequest) {
   try {
-    const body: ChatRequest = await request.json();
-    const { message, conversationHistory, context, userPreferences } = body;
+    let body: Partial<ChatRequest>;
+    try {
+      body = await request.json();
+    } catch (error) {
+      console.error('Invalid chat request JSON:', error);
+      return NextResponse.json(
+        { error: 'Invalid JSON request body' },
+        { status: 400 }
+      );
+    }
+
+    const {
+      message = '',
+      conversationHistory = [],
+      storeId,
+      context,
+      apiKey,
+      publicApiKey,
+      storeDomain,
+      catalog,
+    } = body;
+    const resolvedApiKey = apiKey || publicApiKey;
 
     if (!message || !message.trim()) {
       return NextResponse.json(
@@ -223,14 +427,52 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Fetch catalog items
-    const catalogItems = await getCatalogItems();
+    if (process.env.MODLYAI_CHAT_TEST_MODE === 'true') {
+      return NextResponse.json({ reply: 'Test response from ModlyAI backend.' });
+    }
+
+    // Prefer the catalog sent by the widget, then fall back to the shared server catalog.
+    const requestCatalog = getChatCatalogFromRequest(catalog);
+    const activeCatalog = requestCatalog ?? await getChatCatalog(storeId, resolvedApiKey, storeDomain);
+    const catalogItems = activeCatalog.items;
+    const usageStore = await findStoreForUsage({
+      storeId,
+      apiKey: resolvedApiKey,
+      domain: storeDomain,
+    });
+
+    if (usageStore) {
+      const usageCheck = checkAiChatLimit(usageStore);
+      if (!usageCheck.allowed) {
+        return createAssistantResponse(
+          usageCheck.trialExpired
+            ? 'Your free trial has ended. Upgrade to continue using ModlyAI.'
+            : 'This store has reached its monthly AI chat limit. Please contact the store owner or upgrade the ModlyAI plan.'
+        );
+      }
+    }
+
+    if (activeCatalog.count === 0) {
+      return createAssistantResponse(
+        '1: No products are currently available because the active catalog is empty.\n2: Please ask the store owner to import a CSV catalog or connect a product source.'
+      );
+    }
+
+    const relevantProducts = getRelevantProducts(message, activeCatalog.products, 50);
+
+    if (isRecommendationRequest(message) && relevantProducts.length === 0) {
+      return buildNoMatchResponse(message, activeCatalog.products);
+    }
 
     // Build system prompt with catalog
-    const systemPrompt = buildSystemPrompt(catalogItems, context);
+    const systemPrompt = buildSystemPrompt(
+      relevantProducts.length > 0 ? relevantProducts : activeCatalog.products,
+      { source: activeCatalog.source, count: activeCatalog.count },
+      context
+    );
 
     // Format messages for OpenAI
-    const messages = formatMessagesForOpenAI(conversationHistory, systemPrompt);
+    const messages = formatMessagesForOpenAI(Array.isArray(conversationHistory) ? conversationHistory : [], systemPrompt);
     
     // Add current user message
     messages.push({ role: 'user', content: message });
@@ -257,7 +499,7 @@ export async function POST(request: NextRequest) {
       body: JSON.stringify({
         model: process.env.OPENAI_CHAT_MODEL || 'gpt-4o-mini',
         messages,
-        temperature: 0.7,
+        temperature: 0.2,
         max_tokens: 1000,
       }),
     });
@@ -323,7 +565,14 @@ export async function POST(request: NextRequest) {
       message: responseMessage,
     };
 
-    return NextResponse.json(response);
+    if (usageStore) {
+      await incrementUsage(usageStore.id, 'aiChat', usageStore.aiChatsUsed);
+    }
+
+    return NextResponse.json({
+      reply: parsed.text,
+      ...response,
+    });
   } catch (error) {
     console.error('Error in chat endpoint:', error);
     const errorMessage = error instanceof Error ? error.message : 'Internal server error';

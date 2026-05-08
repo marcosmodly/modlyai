@@ -6,9 +6,11 @@ export declare class AIService {
     private stateManager;
     private pageContext;
     private contextUnwatch?;
+    private readonly fallbackMessage;
+    private readonly config;
     constructor(apiClient: ApiClient, config: WidgetConfig);
+    private ensureInitialWelcomeMessage;
     private addGreeting;
-    private getInitialGreeting;
     sendMessage(userMessage: string): Promise<ChatResponse>;
     private updateIntentFromMessage;
     getState(): ConversationState;

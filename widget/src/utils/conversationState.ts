@@ -50,6 +50,11 @@ export class ConversationStateManager {
     return [...this.state.messages];
   }
 
+  updateMessages(messages: ConversationMessage[]): void {
+    this.state.messages = messages;
+    this.saveState();
+  }
+
   updateIntent(intent: ConversationState['currentIntent']): void {
     this.state.currentIntent = intent;
     this.saveState();

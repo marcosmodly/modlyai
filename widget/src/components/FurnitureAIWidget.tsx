@@ -1,6 +1,7 @@
-import React, { useState, useMemo, useEffect, useRef } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { WidgetConfig } from '../utils/config';
 import { FurnitureItem, CustomizedFurnitureItem, CustomizationConfig } from '../types';
+import { Product, productFromFurnitureItem } from '../data/products';
 import { FurnitureRoomPlannerWidget } from './FurnitureRoomPlannerWidget';
 import { FurnitureCustomizerWidget } from './FurnitureCustomizerWidget';
 import { ConversationInterface } from './ConversationInterface';
@@ -8,28 +9,33 @@ import { SubmitFlowModal } from './SubmitFlowModal';
 import { AIService } from '../utils/aiService';
 import { ApiClient } from '../utils/apiClient';
 import { Storage } from '../utils/storage';
-import { mergeConfig } from '../utils/config';
+import { DEFAULT_WIDGET_TITLE, getEnabledActions, getPrimaryColor, getReadableTextColor, mergeConfig } from '../utils/config';
+import { getRealProductUrl } from '../utils/productUrl';
 
 type ViewMode = 'conversation' | 'room-planner' | 'customizer';
 
 interface FurnitureAIWidgetProps {
   config?: WidgetConfig;
   defaultTab?: 'room-planner' | 'customizer';
+  widgetTitle?: string;
 }
 
-export function FurnitureAIWidget({ config = {}, defaultTab }: FurnitureAIWidgetProps) {
+export function FurnitureAIWidget({ config = {}, defaultTab, widgetTitle }: FurnitureAIWidgetProps) {
   const mergedConfig = useMemo(() => mergeConfig(config), [config]);
   const apiClient = useMemo(() => new ApiClient(mergedConfig), [mergedConfig]);
   const storage = useMemo(() => new Storage(mergedConfig.storageKey), [mergedConfig.storageKey]);
-  const aiServiceRef = useRef<AIService | null>(null);
-
-  // Initialize AI service
-  if (!aiServiceRef.current) {
-    aiServiceRef.current = new AIService(apiClient, mergedConfig);
-  }
+  const aiService = useMemo(() => new AIService(apiClient, mergedConfig), [apiClient, mergedConfig]);
+  const enabledActions = useMemo(() => getEnabledActions(mergedConfig), [mergedConfig]);
+  const primaryColor = getPrimaryColor(mergedConfig);
+  const displayTitle =
+    widgetTitle ||
+    config.widgetTitle ||
+    config.theme?.buttonText ||
+    DEFAULT_WIDGET_TITLE;
+  const primaryTextColor = getReadableTextColor(primaryColor);
 
   const [viewMode, setViewMode] = useState<ViewMode>('conversation');
-  const [customizeItem, setCustomizeItem] = useState<FurnitureItem | null>(null);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [saveNotification, setSaveNotification] = useState<string | null>(null);
   const [selectedCatalogItem, setSelectedCatalogItem] = useState<FurnitureItem | null>(null);
   const [isCatalogModalOpen, setIsCatalogModalOpen] = useState(false);
@@ -39,7 +45,8 @@ export function FurnitureAIWidget({ config = {}, defaultTab }: FurnitureAIWidget
   useEffect(() => {
     // Handle external events for backward compatibility
     const handleCustomizeItem = (event: CustomEvent<FurnitureItem>) => {
-      setCustomizeItem(event.detail);
+      if (!enabledActions.customize) return;
+      setSelectedProduct(productFromFurnitureItem(event.detail));
       setViewMode('customizer');
     };
 
@@ -48,7 +55,7 @@ export function FurnitureAIWidget({ config = {}, defaultTab }: FurnitureAIWidget
     };
 
     const handleNavigateToCustomizer = () => {
-      console.log('[FurnitureAIWidget] modly:navigate-to-customizer event received, switching to customizer view');
+      if (!enabledActions.customize) return;
       setViewMode('customizer');
     };
 
@@ -61,20 +68,28 @@ export function FurnitureAIWidget({ config = {}, defaultTab }: FurnitureAIWidget
       window.removeEventListener('modly:navigate-to-room-planner', handleNavigateToRoomPlanner);
       window.removeEventListener('modly:navigate-to-customizer', handleNavigateToCustomizer);
     };
-  }, []);
+  }, [enabledActions.customize]);
 
   // Cleanup AI service on unmount
   useEffect(() => {
     return () => {
-      aiServiceRef.current?.destroy();
+      aiService.destroy();
     };
-  }, []);
+  }, [aiService]);
 
   // Convert FurnitureItem to CustomizedFurnitureItem format
   const convertFurnitureItemToCustomized = (item: FurnitureItem): Omit<CustomizedFurnitureItem, 'id' | 'savedAt'> => {
+    const product = productFromFurnitureItem(item);
     return {
-      name: item.name,
-      baseItemType: item.category || item.subCategory || 'furniture',
+      productId: product.id,
+      source: item.source,
+      productUrl: item.productUrl || item.url,
+      price: item.priceRange?.min ?? item.price,
+      externalId: item.externalId,
+      shopifyProductId: item.shopifyProductId,
+      storeId: item.storeId,
+      name: product.name,
+      baseItemType: product.category || item.category || item.subCategory || 'furniture',
       dimensions: {
         length: item.dimensions.length,
         width: item.dimensions.width,
@@ -106,10 +121,8 @@ export function FurnitureAIWidget({ config = {}, defaultTab }: FurnitureAIWidget
   };
 
   const handleCustomizeItem = (item: FurnitureItem) => {
-    if (typeof window !== 'undefined') {
-      sessionStorage.setItem('modly-customize-item', JSON.stringify(item));
-    }
-    setCustomizeItem(item);
+    if (!enabledActions.customize) return;
+    setSelectedProduct(productFromFurnitureItem(item));
     setViewMode('customizer');
   };
 
@@ -118,20 +131,20 @@ export function FurnitureAIWidget({ config = {}, defaultTab }: FurnitureAIWidget
   };
 
   const handleOpenCustomizer = () => {
-    console.log('[FurnitureAIWidget] handleOpenCustomizer called, switching to customizer view');
+    if (!enabledActions.customize) return;
     setViewMode('customizer');
   };
 
   const handleShowCatalog = () => {
     // Catalog doesn't exist yet - show message in conversation or do nothing
-    if (aiServiceRef.current) {
-      aiServiceRef.current.sendMessage('Show me the catalog');
-    }
+    aiService.sendMessage('Show me the catalog');
   };
 
   const handleViewInCatalog = (item: FurnitureItem) => {
-    setSelectedCatalogItem(item);
-    setIsCatalogModalOpen(true);
+    const catalogUrl = getRealProductUrl(item);
+    if (catalogUrl && typeof window !== 'undefined') {
+      window.open(catalogUrl, '_blank', 'noopener,noreferrer');
+    }
   };
 
   const handleCloseCatalogModal = () => {
@@ -178,7 +191,14 @@ export function FurnitureAIWidget({ config = {}, defaultTab }: FurnitureAIWidget
       <div className="bg-gray-50 border-b border-gray-200 px-6 py-4 pr-16 flex items-center justify-between">
         <div className="flex items-center gap-4">
           <h1 className="text-2xl font-bold text-gray-900">
-            <span className="text-blue-600">ModlyAI</span>
+            {displayTitle === DEFAULT_WIDGET_TITLE ? (
+              <>
+                <span>Modly</span>
+                <span style={{ color: primaryColor }}>AI</span>
+              </>
+            ) : (
+              <span>{displayTitle}</span>
+            )}
           </h1>
           {viewMode === 'conversation' && (
             <>
@@ -188,12 +208,14 @@ export function FurnitureAIWidget({ config = {}, defaultTab }: FurnitureAIWidget
               >
                 Room Planner
               </button>
-              <button
-                onClick={handleOpenCustomizer}
-                className="text-sm px-3 py-1.5 text-gray-700 hover:bg-gray-100 rounded transition-colors"
-              >
-                Customizer
-              </button>
+              {enabledActions.customize && (
+                <button
+                  onClick={handleOpenCustomizer}
+                  className="text-sm px-3 py-1.5 text-gray-700 hover:bg-gray-100 rounded transition-colors"
+                >
+                  Customizer
+                </button>
+              )}
             </>
           )}
           {viewMode !== 'conversation' && (
@@ -215,7 +237,7 @@ export function FurnitureAIWidget({ config = {}, defaultTab }: FurnitureAIWidget
 
       {/* Content Area */}
       <div className="flex-1 overflow-hidden">
-        {viewMode === 'conversation' && aiServiceRef.current && (
+        {viewMode === 'conversation' && (
           <div className="h-full flex flex-col">
             {saveNotification && (
               <div className="bg-green-500 text-white px-4 py-2 text-sm text-center flex-shrink-0">
@@ -224,13 +246,15 @@ export function FurnitureAIWidget({ config = {}, defaultTab }: FurnitureAIWidget
             )}
             <div className="flex-1 min-h-0">
               <ConversationInterface
-                aiService={aiServiceRef.current}
+                aiService={aiService}
                 onCustomizeItem={handleCustomizeItem}
                 onAddToRoomPlanner={handleAddToRoomPlanner}
                 onOpenRoomPlanner={handleOpenRoomPlanner}
                 onOpenCustomizer={handleOpenCustomizer}
                 onShowCatalog={handleShowCatalog}
                 onViewInCatalog={handleViewInCatalog}
+                enabledActions={enabledActions}
+                primaryColor={primaryColor}
               />
             </div>
           </div>
@@ -239,17 +263,21 @@ export function FurnitureAIWidget({ config = {}, defaultTab }: FurnitureAIWidget
           <div className="h-full overflow-y-auto">
             <FurnitureRoomPlannerWidget 
               config={mergedConfig} 
-              onCustomizeItem={handleCustomizeItem}
-              onNavigateToCustomizer={handleOpenCustomizer}
+              onCustomizeItem={enabledActions.customize ? handleCustomizeItem : undefined}
+              onNavigateToCustomizer={enabledActions.customize ? handleOpenCustomizer : undefined}
             />
           </div>
         )}
         {viewMode === 'customizer' && (
           <div className="h-full overflow-y-auto">
-            <FurnitureCustomizerWidget 
-              config={mergedConfig} 
-              onNavigateToRoomPlanner={handleOpenRoomPlanner}
-            />
+            {enabledActions.customize && (
+              <FurnitureCustomizerWidget 
+                config={mergedConfig} 
+                onNavigateToRoomPlanner={handleOpenRoomPlanner}
+                selectedProduct={selectedProduct}
+                onSelectedProductChange={setSelectedProduct}
+              />
+            )}
           </div>
         )}
       </div>
@@ -314,12 +342,15 @@ export function FurnitureAIWidget({ config = {}, defaultTab }: FurnitureAIWidget
 
             {/* Action Buttons */}
             <div className="flex gap-3">
+            {enabledActions.customize && (
               <button
                 onClick={handleCustomizeFromCatalog}
-                className="flex-1 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium"
+                className="flex-1 text-white px-4 py-2 rounded-lg transition-colors font-medium"
+                style={{ backgroundColor: primaryColor, color: primaryTextColor }}
               >
                 Customize This
               </button>
+            )}
               <button
                 onClick={handleCloseCatalogModal}
                 className="flex-1 bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors font-medium"

@@ -1,0 +1,69 @@
+<svg width="1200" height="650" viewBox="0 0 1200 650" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="1200" y1="0" x2="0" y2="650" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0B1F3A"/>
+      <stop offset="1" stop-color="#081426"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1200" y2="650" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2D6BFF" stop-opacity="0.9"/>
+      <stop offset="1" stop-color="#2BE7C6" stop-opacity="0.75"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="650" rx="26" fill="url(#bg)"/>
+
+  <!-- Divider -->
+  <rect x="600" y="0" width="2" height="650" fill="rgba(255,255,255,0.10)"/>
+
+  <!-- Left panel (customer widget) -->
+  <g transform="translate(58,52)">
+    <rect x="0" y="0" width="478" height="546" rx="22" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.12)"/>
+    <rect x="20" y="20" width="438" height="56" rx="14" fill="rgba(0,0,0,0.25)" stroke="rgba(255,255,255,0.10)"/>
+    <rect x="34" y="37" width="110" height="22" rx="10" fill="rgba(255,255,255,0.12)"/>
+    <rect x="160" y="37" width="164" height="22" rx="10" fill="rgba(141,163,142,0.35)"/>
+
+    <!-- Widget card -->
+    <rect x="20" y="98" width="438" height="220" rx="20" fill="rgba(11,31,58,0.65)" stroke="url(#accent)" stroke-opacity="0.45"/>
+    <rect x="36" y="120" width="140" height="28" rx="10" fill="rgba(255,255,255,0.14)"/>
+    <rect x="36" y="160" width="190" height="140" rx="14" fill="rgba(255,255,255,0.08)" />
+    <rect x="244" y="160" width="170" height="28" rx="10" fill="rgba(43,231,198,0.18)"/>
+    <rect x="244" y="202" width="170" height="28" rx="10" fill="rgba(45,107,255,0.16)"/>
+    <rect x="244" y="244" width="120" height="28" rx="10" fill="rgba(255,255,255,0.12)"/>
+
+    <!-- Play button / video feel -->
+    <circle cx="406" cy="470" r="54" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.16)"/>
+    <path d="M394 443 L430 470 L394 497 Z" fill="#2BE7C6" fill-opacity="0.9"/>
+    <rect x="20" y="352" width="438" height="174" rx="20" fill="rgba(0,0,0,0.20)" stroke="rgba(255,255,255,0.10)"/>
+    <rect x="36" y="378" width="320" height="18" rx="9" fill="rgba(255,255,255,0.12)"/>
+    <rect x="36" y="410" width="380" height="18" rx="9" fill="rgba(255,255,255,0.08)"/>
+    <rect x="36" y="442" width="250" height="18" rx="9" fill="rgba(255,255,255,0.09)"/>
+    <rect x="36" y="486" width="128" height="36" rx="12" fill="url(#accent)" fill-opacity="0.35"/>
+  </g>
+
+  <!-- Right panel (merchant dashboard) -->
+  <g transform="translate(664,52)">
+    <rect x="0" y="0" width="478" height="546" rx="22" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.12)"/>
+    <rect x="20" y="20" width="438" height="56" rx="14" fill="rgba(0,0,0,0.25)" stroke="rgba(255,255,255,0.10)"/>
+    <rect x="34" y="37" width="170" height="22" rx="10" fill="rgba(255,255,255,0.12)"/>
+    <rect x="214" y="37" width="122" height="22" rx="10" fill="rgba(45,107,255,0.25)"/>
+
+    <!-- Analytics cards -->
+    <rect x="20" y="98" width="438" height="160" rx="20" fill="rgba(0,0,0,0.18)" stroke="rgba(255,255,255,0.10)"/>
+    <rect x="36" y="120" width="170" height="116" rx="16" fill="rgba(45,107,255,0.10)" stroke="rgba(45,107,255,0.25)"/>
+    <rect x="224" y="120" width="190" height="52" rx="16" fill="rgba(255,255,255,0.08)"/>
+    <rect x="224" y="180" width="190" height="34" rx="14" fill="rgba(43,231,198,0.12)"/>
+
+    <!-- Chart area -->
+    <rect x="20" y="276" width="438" height="268" rx="20" fill="rgba(11,31,58,0.45)" stroke="rgba(255,255,255,0.10)"/>
+    <rect x="36" y="300" width="220" height="18" rx="9" fill="rgba(255,255,255,0.14)"/>
+    <rect x="36" y="332" width="180" height="18" rx="9" fill="rgba(255,255,255,0.08)"/>
+    <rect x="36" y="366" width="390" height="2" fill="rgba(255,255,255,0.10)"/>
+    <path d="M60 420 C110 380, 160 390, 210 415 C260 440, 310 455, 540 420" stroke="url(#accent)" stroke-width="5" stroke-linecap="round"/>
+    <circle cx="60" cy="420" r="7" fill="#2D6BFF"/>
+    <circle cx="210" cy="415" r="7" fill="#2BE7C6"/>
+    <circle cx="540" cy="420" r="7" fill="#2D6BFF"/>
+
+    <rect x="36" y="478" width="150" height="46" rx="16" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.12)"/>
+    <rect x="200" y="478" width="180" height="46" rx="16" fill="rgba(43,231,198,0.14)" stroke="rgba(43,231,198,0.25)"/>
+  </g>
+</svg>
+

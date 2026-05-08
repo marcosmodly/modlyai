@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { WidgetConfig } from '../utils/config';
+import { MessageCircle } from 'lucide-react';
+import { DEFAULT_WIDGET_TITLE, getPrimaryColor, getReadableTextColor, isDarkColor, WidgetConfig } from '../utils/config';
 import { FurnitureAIWidget } from './FurnitureAIWidget';
 
 interface FurnitureAIWidgetButtonProps {
@@ -11,93 +12,25 @@ interface FurnitureAIWidgetButtonProps {
   className?: string;
 }
 
-// Helper function to check if a color is dark
-const isDarkColor = (color: string): boolean => {
-  if (!color || color === 'transparent' || color === 'rgba(0, 0, 0, 0)') {
-    return false;
-  }
-  
-  // Handle rgb/rgba
-  const rgbMatch = color.match(/\d+/g);
-  if (rgbMatch && rgbMatch.length >= 3) {
-    const r = parseInt(rgbMatch[0]);
-    const g = parseInt(rgbMatch[1]);
-    const b = parseInt(rgbMatch[2]);
-    // Calculate luminance
-    const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-    return luminance < 0.5;
-  }
-  
-  // Handle hex
-  if (color.startsWith('#')) {
-    const hex = color.length === 4 
-      ? `#${color[1]}${color[1]}${color[2]}${color[2]}${color[3]}${color[3]}`
-      : color;
-    const r = parseInt(hex.slice(1, 3), 16);
-    const g = parseInt(hex.slice(3, 5), 16);
-    const b = parseInt(hex.slice(5, 7), 16);
-    const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-    return luminance < 0.5;
-  }
-  
-  // Named colors
-  const darkColors = ['black', 'navy', 'darkblue', 'dark', 'darkslategray', 'darkslategrey'];
-  return darkColors.includes(color.toLowerCase());
-};
-
 export function FurnitureAIWidgetButton({ 
   config = {}, 
   defaultTab = 'room-planner',
-  buttonText = 'ModlyAI',
+  buttonText,
   buttonPosition = 'bottom-right',
   buttonStyle,
   className = ''
 }: FurnitureAIWidgetButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const displayTitle =
+    config.widgetTitle ||
+    config.theme?.buttonText ||
+    buttonText ||
+    DEFAULT_WIDGET_TITLE;
 
-  // Auto contrast detection: check user preference and page background
   useEffect(() => {
-    const detectDarkMode = () => {
-      // Check user preference
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      
-      // Check page background
-      const body = document.body;
-      const root = document.documentElement;
-      const bodyComputed = window.getComputedStyle(body);
-      const rootComputed = window.getComputedStyle(root);
-      
-      const bodyBg = bodyComputed.backgroundColor || bodyComputed.getPropertyValue('background-color');
-      const rootBg = rootComputed.backgroundColor || rootComputed.getPropertyValue('background-color');
-      
-      const isDarkBackground = isDarkColor(bodyBg) || isDarkColor(rootBg);
-      
-      setIsDarkMode(prefersDark || isDarkBackground);
-    };
-
-    detectDarkMode();
-    
-    // Listen for system preference changes
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    const handleChange = () => detectDarkMode();
-    mediaQuery.addEventListener('change', handleChange);
-    
-    // Observe DOM changes
-    const observer = new MutationObserver(detectDarkMode);
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['class', 'style', 'data-theme']
-    });
-    observer.observe(document.body, {
-      attributes: true,
-      attributeFilter: ['class', 'style']
-    });
-
-    return () => {
-      mediaQuery.removeEventListener('change', handleChange);
-      observer.disconnect();
-    };
+    const onOpen = () => setIsOpen(true);
+    window.addEventListener('modly:open-widget', onOpen as EventListener);
+    return () => window.removeEventListener('modly:open-widget', onOpen as EventListener);
   }, []);
 
   useEffect(() => {
@@ -129,41 +62,41 @@ export function FurnitureAIWidgetButton({
   };
 
   const finalButtonStyle: React.CSSProperties = useMemo(() => {
+    const primaryColor = getPrimaryColor(config);
+    const textColor = getReadableTextColor(primaryColor);
+    const isDarkPrimary = isDarkColor(primaryColor);
     const baseStyle: React.CSSProperties = {
       height: '44px',
-      minWidth: '140px',
-      padding: '12px 16px',
-      // Frosted glass background
-      background: isDarkMode 
-        ? 'rgba(0, 0, 0, 0.35)' 
-        : 'rgba(255, 255, 255, 0.14)',
-      border: isDarkMode
-        ? '1px solid rgba(255, 255, 255, 0.16)'
-        : '1px solid rgba(255, 255, 255, 0.22)',
-      backdropFilter: 'blur(12px)',
-      WebkitBackdropFilter: 'blur(12px)', // Safari support
-      // Text color
-      color: isDarkMode ? '#ffffff' : '#1a1a1a',
-      // Shadow
-      boxShadow: '0 10px 30px rgba(0, 0, 0, 0.28)',
+      minWidth: '112px',
+      padding: '0 18px',
+      background: isDarkPrimary
+        ? `linear-gradient(180deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.04) 48%, rgba(0,0,0,0.10) 100%), ${primaryColor}`
+        : `linear-gradient(180deg, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.10) 45%, rgba(17,24,39,0.06) 100%), ${primaryColor}`,
+      border: isDarkPrimary
+        ? '1px solid rgba(255, 255, 255, 0.20)'
+        : '1px solid rgba(17, 24, 39, 0.14)',
+      color: textColor,
+      boxShadow: '0 10px 24px rgba(15, 23, 42, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.20)',
       ...buttonStyle
     };
     return baseStyle;
-  }, [isDarkMode, buttonStyle]);
+  }, [config, buttonStyle]);
 
   return (
     <>
       <button
         onClick={() => setIsOpen(true)}
         style={finalButtonStyle}
-        className={`modly-widget-button fixed ${positionClasses[buttonPosition]} z-50 font-semibold rounded-full flex items-center justify-center gap-2 transition-all duration-300 ${className}`}
+        className={`modly-widget-button fixed ${positionClasses[buttonPosition]} z-50 cursor-pointer rounded-full inline-flex items-center justify-center gap-2 transition-all duration-200 ease-out ${className}`}
         onMouseEnter={(e) => {
-          e.currentTarget.style.transform = 'scale(1.04)';
-          e.currentTarget.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.28)';
+          e.currentTarget.style.transform = 'translateY(-2px)';
+          e.currentTarget.style.filter = 'brightness(1.04)';
+          e.currentTarget.style.boxShadow = '0 14px 30px rgba(15, 23, 42, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.24)';
         }}
         onMouseLeave={(e) => {
-          e.currentTarget.style.transform = 'scale(1)';
-          e.currentTarget.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.28)';
+          e.currentTarget.style.transform = 'translateY(0)';
+          e.currentTarget.style.filter = 'brightness(1)';
+          e.currentTarget.style.boxShadow = '0 10px 24px rgba(15, 23, 42, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.20)';
         }}
         onFocus={(e) => {
           e.currentTarget.style.outline = '2px solid rgba(99, 102, 241, 0.5)';
@@ -172,31 +105,24 @@ export function FurnitureAIWidgetButton({
         onBlur={(e) => {
           e.currentTarget.style.outline = 'none';
         }}
-        aria-label="Open ModlyAI Widget"
+        aria-label={`Open ${displayTitle} widget`}
       >
+        <MessageCircle
+          aria-hidden="true"
+          className="h-4 w-4 shrink-0"
+          strokeWidth={2}
+        />
         <span 
-          className="text-base font-semibold"
+          className="text-[14.5px] font-semibold"
           style={{ 
-            letterSpacing: '0.02em',
-            fontWeight: 600
+            letterSpacing: '0',
+            lineHeight: 1,
+            fontWeight: 600,
+            whiteSpace: 'nowrap'
           }}
         >
-          {buttonText}
+          {displayTitle}
         </span>
-        <svg 
-          className="w-4 h-4" 
-          fill="none" 
-          stroke="currentColor" 
-          viewBox="0 0 24 24"
-          style={{ opacity: 0.75 }}
-        >
-          <path 
-            strokeLinecap="round" 
-            strokeLinejoin="round" 
-            strokeWidth={2} 
-            d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" 
-          />
-        </svg>
       </button>
 
       {isOpen && (
@@ -230,7 +156,11 @@ export function FurnitureAIWidgetButton({
             </button>
 
             <div className="flex-1 overflow-hidden">
-              <FurnitureAIWidget config={config} defaultTab={defaultTab} />
+              <FurnitureAIWidget
+                config={config}
+                defaultTab={defaultTab}
+                widgetTitle={displayTitle}
+              />
             </div>
           </div>
         </div>

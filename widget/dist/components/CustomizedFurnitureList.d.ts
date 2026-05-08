@@ -4,6 +4,6 @@ interface CustomizedFurnitureListProps {
     onItemRemoved?: () => void;
     onNavigateToCustomizer?: () => void;
 }
-export default function CustomizedFurnitureList({ items, onItemRemoved, onNavigateToCustomizer }: CustomizedFurnitureListProps): import("react/jsx-runtime").JSX.Element;
+export default function CustomizedFurnitureList({ items, onItemRemoved, onNavigateToCustomizer, }: CustomizedFurnitureListProps): import("react/jsx-runtime").JSX.Element;
 export {};
 //# sourceMappingURL=CustomizedFurnitureList.d.ts.map

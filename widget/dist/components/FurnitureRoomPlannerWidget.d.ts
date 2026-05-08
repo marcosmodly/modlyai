@@ -5,6 +5,6 @@ interface FurnitureRoomPlannerWidgetProps {
     onCustomizeItem?: (item: FurnitureItem) => void;
     onNavigateToCustomizer?: () => void;
 }
-export declare function FurnitureRoomPlannerWidget({ config, onCustomizeItem, onNavigateToCustomizer }: FurnitureRoomPlannerWidgetProps): import("react/jsx-runtime").JSX.Element;
+export declare function FurnitureRoomPlannerWidget({ config, onCustomizeItem, onNavigateToCustomizer, }: FurnitureRoomPlannerWidgetProps): import("react/jsx-runtime").JSX.Element;
 export {};
 //# sourceMappingURL=FurnitureRoomPlannerWidget.d.ts.map

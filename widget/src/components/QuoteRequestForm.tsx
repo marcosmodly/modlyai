@@ -31,6 +31,12 @@ export function QuoteRequestForm({
 
   const displayItem = item || (recommendation ? {
     name: recommendation.item.name,
+    source: recommendation.item.source,
+    productUrl: recommendation.item.productUrl || recommendation.item.url,
+    price: recommendation.item.priceRange?.min ?? recommendation.item.price,
+    externalId: recommendation.item.externalId,
+    shopifyProductId: recommendation.item.shopifyProductId,
+    storeId: recommendation.item.storeId,
     dimensions: recommendation.item.dimensions,
     materials: recommendation.item.materials,
     colorScheme: {
@@ -80,6 +86,12 @@ export function QuoteRequestForm({
           },
           materials: displayItem.materials,
           colorScheme: displayItem.colorScheme,
+          productUrl: displayItem.productUrl,
+          price: displayItem.price,
+          externalId: displayItem.externalId,
+          shopifyProductId: displayItem.shopifyProductId,
+          storeId: displayItem.storeId,
+          source: displayItem.source,
           aiNotes: displayItem.aiNotes,
           placement: 'placement' in displayItem && displayItem.placement ? {
             wall: displayItem.placement.wall,

@@ -4,7 +4,13 @@ interface MessageBubbleProps {
     onCustomizeItem?: (item: any) => void;
     onAddToRoomPlanner?: (item: any) => void;
     onViewInCatalog?: (item: FurnitureItem) => void;
+    enabledActions?: {
+        viewInCatalog: boolean;
+        customize: boolean;
+        requestQuote: boolean;
+    };
+    primaryColor?: string;
 }
-export declare function MessageBubble({ message, onCustomizeItem, onAddToRoomPlanner, onViewInCatalog }: MessageBubbleProps): import("react/jsx-runtime").JSX.Element;
+export declare function MessageBubble({ message, onCustomizeItem, onAddToRoomPlanner, onViewInCatalog, enabledActions, primaryColor }: MessageBubbleProps): import("react/jsx-runtime").JSX.Element;
 export {};
 //# sourceMappingURL=MessageBubble.d.ts.map

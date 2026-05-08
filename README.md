@@ -41,7 +41,7 @@ You need Node.js installed on your system. If `node` or `npm` commands don't wor
 
 ## Features
 
-- **Room Planner**: Upload room photos, provide dimensions, get AI recommendations (uses GPT-4o for image understanding)
+- **Room Planner**: Upload room photos and get catalog-based furniture and customization suggestions using user-provided room details
 - **Furniture Customizer**: Customize furniture with AI assistance (colors, materials, dimensions) with optional DALL-E 3 material previews
 - **Catalog**: Browse furniture catalog with AI-powered recommendations
 - **AI Chat Widget**: Conversational AI assistant for furniture selection (uses GPT-4o-mini for cost-effective chat)

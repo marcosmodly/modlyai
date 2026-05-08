@@ -50,6 +50,15 @@ export interface FurnitureItem {
     max: number;
   };
   stockStatus?: 'in_stock' | 'out_of_stock' | 'custom_order';
+  productUrl?: string;
+  url?: string;
+  handle?: string;
+  source?: string;
+  price?: number;
+  externalId?: string;
+  shopifyProductId?: string;
+  storeId?: string;
+  status?: string;
 }
 
 export interface Recommendation {
@@ -78,6 +87,12 @@ export interface CustomizationConfig {
   baseItemId?: string;
   baseItemType?: string;
   baseItemName?: string;
+  source?: string;
+  productUrl?: string;
+  price?: number;
+  externalId?: string;
+  shopifyProductId?: string;
+  storeId?: string;
   colorScheme: {
     primary: string;
     secondary?: string;
@@ -187,9 +202,46 @@ export interface ConversationState {
   };
 }
 
+export interface ChatCatalogProduct {
+  id?: string;
+  title?: string;
+  name?: string;
+  category?: string;
+  description?: string;
+  price?: number | string;
+  sku?: string;
+  dimensions?: string;
+  image?: string;
+  imageUrl?: string;
+  tags?: string[];
+  source?: string;
+  length?: number;
+  width?: number;
+  height?: number;
+  colors?: string[];
+  materials?: string[];
+  productUrl?: string;
+  url?: string;
+  handle?: string;
+  externalId?: string;
+  shopifyProductId?: string;
+  storeId?: string;
+  status?: string;
+}
+
+export interface ChatCatalogPayload {
+  source?: 'instantdb' | 'csv' | 'shopify' | 'manual' | 'woocommerce' | 'bigcommerce' | 'none' | string;
+  products?: ChatCatalogProduct[];
+}
+
 export interface ChatRequest {
   message: string;
   conversationHistory: ConversationMessage[];
+  storeId?: string;
+  apiKey?: string;
+  publicApiKey?: string;
+  storeDomain?: string;
+  catalog?: ChatCatalogPayload;
   context?: {
     pageType?: string;
     productId?: string;

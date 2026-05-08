@@ -8,7 +8,13 @@ interface ConversationInterfaceProps {
     onOpenCustomizer?: () => void;
     onShowCatalog?: () => void;
     onViewInCatalog?: (item: FurnitureItem) => void;
+    enabledActions?: {
+        viewInCatalog: boolean;
+        customize: boolean;
+        requestQuote: boolean;
+    };
+    primaryColor?: string;
 }
-export declare function ConversationInterface({ aiService, onCustomizeItem, onAddToRoomPlanner, onOpenRoomPlanner, onOpenCustomizer, onShowCatalog, onViewInCatalog, }: ConversationInterfaceProps): import("react/jsx-runtime").JSX.Element;
+export declare function ConversationInterface({ aiService, onCustomizeItem, onAddToRoomPlanner, onOpenRoomPlanner, onOpenCustomizer, onShowCatalog, onViewInCatalog, enabledActions, primaryColor, }: ConversationInterfaceProps): import("react/jsx-runtime").JSX.Element;
 export {};
 //# sourceMappingURL=ConversationInterface.d.ts.map

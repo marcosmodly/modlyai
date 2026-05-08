@@ -24,40 +24,45 @@ export default function RoomPhotoPreview({ photoUrl, showFurniture = false }: Ro
   };
 
   return (
-    <div className="bg-[#2D312C] rounded-xl border border-earth-border p-4 md:p-6 h-full flex flex-col">
+    <div className="bg-white rounded-2xl border border-gray-200 p-6 md:p-8 shadow-lg flex flex-col">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold text-text-heading">Your Room Preview</h3>
+        <div>
+          <h3 className="text-xl font-bold text-gray-900">Room Preview</h3>
+          <p className="text-sm text-gray-600 mt-1">
+            {photoUrl ? 'Preview your room photo before analysis.' : 'Upload a photo to begin.'}
+          </p>
+        </div>
         {photoUrl && (
           <button
             onClick={handleFullscreen}
-            className="p-2 rounded-lg bg-earth-card border border-earth-border hover:border-earth-sage transition-colors"
+            className="p-2 rounded-lg bg-white border border-gray-200 hover:border-blue-500 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
             title="Full Screen"
           >
-            <svg className="w-5 h-5 text-text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
             </svg>
           </button>
         )}
       </div>
       
-      <div className="flex-1 bg-earth-background rounded-lg border border-earth-border relative overflow-hidden min-h-[300px] flex items-center justify-center">
+      <div className="w-full aspect-video rounded-xl bg-gray-100 border border-gray-200 relative overflow-hidden flex items-center justify-center">
         {photoUrl ? (
           <div id="room-preview-image" className="relative w-full h-full">
             <img
               src={photoUrl}
               alt="Room preview with AI furniture placement"
-              className="w-full h-full object-contain"
+              className="w-full aspect-video object-cover rounded-xl"
             />
             {showFurniture && (
               <div className="absolute inset-0 pointer-events-none">
                 {/* AI furniture overlay indicators */}
-                <div className="absolute top-1/4 left-1/4 w-20 h-20 border-2 border-earth-sage rounded-lg flex items-center justify-center bg-earth-sage/20">
-                  <svg className="w-10 h-10 text-earth-sage" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="absolute top-1/4 left-1/4 w-20 h-20 border-2 border-blue-600 rounded-lg flex items-center justify-center bg-blue-600/10 backdrop-blur-[1px]">
+                  <svg className="w-10 h-10 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                   </svg>
                 </div>
-                <div className="absolute top-1/3 right-1/4 w-16 h-16 border-2 border-earth-sage rounded-lg flex items-center justify-center bg-earth-sage/20">
-                  <svg className="w-8 h-8 text-earth-sage" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="absolute top-1/3 right-1/4 w-16 h-16 border-2 border-blue-600 rounded-lg flex items-center justify-center bg-blue-600/10 backdrop-blur-[1px]">
+                  <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                   </svg>
                 </div>
@@ -66,16 +71,18 @@ export default function RoomPhotoPreview({ photoUrl, showFurniture = false }: Ro
           </div>
         ) : (
           <div className="text-center p-8">
-            <div className="text-5xl mb-4">📸</div>
-            <p className="text-text-primary mb-2">Upload a room photo to see preview</p>
-            <p className="text-text-muted text-sm">AI will place recommended furniture here</p>
+            <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4 border border-gray-200">
+              <span className="text-2xl">📸</span>
+            </div>
+            <p className="text-gray-900 font-semibold mb-2">Your room photo will appear here</p>
+            <p className="text-gray-600 text-sm">AI will place recommended furniture here after analysis</p>
           </div>
         )}
       </div>
       
       {photoUrl && (
-        <div className="mt-3 text-xs text-text-muted text-center">
-          <p>AI-recommended furniture placement visualization</p>
+        <div className="mt-3 text-xs text-gray-500 text-center">
+          <p>Preview & placement visualization</p>
         </div>
       )}
     </div>

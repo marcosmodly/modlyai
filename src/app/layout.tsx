@@ -2,9 +2,10 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
+import AuthSessionProvider from "@/components/AuthSessionProvider";
 import Navbar from "@/components/Navbar";
-import WidgetButton from "../../widget/src/components/WidgetButton";
 import DemoDisclaimer from "@/components/DemoDisclaimer";
+import ConditionalWidgetButton from "@/components/ConditionalWidgetButton";
 
 const inter = Inter({ subsets: ["latin"] });
 const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === 'true';
@@ -22,19 +23,21 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Script
-          type="module"
-          src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.3.0/model-viewer.min.js"
-          strategy="lazyOnload"
-        />
-        <Navbar />
-        {children}
-        {isDemoMode && (
-          <footer className="mt-12 border-t border-subtle bg-dark-base px-6 py-4 text-center text-sm text-text-secondary">
-            <DemoDisclaimer />
-          </footer>
-        )}
-        <WidgetButton />
+        <AuthSessionProvider>
+          <Script
+            type="module"
+            src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.3.0/model-viewer.min.js"
+            strategy="lazyOnload"
+          />
+          <Navbar />
+          {children}
+          {isDemoMode && (
+            <footer className="mt-12 border-t border-subtle bg-dark-base px-6 py-4 text-center text-sm text-text-secondary">
+              <DemoDisclaimer />
+            </footer>
+          )}
+          <ConditionalWidgetButton />
+        </AuthSessionProvider>
       </body>
     </html>
   );

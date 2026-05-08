@@ -85,22 +85,7 @@ export function ProductRecommendationFlow({
       };
 
       // Get recommendations
-      const response = await fetch(
-        `${apiClient['config'].apiBaseUrl || window.location.origin}/api/recommendations/match`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(request),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error('Failed to get recommendations');
-      }
-
-      const result: RecommendationResponse = await response.json();
+      const result: RecommendationResponse = await apiClient.getRecommendations(request);
       setRecommendations(result);
       setStep('results');
     } catch (err) {
@@ -218,7 +203,7 @@ export function ProductRecommendationFlow({
       <div>
         <h3 className="text-xl font-semibold text-gray-900 mb-2">Find Your Perfect Furniture</h3>
         <p className="text-sm text-gray-600">
-          Tell us about your room and preferences, and we'll recommend the best products for you.
+          Tell us about your room and preferences, and we&apos;ll recommend the best products for you.
         </p>
       </div>
 

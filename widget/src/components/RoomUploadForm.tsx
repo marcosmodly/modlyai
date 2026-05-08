@@ -231,15 +231,15 @@ export default function RoomUploadForm({
   return (
     <form ref={formElementRef} onSubmit={handleSubmit} className="space-y-6">
       {/* Photo Upload */}
-      <div className="bg-[#242723] border border-[#3A3F38] rounded-xl p-6">
-        <label className="block text-base font-bold text-text-heading mb-3">
+      <div className="bg-white border border-gray-200 rounded-xl p-6">
+        <label className="block text-base font-bold text-gray-900 mb-3">
           Upload Room Photos
         </label>
         <div
           onClick={() => fileInputRef.current?.click()}
           onDragOver={handleDragOver}
           onDrop={handleDrop}
-          className="border-2 border-dashed border-earth-border rounded-lg p-6 md:p-8 text-center cursor-pointer hover:border-earth-sage transition-all duration-300 bg-earth-input relative min-h-[200px] flex flex-col items-center justify-center"
+          className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center cursor-pointer hover:border-blue-500 hover:bg-blue-50/50 transition-colors bg-white relative min-h-[200px] flex flex-col items-center justify-center"
         >
           <input
             ref={fileInputRef}
@@ -252,13 +252,23 @@ export default function RoomUploadForm({
           
           {photos.length === 0 ? (
             <>
-              <div className="text-4xl mb-3">📸</div>
-              <p className="text-text-primary mb-1">
-                Click to upload or drag and drop
-              </p>
-              <p className="text-sm text-text-muted">
-                Multiple photos recommended for better analysis
-              </p>
+              <div className="w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center mb-4">
+                <span className="text-2xl">📸</span>
+              </div>
+              <p className="text-gray-900 font-semibold mb-1">Click to upload or drag and drop</p>
+              <p className="text-sm text-gray-600">Multiple photos recommended for better analysis</p>
+              <div className="mt-4">
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    fileInputRef.current?.click();
+                  }}
+                  className="px-5 py-2.5 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition"
+                >
+                  Choose Files
+                </button>
+              </div>
             </>
           ) : (
             <div className="w-full">
@@ -268,7 +278,7 @@ export default function RoomUploadForm({
                     <img
                       src={URL.createObjectURL(photo)}
                       alt={`Room photo ${index + 1}`}
-                      className="w-20 h-20 md:w-24 md:h-24 object-cover rounded-lg border border-earth-border group-hover:border-earth-sage transition-colors"
+                      className="w-20 h-20 md:w-24 md:h-24 object-cover rounded-lg border border-gray-200 group-hover:border-blue-500 transition-colors"
                     />
                     <button
                       type="button"
@@ -285,7 +295,7 @@ export default function RoomUploadForm({
                 <button
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
-                  className="w-20 h-20 md:w-24 md:h-24 border-2 border-dashed border-earth-border rounded-lg flex items-center justify-center text-text-muted hover:border-earth-sage hover:text-text-primary transition-colors"
+                  className="w-20 h-20 md:w-24 md:h-24 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center text-gray-500 hover:border-blue-500 hover:text-gray-900 transition-colors"
                 >
                   <span className="text-2xl">+</span>
                 </button>
@@ -296,14 +306,14 @@ export default function RoomUploadForm({
       </div>
 
       {/* Room Type */}
-      <div className="bg-[#242723] border border-[#3A3F38] rounded-xl p-6">
-        <label className="block text-base font-bold text-text-heading mb-3">
+      <div className="bg-white border border-gray-200 rounded-xl p-6">
+        <label className="block text-base font-bold text-gray-900 mb-3">
           Room Type
         </label>
         <select
           value={dimensions.roomType}
           onChange={(e) => updateDimensions({ ...dimensions, roomType: e.target.value as RoomDimensions['roomType'] })}
-          className="w-full px-4 py-2.5 border border-earth-border rounded-lg bg-white text-[#1A1C19] focus:outline-none focus:ring-2 focus:ring-earth-sage focus:ring-opacity-50 focus:border-earth-sage transition-all placeholder:text-[#757575] [&>option]:bg-white [&>option]:text-[#1A1C19]"
+          className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
         >
           <option value="living">Living Room</option>
           <option value="bedroom">Bedroom</option>
@@ -315,20 +325,20 @@ export default function RoomUploadForm({
       </div>
 
       {/* Room Dimensions */}
-      <div className="bg-[#242723] border border-[#3A3F38] rounded-xl p-6">
+      <div className="bg-white border border-gray-200 rounded-xl p-6">
         <div className="flex items-center justify-between mb-3">
-          <label className="block text-base font-bold text-text-heading">
+          <label className="block text-base font-bold text-gray-900">
             Room Dimensions
           </label>
           <div className="flex items-center gap-3">
-            <span className={`text-sm ${unitSystem === 'meters' ? 'text-text-heading' : 'text-text-muted'}`}>
+            <span className={`text-sm ${unitSystem === 'meters' ? 'text-gray-900' : 'text-gray-500'}`}>
               Meters
             </span>
             <button
               type="button"
               onClick={handleUnitToggle}
               className={`relative w-12 h-6 rounded-full transition-colors duration-300 ${
-                unitSystem === 'feet' ? 'bg-earth-sage' : 'bg-earth-border'
+                unitSystem === 'feet' ? 'bg-blue-600' : 'bg-gray-200'
               }`}
             >
               <span
@@ -337,7 +347,7 @@ export default function RoomUploadForm({
                 }`}
               />
             </button>
-            <span className={`text-sm ${unitSystem === 'feet' ? 'text-text-heading' : 'text-text-muted'}`}>
+            <span className={`text-sm ${unitSystem === 'feet' ? 'text-gray-900' : 'text-gray-500'}`}>
               Feet/Inches
             </span>
           </div>
@@ -347,7 +357,7 @@ export default function RoomUploadForm({
           {unitSystem === 'meters' ? (
             <>
               <div>
-                <label className="block text-xs font-bold text-text-primary mb-2">
+                <label className="block text-xs font-bold text-gray-700 mb-2">
                   Length
                 </label>
                 <input
@@ -356,12 +366,12 @@ export default function RoomUploadForm({
                   min="0"
                   value={dimensions.length || ''}
                   onChange={(e) => updateDimensions({ ...dimensions, length: parseFloat(e.target.value) || 0 })}
-                  className="w-full px-4 py-2.5 border border-earth-border rounded-lg bg-white text-[#1A1C19] focus:outline-none focus:ring-2 focus:ring-earth-sage focus:ring-opacity-50 focus:border-earth-sage transition-all placeholder:text-[#757575]"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                   required
                 />
               </div>
               <div>
-                <label className="block text-xs font-bold text-text-primary mb-2">
+                <label className="block text-xs font-bold text-gray-700 mb-2">
                   Width
                 </label>
                 <input
@@ -370,19 +380,19 @@ export default function RoomUploadForm({
                   min="0"
                   value={dimensions.width || ''}
                   onChange={(e) => updateDimensions({ ...dimensions, width: parseFloat(e.target.value) || 0 })}
-                  className="w-full px-4 py-2.5 border border-earth-border rounded-lg bg-white text-[#1A1C19] focus:outline-none focus:ring-2 focus:ring-earth-sage focus:ring-opacity-50 focus:border-earth-sage transition-all placeholder:text-[#757575]"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                   required
                 />
               </div>
               <div className="md:col-span-2">
-                <label className="block text-xs font-bold text-text-primary mb-2">
+                <label className="block text-xs font-bold text-gray-700 mb-2">
                   <span className="flex items-center gap-1 whitespace-nowrap">
                     Ceiling Height
                     <div className="group relative flex-shrink-0">
-                      <svg className="w-4 h-4 text-text-icon cursor-help" fill="currentColor" viewBox="0 0 20 20">
+                      <svg className="w-4 h-4 text-gray-500 cursor-help" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
                       </svg>
-                      <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-48 p-2 bg-earth-card border border-earth-border rounded-xl text-xs text-text-primary opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-10 shadow-soft">
+                      <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-56 p-2 bg-white border border-gray-200 rounded-xl text-xs text-gray-700 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-10 shadow-lg">
                         Helps AI recommend furniture that fits your vertical space and proportions
                       </div>
                     </div>
@@ -394,7 +404,7 @@ export default function RoomUploadForm({
                   min="0"
                   value={dimensions.height || ''}
                   onChange={(e) => updateDimensions({ ...dimensions, height: parseFloat(e.target.value) || 0 })}
-                  className="w-full px-4 py-2.5 border border-earth-border rounded-lg bg-white text-[#1A1C19] focus:outline-none focus:ring-2 focus:ring-earth-sage focus:ring-opacity-50 focus:border-earth-sage transition-all placeholder:text-[#757575]"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                   required
                 />
               </div>
@@ -402,7 +412,7 @@ export default function RoomUploadForm({
           ) : (
             <>
               <div>
-                <label className="block text-xs font-bold text-text-primary mb-2">
+                <label className="block text-xs font-bold text-gray-700 mb-2">
                   Length
                 </label>
                 <div className="flex gap-2">
@@ -416,7 +426,7 @@ export default function RoomUploadForm({
                       updateDimensions({ ...dimensions, length: feetInchesToMeters(feet, lengthInches) });
                     }}
                     placeholder="ft"
-                    className="w-full px-4 py-2.5 border border-earth-border rounded-lg bg-white text-[#1A1C19] focus:outline-none focus:ring-2 focus:ring-earth-sage focus:ring-opacity-50 focus:border-earth-sage transition-all placeholder:text-[#757575]"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                     required
                   />
                   <input
@@ -430,12 +440,12 @@ export default function RoomUploadForm({
                       updateDimensions({ ...dimensions, length: feetInchesToMeters(lengthFeet, inches) });
                     }}
                     placeholder="in"
-                    className="w-full px-4 py-2.5 border border-earth-border rounded-lg bg-white text-[#1A1C19] focus:outline-none focus:ring-2 focus:ring-earth-sage focus:ring-opacity-50 focus:border-earth-sage transition-all placeholder:text-[#757575]"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                   />
                 </div>
               </div>
               <div>
-                <label className="block text-xs font-bold text-text-primary mb-2">
+                <label className="block text-xs font-bold text-gray-700 mb-2">
                   Width
                 </label>
                 <div className="flex gap-2">
@@ -449,7 +459,7 @@ export default function RoomUploadForm({
                       updateDimensions({ ...dimensions, width: feetInchesToMeters(feet, widthInches) });
                     }}
                     placeholder="ft"
-                    className="w-full px-4 py-2.5 border border-earth-border rounded-lg bg-white text-[#1A1C19] focus:outline-none focus:ring-2 focus:ring-earth-sage focus:ring-opacity-50 focus:border-earth-sage transition-all placeholder:text-[#757575]"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                     required
                   />
                   <input
@@ -463,19 +473,19 @@ export default function RoomUploadForm({
                       updateDimensions({ ...dimensions, width: feetInchesToMeters(widthFeet, inches) });
                     }}
                     placeholder="in"
-                    className="w-full px-4 py-2.5 border border-earth-border rounded-lg bg-white text-[#1A1C19] focus:outline-none focus:ring-2 focus:ring-earth-sage focus:ring-opacity-50 focus:border-earth-sage transition-all placeholder:text-[#757575]"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                   />
                 </div>
               </div>
               <div className="md:col-span-2">
-                <label className="block text-xs font-bold text-text-primary mb-2">
+                <label className="block text-xs font-bold text-gray-700 mb-2">
                   <span className="flex items-center gap-1 whitespace-nowrap">
                     Ceiling Height
                     <div className="group relative flex-shrink-0">
-                      <svg className="w-4 h-4 text-text-icon cursor-help" fill="currentColor" viewBox="0 0 20 20">
+                      <svg className="w-4 h-4 text-gray-500 cursor-help" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
                       </svg>
-                      <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-48 p-2 bg-earth-card border border-earth-border rounded-xl text-xs text-text-primary opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-10 shadow-soft">
+                      <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-56 p-2 bg-white border border-gray-200 rounded-xl text-xs text-gray-700 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-10 shadow-lg">
                         Helps AI recommend furniture that fits your vertical space and proportions
                       </div>
                     </div>
@@ -492,7 +502,7 @@ export default function RoomUploadForm({
                       updateDimensions({ ...dimensions, height: feetInchesToMeters(feet, heightInches) });
                     }}
                     placeholder="ft"
-                    className="w-full px-4 py-2.5 border border-earth-border rounded-lg bg-white text-[#1A1C19] focus:outline-none focus:ring-2 focus:ring-earth-sage focus:ring-opacity-50 focus:border-earth-sage transition-all placeholder:text-[#757575]"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                     required
                   />
                   <input
@@ -506,7 +516,7 @@ export default function RoomUploadForm({
                       updateDimensions({ ...dimensions, height: feetInchesToMeters(heightFeet, inches) });
                     }}
                     placeholder="in"
-                    className="w-full px-4 py-2.5 border border-earth-border rounded-lg bg-white text-[#1A1C19] focus:outline-none focus:ring-2 focus:ring-earth-sage focus:ring-opacity-50 focus:border-earth-sage transition-all placeholder:text-[#757575]"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                   />
                 </div>
               </div>
@@ -516,17 +526,17 @@ export default function RoomUploadForm({
       </div>
 
       {/* Advanced Preferences */}
-      <div className="bg-[#242723] border border-[#3A3F38] rounded-xl">
+      <div className="bg-white border border-gray-200 rounded-xl">
         <button
           type="button"
           onClick={() => setShowAdvanced(!showAdvanced)}
-          className="w-full flex items-center justify-between p-4 hover:bg-[#2A2F28] transition-all duration-300 rounded-t-xl"
+          className="w-full flex items-center justify-between p-4 hover:bg-gray-50 transition-all duration-300 rounded-t-xl"
         >
-          <span className="text-base font-bold text-text-heading">
+          <span className="text-base font-bold text-gray-900">
             Advanced Preferences (Optional)
           </span>
           <svg
-            className={`w-5 h-5 text-text-primary transition-transform duration-300 ${
+            className={`w-5 h-5 text-gray-700 transition-transform duration-300 ${
               showAdvanced ? 'rotate-180' : ''
             }`}
             fill="none"
@@ -537,10 +547,10 @@ export default function RoomUploadForm({
           </svg>
         </button>
         {showAdvanced && (
-          <div className="px-6 pb-6 pt-4 space-y-6 border-t border-[#3A3F38]">
+          <div className="px-6 pb-6 pt-4 space-y-6 border-t border-gray-200">
             {/* Style Preferences */}
             <div>
-              <label className="block text-xs font-bold text-text-primary mb-4">
+              <label className="block text-xs font-bold text-gray-700 mb-4">
                 Preferred Styles
               </label>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -551,10 +561,10 @@ export default function RoomUploadForm({
                       key={style.id}
                       type="button"
                       onClick={() => toggleStyle(style.id)}
-                      className={`p-4 rounded-lg border transition-all duration-300 flex flex-col items-center justify-center ${
+                      className={`p-4 rounded-lg border transition-all duration-300 flex flex-col items-center justify-center focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
                         isSelected
-                          ? 'border-earth-sage bg-gradient-ai-subtle text-text-primary'
-                          : 'border-earth-border bg-earth-input text-text-primary hover:border-earth-sage/50'
+                          ? 'border-blue-600 bg-blue-50 text-gray-900'
+                          : 'border-gray-200 bg-white text-gray-900 hover:border-blue-500'
                       }`}
                     >
                       <div className="text-2xl mb-2">{style.icon}</div>
@@ -567,7 +577,7 @@ export default function RoomUploadForm({
             
             {/* Colors */}
             <div>
-              <label className="block text-xs font-bold text-text-primary mb-2">
+              <label className="block text-xs font-bold text-gray-700 mb-2">
                 Preferred Colors (comma-separated)
               </label>
               <input
@@ -581,14 +591,14 @@ export default function RoomUploadForm({
                     onPreferencesChange(newPreferences);
                   }
                 }}
-                className="w-full px-4 py-2.5 border border-earth-border rounded-lg bg-white text-[#1A1C19] focus:outline-none focus:ring-2 focus:ring-earth-sage focus:ring-opacity-50 focus:border-earth-sage transition-all placeholder:text-[#757575]"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
               />
             </div>
             
             {/* Budget */}
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-bold text-text-primary mb-2">
+                <label className="block text-xs font-bold text-gray-700 mb-2">
                   Budget Min ($)
                 </label>
                 <input
@@ -602,11 +612,11 @@ export default function RoomUploadForm({
                       onPreferencesChange(newPreferences);
                     }
                   }}
-                  className="w-full px-4 py-2.5 border border-earth-border rounded-lg bg-white text-[#1A1C19] focus:outline-none focus:ring-2 focus:ring-earth-sage focus:ring-opacity-50 focus:border-earth-sage transition-all placeholder:text-[#757575]"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                 />
               </div>
               <div>
-                <label className="block text-xs font-bold text-text-primary mb-2">
+                <label className="block text-xs font-bold text-gray-700 mb-2">
                   Budget Max ($)
                 </label>
                 <input
@@ -620,7 +630,7 @@ export default function RoomUploadForm({
                       onPreferencesChange(newPreferences);
                     }
                   }}
-                  className="w-full px-4 py-2.5 border border-earth-border rounded-lg bg-white text-[#1A1C19] focus:outline-none focus:ring-2 focus:ring-earth-sage focus:ring-opacity-50 focus:border-earth-sage transition-all placeholder:text-[#757575]"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                 />
               </div>
             </div>

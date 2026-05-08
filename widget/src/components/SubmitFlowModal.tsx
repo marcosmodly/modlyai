@@ -42,7 +42,7 @@ export function SubmitFlowModal({
 
     // Determine flow type based on product pricing
     const requiresQuote =
-      !product?.priceRange || product.stockStatus === 'custom_order';
+      !product?.priceRange || product.stockStatus === 'custom_order' || product.source === 'shopify';
     setFlowType(requiresQuote ? 'quote' : 'cart');
 
     // Generate spec sheet
@@ -136,6 +136,12 @@ export function SubmitFlowModal({
           dimensions: config.dimensionAdjustments || {},
           materials: config.materialOverrides,
           colorScheme: config.colorScheme,
+          productUrl: config.productUrl || product?.productUrl || product?.url,
+          price: config.price ?? product?.priceRange?.min ?? product?.price,
+          externalId: config.externalId || product?.externalId,
+          shopifyProductId: config.shopifyProductId || product?.shopifyProductId,
+          storeId: config.storeId || product?.storeId,
+          source: config.source || product?.source,
           aiNotes: config.aiNotes,
         },
         specSheet,

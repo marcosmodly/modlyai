@@ -26,7 +26,7 @@ export default function RoomPhotoPreview({ photoUrl, showFurniture = false }: Ro
   };
 
   return (
-    <div className="bg-[#2D312C] rounded-xl border border-earth-border p-4 md:p-6 h-full flex flex-col">
+    <div className="bg-[#2D312C] rounded-xl border border-earth-border p-4 md:p-6 flex flex-col">
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-lg font-semibold text-text-heading">Your Room Preview</h3>
         {photoUrl && (
@@ -42,13 +42,13 @@ export default function RoomPhotoPreview({ photoUrl, showFurniture = false }: Ro
         )}
       </div>
       
-      <div className="flex-1 bg-earth-background rounded-lg border border-earth-border relative overflow-hidden min-h-[300px] flex items-center justify-center">
+      <div className="w-full aspect-video rounded-lg bg-earth-background border border-earth-border relative overflow-hidden flex items-center justify-center">
         {photoUrl ? (
           <div id="room-preview-image" className="relative w-full h-full">
             <img
               src={photoUrl}
               alt="Room preview with AI furniture placement"
-              className="w-full h-full object-contain"
+              className="w-full aspect-video object-cover rounded-lg"
             />
             {showFurniture && (
               <div className="absolute inset-0 pointer-events-none">

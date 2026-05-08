@@ -55,8 +55,6 @@ export default function FurnitureCustomizerPanel({
     if (!baseItem) return;
     if (!customPrompt.trim()) return;
     
-    console.log('Apply AI clicked', { promptText: customPrompt });
-    
     // In a real implementation, this would call the API
     // For now, we'll just update the config based on common keywords
     const prompt = customPrompt.toLowerCase();
@@ -121,14 +119,10 @@ export default function FurnitureCustomizerPanel({
       newConfig.dimensionAdjustments.height = Math.max(-1, (newConfig.dimensionAdjustments.height || 0) - 0.1);
     }
 
-    console.log('AI response', { aiResult: newConfig });
-
     // Update both the form state and trigger the API call
     setConfig(newConfig);
     setCustomPrompt('');
-    
-    console.log('Applied customization updated', { nextCustomization: newConfig });
-    
+
     onCustomize(newConfig);
   };
 

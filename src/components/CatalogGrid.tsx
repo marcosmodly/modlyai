@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { FurnitureItem } from '@/types';
 
 interface CatalogGridProps {
@@ -10,6 +10,7 @@ interface CatalogGridProps {
 
 export default function CatalogGrid({ onCustomizeItem }: CatalogGridProps) {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [items, setItems] = useState<FurnitureItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
@@ -21,7 +22,12 @@ export default function CatalogGrid({ onCustomizeItem }: CatalogGridProps) {
       setIsLoading(true);
       setError(null);
       try {
-        const response = await fetch('/api/catalog/items');
+        const params = new URLSearchParams();
+        const apiKey = searchParams.get('apiKey');
+        const domain = searchParams.get('domain');
+        if (apiKey) params.set('apiKey', apiKey);
+        if (domain) params.set('domain', domain);
+        const response = await fetch(`/api/catalog/items${params.toString() ? `?${params.toString()}` : ''}`);
         if (!response.ok) {
           throw new Error('Failed to load catalog');
         }
@@ -35,7 +41,7 @@ export default function CatalogGrid({ onCustomizeItem }: CatalogGridProps) {
     };
 
     fetchCatalog();
-  }, []);
+  }, [searchParams]);
 
   const categories = useMemo(() => {
     const unique = new Set(items.map((item) => item.category).filter(Boolean));
@@ -58,7 +64,6 @@ export default function CatalogGrid({ onCustomizeItem }: CatalogGridProps) {
   }, [items, searchQuery, selectedCategory]);
 
   const handleCustomize = (item: FurnitureItem) => {
-    console.log('[CatalogGrid] Customizing item:', item.id, item.name);
     sessionStorage.setItem('modly-customize-item', JSON.stringify(item));
     onCustomizeItem?.(item);
     router.push('/customizer');

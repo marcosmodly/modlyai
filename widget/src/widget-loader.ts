@@ -1,16 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { FurnitureAIWidgetButton } from './components/FurnitureAIWidgetButton';
-import { WidgetConfig, fetchRemoteConfig, mergeConfig } from './utils/config';
-
-declare global {
-  interface Window {
-    ModlyWidget?: {
-      init: (config?: Partial<WidgetConfig>) => void;
-      destroy: () => void;
-    };
-  }
-}
+import { WidgetConfig, fetchRemoteConfig, getWidgetTitle, mergeConfig } from './utils/config';
 
 let widgetRoot: ReactDOM.Root | null = null;
 let container: HTMLDivElement | null = null;
@@ -33,8 +24,9 @@ async function initWidget(userConfig?: Partial<WidgetConfig>) {
 
   // Fetch remote config if configUrl is provided
   let remoteConfig: WidgetConfig = {};
-  if (userConfig?.configUrl) {
-    remoteConfig = await fetchRemoteConfig(userConfig.configUrl, userConfig.widgetId);
+  const configUrl = userConfig?.configUrl || ((userConfig?.widgetId || userConfig?.storeId) ? '/api/widget/config' : undefined);
+  if (configUrl) {
+    remoteConfig = await fetchRemoteConfig(configUrl, userConfig?.widgetId, userConfig?.storeId);
   }
 
   // Merge configs (remote > user > defaults)
@@ -48,7 +40,7 @@ async function initWidget(userConfig?: Partial<WidgetConfig>) {
   widgetRoot.render(
     React.createElement(FurnitureAIWidgetButton, {
       config: finalConfig,
-      buttonText: finalConfig.theme?.buttonText || 'ModlyAI',
+      buttonText: getWidgetTitle(finalConfig),
       buttonPosition: finalConfig.theme?.buttonPosition || 'bottom-right',
     })
   );
@@ -66,7 +58,12 @@ function destroyWidget() {
 }
 
 // Expose global API
-window.ModlyWidget = {
+(window as typeof window & {
+  ModlyWidget?: {
+    init: (config?: Partial<WidgetConfig>) => void;
+    destroy: () => void;
+  };
+}).ModlyWidget = {
   init: initWidget,
   destroy: destroyWidget,
 };
@@ -79,12 +76,18 @@ if (document.readyState === 'loading') {
 }
 
 function autoInit() {
-  const script = document.querySelector('script[data-modly-widget]');
+  const script = document.querySelector<HTMLScriptElement>('[data-modly-widget]');
   if (script) {
-    const configUrl = script.getAttribute('data-config-url');
-    const widgetId = script.getAttribute('data-widget-id');
-    if (configUrl) {
-      initWidget({ configUrl, widgetId: widgetId || undefined });
+    const storeId = script.dataset.storeId;
+    const widgetId = script.dataset.widgetId;
+    const configUrl = script.dataset.configUrl;
+
+    if (configUrl || storeId || widgetId) {
+      initWidget({
+        configUrl: configUrl || undefined,
+        storeId: storeId || undefined,
+        widgetId: widgetId || undefined,
+      });
     }
   }
 }

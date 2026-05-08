@@ -11,7 +11,6 @@ export default function WidgetButton({ config }: WidgetButtonProps) {
   return (
     <FurnitureAIWidgetButton 
       config={config}
-      buttonText="ModlyAI"
       buttonPosition="bottom-right"
     />
   );

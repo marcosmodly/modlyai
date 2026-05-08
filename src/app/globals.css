@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  scroll-behavior: smooth;
+}
+
 :root {
   --foreground-rgb: 227, 229, 226;
   --background-rgb: 26, 28, 25;
@@ -35,11 +39,106 @@ body {
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
+
+  /* B2B gradient (deep blues + teal) */
+  .text-gradient-b2b {
+    background: linear-gradient(135deg, #0B3B6F 0%, #2D6BFF 45%, #2BE7C6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .glow-b2b-hover:hover {
+    box-shadow: 0 0 28px rgba(45, 107, 255, 0.35);
+    transition: box-shadow 0.3s ease, transform 0.2s ease;
+  }
+
+  /* --- Hero micro-animations (B2B) --- */
+  .modly-hero-headline-fade {
+    animation: modlyHeadlineIn 520ms ease both;
+  }
+
+  .modly-hero-progress {
+    animation: modlyProgress 3200ms ease-in-out infinite;
+  }
+
+  .modly-hero-pulse {
+    animation: modlyPulse 1700ms ease-in-out infinite;
+  }
+
+  .modly-hero-cta-primary {
+    transform: translateZ(0);
+  }
+
+  .modly-hero-cta-primary:hover {
+    transform: translateY(-1px);
+  }
+
+  .modly-hero-grid {
+    background-image:
+      linear-gradient(to right, rgba(255,255,255,0.06) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255,255,255,0.06) 1px, transparent 1px);
+    background-size: 36px 36px;
+    mask-image: radial-gradient(circle at 30% 10%, rgba(0,0,0,0.9), rgba(0,0,0,0) 65%);
+  }
+
+  .modly-hero-noise {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.22'/%3E%3C/svg%3E");
+    background-size: 220px 220px;
+  }
+
+  .modly-hero-scan {
+    background:
+      radial-gradient(120px 120px at 20% 30%, rgba(45,107,255,0.28), transparent 60%),
+      radial-gradient(160px 140px at 70% 45%, rgba(43,231,198,0.20), transparent 62%),
+      linear-gradient(180deg, rgba(255,255,255,0.06), transparent);
+    animation: modlyScan 2400ms ease-in-out infinite;
+  }
+
+  .modly-hero-bar {
+    animation: modlyBarIn 650ms ease both;
+  }
+
+  .modly-hero-step-1 { animation: modlyStepGlow 5200ms ease-in-out infinite; }
+  .modly-hero-step-2 { animation: modlyStepGlow 5200ms ease-in-out infinite 1300ms; }
+  .modly-hero-step-3 { animation: modlyStepGlow 5200ms ease-in-out infinite 2600ms; }
+  .modly-hero-step-4 { animation: modlyStepGlow 5200ms ease-in-out infinite 3900ms; }
   
   /* Subtle border utility */
   .border-subtle {
     border-color: #3A3F38;
   }
+}
+
+@keyframes modlyHeadlineIn {
+  0% { opacity: 0; transform: translateY(6px); filter: blur(2px); }
+  100% { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+
+@keyframes modlyProgress {
+  0% { transform: translateX(-65%); }
+  50% { transform: translateX(115%); }
+  100% { transform: translateX(220%); }
+}
+
+@keyframes modlyPulse {
+  0%, 100% { transform: scale(1); opacity: 0.9; }
+  50% { transform: scale(1.25); opacity: 1; }
+}
+
+@keyframes modlyScan {
+  0%, 100% { transform: translateY(0); opacity: 0.75; }
+  50% { transform: translateY(4px); opacity: 1; }
+}
+
+@keyframes modlyBarIn {
+  0% { transform: translateY(6px); opacity: 0.6; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes modlyStepGlow {
+  0%, 72%, 100% { opacity: 0; }
+  8%, 24% { opacity: 1; }
 }
 
 /* Ensure dark text on white/light input backgrounds */

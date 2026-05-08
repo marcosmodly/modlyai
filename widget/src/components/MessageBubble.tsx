@@ -1,16 +1,25 @@
 import React from 'react';
 import { ConversationMessage, Recommendation, FurnitureItem } from '../types';
+import { getRealProductUrl } from '../utils/productUrl';
+import { getReadableTextColor } from '../utils/config';
 
 interface MessageBubbleProps {
   message: ConversationMessage;
   onCustomizeItem?: (item: any) => void;
   onAddToRoomPlanner?: (item: any) => void;
   onViewInCatalog?: (item: FurnitureItem) => void;
+  enabledActions?: {
+    viewInCatalog: boolean;
+    customize: boolean;
+    requestQuote: boolean;
+  };
+  primaryColor?: string;
 }
 
-export function MessageBubble({ message, onCustomizeItem, onAddToRoomPlanner, onViewInCatalog }: MessageBubbleProps) {
+export function MessageBubble({ message, onCustomizeItem, onAddToRoomPlanner, onViewInCatalog, enabledActions, primaryColor }: MessageBubbleProps) {
   const isUser = message.role === 'user';
   const isThinking = message.type === 'thinking';
+  const actions = enabledActions ?? { viewInCatalog: true, customize: true, requestQuote: true };
 
   return (
     <div className={`flex ${isUser ? 'justify-end' : 'justify-start'} mb-4`}>
@@ -45,6 +54,8 @@ export function MessageBubble({ message, onCustomizeItem, onAddToRoomPlanner, on
                     onCustomize={onCustomizeItem}
                     onAddToRoomPlanner={onAddToRoomPlanner}
                     onViewInCatalog={onViewInCatalog}
+                    enabledActions={actions}
+                    primaryColor={primaryColor}
                   />
                 ))}
               </div>
@@ -66,18 +77,32 @@ export function MessageBubble({ message, onCustomizeItem, onAddToRoomPlanner, on
   );
 }
 
+function getProductCatalogUrl(item: FurnitureItem) {
+  return getRealProductUrl(item);
+}
+
 function RecommendationCard({ 
   recommendation, 
   onCustomize, 
   onAddToRoomPlanner,
-  onViewInCatalog 
+  onViewInCatalog,
+  enabledActions,
+  primaryColor,
 }: { 
   recommendation: Recommendation; 
   onCustomize?: (item: any) => void; 
   onAddToRoomPlanner?: (item: any) => void;
   onViewInCatalog?: (item: FurnitureItem) => void;
+  enabledActions: {
+    viewInCatalog: boolean;
+    customize: boolean;
+    requestQuote: boolean;
+  };
+  primaryColor?: string;
 }) {
   const item = recommendation.item;
+  const catalogUrl = getProductCatalogUrl(item);
+  const primaryTextColor = primaryColor ? getReadableTextColor(primaryColor) : undefined;
 
   return (
     <div className="bg-white rounded-lg border border-gray-200 p-3 shadow-sm">
@@ -106,9 +131,11 @@ function RecommendationCard({
       )}
 
       <div className="mt-3 flex gap-2">
-        {onViewInCatalog && (
-          <button
-            onClick={() => onViewInCatalog(item)}
+        {enabledActions.viewInCatalog && catalogUrl ? (
+          <a
+            href={catalogUrl}
+            target="_blank"
+            rel="noopener noreferrer"
             className="flex-1 py-1.5 px-3 bg-gray-100 text-gray-700 text-xs rounded hover:bg-gray-200 transition-colors flex items-center justify-center gap-1 border border-gray-300"
           >
             <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -116,12 +143,21 @@ function RecommendationCard({
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
             </svg>
             View in Catalog
+          </a>
+        ) : enabledActions.viewInCatalog ? (
+          <button
+            type="button"
+            disabled
+            className="flex-1 py-1.5 px-3 bg-gray-100 text-gray-400 text-xs rounded cursor-not-allowed flex items-center justify-center gap-1 border border-gray-300"
+          >
+            Catalog link unavailable
           </button>
-        )}
-        {onCustomize && (
+        ) : null}
+        {enabledActions.customize && onCustomize && (
           <button
             onClick={() => onCustomize(item)}
             className="flex-1 py-1.5 px-3 bg-blue-500 text-white text-xs rounded hover:bg-blue-600 transition-colors flex items-center justify-center gap-1"
+            style={primaryColor ? { backgroundColor: primaryColor, color: primaryTextColor } : undefined}
           >
             <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />

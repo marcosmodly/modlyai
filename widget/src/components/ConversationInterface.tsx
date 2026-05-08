@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { AIService } from '../utils/aiService';
 import { ConversationMessage, FurnitureItem } from '../types';
 import { MessageBubble } from './MessageBubble';
+import { getReadableTextColor } from '../utils/config';
 
 interface ConversationInterfaceProps {
   aiService: AIService;
@@ -11,6 +12,12 @@ interface ConversationInterfaceProps {
   onOpenCustomizer?: () => void;
   onShowCatalog?: () => void;
   onViewInCatalog?: (item: FurnitureItem) => void;
+  enabledActions?: {
+    viewInCatalog: boolean;
+    customize: boolean;
+    requestQuote: boolean;
+  };
+  primaryColor?: string;
 }
 
 export function ConversationInterface({
@@ -21,17 +28,21 @@ export function ConversationInterface({
   onOpenCustomizer,
   onShowCatalog,
   onViewInCatalog,
+  enabledActions,
+  primaryColor,
 }: ConversationInterfaceProps) {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [messages, setMessages] = useState<ConversationMessage[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  const fallbackMessage = 'Sorry, I could not generate a response right now. Please try again.';
+  const primaryTextColor = primaryColor ? getReadableTextColor(primaryColor) : undefined;
 
   // Load messages from AI service
   useEffect(() => {
     setMessages(aiService.getMessages());
-  }, []);
+  }, [aiService]);
 
   // Scroll to bottom when messages change
   useEffect(() => {
@@ -98,8 +109,14 @@ export function ConversationInterface({
       }
     } catch (error) {
       console.error('Error sending message:', error);
-      // Remove thinking message on error
-      setMessages((prev) => prev.filter((m) => m.type !== 'thinking'));
+      const errorMsg: ConversationMessage = {
+        id: `msg-error-${Date.now()}`,
+        role: 'assistant',
+        type: 'text',
+        content: fallbackMessage,
+        timestamp: Date.now(),
+      };
+      setMessages((prev) => [...prev.filter((m) => m.type !== 'thinking'), errorMsg]);
     } finally {
       setIsLoading(false);
       inputRef.current?.focus();
@@ -129,6 +146,8 @@ export function ConversationInterface({
               onCustomizeItem={onCustomizeItem}
               onAddToRoomPlanner={onAddToRoomPlanner}
               onViewInCatalog={onViewInCatalog}
+              enabledActions={enabledActions}
+              primaryColor={primaryColor}
             />
           ))
         )}
@@ -142,7 +161,7 @@ export function ConversationInterface({
             ref={inputRef}
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            onKeyPress={handleKeyPress}
+            onKeyDown={handleKeyPress}
             placeholder="Type your message..."
             className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
             rows={1}
@@ -153,6 +172,7 @@ export function ConversationInterface({
             onClick={handleSend}
             disabled={!input.trim() || isLoading}
             className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
+            style={primaryColor ? { backgroundColor: primaryColor, color: primaryTextColor } : undefined}
           >
             {isLoading ? (
               <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">

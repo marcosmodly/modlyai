@@ -51,6 +51,9 @@ interface FurnitureItem {
         max: number;
     };
     stockStatus?: 'in_stock' | 'out_of_stock' | 'custom_order';
+    productUrl?: string;
+    url?: string;
+    handle?: string;
 }
 interface Recommendation {
     item: FurnitureItem;
@@ -113,6 +116,7 @@ interface RoomAnalysisResponse {
 interface CustomizedFurnitureItem {
     id: string;
     savedAt: string;
+    productId?: string;
     name: string;
     baseItemType: string;
     dimensions: {
@@ -147,6 +151,7 @@ interface ConversationMessage {
     type: MessageType;
     content: string;
     timestamp: number;
+    isWelcome?: boolean;
     metadata?: {
         recommendations?: Recommendation[];
         furnitureItems?: FurnitureItem[];
@@ -177,9 +182,42 @@ interface ConversationState {
         currentPage?: string;
     };
 }
+interface ChatCatalogProduct {
+    id?: string;
+    title?: string;
+    name?: string;
+    category?: string;
+    description?: string;
+    price?: number | string;
+    sku?: string;
+    dimensions?: string;
+    image?: string;
+    imageUrl?: string;
+    tags?: string[];
+    source?: string;
+    length?: number;
+    width?: number;
+    height?: number;
+    colors?: string[];
+    materials?: string[];
+    productUrl?: string;
+    url?: string;
+    handle?: string;
+}
+interface ChatCatalogPayload {
+    source?: 'instantdb' | 'csv' | 'shopify' | 'manual' | 'woocommerce' | 'bigcommerce' | 'none' | string;
+    products?: ChatCatalogProduct[];
+}
 interface ChatRequest {
     message: string;
     conversationHistory: ConversationMessage[];
+    history?: ConversationMessage[];
+    storeId?: string;
+    widgetId?: string;
+    apiKey?: string;
+    publicApiKey?: string;
+    storeDomain?: string;
+    catalog?: ChatCatalogPayload;
     context?: {
         pageType?: string;
         productId?: string;
@@ -201,6 +239,7 @@ interface QuoteRequest {
     email: string;
     phone?: string;
     notes?: string;
+    quoteEmail?: string;
     item: {
         name: string;
         dimensions: {
@@ -236,6 +275,22 @@ interface QuoteRequestResponse {
 
 interface WidgetConfig {
     apiBaseUrl?: string;
+    storeId?: string;
+    storeName?: string;
+    storeUrl?: string;
+    supportEmail?: string;
+    widgetTitle?: string;
+    primaryColor?: string;
+    welcomeMessage?: string;
+    enabledActions?: {
+        viewInCatalog?: boolean;
+        customize?: boolean;
+        requestQuote?: boolean;
+    };
+    quoteEmail?: string;
+    apiKey?: string;
+    publicApiKey?: string;
+    storeDomain?: string;
     configUrl?: string;
     widgetId?: string;
     apiEndpoints?: {
@@ -267,19 +322,64 @@ interface FurnitureRoomPlannerWidgetProps {
     onCustomizeItem?: (item: FurnitureItem) => void;
     onNavigateToCustomizer?: () => void;
 }
-declare function FurnitureRoomPlannerWidget({ config, onCustomizeItem, onNavigateToCustomizer }: FurnitureRoomPlannerWidgetProps): react_jsx_runtime.JSX.Element;
+declare function FurnitureRoomPlannerWidget({ config, onCustomizeItem, onNavigateToCustomizer, }: FurnitureRoomPlannerWidgetProps): react_jsx_runtime.JSX.Element;
+
+interface ProductColor {
+    name: string;
+    hex: string;
+    available: boolean;
+}
+interface ProductMaterialOption {
+    id: string;
+    name: string;
+    priceDelta: number;
+    description: string;
+}
+interface Product {
+    id: string;
+    name: string;
+    category: string;
+    basePrice: number;
+    dimensions: {
+        length: number;
+        width: number;
+        height: number;
+        unit: 'cm' | 'm' | 'inches' | 'ft';
+    };
+    materials: string[];
+    colors: ProductColor[];
+    images: {
+        front: string;
+        side: string;
+        angle: string;
+        thumbnail: string;
+    };
+    tags: string[];
+    customizer: {
+        type: string;
+        thumbnailLabel: string;
+        defaultWidthIn: number;
+        defaultDepthIn: number;
+        widthRangeIn: [number, number];
+        depthRangeIn: [number, number];
+        materialOptions: ProductMaterialOption[];
+    };
+}
 
 interface FurnitureCustomizerWidgetProps {
     config?: WidgetConfig;
     onNavigateToRoomPlanner?: () => void;
+    selectedProduct?: Product | null;
+    onSelectedProductChange?: (product: Product) => void;
 }
-declare function FurnitureCustomizerWidget({ config, onNavigateToRoomPlanner }: FurnitureCustomizerWidgetProps): react_jsx_runtime.JSX.Element;
+declare function FurnitureCustomizerWidget({ config, onNavigateToRoomPlanner, selectedProduct: sharedSelectedProduct, onSelectedProductChange, }: FurnitureCustomizerWidgetProps): react_jsx_runtime.JSX.Element;
 
 interface FurnitureAIWidgetProps {
     config?: WidgetConfig;
     defaultTab?: 'room-planner' | 'customizer';
+    widgetTitle?: string;
 }
-declare function FurnitureAIWidget({ config, defaultTab }: FurnitureAIWidgetProps): react_jsx_runtime.JSX.Element;
+declare function FurnitureAIWidget({ config, defaultTab, widgetTitle }: FurnitureAIWidgetProps): react_jsx_runtime.JSX.Element;
 
 interface FurnitureAIWidgetButtonProps {
     config?: WidgetConfig;
@@ -292,4 +392,4 @@ interface FurnitureAIWidgetButtonProps {
 declare function FurnitureAIWidgetButton({ config, defaultTab, buttonText, buttonPosition, buttonStyle, className }: FurnitureAIWidgetButtonProps): react_jsx_runtime.JSX.Element;
 
 export { FurnitureAIWidget, FurnitureAIWidgetButton, FurnitureCustomizerWidget, FurnitureRoomPlannerWidget };
-export type { ChatRequest, ChatResponse, ConversationMessage, ConversationState, CustomizationConfig, CustomizedFurnitureItem, FurnitureItem, MessageRole, MessageType, QuoteRequest, QuoteRequestResponse, Recommendation, RoomAnalysisRequest, RoomAnalysisResponse, RoomDimensions, RoomPreferences, WidgetConfig };
+export type { ChatCatalogPayload, ChatCatalogProduct, ChatRequest, ChatResponse, ConversationMessage, ConversationState, CustomizationConfig, CustomizedFurnitureItem, FurnitureItem, MessageRole, MessageType, QuoteRequest, QuoteRequestResponse, Recommendation, RoomAnalysisRequest, RoomAnalysisResponse, RoomDimensions, RoomPreferences, WidgetConfig };

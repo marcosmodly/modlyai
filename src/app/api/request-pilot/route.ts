@@ -3,18 +3,12 @@ import { Resend } from 'resend';
 
 export async function POST(request: NextRequest) {
   try {
-    // Log environment variables status (without revealing values)
-    console.log('[Pilot Request API] Environment variables status:', {
-      RESEND_API_KEY: !!process.env.RESEND_API_KEY,
-      PILOT_TO_EMAIL: !!process.env.PILOT_TO_EMAIL,
-    });
-
     const body = await request.json();
     
     // Validate required fields
-    if (!body.name || !body.email || !body.company || !body.message) {
+    if (!body.name || !body.email || !body.company || !body.visitors) {
       return NextResponse.json(
-        { error: 'All fields are required' },
+        { error: 'Name, email, company, and traffic volume are required' },
         { status: 400 }
       );
     }
@@ -51,7 +45,7 @@ export async function POST(request: NextRequest) {
     const resend = new Resend(process.env.RESEND_API_KEY);
 
     // Send email using Resend
-    const { data, error } = await resend.emails.send({
+    const { error } = await resend.emails.send({
       from: 'ModlyAI <onboarding@resend.dev>',
       replyTo: 'hello@modlyai.tech',
       to: pilotToEmail,
@@ -61,8 +55,9 @@ export async function POST(request: NextRequest) {
         <p><strong>Name:</strong> ${body.name}</p>
         <p><strong>Company:</strong> ${body.company}</p>
         <p><strong>Email:</strong> ${body.email}</p>
-        <p><strong>Message:</strong></p>
-        <p>${body.message.replace(/\n/g, '<br>')}</p>
+        <p><strong>Monthly website visitors:</strong> ${body.visitors}</p>
+        <p><strong>Biggest challenge:</strong></p>
+        <p>${String(body.message || '—').replace(/\n/g, '<br>')}</p>
       `,
     });
 
@@ -73,8 +68,6 @@ export async function POST(request: NextRequest) {
         { status: 500 }
       );
     }
-
-    console.log('[Pilot Request API] Email sent successfully to:', pilotToEmail, 'ID:', data?.id);
 
     return NextResponse.json({
       success: true,

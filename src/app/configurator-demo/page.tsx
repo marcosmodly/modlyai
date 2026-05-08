@@ -13,8 +13,7 @@ import { ProductSelection } from '@/lib/configurator/types';
 export default function ConfiguratorDemoPage() {
   const [activeDemo, setActiveDemo] = useState<'sofa' | 'chair' | null>(null);
 
-  const handleSelectionChange = (selection: ProductSelection) => {
-    console.log('Demo selection changed:', selection);
+  const handleSelectionChange = (_selection: ProductSelection) => {
   };
 
   return (

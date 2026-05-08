@@ -1,22 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { RoomAnalysisResponse, Recommendation, FurnitureItem, RoomDimensions, RoomPreferences } from '@/types';
+import { getCatalogForRequest } from '@/lib/store-catalog';
+import { checkRoomPlannerLimit, findStoreForUsage, incrementUsage } from '@/lib/usage-limits';
 
 // Fetch catalog items
-async function getCatalogItems(): Promise<FurnitureItem[]> {
-  try {
-    const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 
-                   (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000');
-    const response = await fetch(`${baseUrl}/api/catalog/items`, {
-      cache: 'no-store',
-    });
-    if (response.ok) {
-      const data = await response.json();
-      return data.items || [];
-    }
-  } catch (error) {
-    console.error('Failed to fetch catalog:', error);
-  }
-  return [];
+async function getCatalogItems(apiKey?: string, storeDomain?: string): Promise<FurnitureItem[]> {
+  const { items } = await getCatalogForRequest({ apiKey, domain: storeDomain });
+  return items;
 }
 
 // Mock AI analysis - Fallback when OpenAI API is unavailable
@@ -40,7 +30,7 @@ async function analyzeRoomWithMockAI(
     },
   };
 
-  // Use catalog items if available, otherwise use mock furniture
+  // Use only catalog items. If none fit, return no recommendations rather than inventing products.
   const effectiveCatalogItems = catalogItems ?? [];
   const availableItems = effectiveCatalogItems.length > 0 
     ? effectiveCatalogItems.filter((item: FurnitureItem) => 
@@ -48,61 +38,6 @@ async function analyzeRoomWithMockAI(
         item.dimensions.width <= dimensions.width * 0.8
       ).slice(0, 5)
     : [];
-
-  if (availableItems.length === 0) {
-    // Fallback to mock items if no catalog items match
-    const mockFurniture: FurnitureItem[] = [
-      {
-        id: '1',
-        name: 'Scandinavian Sofa',
-        category: 'Seating',
-        subCategory: 'Sofa',
-        dimensions: {
-          length: Math.min(2.2, dimensions.length * 0.7),
-          width: 0.9,
-          height: 0.85,
-          seatHeight: 0.4,
-          clearance: { front: 0.9, back: 0.1, sides: 0.2 },
-        },
-        materials: {
-          primary: 'Solid Oak',
-          secondary: 'Cotton Blend',
-          upholstery: 'Linen',
-          legs: 'Oak Wood',
-        },
-        colors: {
-          main: 'Beige',
-          accent: 'Forest Green',
-        },
-        styleTags: ['Scandinavian', 'Modern', 'Minimalist'],
-        images: [],
-        priceRange: { min: 1200, max: 1800 },
-      },
-      {
-        id: '2',
-        name: 'Modern Coffee Table',
-        category: 'Tables',
-        subCategory: 'Coffee Table',
-        dimensions: {
-          length: Math.min(1.4, dimensions.length * 0.4),
-          width: 0.7,
-          height: 0.45,
-          clearance: { front: 0.5 },
-        },
-        materials: {
-          primary: 'Walnut Wood',
-          legs: 'Metal',
-        },
-        colors: {
-          main: 'Walnut Brown',
-        },
-        styleTags: ['Modern', 'Minimalist'],
-        images: [],
-        priceRange: { min: 450, max: 650 },
-      },
-    ];
-    availableItems.push(...mockFurniture);
-  }
 
   const recommendations: Recommendation[] = availableItems.map((item, index) => {
     // Calculate placement coordinates based on room dimensions
@@ -360,6 +295,8 @@ export async function POST(request: NextRequest) {
     const formData = await request.formData();
     const photos = formData.getAll('photos') as File[];
     const dimensions = JSON.parse(formData.get('dimensions') as string) as RoomDimensions;
+    const apiKey = String(formData.get('apiKey') || '');
+    const storeDomain = String(formData.get('storeDomain') || '');
     const preferences = formData.get('preferences')
       ? JSON.parse(formData.get('preferences') as string) as RoomPreferences
       : undefined;
@@ -396,10 +333,32 @@ export async function POST(request: NextRequest) {
     }
 
     // Fetch catalog items
-    const catalogItems = await getCatalogItems();
+    const catalogItems = await getCatalogItems(apiKey || undefined, storeDomain || undefined);
+    const usageStore = await findStoreForUsage({
+      apiKey: apiKey || undefined,
+      domain: storeDomain || undefined,
+    });
+
+    if (usageStore) {
+      const usageCheck = checkRoomPlannerLimit(usageStore);
+      if (!usageCheck.allowed) {
+        return NextResponse.json(
+          {
+            error: usageCheck.trialExpired
+              ? 'Your free trial has ended. Upgrade to continue using ModlyAI.'
+              : 'This store has reached its monthly room planner analysis limit. Please contact the store owner or upgrade the ModlyAI plan.',
+          },
+          { status: 429 }
+        );
+      }
+    }
 
     // Analyze room with AI
     const result = await analyzeRoomWithAI(photos, dimensions, preferences, catalogItems);
+
+    if (usageStore) {
+      await incrementUsage(usageStore.id, 'roomPlanner', usageStore.roomPlannerAnalysesUsed);
+    }
 
     return NextResponse.json(result);
   } catch (error) {
