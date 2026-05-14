@@ -2,22 +2,29 @@
 
 import { Check, ExternalLink } from 'lucide-react'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { getBillingAccess } from '@/lib/billing/access'
 import {
   formatLimit,
   getPlanLimits,
-  getTrialDaysRemaining,
+  isCancelAtPeriodEnd,
   isCheckoutPlan,
-  isTrialExpired,
   plans as planConfig,
   type CheckoutPlanId,
   type PlanId,
 } from '@/lib/plans'
 
 type BillingStore = {
+  id?: string
+  stripeCustomerId?: string
+  stripeSubscriptionId?: string
   subscriptionStatus?: string
   subscriptionPlan?: string
+  currentPeriodEnd?: string
+  cancelAtPeriodEnd?: boolean | string
+  trialStartedAt?: string
   trialEndsAt?: string
+  createdAt?: string
   aiChatsUsed?: number
   roomPlannerAnalysesUsed?: number
   productCount?: number
@@ -90,15 +97,97 @@ function usageMessage(rows: Array<{ used: number; limit: number | null }>) {
   return ''
 }
 
+function formatBillingDate(value?: string) {
+  if (!value) return null
+
+  const date = new Date(value)
+  if (!Number.isFinite(date.getTime())) return null
+
+  return date.toLocaleDateString('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+  })
+}
+
+function normalizeStatus(value?: string) {
+  if (!value) return 'No active subscription'
+  return value.replace(/_/g, ' ')
+}
+
+function hasDatePassed(value?: string) {
+  if (!value) return false
+
+  const time = new Date(value).getTime()
+  return Number.isFinite(time) && time <= Date.now()
+}
+
 export default function BillingCard({ store }: { store: BillingStore }) {
   const [loadingPlan, setLoadingPlan] = useState<CheckoutPlanId | null>(null)
+  const [portalLoading, setPortalLoading] = useState(false)
   const [error, setError] = useState('')
 
-  const hasActiveSubscription = store.subscriptionStatus === 'active'
-  const trialExpired = isTrialExpired(store)
-  const trialDaysRemaining = getTrialDaysRemaining(store.trialEndsAt)
-  const currentPlan = normalizePlan(hasActiveSubscription ? store.subscriptionPlan : undefined)
+  const access = getBillingAccess(store)
+  const paidPlan = isCheckoutPlan(store.subscriptionPlan)
+  const billingPlan = normalizePlan(store.subscriptionPlan)
+  const hasPaidSubscription = access.isPaid && access.hasActiveAccess
+  const hasStripeCustomer = Boolean(store.stripeCustomerId)
+  const canManageBilling = hasStripeCustomer || hasPaidSubscription
+  const cancelingAtPeriodEnd = isCancelAtPeriodEnd(store.cancelAtPeriodEnd)
+  const periodEnded = hasDatePassed(store.currentPeriodEnd)
+  const subscriptionCanceled = store.subscriptionStatus === 'canceled'
+  const isPaymentIssue = store.subscriptionStatus === 'past_due' || store.subscriptionStatus === 'unpaid'
+  const periodDate = formatBillingDate(store.currentPeriodEnd)
+  const billingDateLabel = 'Renewal date'
+  const billingDateText = periodDate
+    ? subscriptionCanceled && periodEnded
+      ? `Ended on ${periodDate}`
+      : cancelingAtPeriodEnd
+      ? `Ends on ${periodDate}`
+      : `Renews on ${periodDate}`
+    : 'Not scheduled'
+  const statusLabel = normalizeStatus(store.subscriptionStatus)
+  const trialExpired = access.isTrialExpired
+  const displayStatusLabel = trialExpired
+    ? 'Trial ended'
+    : subscriptionCanceled && periodEnded
+      ? 'Canceled'
+      : cancelingAtPeriodEnd
+        ? 'Canceling'
+        : statusLabel
+  const topBadgeStatusLabel = cancelingAtPeriodEnd
+    ? 'canceling'
+    : subscriptionCanceled && periodEnded
+      ? 'canceled'
+      : statusLabel
+  const trialDaysRemaining = access.trialDaysLeft
+  const currentPlan = normalizePlan(access.hasActiveAccess ? access.plan : undefined)
+  const currentPlanLabel = planConfig[currentPlan].label
+  const displayPlanLabel = paidPlan ? planConfig[billingPlan].label : currentPlanLabel
   const currentLimits = getPlanLimits(currentPlan)
+
+  useEffect(() => {
+    if (process.env.NODE_ENV === 'production') return
+
+    console.log('[Billing debug]', {
+      storeId: store.id,
+      subscriptionPlan: store.subscriptionPlan,
+      subscriptionStatus: store.subscriptionStatus,
+      stripeCustomerId: store.stripeCustomerId,
+      stripeSubscriptionId: store.stripeSubscriptionId,
+      currentPeriodEnd: store.currentPeriodEnd,
+      cancelAtPeriodEnd: store.cancelAtPeriodEnd,
+    })
+  }, [
+    store.id,
+    store.subscriptionPlan,
+    store.subscriptionStatus,
+    store.stripeCustomerId,
+    store.stripeSubscriptionId,
+    store.currentPeriodEnd,
+    store.cancelAtPeriodEnd,
+  ])
+
   const usageRows = [
     {
       label: 'AI Chats',
@@ -141,6 +230,27 @@ export default function BillingCard({ store }: { store: BillingStore }) {
     }
   }
 
+  const openBillingPortal = async () => {
+    setPortalLoading(true)
+    setError('')
+
+    try {
+      const response = await fetch('/api/billing/portal', {
+        method: 'POST',
+      })
+      const result = await response.json()
+
+      if (!response.ok || !result?.url) {
+        throw new Error(result?.error || 'Unable to open billing portal')
+      }
+
+      window.location.href = result.url
+    } catch (portalError) {
+      setError(portalError instanceof Error ? portalError.message : 'Unable to open billing portal')
+      setPortalLoading(false)
+    }
+  }
+
   return (
     <section className="rounded-[32px] border border-stone-200 bg-white p-6 shadow-sm">
       <div className="flex flex-wrap items-start justify-between gap-4">
@@ -149,23 +259,40 @@ export default function BillingCard({ store }: { store: BillingStore }) {
           <h2 className="mt-3 text-2xl font-bold tracking-tight text-stone-950">Subscription</h2>
         </div>
         <div className="rounded-2xl bg-stone-50 px-4 py-3 text-sm font-medium text-stone-700">
-          {hasActiveSubscription
-            ? `${planConfig[currentPlan].label} / ${store.subscriptionStatus}`
-            : `${planConfig.free_trial.label} / ${trialExpired ? 'Trial expired' : store.subscriptionStatus || 'No active subscription'}`}
+          {paidPlan
+            ? `${displayPlanLabel} / ${topBadgeStatusLabel}`
+            : `${planConfig.free_trial.label} / ${trialExpired ? 'Trial expired' : statusLabel}`}
         </div>
       </div>
+
+      {trialExpired ? (
+        <div className="mt-6 rounded-2xl border border-amber-200 bg-amber-50 p-5">
+          <div className="flex flex-wrap items-start justify-between gap-4">
+            <div>
+              <h3 className="text-lg font-bold text-stone-950">Your free trial has ended.</h3>
+              <p className="mt-1 text-sm leading-6 text-stone-700">
+                Upgrade to continue using ModlyAI on your storefront.
+              </p>
+            </div>
+          </div>
+        </div>
+      ) : null}
 
       <div className="mt-6 rounded-2xl border border-blue-100 bg-blue-50 p-5">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
             <h3 className="text-lg font-bold text-stone-950">
-              {hasActiveSubscription ? `${planConfig[currentPlan].label} limits` : `${planConfig.free_trial.label} - ${planConfig.free_trial.priceLabel}`}
+              {hasPaidSubscription ? `${planConfig[currentPlan].label} limits` : `${planConfig.free_trial.label} - ${planConfig.free_trial.priceLabel}`}
             </h3>
             <p className="mt-1 text-sm text-stone-600">
-              {hasActiveSubscription
+              {cancelingAtPeriodEnd && periodDate
+                ? `Your plan will cancel on ${periodDate}. You can continue using paid features until then.`
+                : isPaymentIssue
+                  ? 'There is a billing issue on this subscription. Update billing in Stripe to keep paid features available.'
+                  : hasPaidSubscription
                 ? 'Your current monthly plan allowance.'
                 : trialExpired
-                  ? 'Trial expired. Subscribe to continue using ModlyAI.'
+                  ? 'Your free trial has ended. Upgrade to continue using ModlyAI on your storefront.'
                   : `${trialDaysRemaining} ${trialDaysRemaining === 1 ? 'day' : 'days'} left in your trial.`}
             </p>
           </div>
@@ -184,7 +311,7 @@ export default function BillingCard({ store }: { store: BillingStore }) {
             <span className="font-semibold text-stone-950">{formatLimit(currentLimits.productLimit)}</span> products
           </div>
         </div>
-        {!hasActiveSubscription ? (
+        {!hasPaidSubscription ? (
           <ul className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
             {freeTrialFeatures.map((feature) => (
               <li key={feature} className="flex items-center gap-2 text-sm text-stone-700">
@@ -198,9 +325,59 @@ export default function BillingCard({ store }: { store: BillingStore }) {
 
       <div className="mt-6 rounded-2xl border border-stone-200 bg-stone-50 p-5">
         <div className="flex flex-wrap items-start justify-between gap-4">
+          <div className="max-w-2xl">
+            <h3 className="text-lg font-bold text-stone-950">Manage billing</h3>
+            <p className="mt-1 text-sm leading-6 text-stone-600">
+              Update payment methods, view invoices, change your plan, or cancel your subscription through Stripe.
+            </p>
+            <div className="mt-4 grid gap-3 sm:grid-cols-3">
+              <div className="rounded-xl bg-white px-4 py-3">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-stone-500">Current plan</p>
+                <p className="mt-1 text-sm font-semibold text-stone-950">
+                  {hasPaidSubscription && paidPlan ? currentPlanLabel : paidPlan ? displayPlanLabel : planConfig.free_trial.label}
+                </p>
+              </div>
+              <div className="rounded-xl bg-white px-4 py-3">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-stone-500">Status</p>
+                <p className="mt-1 text-sm font-semibold capitalize text-stone-950">{displayStatusLabel}</p>
+              </div>
+              <div className="rounded-xl bg-white px-4 py-3">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-stone-500">{billingDateLabel}</p>
+                <p className="mt-1 text-sm font-semibold text-stone-950">{billingDateText}</p>
+              </div>
+            </div>
+            {cancelingAtPeriodEnd && periodDate ? (
+              <p className="mt-4 rounded-xl bg-amber-50 px-4 py-3 text-sm font-medium text-amber-800">
+                Your plan will cancel on {periodDate}. You can continue using paid features until then.
+              </p>
+            ) : isPaymentIssue ? (
+              <p className="mt-4 rounded-xl bg-amber-50 px-4 py-3 text-sm font-medium text-amber-800">
+                We could not collect payment for this subscription. Please update billing to avoid losing paid access.
+              </p>
+            ) : null}
+          </div>
+          {canManageBilling ? (
+            <button
+              type="button"
+              onClick={openBillingPortal}
+              disabled={portalLoading || loadingPlan !== null}
+              className="inline-flex items-center justify-center rounded-xl bg-stone-950 px-4 py-3 text-sm font-semibold text-white transition hover:bg-stone-800 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {portalLoading ? 'Opening billing portal...' : 'Manage billing'}
+            </button>
+          ) : (
+            <p className="max-w-sm text-sm font-medium text-stone-600">
+              Billing portal becomes available after you start a paid plan.
+            </p>
+          )}
+        </div>
+      </div>
+
+      <div className="mt-6 rounded-2xl border border-stone-200 bg-stone-50 p-5">
+        <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
             <h3 className="text-lg font-bold text-stone-950">Usage</h3>
-            <p className="mt-1 text-sm text-stone-600">Current Plan: {planConfig[currentPlan].label}</p>
+            <p className="mt-1 text-sm text-stone-600">Current Plan: {currentPlanLabel}</p>
           </div>
           {warning ? (
             <div className="rounded-xl bg-amber-50 px-3 py-2 text-sm font-medium text-amber-800">

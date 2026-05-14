@@ -48,6 +48,8 @@ export type CheckoutPlanId = 'starter' | 'growth'
 
 export const checkoutPlanIds = ['starter', 'growth'] as const
 const MS_PER_DAY = 24 * 60 * 60 * 1000
+const PAYMENT_GRACE_PERIOD_DAYS = 7
+const PAYMENT_GRACE_PERIOD_MS = PAYMENT_GRACE_PERIOD_DAYS * MS_PER_DAY
 
 type TrialStoreLike = {
   subscriptionPlan?: string | null
@@ -55,8 +57,52 @@ type TrialStoreLike = {
   trialEndsAt?: string | Date | null
 }
 
+type BillingAccessStoreLike = {
+  subscriptionPlan?: string | null
+  subscriptionStatus?: string | null
+  currentPeriodEnd?: string | Date | null
+  cancelAtPeriodEnd?: boolean | string | null
+}
+
 export function isCheckoutPlan(plan: unknown): plan is CheckoutPlanId {
   return plan === 'starter' || plan === 'growth'
+}
+
+function periodEndTime(currentPeriodEnd?: string | Date | null) {
+  if (!currentPeriodEnd) return null
+
+  const time = new Date(currentPeriodEnd).getTime()
+  return Number.isFinite(time) ? time : null
+}
+
+export function isCancelAtPeriodEnd(value: unknown) {
+  return value === true || value === 'true'
+}
+
+export function hasCurrentPeriodEnded(currentPeriodEnd?: string | Date | null, now = Date.now()) {
+  const endTime = periodEndTime(currentPeriodEnd)
+  return endTime !== null && now >= endTime
+}
+
+export function isCurrentPeriodFuture(currentPeriodEnd?: string | Date | null, now = Date.now()) {
+  const endTime = periodEndTime(currentPeriodEnd)
+  return endTime !== null && now < endTime
+}
+
+export function hasPaidPlanAccess(store?: BillingAccessStoreLike | null, now = Date.now()) {
+  if (!store || !isCheckoutPlan(store.subscriptionPlan)) return false
+
+  const status = store.subscriptionStatus
+  const endTime = periodEndTime(store.currentPeriodEnd)
+  const periodEnded = endTime !== null && now >= endTime
+
+  if ((status === 'active' || status === 'trialing') && !periodEnded) return true
+
+  if ((status === 'past_due' || status === 'unpaid') && endTime !== null) {
+    return now < endTime + PAYMENT_GRACE_PERIOD_MS
+  }
+
+  return false
 }
 
 export function getPlanLimits(plan: PlanId | null | undefined) {

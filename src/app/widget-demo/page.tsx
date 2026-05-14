@@ -1,6 +1,6 @@
 'use client';
 
-import { FurnitureAIWidget } from '@widget/index';
+import { FurnitureAIWidget } from '@widget/components/FurnitureAIWidget';
 import DemoDisclaimer from '@/components/DemoDisclaimer';
 
 export default function WidgetDemoPage() {
