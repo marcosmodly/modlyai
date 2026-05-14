@@ -1532,11 +1532,11 @@
    */
 
 
-  const __iconNode$e = [
+  const __iconNode$n = [
     ["path", { d: "M5 12h14", key: "1ays0h" }],
     ["path", { d: "m12 5 7 7-7 7", key: "xquz4c" }]
   ];
-  const ArrowRight = createLucideIcon("arrow-right", __iconNode$e);
+  const ArrowRight = createLucideIcon("arrow-right", __iconNode$n);
 
   /**
    * @license lucide-react v1.8.0 - ISC
@@ -1546,7 +1546,7 @@
    */
 
 
-  const __iconNode$d = [
+  const __iconNode$m = [
     [
       "path",
       {
@@ -1556,7 +1556,7 @@
     ],
     ["circle", { cx: "12", cy: "13", r: "3", key: "1vg3eu" }]
   ];
-  const Camera = createLucideIcon("camera", __iconNode$d);
+  const Camera = createLucideIcon("camera", __iconNode$m);
 
   /**
    * @license lucide-react v1.8.0 - ISC
@@ -1566,8 +1566,8 @@
    */
 
 
-  const __iconNode$c = [["path", { d: "M20 6 9 17l-5-5", key: "1gmf2c" }]];
-  const Check = createLucideIcon("check", __iconNode$c);
+  const __iconNode$l = [["path", { d: "M20 6 9 17l-5-5", key: "1gmf2c" }]];
+  const Check = createLucideIcon("check", __iconNode$l);
 
   /**
    * @license lucide-react v1.8.0 - ISC
@@ -1577,7 +1577,22 @@
    */
 
 
-  const __iconNode$b = [
+  const __iconNode$k = [
+    ["path", { d: "M15 3h6v6", key: "1q9fwt" }],
+    ["path", { d: "M10 14 21 3", key: "gplh6r" }],
+    ["path", { d: "M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6", key: "a6xqqp" }]
+  ];
+  const ExternalLink = createLucideIcon("external-link", __iconNode$k);
+
+  /**
+   * @license lucide-react v1.8.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   */
+
+
+  const __iconNode$j = [
     [
       "path",
       {
@@ -1589,7 +1604,7 @@
     ["path", { d: "M12 18v-6", key: "17g6i2" }],
     ["path", { d: "m9 15 3 3 3-3", key: "1npd3o" }]
   ];
-  const FileDown = createLucideIcon("file-down", __iconNode$b);
+  const FileDown = createLucideIcon("file-down", __iconNode$j);
 
   /**
    * @license lucide-react v1.8.0 - ISC
@@ -1599,12 +1614,50 @@
    */
 
 
-  const __iconNode$a = [
+  const __iconNode$i = [
+    [
+      "path",
+      {
+        d: "M12 5a3 3 0 1 1 3 3m-3-3a3 3 0 1 0-3 3m3-3v1M9 8a3 3 0 1 0 3 3M9 8h1m5 0a3 3 0 1 1-3 3m3-3h-1m-2 3v-1",
+        key: "3pnvol"
+      }
+    ],
+    ["circle", { cx: "12", cy: "8", r: "2", key: "1822b1" }],
+    ["path", { d: "M12 10v12", key: "6ubwww" }],
+    ["path", { d: "M12 22c4.2 0 7-1.667 7-5-4.2 0-7 1.667-7 5Z", key: "9hd38g" }],
+    ["path", { d: "M12 22c-4.2 0-7-1.667-7-5 4.2 0 7 1.667 7 5Z", key: "ufn41s" }]
+  ];
+  const Flower2 = createLucideIcon("flower-2", __iconNode$i);
+
+  /**
+   * @license lucide-react v1.8.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   */
+
+
+  const __iconNode$h = [
+    ["rect", { width: "18", height: "18", x: "3", y: "3", rx: "2", ry: "2", key: "1m3agn" }],
+    ["circle", { cx: "9", cy: "9", r: "2", key: "af1f0g" }],
+    ["path", { d: "m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21", key: "1xmnt7" }]
+  ];
+  const Image = createLucideIcon("image", __iconNode$h);
+
+  /**
+   * @license lucide-react v1.8.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   */
+
+
+  const __iconNode$g = [
     ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
     ["path", { d: "M12 16v-4", key: "1dtifu" }],
     ["path", { d: "M12 8h.01", key: "e9boi3" }]
   ];
-  const Info = createLucideIcon("info", __iconNode$a);
+  const Info = createLucideIcon("info", __iconNode$g);
 
   /**
    * @license lucide-react v1.8.0 - ISC
@@ -1614,7 +1667,31 @@
    */
 
 
-  const __iconNode$9 = [
+  const __iconNode$f = [
+    ["path", { d: "M12 12v6", key: "3ahymv" }],
+    [
+      "path",
+      {
+        d: "M4.077 10.615A1 1 0 0 0 5 12h14a1 1 0 0 0 .923-1.385l-3.077-7.384A2 2 0 0 0 15 2H9a2 2 0 0 0-1.846 1.23Z",
+        key: "1l7kg2"
+      }
+    ],
+    [
+      "path",
+      { d: "M8 20a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1z", key: "1mmzpi" }
+    ]
+  ];
+  const Lamp = createLucideIcon("lamp", __iconNode$f);
+
+  /**
+   * @license lucide-react v1.8.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   */
+
+
+  const __iconNode$e = [
     [
       "path",
       {
@@ -1637,7 +1714,101 @@
       }
     ]
   ];
-  const Layers = createLucideIcon("layers", __iconNode$9);
+  const Layers = createLucideIcon("layers", __iconNode$e);
+
+  /**
+   * @license lucide-react v1.8.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   */
+
+
+  const __iconNode$d = [
+    ["path", { d: "M9 17H7A5 5 0 0 1 7 7h2", key: "8i5ue5" }],
+    ["path", { d: "M15 7h2a5 5 0 1 1 0 10h-2", key: "1b9ql8" }],
+    ["line", { x1: "8", x2: "16", y1: "12", y2: "12", key: "1jonct" }]
+  ];
+  const Link2 = createLucideIcon("link-2", __iconNode$d);
+
+  /**
+   * @license lucide-react v1.8.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   */
+
+
+  const __iconNode$c = [
+    ["path", { d: "M15 3h6v6", key: "1q9fwt" }],
+    ["path", { d: "m21 3-7 7", key: "1l2asr" }],
+    ["path", { d: "m3 21 7-7", key: "tjx5ai" }],
+    ["path", { d: "M9 21H3v-6", key: "wtvkvv" }]
+  ];
+  const Maximize2 = createLucideIcon("maximize-2", __iconNode$c);
+
+  /**
+   * @license lucide-react v1.8.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   */
+
+
+  const __iconNode$b = [
+    [
+      "path",
+      {
+        d: "M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719",
+        key: "1sd12s"
+      }
+    ]
+  ];
+  const MessageCircle = createLucideIcon("message-circle", __iconNode$b);
+
+  /**
+   * @license lucide-react v1.8.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   */
+
+
+  const __iconNode$a = [
+    ["path", { d: "M14 14a2 2 0 0 0 2-2V8h-2", key: "1r06pg" }],
+    [
+      "path",
+      {
+        d: "M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z",
+        key: "18887p"
+      }
+    ],
+    ["path", { d: "M8 14a2 2 0 0 0 2-2V8H8", key: "1jzu5j" }]
+  ];
+  const MessageSquareQuote = createLucideIcon("message-square-quote", __iconNode$a);
+
+  /**
+   * @license lucide-react v1.8.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   */
+
+
+  const __iconNode$9 = [
+    [
+      "path",
+      {
+        d: "M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z",
+        key: "e79jfc"
+      }
+    ],
+    ["circle", { cx: "13.5", cy: "6.5", r: ".5", fill: "currentColor", key: "1okk4w" }],
+    ["circle", { cx: "17.5", cy: "10.5", r: ".5", fill: "currentColor", key: "f64h9f" }],
+    ["circle", { cx: "6.5", cy: "12.5", r: ".5", fill: "currentColor", key: "qy21gx" }],
+    ["circle", { cx: "8.5", cy: "7.5", r: ".5", fill: "currentColor", key: "fotxhn" }]
+  ];
+  const Palette = createLucideIcon("palette", __iconNode$9);
 
   /**
    * @license lucide-react v1.8.0 - ISC
@@ -1648,11 +1819,16 @@
 
 
   const __iconNode$8 = [
-    ["path", { d: "M9 17H7A5 5 0 0 1 7 7h2", key: "8i5ue5" }],
-    ["path", { d: "M15 7h2a5 5 0 1 1 0 10h-2", key: "1b9ql8" }],
-    ["line", { x1: "8", x2: "16", y1: "12", y2: "12", key: "1jonct" }]
+    [
+      "path",
+      {
+        d: "M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z",
+        key: "1a8usu"
+      }
+    ],
+    ["path", { d: "m15 5 4 4", key: "1mk7zo" }]
   ];
-  const Link2 = createLucideIcon("link-2", __iconNode$8);
+  const Pencil = createLucideIcon("pencil", __iconNode$8);
 
   /**
    * @license lucide-react v1.8.0 - ISC
@@ -1663,12 +1839,10 @@
 
 
   const __iconNode$7 = [
-    ["path", { d: "M15 3h6v6", key: "1q9fwt" }],
-    ["path", { d: "m21 3-7 7", key: "1l2asr" }],
-    ["path", { d: "m3 21 7-7", key: "tjx5ai" }],
-    ["path", { d: "M9 21H3v-6", key: "wtvkvv" }]
+    ["path", { d: "m15 14 5-5-5-5", key: "12vg1m" }],
+    ["path", { d: "M20 9H9.5A5.5 5.5 0 0 0 4 14.5A5.5 5.5 0 0 0 9.5 20H13", key: "6uklza" }]
   ];
-  const Maximize2 = createLucideIcon("maximize-2", __iconNode$7);
+  const Redo2 = createLucideIcon("redo-2", __iconNode$7);
 
   /**
    * @license lucide-react v1.8.0 - ISC
@@ -1682,12 +1856,16 @@
     [
       "path",
       {
-        d: "M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719",
-        key: "1sd12s"
+        d: "M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0Z",
+        key: "icamh8"
       }
-    ]
+    ],
+    ["path", { d: "m14.5 12.5 2-2", key: "inckbg" }],
+    ["path", { d: "m11.5 9.5 2-2", key: "fmmyf7" }],
+    ["path", { d: "m8.5 6.5 2-2", key: "vc6u1g" }],
+    ["path", { d: "m17.5 15.5 2-2", key: "wo5hmg" }]
   ];
-  const MessageCircle = createLucideIcon("message-circle", __iconNode$6);
+  const Ruler = createLucideIcon("ruler", __iconNode$6);
 
   /**
    * @license lucide-react v1.8.0 - ISC
@@ -1698,19 +1876,17 @@
 
 
   const __iconNode$5 = [
+    ["path", { d: "M16 10a4 4 0 0 1-8 0", key: "1ltviw" }],
+    ["path", { d: "M3.103 6.034h17.794", key: "awc11p" }],
     [
       "path",
       {
-        d: "M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z",
-        key: "e79jfc"
+        d: "M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z",
+        key: "o988cm"
       }
-    ],
-    ["circle", { cx: "13.5", cy: "6.5", r: ".5", fill: "currentColor", key: "1okk4w" }],
-    ["circle", { cx: "17.5", cy: "10.5", r: ".5", fill: "currentColor", key: "f64h9f" }],
-    ["circle", { cx: "6.5", cy: "12.5", r: ".5", fill: "currentColor", key: "qy21gx" }],
-    ["circle", { cx: "8.5", cy: "7.5", r: ".5", fill: "currentColor", key: "fotxhn" }]
+    ]
   ];
-  const Palette = createLucideIcon("palette", __iconNode$5);
+  const ShoppingBag = createLucideIcon("shopping-bag", __iconNode$5);
 
   /**
    * @license lucide-react v1.8.0 - ISC
@@ -1721,16 +1897,19 @@
 
 
   const __iconNode$4 = [
+    ["path", { d: "M20 9V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v3", key: "1dgpiv" }],
     [
       "path",
       {
-        d: "M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z",
-        key: "1a8usu"
+        d: "M2 16a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-5a2 2 0 0 0-4 0v1.5a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5V11a2 2 0 0 0-4 0z",
+        key: "xacw8m"
       }
     ],
-    ["path", { d: "m15 5 4 4", key: "1mk7zo" }]
+    ["path", { d: "M4 18v2", key: "jwo5n2" }],
+    ["path", { d: "M20 18v2", key: "1ar1qi" }],
+    ["path", { d: "M12 4v9", key: "oqhhn3" }]
   ];
-  const Pencil = createLucideIcon("pencil", __iconNode$4);
+  const Sofa = createLucideIcon("sofa", __iconNode$4);
 
   /**
    * @license lucide-react v1.8.0 - ISC
@@ -1741,20 +1920,6 @@
 
 
   const __iconNode$3 = [
-    ["path", { d: "m15 14 5-5-5-5", key: "12vg1m" }],
-    ["path", { d: "M20 9H9.5A5.5 5.5 0 0 0 4 14.5A5.5 5.5 0 0 0 9.5 20H13", key: "6uklza" }]
-  ];
-  const Redo2 = createLucideIcon("redo-2", __iconNode$3);
-
-  /**
-   * @license lucide-react v1.8.0 - ISC
-   *
-   * This source code is licensed under the ISC license.
-   * See the LICENSE file in the root directory of this source tree.
-   */
-
-
-  const __iconNode$2 = [
     [
       "path",
       {
@@ -1766,7 +1931,21 @@
     ["path", { d: "M22 4h-4", key: "gwowj6" }],
     ["circle", { cx: "4", cy: "20", r: "2", key: "6kqj1y" }]
   ];
-  const Sparkles = createLucideIcon("sparkles", __iconNode$2);
+  const Sparkles = createLucideIcon("sparkles", __iconNode$3);
+
+  /**
+   * @license lucide-react v1.8.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   */
+
+
+  const __iconNode$2 = [
+    ["path", { d: "M9 14 4 9l5-5", key: "102s5s" }],
+    ["path", { d: "M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5a5.5 5.5 0 0 1-5.5 5.5H11", key: "f3b9sd" }]
+  ];
+  const Undo2 = createLucideIcon("undo-2", __iconNode$2);
 
   /**
    * @license lucide-react v1.8.0 - ISC
@@ -1777,10 +1956,11 @@
 
 
   const __iconNode$1 = [
-    ["path", { d: "M9 14 4 9l5-5", key: "102s5s" }],
-    ["path", { d: "M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5a5.5 5.5 0 0 1-5.5 5.5H11", key: "f3b9sd" }]
+    ["path", { d: "M12 3v12", key: "1x0j5s" }],
+    ["path", { d: "m17 8-5-5-5 5", key: "7q97r8" }],
+    ["path", { d: "M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4", key: "ih7n3h" }]
   ];
-  const Undo2 = createLucideIcon("undo-2", __iconNode$1);
+  const Upload = createLucideIcon("upload", __iconNode$1);
 
   /**
    * @license lucide-react v1.8.0 - ISC
@@ -1791,11 +1971,18 @@
 
 
   const __iconNode = [
-    ["path", { d: "M12 3v12", key: "1x0j5s" }],
-    ["path", { d: "m17 8-5-5-5 5", key: "7q97r8" }],
-    ["path", { d: "M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4", key: "ih7n3h" }]
+    ["path", { d: "M18 21V10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1v11", key: "pb2vm6" }],
+    [
+      "path",
+      {
+        d: "M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 1.132-1.803l7.95-3.974a2 2 0 0 1 1.837 0l7.948 3.974A2 2 0 0 1 22 8z",
+        key: "doq5xv"
+      }
+    ],
+    ["path", { d: "M6 13h12", key: "yf64js" }],
+    ["path", { d: "M6 17h12", key: "1jwigz" }]
   ];
-  const Upload = createLucideIcon("upload", __iconNode);
+  const Warehouse = createLucideIcon("warehouse", __iconNode);
 
   const DEFAULT_WIDGET_TITLE = 'ModlyAI';
   const DEFAULT_PRIMARY_COLOR = '#3B82F6';
@@ -2052,7 +2239,7 @@
               .replace(/[^a-z0-9]+/g, '_')
               .replace(/^_+|_+$/g, ''),
           name: material,
-          priceDelta: index === 0 ? 0 : index * 75,
+          priceDelta: 0,
           description: getMaterialDescription(material),
       }));
   };
@@ -2061,6 +2248,7 @@
       return hex === '#E5E7EB' ? FALLBACK_COLOR_HEX[index % FALLBACK_COLOR_HEX.length] : hex;
   };
   const metersToInches = (value) => Number((value / 0.0254).toFixed(1));
+  const inchesToMeters = (value) => Number((value * 0.0254).toFixed(3));
   const twentyPercentRange = (base, minimum) => {
       const min = Math.max(minimum, Math.round(base * 0.8));
       const max = Math.max(min + 1, Math.round(base * 1.2));
@@ -2076,6 +2264,68 @@
       }
       return value;
   };
+  const normalizeStringList$1 = (value) => {
+      const entries = Array.isArray(value)
+          ? value
+          : typeof value === 'string'
+              ? value.split(/[|,]/)
+              : [];
+      return Array.from(new Set(entries
+          .map((entry) => String(entry ?? '').trim())
+          .filter(Boolean)));
+  };
+  const getOptionName = (value) => typeof value === 'string' ? value : value.name;
+  const getOptionPrice = (value) => typeof value === 'string' ? undefined : value.price;
+  const normalizeCustomizationOptionValues = (value) => {
+      if (Array.isArray(value)) {
+          const options = value
+              .map((entry) => {
+              if (typeof entry === 'string')
+                  return entry.trim();
+              if (!entry || typeof entry !== 'object')
+                  return null;
+              const option = entry;
+              const name = String(option.name ?? '').trim();
+              if (!name)
+                  return null;
+              const price = typeof option.price === 'number' && Number.isFinite(option.price)
+                  ? option.price
+                  : typeof option.price === 'string' && option.price.trim() && Number.isFinite(Number(option.price))
+                      ? Number(option.price)
+                      : undefined;
+              return price === undefined ? { name } : { name, price };
+          })
+              .filter(Boolean);
+          const seen = new Set();
+          return options.filter((option) => {
+              const name = getOptionName(option).toLowerCase();
+              if (seen.has(name))
+                  return false;
+              seen.add(name);
+              return true;
+          });
+      }
+      return normalizeStringList$1(value);
+  };
+  const normalizeCustomizationOptions = (value) => {
+      if (!value || typeof value !== 'object' || Array.isArray(value)) {
+          return undefined;
+      }
+      const options = value;
+      const colors = normalizeCustomizationOptionValues(options.colors);
+      const materials = normalizeCustomizationOptionValues(options.materials);
+      return {
+          ...options,
+          ...(colors.length > 0 ? { colors } : {}),
+          ...(materials.length > 0 ? { materials } : {}),
+      };
+  };
+  const dimensionsFromInches = (lengthIn, widthIn, heightIn) => ({
+      length: inchesToMeters(lengthIn),
+      width: inchesToMeters(widthIn),
+      height: inchesToMeters(heightIn),
+      unit: 'm',
+  });
   const products = [
       {
           id: 'demo-sofa-002',
@@ -2220,13 +2470,35 @@
       if (existing) {
           return existing;
       }
+      const rawItem = item;
+      const customizationOptions = normalizeCustomizationOptions(item.customizationOptions);
+      const explicitMaterials = normalizeCustomizationOptionValues(customizationOptions?.materials).map(getOptionName);
+      const explicitColors = normalizeCustomizationOptionValues(customizationOptions?.colors).map(getOptionName);
+      const rawMaterials = Array.isArray(rawItem.materials) || typeof rawItem.materials === 'string'
+          ? normalizeStringList$1(rawItem.materials)
+          : [];
+      const rawColors = Array.isArray(rawItem.colors) || typeof rawItem.colors === 'string'
+          ? normalizeStringList$1(rawItem.colors)
+          : [];
       const baseMaterials = Array.from(new Set([
-          item.materials.primary,
-          item.materials.secondary,
-          item.materials.upholstery,
-          item.materials.legs,
+          ...explicitMaterials,
+          ...rawMaterials,
+          ...(!Array.isArray(rawItem.materials) && typeof rawItem.materials !== 'string'
+              ? [
+                  rawItem.materials.primary,
+                  rawItem.materials.secondary,
+                  rawItem.materials.upholstery,
+                  rawItem.materials.legs,
+              ]
+              : []),
       ].filter((value) => Boolean(value))));
-      const baseColors = Array.from(new Set([item.colors.main, item.colors.accent].filter((value) => Boolean(value))));
+      const baseColors = Array.from(new Set([
+          ...explicitColors,
+          ...rawColors,
+          ...(!Array.isArray(rawItem.colors) && typeof rawItem.colors !== 'string'
+              ? [rawItem.colors.main, rawItem.colors.accent]
+              : []),
+      ].filter((value) => Boolean(value))));
       const widthIn = Math.max(18, Math.round(metersToInches(item.dimensions.width || 0.9)));
       const depthIn = Math.max(18, Math.round(metersToInches(item.dimensions.depth || item.dimensions.length || 0.9)));
       return {
@@ -2234,6 +2506,19 @@
           name: item.name,
           category: item.category,
           basePrice: item.priceRange?.min ?? 0,
+          length: rawItem.length ?? metersToInches(item.dimensions.length || item.dimensions.depth || 0),
+          width: rawItem.width ?? metersToInches(item.dimensions.width || 0),
+          height: rawItem.height ?? metersToInches(item.dimensions.height || 0),
+          source: item.source,
+          productUrl: item.productUrl || item.url,
+          imageUrl: item.images[0],
+          image: item.images[0],
+          thumbnail: item.images[0],
+          externalId: item.externalId,
+          shopifyProductId: item.shopifyProductId,
+          storeId: item.storeId,
+          status: item.status,
+          customizationOptions,
           dimensions: {
               length: item.dimensions.length || item.dimensions.depth || 0,
               width: item.dimensions.width || 0,
@@ -2266,7 +2551,148 @@
           },
       };
   }
+  function productFromCatalogProduct(product, index = 0) {
+      const existing = product?.id ? getProductById(String(product.id)) : undefined;
+      if (existing) {
+          return existing;
+      }
+      const name = String(product?.title ?? product?.name ?? `Product ${index + 1}`);
+      const materials = normalizeStringList$1(product?.materials);
+      const colorNames = normalizeStringList$1(product?.colors);
+      const lengthIn = Number(product?.length) || 0;
+      const widthIn = Number(product?.width) || 0;
+      const heightIn = Number(product?.height) || 0;
+      const image = String(product?.imageUrl ?? product?.image ?? product?.images?.[0] ?? '');
+      const price = Number(product?.price ?? product?.priceRange?.min ?? 0) || 0;
+      const customizationOptions = normalizeCustomizationOptions(product?.customizationOptions);
+      return {
+          id: String(product?.id ?? `catalog-product-${index + 1}`),
+          name,
+          category: String(product?.category ?? 'Furniture'),
+          basePrice: price,
+          length: lengthIn,
+          width: widthIn,
+          height: heightIn,
+          source: product?.source ? String(product.source) : undefined,
+          productUrl: product?.productUrl ? String(product.productUrl) : product?.url ? String(product.url) : undefined,
+          imageUrl: image,
+          image,
+          thumbnail: String(product?.thumbnail ?? image),
+          externalId: product?.externalId ? String(product.externalId) : undefined,
+          shopifyProductId: product?.shopifyProductId ? String(product.shopifyProductId) : undefined,
+          storeId: product?.storeId ? String(product.storeId) : undefined,
+          status: product?.status ? String(product.status) : undefined,
+          customizationOptions,
+          dimensions: dimensionsFromInches(lengthIn, widthIn, heightIn),
+          materials: materials.length > 0 ? materials : ['Custom'],
+          colors: colorNames.length > 0
+              ? colorNames.map((color, colorIndex) => ({
+                  name: color,
+                  hex: resolveColorHex(color, colorIndex),
+                  available: true,
+              }))
+              : [{ name: 'Custom', hex: FALLBACK_COLOR_HEX[0], available: true }],
+          images: {
+              front: image,
+              side: image,
+              angle: image,
+              thumbnail: image,
+          },
+          tags: Array.isArray(product?.tags) ? product.tags : [],
+          customizer: {
+              type: normalizeProductType(String(product?.category ?? 'Furniture')),
+              thumbnailLabel: String(product?.category ?? 'Furniture'),
+              defaultWidthIn: Math.max(18, Math.round(widthIn || 36)),
+              defaultDepthIn: Math.max(18, Math.round(lengthIn || 36)),
+              widthRangeIn: twentyPercentRange(Math.max(18, Math.round(widthIn || 36)), 18),
+              depthRangeIn: twentyPercentRange(Math.max(18, Math.round(lengthIn || 36)), 18),
+              materialOptions: productMaterialOptions(materials),
+          },
+      };
+  }
 
+  const SESSION_STORAGE_KEY = 'modlyai_session_id';
+  function createFallbackId() {
+      return `session-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`;
+  }
+  function getWidgetSessionId() {
+      if (typeof window === 'undefined')
+          return createFallbackId();
+      try {
+          const existing = window.sessionStorage.getItem(SESSION_STORAGE_KEY);
+          if (existing)
+              return existing;
+          const next = typeof window.crypto?.randomUUID === 'function'
+              ? window.crypto.randomUUID()
+              : createFallbackId();
+          window.sessionStorage.setItem(SESSION_STORAGE_KEY, next);
+          return next;
+      }
+      catch {
+          return createFallbackId();
+      }
+  }
+  function getAnalyticsEndpoint(apiBaseUrl) {
+      const path = '/api/analytics/events';
+      if (!apiBaseUrl)
+          return path;
+      try {
+          return new URL(path, apiBaseUrl).toString();
+      }
+      catch {
+          return path;
+      }
+  }
+  function shouldWarnInDevelopment() {
+      if (typeof window === 'undefined')
+          return false;
+      return ['localhost', '127.0.0.1'].includes(window.location.hostname);
+  }
+  function trackWidgetEvent({ storeId, widgetId, sessionId, type, productId, productName, metadata, apiBaseUrl, }) {
+      if (!storeId || typeof window === 'undefined')
+          return;
+      const payload = {
+          storeId,
+          widgetId,
+          sessionId: sessionId || getWidgetSessionId(),
+          type,
+          productId,
+          productName,
+          metadata,
+      };
+      window.setTimeout(() => {
+          try {
+              void fetch(getAnalyticsEndpoint(apiBaseUrl), {
+                  method: 'POST',
+                  headers: {
+                      'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify(payload),
+                  keepalive: true,
+              }).catch((error) => {
+                  if (shouldWarnInDevelopment()) {
+                      console.warn('ModlyAI analytics event failed:', error);
+                  }
+              });
+          }
+          catch (error) {
+              if (shouldWarnInDevelopment()) {
+                  console.warn('ModlyAI analytics event failed:', error);
+              }
+          }
+      }, 0);
+  }
+
+  const TRIAL_EXPIRED_WIDGET_MESSAGE = "This store's ModlyAI trial has ended. Please contact the store owner.";
+  const normalizeStringList = (value) => {
+      const entries = Array.isArray(value)
+          ? value
+          : typeof value === 'string'
+              ? value.split(/[|,]/)
+              : [];
+      const normalized = Array.from(new Set(entries.map((entry) => String(entry ?? '').trim()).filter(Boolean)));
+      return normalized.length > 0 ? normalized : undefined;
+  };
   class ApiClient {
       constructor(config) {
           this.config = config;
@@ -2337,9 +2763,16 @@
               length: product?.length ?? product?.dimensions?.length,
               width: product?.width ?? product?.dimensions?.width,
               height: product?.height ?? product?.dimensions?.height,
+              colors: normalizeStringList(product?.colors),
+              materials: normalizeStringList(product?.materials),
               productUrl: product?.productUrl ? String(product.productUrl) : product?.url ? String(product.url) : undefined,
               url: product?.url ? String(product.url) : product?.productUrl ? String(product.productUrl) : undefined,
               handle: product?.handle ? String(product.handle) : undefined,
+              externalId: product?.externalId ? String(product.externalId) : undefined,
+              shopifyProductId: product?.shopifyProductId ? String(product.shopifyProductId) : undefined,
+              storeId: product?.storeId ? String(product.storeId) : undefined,
+              status: product?.status ? String(product.status) : undefined,
+              customizationOptions: product?.customizationOptions,
           };
       }
       async getCatalogForChat() {
@@ -2392,6 +2825,34 @@
               shouldTriggerAction: data?.shouldTriggerAction,
           };
       }
+      createTextChatResponse(content) {
+          return {
+              message: {
+                  id: `msg-assistant-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+                  role: 'assistant',
+                  type: 'text',
+                  content,
+                  timestamp: Date.now(),
+              },
+          };
+      }
+      async readErrorResponse(response) {
+          try {
+              return await response.json();
+          }
+          catch (e) {
+              return null;
+          }
+      }
+      getFriendlyApiError(response, data, fallback) {
+          if (response.status === 402 && data?.error === 'trial_expired') {
+              return TRIAL_EXPIRED_WIDGET_MESSAGE;
+          }
+          if ((response.status === 402 || response.status === 403) && data?.error === 'usage_limit_reached') {
+              return data?.message || 'You have reached this store\'s plan limit. Please contact the store owner.';
+          }
+          return data?.message || data?.error || fallback;
+      }
       async analyzeRoom(photos, dimensions, preferences) {
           const endpoint = this.config.apiEndpoints?.roomAnalyze || '/api/rooms/analyze';
           const url = this.withStoreQuery(this.getEndpoint(endpoint));
@@ -2414,7 +2875,8 @@
               body: formData,
           });
           if (!response.ok) {
-              const error = new Error(`Failed to analyze room: ${response.statusText}`);
+              const errorData = await this.readErrorResponse(response);
+              const error = new Error(this.getFriendlyApiError(response, errorData, `Failed to analyze room: ${response.statusText}`));
               this.config.onError?.(error);
               throw error;
           }
@@ -2430,10 +2892,11 @@
               headers: {
                   'Content-Type': 'application/json',
               },
-              body: JSON.stringify(config),
+              body: JSON.stringify(this.withStorePayload(config)),
           });
           if (!response.ok) {
-              const error = new Error(`Failed to customize furniture: ${response.statusText}`);
+              const errorData = await this.readErrorResponse(response);
+              const error = new Error(this.getFriendlyApiError(response, errorData, `Failed to customize furniture: ${response.statusText}`));
               this.config.onError?.(error);
               throw error;
           }
@@ -2460,16 +2923,12 @@
               });
               if (!response.ok) {
                   let errorMessage = `Failed to get chat response: ${response.statusText}`;
-                  try {
-                      const errorData = await response.json();
-                      console.warn('ModlyAI chat error response:', errorData);
-                      if (errorData.error) {
-                          errorMessage = errorData.error;
-                      }
+                  const errorData = await this.readErrorResponse(response);
+                  console.warn('ModlyAI chat error response:', errorData);
+                  if (response.status === 402 && errorData?.error === 'trial_expired') {
+                      return this.createTextChatResponse(TRIAL_EXPIRED_WIDGET_MESSAGE);
                   }
-                  catch (e) {
-                      // If error response is not JSON, use status text
-                  }
+                  errorMessage = this.getFriendlyApiError(response, errorData, errorMessage);
                   const error = new Error(errorMessage);
                   this.config.onError?.(error);
                   throw error;
@@ -2507,7 +2966,9 @@
           const url = this.getEndpoint(endpoint);
           const payload = {
               ...quoteRequest,
+              sessionId: quoteRequest.sessionId || getWidgetSessionId(),
               ...(this.config.quoteEmail ? { quoteEmail: this.config.quoteEmail } : {}),
+              ...(this.config.supportEmail ? { supportEmail: this.config.supportEmail } : {}),
           };
           const response = await fetch(url, {
               method: 'POST',
@@ -2517,7 +2978,30 @@
               body: JSON.stringify(this.withStorePayload(payload)),
           });
           if (!response.ok) {
-              const error = new Error(`Failed to submit quote request: ${response.statusText}`);
+              let errorMessage = `Failed to submit quote request: ${response.statusText}`;
+              try {
+                  const errorData = await response.json();
+                  console.warn('ModlyAI quote request error response:', errorData);
+                  if (errorData?.reason === 'validation_failed') {
+                      errorMessage = errorData.message || 'Please check your contact details and try again.';
+                  }
+                  else if (errorData?.reason === 'missing_destination') {
+                      errorMessage = errorData.message || 'Quote delivery is not configured for this store.';
+                  }
+                  else if (errorData?.reason === 'instantdb_save_failed') {
+                      errorMessage = errorData.message || 'We could not save the quote request. Please try again.';
+                  }
+                  else if (errorData?.reason === 'email_send_failed') {
+                      errorMessage = errorData.message || 'We could not deliver the quote request email. Please try again.';
+                  }
+                  else if (errorData?.error) {
+                      errorMessage = errorData.message || errorData.error;
+                  }
+              }
+              catch (e) {
+                  // If the error response is not JSON, keep the status text fallback.
+              }
+              const error = new Error(errorMessage);
               this.config.onError?.(error);
               throw error;
           }
@@ -2534,7 +3018,8 @@
               body: JSON.stringify(this.withStorePayload(request)),
           });
           if (!response.ok) {
-              const error = new Error(`Failed to get recommendations: ${response.statusText}`);
+              const errorData = await this.readErrorResponse(response);
+              const error = new Error(this.getFriendlyApiError(response, errorData, `Failed to get recommendations: ${response.statusText}`));
               this.config.onError?.(error);
               throw error;
           }
@@ -2638,9 +3123,25 @@
       return context;
   }
 
-  function CustomizedFurnitureList({ items, onItemRemoved, onNavigateToCustomizer, }) {
+  const formatCurrency$3 = (value, prefix = '') => typeof value === 'number' && Number.isFinite(value)
+      ? `${prefix}$${value.toLocaleString()}`
+      : undefined;
+  const formatChoiceName = (value) => typeof value === 'string' ? value : value?.name;
+  const formatDimension$1 = (value) => typeof value === 'number' && Number.isFinite(value) ? `${value.toFixed(2)} m` : undefined;
+  const uniqueByName = (values) => {
+      const seen = new Set();
+      return values.filter((value) => {
+          const key = value.name.trim().toLowerCase();
+          if (!key || seen.has(key))
+              return false;
+          seen.add(key);
+          return true;
+      });
+  };
+  function CustomizedFurnitureList({ items, onItemRemoved, onNavigateToCustomizer, onRequestQuote, }) {
       const { storage } = useWidgetContext();
       const [removingId, setRemovingId] = require$$0$1.useState(null);
+      const [imageErrors, setImageErrors] = require$$0$1.useState(() => new Set());
       const handleRemove = async (id) => {
           if (!confirm('Are you sure you want to remove this customized furniture item?')) {
               return;
@@ -2667,11 +3168,30 @@
       if (items.length === 0) {
           return (jsxRuntimeExports.jsxs("div", { className: "text-center py-12 relative", children: [jsxRuntimeExports.jsx("div", { className: "mb-4", children: jsxRuntimeExports.jsx("svg", { className: "w-16 h-16 mx-auto text-text-muted", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 1.5, d: "M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" }) }) }), jsxRuntimeExports.jsx("p", { className: "text-lg text-text-primary mb-2", children: "No customized furniture yet" }), jsxRuntimeExports.jsx("p", { className: "text-sm text-text-muted mb-4", children: "Customize furniture in the Customizer to see your creations here" }), jsxRuntimeExports.jsx("button", { type: "button", onClick: handleNavigateToCustomizer, className: "px-6 py-3 bg-earth-forest text-white rounded-xl font-semibold hover:bg-earth-forest/90 transition-all duration-300 cursor-pointer relative z-10", children: "Go to Customizer" })] }));
       }
-      return (jsxRuntimeExports.jsxs("div", { className: "space-y-6", children: [jsxRuntimeExports.jsx("h2", { className: "text-3xl font-bold text-text-heading mb-6", children: "My Customized Furniture" }), jsxRuntimeExports.jsx("div", { className: "grid md:grid-cols-2 lg:grid-cols-3 gap-6", children: items.map((item) => {
-                      const displayName = item.name;
-                      const displayCategory = item.baseItemType;
-                      const displayMaterials = item.materials;
-                      return (jsxRuntimeExports.jsxs("div", { className: "bg-earth-card rounded-xl shadow-soft border border-earth-border overflow-hidden hover:shadow-lg transition-shadow relative", children: [jsxRuntimeExports.jsx("div", { className: "absolute top-4 right-4 z-10", children: jsxRuntimeExports.jsx("span", { className: "px-3 py-1 bg-earth-sage text-text-primary rounded-lg text-xs font-semibold", children: "Custom" }) }), jsxRuntimeExports.jsx("div", { className: "w-full h-48 bg-earth-input flex items-center justify-center", children: jsxRuntimeExports.jsx("svg", { className: "w-16 h-16 text-text-muted", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" }) }) }), jsxRuntimeExports.jsxs("div", { className: "p-6", children: [jsxRuntimeExports.jsxs("div", { className: "mb-4", children: [jsxRuntimeExports.jsx("h3", { className: "text-xl font-semibold text-text-heading mb-1", children: displayName }), jsxRuntimeExports.jsx("p", { className: "text-sm text-text-muted capitalize", children: displayCategory }), jsxRuntimeExports.jsxs("p", { className: "text-xs text-text-muted mt-1", children: ["Saved ", new Date(item.savedAt).toLocaleDateString()] })] }), jsxRuntimeExports.jsxs("div", { className: "mb-4 p-3 bg-earth-input rounded-xl border border-earth-border", children: [jsxRuntimeExports.jsx("h4", { className: "text-sm font-semibold text-text-heading mb-2", children: "Dimensions:" }), jsxRuntimeExports.jsxs("div", { className: "text-sm text-text-primary space-y-1", children: [jsxRuntimeExports.jsxs("div", { children: ["Length: ", jsxRuntimeExports.jsxs("strong", { children: [item.dimensions.length.toFixed(2), "m"] })] }), jsxRuntimeExports.jsxs("div", { children: ["Width: ", jsxRuntimeExports.jsxs("strong", { children: [item.dimensions.width.toFixed(2), "m"] })] }), jsxRuntimeExports.jsxs("div", { children: ["Height: ", jsxRuntimeExports.jsxs("strong", { children: [item.dimensions.height.toFixed(2), "m"] })] })] })] }), jsxRuntimeExports.jsxs("div", { className: "mb-4", children: [jsxRuntimeExports.jsx("h4", { className: "text-sm font-semibold text-text-heading mb-2", children: "Colors:" }), jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap gap-2", children: [jsxRuntimeExports.jsx("span", { className: "px-3 py-1 bg-earth-input border border-earth-border rounded-lg text-sm text-text-primary", children: item.colorScheme.primary }), item.colorScheme.secondary && (jsxRuntimeExports.jsx("span", { className: "px-3 py-1 bg-earth-input border border-earth-border rounded-lg text-sm text-text-primary", children: item.colorScheme.secondary })), item.colorScheme.accent && (jsxRuntimeExports.jsx("span", { className: "px-3 py-1 bg-earth-input border border-earth-border rounded-lg text-sm text-text-primary", children: item.colorScheme.accent }))] })] }), (displayMaterials.primary || displayMaterials.legs || displayMaterials.upholstery) && (jsxRuntimeExports.jsxs("div", { className: "mb-4", children: [jsxRuntimeExports.jsx("h4", { className: "text-sm font-semibold text-text-heading mb-1", children: "Materials:" }), jsxRuntimeExports.jsxs("p", { className: "text-sm text-text-primary", children: [displayMaterials.primary, displayMaterials.legs && ` | Legs: ${displayMaterials.legs}`, displayMaterials.upholstery && ` | Upholstery: ${displayMaterials.upholstery}`] })] })), item.ornamentDetails && item.ornamentDetails.length > 0 && (jsxRuntimeExports.jsxs("div", { className: "mb-4", children: [jsxRuntimeExports.jsx("h4", { className: "text-sm font-semibold text-text-heading mb-2", children: "Details:" }), jsxRuntimeExports.jsx("div", { className: "flex flex-wrap gap-2", children: item.ornamentDetails.map((detail, index) => (jsxRuntimeExports.jsx("span", { className: "text-xs bg-earth-sage/20 text-text-primary px-2 py-1 rounded", children: detail }, index))) })] })), item.aiNotes && (jsxRuntimeExports.jsx("div", { className: "mb-4 pt-4 border-t border-earth-border", children: jsxRuntimeExports.jsx("p", { className: "text-xs text-text-muted line-clamp-2", children: item.aiNotes }) })), jsxRuntimeExports.jsx("div", { className: "flex gap-2 pt-4 border-t border-earth-border", children: jsxRuntimeExports.jsx("button", { onClick: () => handleRemove(item.id), disabled: removingId === item.id, className: "flex-1 px-4 py-2 bg-red-500/10 border border-red-500/30 text-red-400 rounded-xl font-medium hover:bg-red-500/20 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed text-sm", children: removingId === item.id ? 'Removing...' : 'Remove' }) })] })] }, item.id));
+      return (jsxRuntimeExports.jsxs("div", { className: "space-y-5", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h2", { className: "text-2xl font-bold text-gray-950", children: "My Customized Furniture" }), jsxRuntimeExports.jsxs("p", { className: "mt-1 text-sm text-gray-500", children: [items.length, " saved custom design", items.length === 1 ? '' : 's'] })] }), jsxRuntimeExports.jsx("div", { className: ['grid grid-cols-1 gap-5', items.length === 1 ? 'mx-auto max-w-md' : 'sm:grid-cols-2 xl:grid-cols-3'].join(' '), children: items.map((item) => {
+                      const imageUrl = item.imageUrl?.trim();
+                      const canShowImage = Boolean(imageUrl && !imageErrors.has(item.id));
+                      const productName = item.productName || item.name;
+                      const category = item.category || item.baseItemType;
+                      const selectedColor = formatChoiceName(item.selectedColor) || item.colorScheme.primary;
+                      const selectedMaterial = formatChoiceName(item.selectedMaterial) || item.materials.primary;
+                      const addOns = uniqueByName(item.selectedAddOns ??
+                          item.ornamentDetails?.map((name) => ({ name })) ??
+                          []);
+                      const shopifyOptions = (item.selectedShopifyOptions ?? []).filter((option) => option.name.trim() && option.value.trim());
+                      const dimensionRows = [
+                          ['Length', formatDimension$1(item.dimensions.length)],
+                          ['Width', formatDimension$1(item.dimensions.width)],
+                          ['Height', formatDimension$1(item.dimensions.height)],
+                      ].filter((row) => Boolean(row[1]));
+                      const basePrice = formatCurrency$3(item.basePrice ?? item.price);
+                      const customizationPrice = formatCurrency$3(item.customizationPrice, '+');
+                      const estimatedTotal = formatCurrency$3(item.estimatedTotal);
+                      return (jsxRuntimeExports.jsxs("article", { className: "overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-[0_18px_45px_rgba(15,23,42,0.08)] transition-shadow hover:shadow-[0_22px_55px_rgba(15,23,42,0.12)]", children: [jsxRuntimeExports.jsxs("div", { className: "relative p-3 pb-0", children: [jsxRuntimeExports.jsx("div", { className: "aspect-[4/3] overflow-hidden rounded-xl border border-gray-100 bg-gray-50", children: canShowImage ? (jsxRuntimeExports.jsx("img", { src: imageUrl, alt: productName, className: "h-full w-full object-cover", onError: () => setImageErrors((prev) => {
+                                                  const next = new Set(prev);
+                                                  next.add(item.id);
+                                                  return next;
+                                              }) })) : (jsxRuntimeExports.jsx("div", { className: "flex h-full w-full items-center justify-center bg-gradient-to-br from-gray-50 to-stone-100 text-gray-300", children: jsxRuntimeExports.jsx("svg", { className: "h-12 w-12", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 1.5, d: "M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" }) }) })) }), jsxRuntimeExports.jsx("span", { className: "absolute right-5 top-5 rounded-full bg-white/95 px-3 py-1 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-gray-200", children: "Custom" })] }), jsxRuntimeExports.jsxs("div", { className: "space-y-4 p-5", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h3", { className: "text-lg font-semibold leading-tight text-gray-950", children: productName }), jsxRuntimeExports.jsxs("div", { className: "mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-gray-500", children: [category && jsxRuntimeExports.jsx("span", { className: "capitalize", children: category }), category && jsxRuntimeExports.jsx("span", { "aria-hidden": "true", children: "/" }), jsxRuntimeExports.jsxs("span", { children: ["Saved ", new Date(item.savedAt).toLocaleDateString()] })] })] }), dimensionRows.length > 0 && (jsxRuntimeExports.jsxs("div", { className: "rounded-xl border border-gray-200 bg-gray-50 p-3", children: [jsxRuntimeExports.jsx("p", { className: "mb-2 text-xs font-semibold uppercase text-gray-500", children: "Dimensions" }), jsxRuntimeExports.jsx("div", { className: "grid grid-cols-3 gap-2", children: dimensionRows.map(([label, value]) => (jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("p", { className: "text-[11px] text-gray-500", children: label }), jsxRuntimeExports.jsx("p", { className: "text-sm font-semibold text-gray-950", children: value })] }, label))) })] })), (selectedColor || selectedMaterial || addOns.length > 0) && (jsxRuntimeExports.jsxs("div", { className: "space-y-3", children: [selectedColor && (jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("p", { className: "mb-2 text-xs font-semibold uppercase text-gray-500", children: "Color" }), jsxRuntimeExports.jsx("span", { className: "inline-flex rounded-full border border-emerald-100 bg-emerald-50 px-3 py-1 text-sm font-medium text-emerald-900", children: selectedColor })] })), selectedMaterial && (jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("p", { className: "mb-2 text-xs font-semibold uppercase text-gray-500", children: "Material" }), jsxRuntimeExports.jsx("span", { className: "inline-flex rounded-full border border-stone-200 bg-stone-50 px-3 py-1 text-sm font-medium text-stone-900", children: selectedMaterial })] })), addOns.length > 0 && (jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("p", { className: "mb-2 text-xs font-semibold uppercase text-gray-500", children: "Add-ons" }), jsxRuntimeExports.jsx("div", { className: "flex flex-wrap gap-2", children: addOns.map((addOn) => (jsxRuntimeExports.jsx("span", { className: "rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-900", children: addOn.name }, addOn.name))) })] }))] })), shopifyOptions.length > 0 && (jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("p", { className: "mb-2 text-xs font-semibold uppercase text-gray-500", children: "Options" }), jsxRuntimeExports.jsx("div", { className: "space-y-2 rounded-xl border border-gray-200 p-3", children: shopifyOptions.map((option) => (jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between gap-3 text-sm", children: [jsxRuntimeExports.jsx("span", { className: "text-gray-500", children: option.name }), jsxRuntimeExports.jsx("span", { className: "text-right font-semibold text-gray-950", children: option.value })] }, `${option.name}-${option.value}`))) })] })), (basePrice || customizationPrice || estimatedTotal || item.pricingMode === 'quote_required') && (jsxRuntimeExports.jsxs("div", { className: "space-y-2 rounded-xl border border-gray-200 bg-gray-50 p-3 text-sm", children: [basePrice && (jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between gap-3", children: [jsxRuntimeExports.jsx("span", { className: "text-gray-500", children: "Base price" }), jsxRuntimeExports.jsx("span", { className: "font-semibold text-gray-950", children: basePrice })] })), customizationPrice && (jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between gap-3", children: [jsxRuntimeExports.jsx("span", { className: "text-gray-500", children: "Customizations" }), jsxRuntimeExports.jsx("span", { className: "font-semibold text-gray-950", children: customizationPrice })] })), jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between gap-3 border-t border-gray-200 pt-2", children: [jsxRuntimeExports.jsx("span", { className: "font-semibold text-gray-700", children: "Estimated total" }), jsxRuntimeExports.jsx("span", { className: "font-bold text-gray-950", children: item.pricingMode === 'quote_required' ? 'Quote required' : estimatedTotal ?? 'Quote required' })] })] })), item.customerRequestText?.trim() && (jsxRuntimeExports.jsxs("div", { className: "rounded-xl border border-amber-200 bg-amber-50 p-3", children: [jsxRuntimeExports.jsx("p", { className: "mb-1 text-xs font-semibold uppercase text-amber-800", children: "Request" }), jsxRuntimeExports.jsx("p", { className: "line-clamp-3 text-sm text-amber-950", children: item.customerRequestText })] })), jsxRuntimeExports.jsxs("div", { className: "space-y-2 border-t border-gray-100 pt-4", children: [onRequestQuote && (jsxRuntimeExports.jsx("button", { type: "button", onClick: () => onRequestQuote(item), className: "w-full rounded-xl bg-gray-950 px-4 py-3 text-sm font-semibold text-white transition hover:bg-gray-800", children: "Request Quote" })), jsxRuntimeExports.jsxs("div", { className: "flex gap-2", children: [item.productUrl && (jsxRuntimeExports.jsx("a", { href: item.productUrl, target: "_blank", rel: "noreferrer", className: "flex-1 rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-center text-sm font-semibold text-gray-700 transition hover:bg-gray-50", children: "View in Catalog" })), jsxRuntimeExports.jsx("button", { type: "button", onClick: () => handleRemove(item.id), disabled: removingId === item.id, className: "flex-1 rounded-xl border border-red-200 bg-white px-4 py-2.5 text-sm font-semibold text-red-600 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50", children: removingId === item.id ? 'Removing...' : 'Remove' })] })] })] })] }, item.id));
                   }) })] }));
   }
 
@@ -2869,12 +3389,31 @@
       return colors;
   }
 
-  function FinalizeQuoteModal({ isOpen, onClose, onProceed, item, recommendation, }) {
+  const formatCurrency$2 = (value) => typeof value === 'number' && Number.isFinite(value) ? `$${value.toLocaleString()}` : undefined;
+  const formatDimension = (value) => typeof value === 'number' && Number.isFinite(value) ? `${value.toFixed(3).replace(/\.?0+$/, '')}m` : undefined;
+  const formatFitScore$1 = (value) => {
+      if (typeof value !== 'number' || !Number.isFinite(value))
+          return undefined;
+      return `${Math.round(value <= 1 ? value * 100 : value)}%`;
+  };
+  const getEstimatedTotalLabel = (displayItem) => {
+      if (displayItem.pricingMode === 'quote_required')
+          return 'Quote required';
+      return (formatCurrency$2(displayItem.estimatedTotal) ||
+          formatCurrency$2(displayItem.basePrice) ||
+          formatCurrency$2(displayItem.price) ||
+          'Quote required');
+  };
+  const uniqueValues = (values) => Array.from(new Set(values.map((value) => value?.trim()).filter((value) => Boolean(value))));
+  function FinalizeQuoteModal({ isOpen, onClose, onProceed, item, recommendation, roomDimensions, roomAnalysis, }) {
       const websiteColors = useWebsiteColors();
+      const [inlineError, setInlineError] = require$$0$1.useState(null);
       if (!isOpen)
           return null;
       const displayItem = item || (recommendation ? {
           name: recommendation.item.name,
+          category: recommendation.item.category,
+          imageUrl: recommendation.item.images?.find((image) => image?.trim()),
           dimensions: recommendation.item.dimensions,
           materials: recommendation.item.materials,
           colorScheme: {
@@ -2883,28 +3422,124 @@
               accent: undefined,
           },
           aiNotes: recommendation.reasoning,
+          placement: recommendation.placement,
+          price: recommendation.item.priceRange?.min ?? recommendation.item.price,
+          estimatedTotal: recommendation.item.priceRange?.min ?? recommendation.item.price,
+          pricingMode: (recommendation.item.priceRange?.min ?? recommendation.item.price) ? 'estimated' : 'quote_required',
+          matchScore: recommendation.matchScore,
       } : null);
-      if (!displayItem)
-          return null;
-      return (jsxRuntimeExports.jsx("div", { className: "fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4", children: jsxRuntimeExports.jsxs("div", { className: "bg-[#2A2D28] rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto border border-white/10", children: [jsxRuntimeExports.jsxs("div", { className: "sticky top-0 bg-[#2A2D28] border-b border-white/10 px-6 py-4 flex items-center justify-between", children: [jsxRuntimeExports.jsx("h2", { className: "text-2xl font-bold text-white", children: "Finalize & Request Quote" }), jsxRuntimeExports.jsx("button", { onClick: onClose, className: "text-white/60 hover:text-white transition-colors", children: jsxRuntimeExports.jsx("svg", { className: "w-6 h-6", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M6 18L18 6M6 6l12 12" }) }) })] }), jsxRuntimeExports.jsxs("div", { className: "p-6 space-y-6", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h3", { className: "text-xl font-semibold text-white mb-2", children: displayItem.name }), jsxRuntimeExports.jsx("p", { className: "text-white/60 text-sm", children: "Review your customization details" })] }), jsxRuntimeExports.jsxs("div", { className: "bg-white/5 rounded-lg p-4 border border-white/10", children: [jsxRuntimeExports.jsx("h4", { className: "text-sm font-semibold text-white/80 mb-3", children: "Dimensions" }), jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-3 gap-4 text-sm", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("span", { className: "text-white/60", children: "Length:" }), jsxRuntimeExports.jsxs("p", { className: "text-white font-medium", children: [displayItem.dimensions.length, "m"] })] }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("span", { className: "text-white/60", children: "Width:" }), jsxRuntimeExports.jsxs("p", { className: "text-white font-medium", children: [displayItem.dimensions.width, "m"] })] }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("span", { className: "text-white/60", children: "Height:" }), jsxRuntimeExports.jsxs("p", { className: "text-white font-medium", children: [displayItem.dimensions.height, "m"] })] })] })] }), displayItem.materials && Object.keys(displayItem.materials).length > 0 && (jsxRuntimeExports.jsxs("div", { className: "bg-white/5 rounded-lg p-4 border border-white/10", children: [jsxRuntimeExports.jsx("h4", { className: "text-sm font-semibold text-white/80 mb-3", children: "Materials" }), jsxRuntimeExports.jsx("div", { className: "space-y-2 text-sm", children: Object.entries(displayItem.materials).map(([key, value]) => value ? (jsxRuntimeExports.jsxs("div", { className: "flex justify-between", children: [jsxRuntimeExports.jsxs("span", { className: "text-white/60 capitalize", children: [key, ":"] }), jsxRuntimeExports.jsx("span", { className: "text-white font-medium", children: value })] }, key)) : null) })] })), displayItem.colorScheme && (jsxRuntimeExports.jsxs("div", { className: "bg-white/5 rounded-lg p-4 border border-white/10", children: [jsxRuntimeExports.jsx("h4", { className: "text-sm font-semibold text-white/80 mb-3", children: "Color Scheme" }), jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap gap-3", children: [displayItem.colorScheme.primary && (jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [jsxRuntimeExports.jsx("span", { className: "text-white/60 text-sm", children: "Primary:" }), jsxRuntimeExports.jsx("span", { className: "text-white font-medium text-sm", children: displayItem.colorScheme.primary })] })), displayItem.colorScheme.secondary && (jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [jsxRuntimeExports.jsx("span", { className: "text-white/60 text-sm", children: "Secondary:" }), jsxRuntimeExports.jsx("span", { className: "text-white font-medium text-sm", children: displayItem.colorScheme.secondary })] })), displayItem.colorScheme?.accent && (jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [jsxRuntimeExports.jsx("span", { className: "text-white/60 text-sm", children: "Accent:" }), jsxRuntimeExports.jsx("span", { className: "text-white font-medium text-sm", children: displayItem.colorScheme.accent })] }))] })] })), displayItem.aiNotes && (jsxRuntimeExports.jsxs("div", { className: "bg-white/5 rounded-lg p-4 border border-white/10", children: [jsxRuntimeExports.jsx("h4", { className: "text-sm font-semibold text-white/80 mb-2", children: "AI Notes" }), jsxRuntimeExports.jsx("p", { className: "text-white/90 text-sm", children: displayItem.aiNotes })] })), recommendation?.placement && (jsxRuntimeExports.jsxs("div", { className: "bg-white/5 rounded-lg p-4 border border-white/10", children: [jsxRuntimeExports.jsx("h4", { className: "text-sm font-semibold text-white/80 mb-3", children: "Placement Information" }), recommendation.placement.coordinates && (jsxRuntimeExports.jsxs("div", { className: "mb-2 text-sm", children: [jsxRuntimeExports.jsx("span", { className: "text-white/60", children: "Position: " }), jsxRuntimeExports.jsxs("span", { className: "text-white", children: ["(", recommendation.placement.coordinates.x.toFixed(2), "m, ", recommendation.placement.coordinates.y.toFixed(2), "m)"] }), jsxRuntimeExports.jsx("span", { className: "text-white/60 ml-2", children: "from southwest corner" })] })), recommendation.placement.distanceFromWalls && (jsxRuntimeExports.jsxs("div", { className: "mb-2", children: [jsxRuntimeExports.jsx("div", { className: "text-sm text-white/60 mb-1", children: "Distance from walls:" }), jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-2 gap-2 text-sm", children: [recommendation.placement.distanceFromWalls.north !== undefined && (jsxRuntimeExports.jsxs("div", { className: "text-white", children: ["North: ", jsxRuntimeExports.jsxs("span", { className: "font-medium", children: [recommendation.placement.distanceFromWalls.north.toFixed(2), "m"] })] })), recommendation.placement.distanceFromWalls.south !== undefined && (jsxRuntimeExports.jsxs("div", { className: "text-white", children: ["South: ", jsxRuntimeExports.jsxs("span", { className: "font-medium", children: [recommendation.placement.distanceFromWalls.south.toFixed(2), "m"] })] })), recommendation.placement.distanceFromWalls.east !== undefined && (jsxRuntimeExports.jsxs("div", { className: "text-white", children: ["East: ", jsxRuntimeExports.jsxs("span", { className: "font-medium", children: [recommendation.placement.distanceFromWalls.east.toFixed(2), "m"] })] })), recommendation.placement.distanceFromWalls.west !== undefined && (jsxRuntimeExports.jsxs("div", { className: "text-white", children: ["West: ", jsxRuntimeExports.jsxs("span", { className: "font-medium", children: [recommendation.placement.distanceFromWalls.west.toFixed(2), "m"] })] }))] })] })), recommendation.placement.rotation !== undefined && recommendation.placement.rotation !== 0 && (jsxRuntimeExports.jsxs("div", { className: "mb-2 text-sm", children: [jsxRuntimeExports.jsx("span", { className: "text-white/60", children: "Rotation: " }), jsxRuntimeExports.jsxs("span", { className: "text-white font-medium", children: [recommendation.placement.rotation, "\u00B0"] })] })), recommendation.placement.reasoning && (jsxRuntimeExports.jsx("div", { className: "mt-3 pt-3 border-t border-white/10", children: jsxRuntimeExports.jsx("p", { className: "text-sm text-white/90", children: recommendation.placement.reasoning }) }))] }))] }), jsxRuntimeExports.jsxs("div", { className: "sticky bottom-0 bg-[#2A2D28] border-t border-white/10 px-6 py-4 flex gap-3", children: [jsxRuntimeExports.jsx("button", { onClick: onClose, className: "flex-1 px-6 py-3 bg-white/10 text-white rounded-lg font-medium hover:bg-white/20 transition-colors", children: "Back" }), jsxRuntimeExports.jsx("button", { onClick: onProceed, className: "flex-1 px-6 py-3 rounded-lg font-medium text-white transition-colors shadow-lg", style: {
-                                  backgroundColor: websiteColors.primary,
-                              }, children: "Proceed" })] })] }) }));
+      const fitScore = formatFitScore$1(recommendation?.matchScore);
+      const estimatedTotal = displayItem ? getEstimatedTotalLabel(displayItem) : 'Quote required';
+      const materialChips = displayItem
+          ? uniqueValues([
+              displayItem.materials?.primary,
+              displayItem.materials?.secondary,
+              displayItem.materials?.upholstery,
+              displayItem.materials?.legs,
+          ])
+          : [];
+      const roomColorChips = uniqueValues([
+          displayItem?.colorScheme?.primary ? `Primary: ${displayItem.colorScheme.primary}` : undefined,
+          displayItem?.colorScheme?.secondary ? `Secondary: ${displayItem.colorScheme.secondary}` : undefined,
+          displayItem?.colorScheme?.accent ? `Accent: ${displayItem.colorScheme.accent}` : undefined,
+          ...(roomAnalysis?.dominantColors?.slice(0, 3).map((color) => `Room: ${color}`) ?? []),
+      ]);
+      const placementText = recommendation?.placement?.reasoning || recommendation?.placement?.position;
+      const hasProduct = Boolean(displayItem);
+      const handleProceed = () => {
+          if (!hasProduct) {
+              setInlineError('Select a product before requesting a quote.');
+              return;
+          }
+          setInlineError(null);
+          onProceed();
+      };
+      return (jsxRuntimeExports.jsx("div", { className: "fixed inset-0 z-50 flex items-center justify-center bg-gray-950/45 p-4 backdrop-blur-sm", children: jsxRuntimeExports.jsxs("div", { className: "flex max-h-[90vh] w-full max-w-2xl flex-col overflow-hidden rounded-3xl border border-stone-200 bg-[#fffaf4] shadow-[0_28px_80px_rgba(15,23,42,0.22)]", children: [jsxRuntimeExports.jsx("div", { className: "sticky top-0 z-10 border-b border-stone-200 bg-[#fffaf4]/95 px-6 py-5 backdrop-blur", children: jsxRuntimeExports.jsxs("div", { className: "flex items-start justify-between gap-4", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h2", { className: "text-2xl font-bold text-gray-950", children: "Request quote" }), jsxRuntimeExports.jsx("p", { className: "mt-1 text-sm leading-6 text-gray-600", children: "Review this room recommendation before sending it to the store." })] }), jsxRuntimeExports.jsx("button", { type: "button", onClick: onClose, className: "flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-stone-200 bg-white text-gray-500 transition hover:bg-stone-50 hover:text-gray-900", "aria-label": "Close quote review", children: jsxRuntimeExports.jsx("svg", { className: "h-5 w-5", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M6 18L18 6M6 6l12 12" }) }) })] }) }), jsxRuntimeExports.jsxs("div", { className: "min-h-0 flex-1 overflow-y-auto px-6 py-6", children: [!displayItem ? (jsxRuntimeExports.jsx("div", { className: "rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-700", children: "Select a product before requesting a quote." })) : (jsxRuntimeExports.jsxs("div", { className: "space-y-5", children: [jsxRuntimeExports.jsx("div", { className: "rounded-2xl border border-stone-200 bg-white p-4 shadow-sm", children: jsxRuntimeExports.jsxs("div", { className: "flex gap-4", children: [jsxRuntimeExports.jsx("div", { className: "h-24 w-24 shrink-0 overflow-hidden rounded-2xl bg-stone-100", children: displayItem.imageUrl ? (jsxRuntimeExports.jsx("img", { src: displayItem.imageUrl, alt: displayItem.name, className: "h-full w-full object-cover" })) : (jsxRuntimeExports.jsx("div", { className: "flex h-full w-full items-center justify-center text-stone-400", children: jsxRuntimeExports.jsx("svg", { className: "h-8 w-8", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 1.8, d: "M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M4 6h16v12H4z" }) }) })) }), jsxRuntimeExports.jsxs("div", { className: "min-w-0 flex-1", children: [jsxRuntimeExports.jsx("p", { className: "text-xs font-semibold uppercase text-gray-500", children: displayItem.category || roomDimensions?.roomType || 'Room recommendation' }), jsxRuntimeExports.jsx("h3", { className: "mt-1 text-xl font-bold leading-tight text-gray-950", children: displayItem.name }), jsxRuntimeExports.jsxs("div", { className: "mt-3 flex flex-wrap gap-2", children: [fitScore && (jsxRuntimeExports.jsxs("span", { className: "rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-sm font-semibold text-emerald-700", children: ["Room fit score: ", fitScore] })), jsxRuntimeExports.jsxs("span", { className: "rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-semibold text-blue-900", children: ["Estimated total: ", estimatedTotal] })] })] })] }) }), jsxRuntimeExports.jsxs("section", { className: "rounded-2xl border border-stone-200 bg-white p-5 shadow-sm", children: [jsxRuntimeExports.jsx("h4", { className: "text-sm font-bold text-gray-950", children: "Room fit summary" }), jsxRuntimeExports.jsxs("div", { className: "mt-4 space-y-4 text-sm", children: [recommendation?.reasoning && (jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("p", { className: "font-semibold text-gray-900", children: "Why it fits" }), jsxRuntimeExports.jsx("p", { className: "mt-1 leading-6 text-gray-700", children: recommendation.reasoning })] })), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("p", { className: "font-semibold text-gray-900", children: "Dimensions" }), jsxRuntimeExports.jsx("div", { className: "mt-2 grid grid-cols-3 gap-2", children: [
+                                                                  ['Length', formatDimension(displayItem.dimensions.length)],
+                                                                  ['Width', formatDimension(displayItem.dimensions.width)],
+                                                                  ['Height', formatDimension(displayItem.dimensions.height)],
+                                                              ].map(([label, value]) => (jsxRuntimeExports.jsxs("div", { className: "rounded-xl bg-stone-50 px-3 py-2", children: [jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500", children: label }), jsxRuntimeExports.jsx("p", { className: "mt-0.5 font-semibold text-gray-950", children: value || 'N/A' })] }, label))) })] }), placementText && (jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("p", { className: "font-semibold text-gray-900", children: "Placement" }), jsxRuntimeExports.jsx("p", { className: "mt-1 leading-6 text-gray-700", children: placementText })] }))] })] }), (materialChips.length > 0 || roomColorChips.length > 0) && (jsxRuntimeExports.jsxs("section", { className: "rounded-2xl border border-stone-200 bg-white p-5 shadow-sm", children: [jsxRuntimeExports.jsx("h4", { className: "text-sm font-bold text-gray-950", children: "Materials and colors" }), materialChips.length > 0 && (jsxRuntimeExports.jsxs("div", { className: "mt-4", children: [jsxRuntimeExports.jsx("p", { className: "text-xs font-semibold uppercase text-gray-500", children: "Materials" }), jsxRuntimeExports.jsx("div", { className: "mt-2 flex flex-wrap gap-2", children: materialChips.map((material) => (jsxRuntimeExports.jsx("span", { className: "rounded-full border border-stone-200 bg-stone-50 px-3 py-1 text-sm font-medium text-gray-800", children: material }, material))) })] })), roomColorChips.length > 0 && (jsxRuntimeExports.jsxs("div", { className: "mt-4", children: [jsxRuntimeExports.jsx("p", { className: "text-xs font-semibold uppercase text-gray-500", children: "Color scheme" }), jsxRuntimeExports.jsx("div", { className: "mt-2 flex flex-wrap gap-2", children: roomColorChips.map((color) => (jsxRuntimeExports.jsx("span", { className: "rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-950", children: color }, color))) })] }))] })), displayItem.aiNotes && (jsxRuntimeExports.jsxs("section", { className: "rounded-2xl border border-indigo-100 bg-indigo-50/70 p-5", children: [jsxRuntimeExports.jsx("p", { className: "text-sm font-bold text-indigo-950", children: "AI recommendation note" }), jsxRuntimeExports.jsx("p", { className: "mt-2 text-sm leading-6 text-gray-800", children: displayItem.aiNotes })] }))] })), inlineError && (jsxRuntimeExports.jsx("div", { className: "mt-5 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-700", children: inlineError }))] }), jsxRuntimeExports.jsxs("div", { className: "sticky bottom-0 flex flex-col-reverse gap-3 border-t border-stone-200 bg-[#fffaf4]/95 px-6 py-4 backdrop-blur sm:flex-row sm:justify-end", children: [jsxRuntimeExports.jsx("button", { type: "button", onClick: onClose, className: "rounded-xl border border-stone-200 bg-white px-6 py-3 text-sm font-semibold text-gray-700 transition hover:bg-stone-50", children: "Back" }), jsxRuntimeExports.jsx("button", { type: "button", onClick: handleProceed, className: "inline-flex items-center justify-center rounded-xl px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-900/20 transition hover:brightness-105", style: {
+                                  backgroundImage: `linear-gradient(135deg, ${websiteColors.primary}, #7c3aed)`,
+                              }, children: "Continue to quote form" })] })] }) }));
   }
 
-  function QuoteRequestForm({ isOpen, onClose, onSubmit, item, recommendation, }) {
+  const getCustomizationChoiceName = (value) => typeof value === 'string' ? value : value?.name;
+  const formatCurrency$1 = (value) => typeof value === 'number' && Number.isFinite(value) ? `$${value.toLocaleString()}` : undefined;
+  const formatChoice = (value) => {
+      const name = getCustomizationChoiceName(value);
+      if (!name)
+          return undefined;
+      const price = typeof value === 'object' ? value.price : undefined;
+      return price ? `${name} (+${formatCurrency$1(price)})` : name;
+  };
+  const formatDimensions$1 = (dimensions) => {
+      if (!dimensions)
+          return undefined;
+      const unit = dimensions.unit || 'm';
+      const rows = [
+          dimensions.length !== undefined ? `Length: ${dimensions.length} ${unit}` : undefined,
+          dimensions.width !== undefined ? `Width: ${dimensions.width} ${unit}` : undefined,
+          dimensions.height !== undefined ? `Height: ${dimensions.height} ${unit}` : undefined,
+      ].filter(Boolean);
+      return rows.length > 0 ? rows.join(' / ') : undefined;
+  };
+  const formatFitScore = (value) => {
+      if (typeof value !== 'number' || !Number.isFinite(value))
+          return undefined;
+      return `${Math.round(value <= 1 ? value * 100 : value)}%`;
+  };
+  const getFitScoreNumber = (value) => {
+      if (typeof value !== 'number' || !Number.isFinite(value))
+          return undefined;
+      return Math.round(value <= 1 ? value * 100 : value);
+  };
+  const getRoomTypeLabel = (value) => {
+      if (!value)
+          return undefined;
+      return value.replace(/_/g, ' ').replace(/\b\w/g, (letter) => letter.toUpperCase());
+  };
+  const emptyForm = {
+      name: '',
+      email: '',
+      phone: '',
+      notes: '',
+  };
+  function QuoteRequestForm({ isOpen, onClose, onSubmit, item, recommendation, storeId, widgetId, roomDimensions, roomAnalysis, }) {
       const websiteColors = useWebsiteColors();
-      const [formData, setFormData] = require$$0$1.useState({
-          name: '',
-          email: '',
-          phone: '',
-          notes: '',
-      });
+      const [formData, setFormData] = require$$0$1.useState(emptyForm);
       const [isSubmitting, setIsSubmitting] = require$$0$1.useState(false);
       const [error, setError] = require$$0$1.useState(null);
+      const [success, setSuccess] = require$$0$1.useState(null);
+      require$$0$1.useEffect(() => {
+          if (!isOpen) {
+              setFormData(emptyForm);
+              setError(null);
+              setSuccess(null);
+              setIsSubmitting(false);
+          }
+      }, [isOpen]);
+      require$$0$1.useEffect(() => {
+          if (!isOpen || !item?.customerRequestText?.trim())
+              return;
+          setFormData((prev) => (prev.notes.trim() ? prev : { ...prev, notes: item.customerRequestText?.trim() ?? '' }));
+      }, [isOpen, item?.customerRequestText, item?.id]);
       if (!isOpen)
           return null;
       const displayItem = item || (recommendation ? {
+          productId: recommendation.item.id,
           name: recommendation.item.name,
+          category: recommendation.item.category,
+          imageUrl: recommendation.item.images?.find((image) => image?.trim()),
+          source: recommendation.item.source,
+          productUrl: recommendation.item.productUrl || recommendation.item.url,
+          price: recommendation.item.priceRange?.min ?? recommendation.item.price,
+          basePrice: recommendation.item.priceRange?.min ?? recommendation.item.price,
+          estimatedTotal: recommendation.item.priceRange?.min ?? recommendation.item.price,
+          pricingMode: (recommendation.item.priceRange?.min ?? recommendation.item.price) ? 'estimated' : 'quote_required',
+          externalId: recommendation.item.externalId,
+          shopifyProductId: recommendation.item.shopifyProductId,
+          storeId: recommendation.item.storeId || storeId,
+          widgetId,
           dimensions: recommendation.item.dimensions,
           materials: recommendation.item.materials,
           colorScheme: {
@@ -2913,36 +3548,119 @@
           },
           aiNotes: recommendation.reasoning,
           placement: recommendation.placement,
+          fitScore: getFitScoreNumber(recommendation.matchScore),
+          roomAnalysis: {
+              roomType: roomDimensions?.roomType,
+              detectedStyle: roomAnalysis?.detectedStyle,
+              dominantColors: roomAnalysis?.dominantColors,
+              freeSpaceDescription: roomAnalysis?.freeSpace?.description,
+              whyItFits: recommendation.reasoning,
+          },
+          roomDetails: roomDimensions ?? undefined,
+          placementNote: recommendation.placement?.reasoning,
       } : null);
       if (!displayItem)
           return null;
+      const isRoomRecommendation = Boolean(recommendation && !item);
+      const productName = 'productName' in displayItem && displayItem.productName
+          ? displayItem.productName
+          : displayItem.name;
+      const selectedColor = 'selectedColor' in displayItem
+          ? formatChoice(displayItem.selectedColor)
+          : displayItem.colorScheme.primary;
+      const selectedMaterial = 'selectedMaterial' in displayItem
+          ? formatChoice(displayItem.selectedMaterial)
+          : displayItem.materials.primary;
+      const selectedDimensions = 'selectedDimensions' in displayItem && displayItem.selectedDimensions
+          ? formatDimensions$1(displayItem.selectedDimensions)
+          : formatDimensions$1(displayItem.dimensions);
+      const selectedAddOns = 'selectedAddOns' in displayItem
+          ? displayItem.selectedAddOns?.map((addOn) => addOn.price ? `${addOn.name} (+${formatCurrency$1(addOn.price)})` : addOn.name)
+          : undefined;
+      const selectedShopifyOptions = 'selectedShopifyOptions' in displayItem
+          ? displayItem.selectedShopifyOptions?.map((option) => option.price
+              ? `${option.name}: ${option.value} (+${formatCurrency$1(option.price)})`
+              : `${option.name}: ${option.value}`)
+          : undefined;
+      const estimatedTotal = 'pricingMode' in displayItem && displayItem.pricingMode === 'quote_required'
+          ? 'Quote required'
+          : 'estimatedTotal' in displayItem
+              ? formatCurrency$1(displayItem.estimatedTotal)
+              : formatCurrency$1(displayItem.price);
+      const customerRequestText = 'customerRequestText' in displayItem ? displayItem.customerRequestText : undefined;
+      const fitScore = isRoomRecommendation ? formatFitScore(recommendation?.matchScore) : undefined;
+      const roomTypeLabel = getRoomTypeLabel(roomDimensions?.roomType);
+      const whyItFits = isRoomRecommendation ? recommendation?.reasoning : undefined;
+      const placementNote = isRoomRecommendation ? recommendation?.placement?.reasoning : undefined;
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const isNameValid = formData.name.trim().length > 0;
+      const isEmailValid = emailRegex.test(formData.email.trim());
+      const canSubmit = isNameValid && isEmailValid && !isSubmitting;
+      const successWarning = success?.emailWarning ||
+          success?.warnings?.[0] ||
+          (success?.emailSkipped ? 'Quote saved. Email delivery may not be configured.' : undefined);
+      const handleClose = () => {
+          setFormData(emptyForm);
+          setError(null);
+          setSuccess(null);
+          setIsSubmitting(false);
+          onClose();
+      };
       const handleSubmit = async (e) => {
           e.preventDefault();
+          if (isSubmitting)
+              return;
           setError(null);
-          // Validation
-          if (!formData.name.trim()) {
-              setError('Name is required');
+          if (!isNameValid) {
+              setError('Name is required.');
               return;
           }
           if (!formData.email.trim()) {
-              setError('Email is required');
+              setError('Email is required.');
               return;
           }
-          // Simple email validation
-          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-          if (!emailRegex.test(formData.email)) {
-              setError('Please enter a valid email address');
+          if (!isEmailValid) {
+              setError('Please enter a valid email address.');
               return;
           }
           setIsSubmitting(true);
           try {
+              const customization = 'selectedColor' in displayItem || 'selectedMaterial' in displayItem
+                  ? {
+                      selectedColor: 'selectedColor' in displayItem ? displayItem.selectedColor : undefined,
+                      selectedMaterial: 'selectedMaterial' in displayItem ? displayItem.selectedMaterial : undefined,
+                      selectedShopifyOptions: 'selectedShopifyOptions' in displayItem ? displayItem.selectedShopifyOptions : undefined,
+                      selectedDimensions: 'selectedDimensions' in displayItem ? displayItem.selectedDimensions : undefined,
+                      dimensionPriceAdjustments: 'dimensionPriceAdjustments' in displayItem ? displayItem.dimensionPriceAdjustments : undefined,
+                      selectedAddOns: 'selectedAddOns' in displayItem ? displayItem.selectedAddOns : undefined,
+                      customizationPrice: 'customizationPrice' in displayItem ? displayItem.customizationPrice : undefined,
+                      estimatedTotal: 'estimatedTotal' in displayItem ? displayItem.estimatedTotal : undefined,
+                      pricingMode: 'pricingMode' in displayItem ? displayItem.pricingMode : undefined,
+                      customerRequestText: 'customerRequestText' in displayItem ? displayItem.customerRequestText : undefined,
+                  }
+                  : undefined;
               const quoteRequest = {
-                  name: formData.name.trim(),
-                  email: formData.email.trim(),
-                  phone: formData.phone.trim() || undefined,
-                  notes: formData.notes.trim() || undefined,
+                  storeId: displayItem.storeId || storeId,
+                  widgetId: ('widgetId' in displayItem ? displayItem.widgetId : undefined) || widgetId,
+                  source: isRoomRecommendation ? 'room_analysis_recommendation' : 'customized_furniture',
+                  customer: {
+                      name: formData.name.trim(),
+                      email: formData.email.trim(),
+                      phone: formData.phone.trim() || undefined,
+                      message: formData.notes.trim() || undefined,
+                  },
                   item: {
-                      name: displayItem.name,
+                      productId: 'productId' in displayItem ? displayItem.productId : undefined,
+                      productName,
+                      category: 'category' in displayItem ? displayItem.category : undefined,
+                      productUrl: displayItem.productUrl,
+                      imageUrl: 'imageUrl' in displayItem ? displayItem.imageUrl : undefined,
+                      basePrice: 'basePrice' in displayItem ? displayItem.basePrice : displayItem.price,
+                      customizationPrice: 'customizationPrice' in displayItem ? displayItem.customizationPrice : undefined,
+                      estimatedTotal: 'estimatedTotal' in displayItem ? displayItem.estimatedTotal : displayItem.price,
+                      pricingMode: 'pricingMode' in displayItem ? displayItem.pricingMode : undefined,
+                      savedAt: 'savedAt' in displayItem ? displayItem.savedAt : undefined,
+                      name: productName,
                       dimensions: {
                           length: displayItem.dimensions.length,
                           width: displayItem.dimensions.width,
@@ -2950,26 +3668,46 @@
                       },
                       materials: displayItem.materials,
                       colorScheme: displayItem.colorScheme,
+                      price: displayItem.price,
+                      externalId: displayItem.externalId,
+                      shopifyProductId: displayItem.shopifyProductId,
+                      storeId: displayItem.storeId,
+                      widgetId: 'widgetId' in displayItem ? displayItem.widgetId : undefined,
+                      source: displayItem.source,
                       aiNotes: displayItem.aiNotes,
+                      selectedColor: 'selectedColor' in displayItem
+                          ? displayItem.selectedColor
+                          : displayItem.colorScheme.primary,
+                      selectedColorPrice: 'selectedColorPrice' in displayItem ? displayItem.selectedColorPrice : undefined,
+                      selectedMaterial: 'selectedMaterial' in displayItem
+                          ? displayItem.selectedMaterial
+                          : displayItem.materials.primary,
+                      selectedMaterialPrice: 'selectedMaterialPrice' in displayItem ? displayItem.selectedMaterialPrice : undefined,
+                      selectedShopifyOptions: 'selectedShopifyOptions' in displayItem ? displayItem.selectedShopifyOptions : undefined,
+                      selectedDimensions: 'selectedDimensions' in displayItem ? displayItem.selectedDimensions : undefined,
+                      dimensionPriceAdjustments: 'dimensionPriceAdjustments' in displayItem ? displayItem.dimensionPriceAdjustments : undefined,
+                      selectedAddOns: 'selectedAddOns' in displayItem ? displayItem.selectedAddOns : undefined,
+                      customerRequestText: 'customerRequestText' in displayItem
+                          ? displayItem.customerRequestText
+                          : formData.notes.trim() || undefined,
                       placement: 'placement' in displayItem && displayItem.placement ? {
                           wall: displayItem.placement.wall,
                           position: displayItem.placement.position,
                           coordinates: displayItem.placement.coordinates,
                           reasoning: displayItem.placement.reasoning,
                       } : undefined,
+                      fitScore: 'fitScore' in displayItem ? displayItem.fitScore : undefined,
+                      placementNote: 'placementNote' in displayItem ? displayItem.placementNote : undefined,
+                      roomAnalysis: 'roomAnalysis' in displayItem ? displayItem.roomAnalysis : undefined,
+                      roomDetails: 'roomDetails' in displayItem ? displayItem.roomDetails : undefined,
                   },
+                  customization: isRoomRecommendation ? undefined : customization,
               };
-              await onSubmit(quoteRequest);
-              // Reset form
-              setFormData({
-                  name: '',
-                  email: '',
-                  phone: '',
-                  notes: '',
-              });
+              const result = await onSubmit(quoteRequest);
+              setSuccess(result || { success: true });
           }
           catch (err) {
-              setError(err instanceof Error ? err.message : 'Failed to submit quote request');
+              setError(err instanceof Error ? err.message : 'Failed to submit quote request.');
           }
           finally {
               setIsSubmitting(false);
@@ -2982,9 +3720,13 @@
               [name]: value,
           }));
       };
-      return (jsxRuntimeExports.jsx("div", { className: "fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4", children: jsxRuntimeExports.jsxs("div", { className: "bg-[#2A2D28] rounded-xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto border border-white/10", children: [jsxRuntimeExports.jsxs("div", { className: "sticky top-0 bg-[#2A2D28] border-b border-white/10 px-6 py-4 flex items-center justify-between", children: [jsxRuntimeExports.jsx("h2", { className: "text-2xl font-bold text-white", children: "Request Quote" }), jsxRuntimeExports.jsx("button", { onClick: onClose, className: "text-white/60 hover:text-white transition-colors", children: jsxRuntimeExports.jsx("svg", { className: "w-6 h-6", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M6 18L18 6M6 6l12 12" }) }) })] }), jsxRuntimeExports.jsxs("form", { onSubmit: handleSubmit, className: "p-6 space-y-6", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("p", { className: "text-white/60 text-sm mb-4", children: "Please provide your contact information and we'll send you a detailed quote for:" }), jsxRuntimeExports.jsx("p", { className: "text-white font-medium", children: displayItem.name })] }), error && (jsxRuntimeExports.jsx("div", { className: "bg-red-500/10 border border-red-500/30 text-red-400 p-3 rounded-lg text-sm", children: error })), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsxs("label", { htmlFor: "name", className: "block text-sm font-medium text-white mb-2", children: ["Name ", jsxRuntimeExports.jsx("span", { className: "text-red-400", children: "*" })] }), jsxRuntimeExports.jsx("input", { type: "text", id: "name", name: "name", value: formData.name, onChange: handleChange, required: true, className: "w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/40 focus:outline-none focus:border-white/30 transition-colors", placeholder: "Your name", disabled: isSubmitting })] }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsxs("label", { htmlFor: "email", className: "block text-sm font-medium text-white mb-2", children: ["Email ", jsxRuntimeExports.jsx("span", { className: "text-red-400", children: "*" })] }), jsxRuntimeExports.jsx("input", { type: "email", id: "email", name: "email", value: formData.email, onChange: handleChange, required: true, className: "w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/40 focus:outline-none focus:border-white/30 transition-colors", placeholder: "your.email@example.com", disabled: isSubmitting })] }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsxs("label", { htmlFor: "phone", className: "block text-sm font-medium text-white mb-2", children: ["Phone ", jsxRuntimeExports.jsx("span", { className: "text-white/40 text-xs", children: "(optional)" })] }), jsxRuntimeExports.jsx("input", { type: "tel", id: "phone", name: "phone", value: formData.phone, onChange: handleChange, className: "w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/40 focus:outline-none focus:border-white/30 transition-colors", placeholder: "+1 (555) 123-4567", disabled: isSubmitting })] }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsxs("label", { htmlFor: "notes", className: "block text-sm font-medium text-white mb-2", children: ["Additional Notes ", jsxRuntimeExports.jsx("span", { className: "text-white/40 text-xs", children: "(optional)" })] }), jsxRuntimeExports.jsx("textarea", { id: "notes", name: "notes", value: formData.notes, onChange: handleChange, rows: 4, className: "w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/40 focus:outline-none focus:border-white/30 transition-colors resize-none", placeholder: "Any special requests or questions...", disabled: isSubmitting })] }), jsxRuntimeExports.jsxs("div", { className: "flex gap-3 pt-4", children: [jsxRuntimeExports.jsx("button", { type: "button", onClick: onClose, disabled: isSubmitting, className: "flex-1 px-6 py-3 bg-white/10 text-white rounded-lg font-medium hover:bg-white/20 transition-colors disabled:opacity-50 disabled:cursor-not-allowed", children: "Cancel" }), jsxRuntimeExports.jsx("button", { type: "submit", disabled: isSubmitting, className: "flex-1 px-6 py-3 rounded-lg font-medium text-white transition-colors shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2", style: {
-                                          backgroundColor: websiteColors.primary,
-                                      }, children: isSubmitting ? (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsxs("svg", { className: "animate-spin h-5 w-5", xmlns: "http://www.w3.org/2000/svg", fill: "none", viewBox: "0 0 24 24", children: [jsxRuntimeExports.jsx("circle", { className: "opacity-25", cx: "12", cy: "12", r: "10", stroke: "currentColor", strokeWidth: "4" }), jsxRuntimeExports.jsx("path", { className: "opacity-75", fill: "currentColor", d: "M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" })] }), jsxRuntimeExports.jsx("span", { children: "Submitting..." })] })) : ('Submit Quote Request') })] })] })] }) }));
+      return (jsxRuntimeExports.jsx("div", { className: "fixed inset-0 z-50 flex items-center justify-center bg-gray-950/45 p-4 backdrop-blur-sm", children: jsxRuntimeExports.jsxs("div", { className: "flex max-h-[90vh] w-full max-w-2xl flex-col overflow-hidden rounded-3xl border border-stone-200 bg-[#fffaf4] shadow-[0_28px_80px_rgba(15,23,42,0.22)]", children: [jsxRuntimeExports.jsx("div", { className: "sticky top-0 z-10 border-b border-stone-200 bg-[#fffaf4]/95 px-6 py-5 backdrop-blur", children: jsxRuntimeExports.jsxs("div", { className: "flex items-start justify-between gap-4", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h2", { className: "text-2xl font-bold text-gray-950", children: "Request quote" }), jsxRuntimeExports.jsx("p", { className: "mt-1 text-sm text-gray-600", children: isRoomRecommendation
+                                              ? 'Send this room recommendation to the store.'
+                                              : 'Send this customized furniture request to the store.' })] }), jsxRuntimeExports.jsx("button", { type: "button", onClick: handleClose, className: "flex h-10 w-10 items-center justify-center rounded-full border border-stone-200 bg-white text-gray-500 transition hover:bg-stone-50 hover:text-gray-900", "aria-label": "Close quote request", children: jsxRuntimeExports.jsx("svg", { className: "h-5 w-5", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M6 18L18 6M6 6l12 12" }) }) })] }) }), success ? (jsxRuntimeExports.jsxs("div", { className: "overflow-y-auto px-6 py-6", children: [jsxRuntimeExports.jsxs("div", { className: "rounded-2xl border border-emerald-200 bg-emerald-50 p-5 text-emerald-900", children: [jsxRuntimeExports.jsx("div", { className: "mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-white text-emerald-600 shadow-sm", children: jsxRuntimeExports.jsx("svg", { className: "h-7 w-7", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M5 13l4 4L19 7" }) }) }), jsxRuntimeExports.jsx("h3", { className: "text-xl font-bold text-emerald-950", children: "Quote request sent" }), jsxRuntimeExports.jsx("p", { className: "mt-2 text-sm leading-6 text-emerald-800", children: "Quote request sent. The store will follow up with pricing and next steps." })] }), jsxRuntimeExports.jsxs("div", { className: "mt-5 rounded-2xl border border-stone-200 bg-white p-5 shadow-sm", children: [jsxRuntimeExports.jsx("p", { className: "text-xs font-semibold uppercase text-gray-500", children: "Request summary" }), jsxRuntimeExports.jsxs("div", { className: "mt-3 space-y-3 text-sm", children: [jsxRuntimeExports.jsxs("div", { className: "flex justify-between gap-4", children: [jsxRuntimeExports.jsx("span", { className: "text-gray-500", children: "Product" }), jsxRuntimeExports.jsx("span", { className: "text-right font-semibold text-gray-950", children: productName })] }), estimatedTotal && (jsxRuntimeExports.jsxs("div", { className: "flex justify-between gap-4 border-t border-stone-100 pt-3", children: [jsxRuntimeExports.jsx("span", { className: "text-gray-500", children: "Estimated total" }), jsxRuntimeExports.jsx("span", { className: "text-right font-bold text-gray-950", children: estimatedTotal })] }))] })] }), successWarning && (jsxRuntimeExports.jsx("div", { className: "mt-5 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900", children: successWarning })), jsxRuntimeExports.jsx("div", { className: "mt-6 flex justify-end", children: jsxRuntimeExports.jsx("button", { type: "button", onClick: handleClose, className: "rounded-xl px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-900/20 transition hover:brightness-105", style: {
+                                      backgroundImage: `linear-gradient(135deg, ${websiteColors.primary}, #7c3aed)`,
+                                  }, children: "Continue Browsing" }) })] })) : (jsxRuntimeExports.jsxs("form", { onSubmit: handleSubmit, className: "flex min-h-0 flex-1 flex-col", children: [jsxRuntimeExports.jsxs("div", { className: "overflow-y-auto px-6 py-6", children: [jsxRuntimeExports.jsxs("div", { className: "rounded-2xl border border-stone-200 bg-white p-5 shadow-sm", children: [jsxRuntimeExports.jsxs("div", { className: "mb-4 flex items-start justify-between gap-4", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("p", { className: "text-xs font-semibold uppercase text-gray-500", children: isRoomRecommendation ? 'Room recommendation' : 'Customization summary' }), jsxRuntimeExports.jsx("h3", { className: "mt-1 text-lg font-bold leading-tight text-gray-950", children: productName }), isRoomRecommendation && (jsxRuntimeExports.jsx("p", { className: "mt-1 text-sm font-semibold text-gray-600", children: "Request quote for room recommendation" }))] }), estimatedTotal && (jsxRuntimeExports.jsx("div", { className: "rounded-full bg-blue-50 px-3 py-1 text-sm font-bold text-blue-900", children: estimatedTotal }))] }), jsxRuntimeExports.jsx("div", { className: "space-y-3 text-sm", children: isRoomRecommendation ? (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [roomTypeLabel && (jsxRuntimeExports.jsxs("div", { className: "flex justify-between gap-4", children: [jsxRuntimeExports.jsx("span", { className: "text-gray-500", children: "Room type" }), jsxRuntimeExports.jsx("span", { className: "text-right font-semibold text-gray-950", children: roomTypeLabel })] })), fitScore && (jsxRuntimeExports.jsxs("div", { className: "flex justify-between gap-4", children: [jsxRuntimeExports.jsx("span", { className: "text-gray-500", children: "Fit score" }), jsxRuntimeExports.jsx("span", { className: "text-right font-semibold text-gray-950", children: fitScore })] })), whyItFits && (jsxRuntimeExports.jsxs("div", { className: "border-t border-stone-100 pt-3", children: [jsxRuntimeExports.jsx("span", { className: "block text-gray-500", children: "Why it fits" }), jsxRuntimeExports.jsx("p", { className: "mt-1 leading-6 text-gray-800", children: whyItFits })] })), placementNote && (jsxRuntimeExports.jsxs("div", { className: "border-t border-stone-100 pt-3", children: [jsxRuntimeExports.jsx("span", { className: "block text-gray-500", children: "Placement note" }), jsxRuntimeExports.jsx("p", { className: "mt-1 leading-6 text-gray-800", children: placementNote })] })), estimatedTotal && (jsxRuntimeExports.jsxs("div", { className: "flex justify-between gap-4 border-t border-stone-100 pt-3", children: [jsxRuntimeExports.jsx("span", { className: "text-gray-500", children: "Estimated total" }), jsxRuntimeExports.jsx("span", { className: "text-right font-bold text-gray-950", children: estimatedTotal })] }))] })) : (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [selectedColor && (jsxRuntimeExports.jsxs("div", { className: "flex justify-between gap-4", children: [jsxRuntimeExports.jsx("span", { className: "text-gray-500", children: "Color" }), jsxRuntimeExports.jsx("span", { className: "text-right font-semibold text-gray-950", children: selectedColor })] })), selectedMaterial && (jsxRuntimeExports.jsxs("div", { className: "flex justify-between gap-4", children: [jsxRuntimeExports.jsx("span", { className: "text-gray-500", children: "Material" }), jsxRuntimeExports.jsx("span", { className: "text-right font-semibold text-gray-950", children: selectedMaterial })] })), selectedDimensions && (jsxRuntimeExports.jsxs("div", { className: "flex justify-between gap-4", children: [jsxRuntimeExports.jsx("span", { className: "text-gray-500", children: "Dimensions" }), jsxRuntimeExports.jsx("span", { className: "text-right font-semibold text-gray-950", children: selectedDimensions })] })), selectedShopifyOptions && selectedShopifyOptions.length > 0 && (jsxRuntimeExports.jsxs("div", { className: "flex justify-between gap-4", children: [jsxRuntimeExports.jsx("span", { className: "text-gray-500", children: "Options" }), jsxRuntimeExports.jsx("span", { className: "text-right font-semibold text-gray-950", children: selectedShopifyOptions.join(', ') })] })), selectedAddOns && selectedAddOns.length > 0 && (jsxRuntimeExports.jsxs("div", { className: "flex justify-between gap-4", children: [jsxRuntimeExports.jsx("span", { className: "text-gray-500", children: "Add-ons" }), jsxRuntimeExports.jsx("span", { className: "text-right font-semibold text-gray-950", children: selectedAddOns.join(', ') })] })), customerRequestText?.trim() && (jsxRuntimeExports.jsxs("div", { className: "border-t border-stone-100 pt-3", children: [jsxRuntimeExports.jsx("span", { className: "block text-gray-500", children: "Customizer request" }), jsxRuntimeExports.jsx("p", { className: "mt-1 rounded-xl bg-amber-50 p-3 text-gray-800", children: customerRequestText })] }))] })) })] }), error && (jsxRuntimeExports.jsx("div", { className: "mt-5 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-700", children: error })), jsxRuntimeExports.jsxs("div", { className: "mt-6 grid gap-4 sm:grid-cols-2", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsxs("label", { htmlFor: "quote-name", className: "block text-sm font-semibold text-gray-800", children: ["Name ", jsxRuntimeExports.jsx("span", { className: "text-red-500", children: "*" })] }), jsxRuntimeExports.jsx("input", { type: "text", id: "quote-name", name: "name", value: formData.name, onChange: handleChange, required: true, className: "mt-2 w-full rounded-xl border border-stone-200 bg-white px-4 py-3 text-gray-950 placeholder-gray-400 shadow-sm outline-none transition focus:border-blue-400 focus:ring-4 focus:ring-blue-100", placeholder: "Your name", disabled: isSubmitting })] }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsxs("label", { htmlFor: "quote-email", className: "block text-sm font-semibold text-gray-800", children: ["Email ", jsxRuntimeExports.jsx("span", { className: "text-red-500", children: "*" })] }), jsxRuntimeExports.jsx("input", { type: "email", id: "quote-email", name: "email", value: formData.email, onChange: handleChange, required: true, className: "mt-2 w-full rounded-xl border border-stone-200 bg-white px-4 py-3 text-gray-950 placeholder-gray-400 shadow-sm outline-none transition focus:border-blue-400 focus:ring-4 focus:ring-blue-100", placeholder: "you@example.com", disabled: isSubmitting })] })] }), jsxRuntimeExports.jsxs("div", { className: "mt-4", children: [jsxRuntimeExports.jsxs("label", { htmlFor: "quote-phone", className: "block text-sm font-semibold text-gray-800", children: ["Phone ", jsxRuntimeExports.jsx("span", { className: "text-xs font-medium text-gray-400", children: "(optional)" })] }), jsxRuntimeExports.jsx("input", { type: "tel", id: "quote-phone", name: "phone", value: formData.phone, onChange: handleChange, className: "mt-2 w-full rounded-xl border border-stone-200 bg-white px-4 py-3 text-gray-950 placeholder-gray-400 shadow-sm outline-none transition focus:border-blue-400 focus:ring-4 focus:ring-blue-100", placeholder: "+1 (555) 123-4567", disabled: isSubmitting })] }), jsxRuntimeExports.jsxs("div", { className: "mt-4", children: [jsxRuntimeExports.jsxs("label", { htmlFor: "quote-notes", className: "block text-sm font-semibold text-gray-800", children: ["Message / notes ", jsxRuntimeExports.jsx("span", { className: "text-xs font-medium text-gray-400", children: "(optional)" })] }), jsxRuntimeExports.jsx("textarea", { id: "quote-notes", name: "notes", value: formData.notes, onChange: handleChange, rows: 4, className: "mt-2 w-full resize-none rounded-xl border border-stone-200 bg-white px-4 py-3 text-gray-950 placeholder-gray-400 shadow-sm outline-none transition focus:border-blue-400 focus:ring-4 focus:ring-blue-100", placeholder: "Any special requests or questions...", disabled: isSubmitting })] })] }), jsxRuntimeExports.jsxs("div", { className: "sticky bottom-0 flex flex-col-reverse gap-3 border-t border-stone-200 bg-[#fffaf4]/95 px-6 py-4 backdrop-blur sm:flex-row sm:justify-end", children: [jsxRuntimeExports.jsx("button", { type: "button", onClick: handleClose, disabled: isSubmitting, className: "rounded-xl border border-stone-200 bg-white px-6 py-3 text-sm font-semibold text-gray-700 transition hover:bg-stone-50 disabled:cursor-not-allowed disabled:opacity-50", children: "Cancel" }), jsxRuntimeExports.jsx("button", { type: "submit", disabled: !canSubmit, className: "inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-900/20 transition hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-50", style: {
+                                          backgroundImage: `linear-gradient(135deg, ${websiteColors.primary}, #7c3aed)`,
+                                      }, children: isSubmitting ? (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsxs("svg", { className: "h-5 w-5 animate-spin", xmlns: "http://www.w3.org/2000/svg", fill: "none", viewBox: "0 0 24 24", children: [jsxRuntimeExports.jsx("circle", { className: "opacity-25", cx: "12", cy: "12", r: "10", stroke: "currentColor", strokeWidth: "4" }), jsxRuntimeExports.jsx("path", { className: "opacity-75", fill: "currentColor", d: "M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" })] }), jsxRuntimeExports.jsx("span", { children: "Submitting..." })] })) : ('Submit Quote Request') })] })] }))] }) }));
   }
 
   const PLACEHOLDER_HOSTS = new Set([
@@ -3068,30 +3810,87 @@
   function getProductCatalogUrl$1(item) {
       return getRealProductUrl(item);
   }
-  function RecommendationsList({ recommendations, onCustomize, onFinalize, enabledActions, primaryColor }) {
+  function getProductImageUrl$1(item) {
+      return item.images?.find((image) => image?.trim()) ?? undefined;
+  }
+  function getPriceLabel(item) {
+      if (typeof item.price === 'number') {
+          return `$${item.price.toLocaleString()}`;
+      }
+      if (!item.priceRange)
+          return 'Price on request';
+      const min = item.priceRange.min;
+      const max = item.priceRange.max;
+      if (max && max !== min) {
+          return `$${min.toLocaleString()} - $${max.toLocaleString()}`;
+      }
+      return `$${min.toLocaleString()}`;
+  }
+  function getDimensionLabel(item) {
+      const { length, width, height } = item.dimensions;
+      if (!length || !width || !height)
+          return null;
+      return `${length}m L x ${width}m W x ${height}m H`;
+  }
+  function RecommendationsList({ recommendations, onCustomize, onFinalize, enabledActions, primaryColor, analyticsContext }) {
       const actions = enabledActions ?? { viewInCatalog: true, customize: true, requestQuote: true };
       const primaryTextColor = primaryColor ? getReadableTextColor(primaryColor) : undefined;
       if (recommendations.length === 0) {
           return (jsxRuntimeExports.jsx("div", { className: "text-center py-12 text-gray-500", children: jsxRuntimeExports.jsx("p", { className: "text-lg", children: "No recommendations available yet." }) }));
       }
-      return (jsxRuntimeExports.jsxs("div", { className: "space-y-6", children: [jsxRuntimeExports.jsx("h2", { className: "text-3xl font-bold mb-6 text-gray-900", children: "AI Recommendations" }), jsxRuntimeExports.jsx("div", { className: "grid md:grid-cols-2 lg:grid-cols-3 gap-6", children: recommendations.map((rec, index) => {
+      return (jsxRuntimeExports.jsxs("div", { className: "space-y-6", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h2", { className: "text-3xl font-bold text-gray-950", children: "Matching catalog products" }), jsxRuntimeExports.jsx("p", { className: "mt-2 text-sm text-gray-600", children: "Suggestions are based on the uploaded room photo, your preferences, and available catalog data." })] }), jsxRuntimeExports.jsx("div", { className: "grid md:grid-cols-2 lg:grid-cols-3 gap-6", children: recommendations.map((rec, index) => {
                       const catalogUrl = getProductCatalogUrl$1(rec.item);
-                      return (jsxRuntimeExports.jsx("div", { className: "bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow", children: jsxRuntimeExports.jsxs("div", { className: "p-6", children: [jsxRuntimeExports.jsxs("div", { className: "flex items-start justify-between gap-3 mb-2", children: [jsxRuntimeExports.jsx("h3", { className: "text-xl font-semibold text-gray-900", children: rec.item.name }), rec.matchScore && (jsxRuntimeExports.jsxs("span", { className: "shrink-0 text-sm px-2 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-medium", children: [Math.round(rec.matchScore * 100), "% match"] }))] }), jsxRuntimeExports.jsxs("p", { className: "text-sm mb-4 text-gray-500", children: [rec.item.category, " ", rec.item.subCategory && `- ${rec.item.subCategory}`] }), jsxRuntimeExports.jsxs("div", { className: "mb-4 p-3 rounded bg-gray-50 border border-gray-200", children: [jsxRuntimeExports.jsx("h4", { className: "text-sm font-medium mb-2 text-gray-700", children: "Dimensions:" }), jsxRuntimeExports.jsxs("div", { className: "text-sm space-y-1 text-gray-800", children: [jsxRuntimeExports.jsxs("div", { children: ["Length: ", jsxRuntimeExports.jsxs("strong", { children: [rec.item.dimensions.length, "m"] })] }), jsxRuntimeExports.jsxs("div", { children: ["Width: ", jsxRuntimeExports.jsxs("strong", { children: [rec.item.dimensions.width, "m"] })] }), jsxRuntimeExports.jsxs("div", { children: ["Height: ", jsxRuntimeExports.jsxs("strong", { children: [rec.item.dimensions.height, "m"] })] }), rec.item.dimensions.seatHeight && (jsxRuntimeExports.jsxs("div", { children: ["Seat Height: ", jsxRuntimeExports.jsxs("strong", { children: [rec.item.dimensions.seatHeight, "m"] })] })), rec.item.dimensions.clearance && (jsxRuntimeExports.jsxs("div", { className: "text-xs mt-2 text-gray-500", children: ["Clearance: Front ", rec.item.dimensions.clearance.front || 'N/A', "m"] }))] })] }), jsxRuntimeExports.jsxs("div", { className: "mb-4", children: [jsxRuntimeExports.jsx("h4", { className: "text-sm font-medium mb-1 text-gray-700", children: "Materials:" }), jsxRuntimeExports.jsxs("p", { className: "text-sm text-gray-800", children: [rec.item.materials.primary, rec.item.materials.secondary && `, ${rec.item.materials.secondary}`, rec.item.materials.upholstery && ` - Upholstery: ${rec.item.materials.upholstery}`] })] }), jsxRuntimeExports.jsxs("div", { className: "mb-4", children: [jsxRuntimeExports.jsx("h4", { className: "text-sm font-medium mb-1 text-gray-700", children: "Colors:" }), jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [jsxRuntimeExports.jsx("span", { className: "text-sm text-gray-800", children: rec.item.colors.main }), rec.item.colors.accent && (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsx("span", { className: "text-gray-400", children: "-" }), jsxRuntimeExports.jsx("span", { className: "text-sm text-gray-800", children: rec.item.colors.accent })] }))] })] }), rec.item.styleTags && rec.item.styleTags.length > 0 && (jsxRuntimeExports.jsx("div", { className: "mb-4 flex flex-wrap gap-2", children: rec.item.styleTags.map((tag, i) => (jsxRuntimeExports.jsx("span", { className: "text-xs px-2 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-100 font-medium", children: tag }, i))) })), rec.placement && (jsxRuntimeExports.jsxs("div", { className: "mb-4 p-3 rounded bg-gray-50 border border-gray-200", children: [jsxRuntimeExports.jsx("h4", { className: "text-sm font-medium mb-2 text-gray-700", children: "Placement:" }), rec.placement.coordinates && (jsxRuntimeExports.jsxs("div", { className: "mb-2 text-xs text-gray-800", children: [jsxRuntimeExports.jsx("span", { className: "font-semibold", children: "Position: " }), "(", rec.placement.coordinates.x.toFixed(2), "m, ", rec.placement.coordinates.y.toFixed(2), "m)", jsxRuntimeExports.jsx("span", { className: "ml-2 text-gray-500", children: "from southwest corner" })] })), rec.placement.distanceFromWalls && (jsxRuntimeExports.jsxs("div", { className: "mb-2 text-xs space-y-1 text-gray-800", children: [jsxRuntimeExports.jsx("div", { className: "font-semibold mb-1", children: "Distance from walls:" }), jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-2 gap-1", children: [rec.placement.distanceFromWalls.north !== undefined && (jsxRuntimeExports.jsxs("div", { children: ["North: ", jsxRuntimeExports.jsxs("strong", { children: [rec.placement.distanceFromWalls.north.toFixed(2), "m"] })] })), rec.placement.distanceFromWalls.south !== undefined && (jsxRuntimeExports.jsxs("div", { children: ["South: ", jsxRuntimeExports.jsxs("strong", { children: [rec.placement.distanceFromWalls.south.toFixed(2), "m"] })] })), rec.placement.distanceFromWalls.east !== undefined && (jsxRuntimeExports.jsxs("div", { children: ["East: ", jsxRuntimeExports.jsxs("strong", { children: [rec.placement.distanceFromWalls.east.toFixed(2), "m"] })] })), rec.placement.distanceFromWalls.west !== undefined && (jsxRuntimeExports.jsxs("div", { children: ["West: ", jsxRuntimeExports.jsxs("strong", { children: [rec.placement.distanceFromWalls.west.toFixed(2), "m"] })] }))] })] })), rec.placement.rotation !== undefined && rec.placement.rotation !== 0 && (jsxRuntimeExports.jsxs("div", { className: "mb-2 text-xs text-gray-800", children: [jsxRuntimeExports.jsx("span", { className: "font-semibold", children: "Rotation: " }), rec.placement.rotation, " deg"] })), (rec.placement.wall || rec.placement.position) && (jsxRuntimeExports.jsxs("div", { className: "mb-2 text-xs text-gray-800", children: [jsxRuntimeExports.jsx("span", { className: "font-semibold", children: "Location: " }), rec.placement.position || (rec.placement.wall ? `Against ${rec.placement.wall} wall` : 'Centered')] })), jsxRuntimeExports.jsx("p", { className: "text-sm mt-2 pt-2 border-t border-gray-200 text-gray-800", children: rec.placement.reasoning })] })), jsxRuntimeExports.jsxs("div", { className: "pt-4 border-t border-gray-200", children: [jsxRuntimeExports.jsx("h4", { className: "text-sm font-medium mb-1 text-gray-700", children: "Why this fits:" }), jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-800", children: rec.reasoning })] }), rec.item.priceRange && (jsxRuntimeExports.jsx("div", { className: "mt-4 pt-4 border-t border-gray-200", children: jsxRuntimeExports.jsxs("p", { className: "text-sm text-gray-700", children: ["Price: ", jsxRuntimeExports.jsxs("strong", { className: "text-gray-900", children: ["$", rec.item.priceRange.min?.toLocaleString(), rec.item.priceRange.max && rec.item.priceRange.max !== rec.item.priceRange.min
-                                                          ? ` - $${rec.item.priceRange.max.toLocaleString()}`
-                                                          : ''] })] }) })), jsxRuntimeExports.jsxs("div", { className: "mt-4 pt-4 border-t border-gray-200 space-y-2", children: [actions.customize && onCustomize && (jsxRuntimeExports.jsxs("button", { onClick: () => onCustomize(rec.item), className: "w-full py-2.5 px-4 rounded-lg font-medium text-sm transition-all duration-200 border border-blue-200 bg-blue-50 hover:bg-blue-100 text-blue-700 flex items-center justify-center gap-2", style: primaryColor ? { borderColor: primaryColor, color: primaryColor } : undefined, children: [jsxRuntimeExports.jsx(Pencil, { className: "w-4 h-4" }), "Customize this"] })), actions.viewInCatalog && catalogUrl ? (jsxRuntimeExports.jsxs("a", { href: catalogUrl, target: "_blank", rel: "noopener noreferrer", className: "w-full py-2.5 px-4 rounded-lg font-medium text-sm transition-all duration-200 border border-gray-300 bg-white hover:bg-gray-50 text-gray-700 flex items-center justify-center gap-2", children: [jsxRuntimeExports.jsx(Info, { className: "w-4 h-4" }), "View in Catalog"] })) : actions.viewInCatalog ? (jsxRuntimeExports.jsx("button", { type: "button", disabled: true, className: "w-full py-2.5 px-4 rounded-lg font-medium text-sm transition-all duration-200 border border-gray-200 bg-gray-50 text-gray-400 flex items-center justify-center gap-2 cursor-not-allowed", children: "Catalog link unavailable" })) : null, actions.requestQuote && onFinalize && (jsxRuntimeExports.jsx("button", { onClick: () => onFinalize(rec), className: "w-full py-2.5 px-4 rounded-lg font-medium text-sm transition-all duration-200 text-white flex items-center justify-center gap-2", style: {
-                                                  backgroundColor: primaryColor || '#10B981',
-                                                  color: primaryColor ? primaryTextColor : '#ffffff',
-                                              }, children: "Request Quote" }))] })] }) }, rec.item.id || index));
+                      const imageUrl = getProductImageUrl$1(rec.item);
+                      const dimensionLabel = getDimensionLabel(rec.item);
+                      const priceLabel = getPriceLabel(rec.item);
+                      const handleViewInCatalogClick = (event) => {
+                          event.preventDefault();
+                          event.stopPropagation();
+                          if (!catalogUrl || typeof window === 'undefined')
+                              return;
+                          trackWidgetEvent({
+                              ...analyticsContext,
+                              type: 'view_in_catalog_clicked',
+                              productId: rec.item.id,
+                              productName: rec.item.name,
+                              metadata: {
+                                  source: 'room_planner',
+                                  category: rec.item.category,
+                                  productUrl: catalogUrl,
+                              },
+                          });
+                          window.open(catalogUrl, '_blank', 'noopener,noreferrer');
+                      };
+                      return (jsxRuntimeExports.jsxs("div", { className: "overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-sm transition-shadow hover:shadow-md", children: [jsxRuntimeExports.jsx("div", { className: "aspect-[4/3] bg-stone-100", children: imageUrl ? (jsxRuntimeExports.jsx("img", { src: imageUrl, alt: rec.item.name, className: "h-full w-full object-cover" })) : (jsxRuntimeExports.jsx("div", { className: "flex h-full w-full items-center justify-center bg-gradient-to-br from-stone-100 to-stone-50 text-stone-400", children: jsxRuntimeExports.jsx(Image, { className: "h-10 w-10" }) })) }), jsxRuntimeExports.jsxs("div", { className: "p-5", children: [jsxRuntimeExports.jsxs("div", { className: "mb-3 flex items-start justify-between gap-3", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h3", { className: "text-xl font-semibold leading-tight text-gray-950", children: rec.item.name }), jsxRuntimeExports.jsxs("p", { className: "mt-1 text-sm text-gray-500", children: [rec.item.category, " ", rec.item.subCategory && `- ${rec.item.subCategory}`] })] }), rec.matchScore && (jsxRuntimeExports.jsxs("span", { className: "shrink-0 text-sm px-2 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-medium", children: [Math.round(rec.matchScore * 100), "% match"] }))] }), jsxRuntimeExports.jsxs("div", { className: "mb-4 flex flex-wrap items-center gap-2", children: [jsxRuntimeExports.jsx("span", { className: "rounded-full bg-stone-100 px-3 py-1 text-sm font-semibold text-gray-900", children: priceLabel }), dimensionLabel && (jsxRuntimeExports.jsxs("span", { className: "inline-flex items-center gap-1 rounded-full border border-stone-200 px-3 py-1 text-xs font-medium text-gray-600", children: [jsxRuntimeExports.jsx(Ruler, { className: "h-3.5 w-3.5" }), dimensionLabel] }))] }), rec.item.styleTags && rec.item.styleTags.length > 0 && (jsxRuntimeExports.jsx("div", { className: "mb-4 flex flex-wrap gap-2", children: rec.item.styleTags.map((tag, i) => (jsxRuntimeExports.jsx("span", { className: "text-xs px-2 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-100 font-medium", children: tag }, i))) })), rec.placement && (jsxRuntimeExports.jsxs("div", { className: "mb-4 rounded-xl border border-stone-200 bg-stone-50 p-3", children: [jsxRuntimeExports.jsx("h4", { className: "text-sm font-semibold mb-2 text-gray-800", children: "Placement notes" }), rec.placement.coordinates && (jsxRuntimeExports.jsxs("div", { className: "mb-2 text-xs text-gray-800", children: [jsxRuntimeExports.jsx("span", { className: "font-semibold", children: "Position: " }), "(", rec.placement.coordinates.x.toFixed(2), "m, ", rec.placement.coordinates.y.toFixed(2), "m)", jsxRuntimeExports.jsx("span", { className: "ml-2 text-gray-500", children: "from southwest corner" })] })), rec.placement.distanceFromWalls && (jsxRuntimeExports.jsxs("div", { className: "mb-2 text-xs space-y-1 text-gray-800", children: [jsxRuntimeExports.jsx("div", { className: "font-semibold mb-1", children: "Distance from walls:" }), jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-2 gap-1", children: [rec.placement.distanceFromWalls.north !== undefined && (jsxRuntimeExports.jsxs("div", { children: ["North: ", jsxRuntimeExports.jsxs("strong", { children: [rec.placement.distanceFromWalls.north.toFixed(2), "m"] })] })), rec.placement.distanceFromWalls.south !== undefined && (jsxRuntimeExports.jsxs("div", { children: ["South: ", jsxRuntimeExports.jsxs("strong", { children: [rec.placement.distanceFromWalls.south.toFixed(2), "m"] })] })), rec.placement.distanceFromWalls.east !== undefined && (jsxRuntimeExports.jsxs("div", { children: ["East: ", jsxRuntimeExports.jsxs("strong", { children: [rec.placement.distanceFromWalls.east.toFixed(2), "m"] })] })), rec.placement.distanceFromWalls.west !== undefined && (jsxRuntimeExports.jsxs("div", { children: ["West: ", jsxRuntimeExports.jsxs("strong", { children: [rec.placement.distanceFromWalls.west.toFixed(2), "m"] })] }))] })] })), rec.placement.rotation !== undefined && rec.placement.rotation !== 0 && (jsxRuntimeExports.jsxs("div", { className: "mb-2 text-xs text-gray-800", children: [jsxRuntimeExports.jsx("span", { className: "font-semibold", children: "Rotation: " }), rec.placement.rotation, " deg"] })), (rec.placement.wall || rec.placement.position) && (jsxRuntimeExports.jsxs("div", { className: "mb-2 text-xs text-gray-800", children: [jsxRuntimeExports.jsx("span", { className: "font-semibold", children: "Location: " }), rec.placement.position || (rec.placement.wall ? `Against ${rec.placement.wall} wall` : 'Centered')] })), jsxRuntimeExports.jsx("p", { className: "text-sm mt-2 pt-2 border-t border-gray-200 text-gray-800", children: rec.placement.reasoning })] })), jsxRuntimeExports.jsxs("div", { className: "rounded-xl border border-blue-100 bg-blue-50/70 p-3", children: [jsxRuntimeExports.jsx("h4", { className: "text-sm font-semibold mb-1 text-blue-950", children: "Why it fits" }), jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-800", children: rec.reasoning })] }), jsxRuntimeExports.jsxs("div", { className: "mt-4 space-y-2 border-t border-stone-200 pt-4", children: [actions.customize && onCustomize && (jsxRuntimeExports.jsxs("button", { type: "button", onClick: () => onCustomize(rec.item), className: "w-full py-2.5 px-4 rounded-lg font-semibold text-sm transition-all duration-200 border border-blue-200 bg-blue-50 hover:bg-blue-100 text-blue-700 flex items-center justify-center gap-2", style: primaryColor ? { borderColor: primaryColor, color: primaryColor } : undefined, children: [jsxRuntimeExports.jsx(Pencil, { className: "w-4 h-4" }), "Customize this"] })), actions.viewInCatalog && catalogUrl ? (jsxRuntimeExports.jsxs("button", { type: "button", onClick: handleViewInCatalogClick, className: "w-full py-2.5 px-4 rounded-lg font-semibold text-sm transition-all duration-200 border border-gray-300 bg-white hover:bg-gray-50 text-gray-700 flex items-center justify-center gap-2", children: [jsxRuntimeExports.jsx(ExternalLink, { className: "w-4 h-4" }), "View in Catalog"] })) : actions.viewInCatalog ? (jsxRuntimeExports.jsx("button", { type: "button", disabled: true, className: "w-full py-2.5 px-4 rounded-lg font-medium text-sm transition-all duration-200 border border-gray-200 bg-gray-50 text-gray-400 flex items-center justify-center gap-2 cursor-not-allowed", children: "Catalog link unavailable" })) : null, actions.requestQuote && onFinalize && (jsxRuntimeExports.jsxs("button", { type: "button", onClick: (event) => {
+                                                      event.preventDefault();
+                                                      event.stopPropagation();
+                                                      onFinalize(rec);
+                                                  }, className: "w-full py-2.5 px-4 rounded-lg font-semibold text-sm transition-all duration-200 text-white flex items-center justify-center gap-2", style: {
+                                                      backgroundColor: primaryColor || '#10B981',
+                                                      color: primaryColor ? primaryTextColor : '#ffffff',
+                                                  }, children: [jsxRuntimeExports.jsx(MessageSquareQuote, { className: "h-4 w-4" }), "Request Quote"] }))] })] })] }, rec.item.id || index));
                   }) })] }));
   }
 
   const STORAGE_KEY$1 = 'modly-room-planner-state';
   const FEET_PER_METER = 3.28084;
   const styleOptions = [
-      { id: 'modern', label: 'Modern', icon: '⚡' },
-      { id: 'scandi', label: 'Scandi', icon: '🌲' },
-      { id: 'industrial', label: 'Industrial', icon: '🏭' },
-      { id: 'boho', label: 'Boho', icon: '🌿' },
+      { id: 'modern', label: 'Modern', Icon: Sparkles, tone: 'from-slate-50 to-white' },
+      { id: 'scandi', label: 'Scandi', Icon: Lamp, tone: 'from-stone-50 to-white' },
+      { id: 'industrial', label: 'Industrial', Icon: Warehouse, tone: 'from-zinc-50 to-white' },
+      { id: 'boho', label: 'Boho', Icon: Flower2, tone: 'from-amber-50 to-white' },
+  ];
+  const roomSizePresets = [
+      { id: 'small', label: 'Small', dimensions: { length: 3.2, width: 3, height: 2.4 } },
+      { id: 'medium', label: 'Medium', dimensions: { length: 4.6, width: 3.8, height: 2.6 } },
+      { id: 'large', label: 'Large', dimensions: { length: 6.2, width: 4.8, height: 2.8 } },
+  ];
+  const trustItems = [
+      'Room size and layout',
+      'Preferred style',
+      'Budget range',
+      'Product dimensions',
+      'Catalog availability',
   ];
   async function base64ToFile(base64, filename) {
       const response = await fetch(base64);
@@ -3115,11 +3914,17 @@
       const apiClient = require$$0$1.useMemo(() => new ApiClient(mergedConfig), [mergedConfig]);
       const storage = require$$0$1.useMemo(() => new Storage(mergedConfig.storageKey), [mergedConfig.storageKey]);
       const enabledActions = require$$0$1.useMemo(() => getEnabledActions(mergedConfig), [mergedConfig]);
+      const analyticsContext = require$$0$1.useMemo(() => ({
+          apiBaseUrl: mergedConfig.apiBaseUrl,
+          storeId: mergedConfig.storeId || mergedConfig.widgetId,
+          widgetId: mergedConfig.widgetId,
+      }), [mergedConfig.apiBaseUrl, mergedConfig.storeId, mergedConfig.widgetId]);
       const primaryColor = getPrimaryColor(mergedConfig);
       const [recommendations, setRecommendations] = require$$0$1.useState(null);
       const [isLoading, setIsLoading] = require$$0$1.useState(false);
       const [error, setError] = require$$0$1.useState(null);
       const [shareMessage, setShareMessage] = require$$0$1.useState(null);
+      const [resultsScrollRequest, setResultsScrollRequest] = require$$0$1.useState(0);
       const [uploadedPhotos, setUploadedPhotos] = require$$0$1.useState([]);
       const [customizedFurniture, setCustomizedFurniture] = require$$0$1.useState([]);
       const [savedDimensions, setSavedDimensions] = require$$0$1.useState(undefined);
@@ -3137,7 +3942,16 @@
       const [showQuoteForm, setShowQuoteForm] = require$$0$1.useState(false);
       const [quoteSuccess, setQuoteSuccess] = require$$0$1.useState(false);
       const [selectedRecommendation, setSelectedRecommendation] = require$$0$1.useState(null);
+      const [selectedCustomizedItem, setSelectedCustomizedItem] = require$$0$1.useState(null);
       const fileInputRef = require$$0$1.useRef(null);
+      const resultsRef = require$$0$1.useRef(null);
+      const lastScrolledRequestRef = require$$0$1.useRef(0);
+      require$$0$1.useEffect(() => {
+          trackWidgetEvent({
+              ...analyticsContext,
+              type: 'room_planner_opened',
+          });
+      }, [analyticsContext]);
       require$$0$1.useEffect(() => {
           try {
               if (typeof window !== 'undefined') {
@@ -3191,11 +4005,39 @@
           const items = storage.getCustomizedFurniture();
           setCustomizedFurniture(items);
       }, [storage]);
+      require$$0$1.useEffect(() => {
+          if (resultsScrollRequest === 0 ||
+              lastScrolledRequestRef.current === resultsScrollRequest ||
+              !recommendations ||
+              isLoading) {
+              return;
+          }
+          const timer = window.setTimeout(() => {
+              resultsRef.current?.scrollIntoView({
+                  behavior: 'smooth',
+                  block: 'start',
+              });
+              lastScrolledRequestRef.current = resultsScrollRequest;
+          }, 100);
+          return () => window.clearTimeout(timer);
+      }, [isLoading, recommendations, resultsScrollRequest]);
       const handleItemRemoved = () => {
           const items = storage.getCustomizedFurniture();
           setCustomizedFurniture(items);
       };
       const handleCustomize = (item) => {
+          if (!onCustomizeItem) {
+              trackWidgetEvent({
+                  ...analyticsContext,
+                  type: 'customize_clicked',
+                  productId: item.id,
+                  productName: item.name,
+                  metadata: {
+                      source: 'room_planner',
+                      category: item.category,
+                  },
+              });
+          }
           if (typeof window !== 'undefined') {
               sessionStorage.setItem('modly-customize-item', JSON.stringify(item));
           }
@@ -3233,6 +4075,30 @@
               setRecommendations(data);
               setSavedDimensions(dimensions);
               setSavedPreferences(preferences);
+              setResultsScrollRequest((request) => request + 1);
+              trackWidgetEvent({
+                  ...analyticsContext,
+                  type: 'room_analyzed',
+                  metadata: {
+                      roomType: dimensions.roomType,
+                      budgetMin: preferences?.budget?.min,
+                      budgetMax: preferences?.budget?.max,
+                      recommendationCount: data.recommendations?.length ?? 0,
+                  },
+              });
+              data.recommendations?.forEach((rec) => {
+                  trackWidgetEvent({
+                      ...analyticsContext,
+                      type: 'product_recommended',
+                      productId: rec.item.id,
+                      productName: rec.item.name,
+                      metadata: {
+                          category: rec.item.category,
+                          price: rec.item.priceRange?.min ?? rec.item.price,
+                          recommendationSource: 'room_planner',
+                      },
+                  });
+              });
           }
           catch (err) {
               const errorMessage = err instanceof Error ? err.message : 'An error occurred';
@@ -3246,30 +4112,72 @@
       const handleFinalizeRecommendation = (recommendation) => {
           if (!enabledActions.requestQuote)
               return;
+          setSelectedCustomizedItem(null);
           setSelectedRecommendation(recommendation);
           setShowFinalizeModal(true);
+      };
+      const handleRequestQuoteForCustomizedItem = (item) => {
+          if (!enabledActions.requestQuote)
+              return;
+          trackWidgetEvent({
+              ...analyticsContext,
+              type: 'quote_started',
+              productId: item.productId,
+              productName: item.productName || item.name,
+              metadata: {
+                  source: 'room_planner_saved_configuration',
+                  quoteType: 'customized_furniture',
+                  estimatedTotal: item.estimatedTotal,
+                  pricingMode: item.pricingMode,
+              },
+          });
+          setSelectedRecommendation(null);
+          setSelectedCustomizedItem(item);
+          setShowQuoteForm(true);
       };
       const handleProceedToQuote = () => {
           if (!enabledActions.requestQuote)
               return;
+          const item = selectedCustomizedItem || selectedRecommendation?.item;
+          trackWidgetEvent({
+              ...analyticsContext,
+              type: 'quote_started',
+              productId: selectedCustomizedItem?.productId || selectedRecommendation?.item.id,
+              productName: selectedCustomizedItem?.productName || item?.name,
+              metadata: {
+                  source: selectedRecommendation ? 'room_planner_recommendation' : 'room_planner_saved_configuration',
+                  quoteType: selectedRecommendation ? 'room_analysis_recommendation' : 'customized_furniture',
+                  estimatedTotal: selectedCustomizedItem?.estimatedTotal ||
+                      selectedRecommendation?.item.priceRange?.min ||
+                      selectedRecommendation?.item.price,
+                  pricingMode: selectedCustomizedItem?.pricingMode,
+              },
+          });
           setShowFinalizeModal(false);
           setShowQuoteForm(true);
       };
       const handleQuoteSubmit = async (quoteRequest) => {
           try {
-              await apiClient.submitQuoteRequest(quoteRequest);
-              setShowQuoteForm(false);
+              const response = await apiClient.submitQuoteRequest(quoteRequest);
               setQuoteSuccess(true);
-              setSelectedRecommendation(null);
               setTimeout(() => {
                   setQuoteSuccess(false);
               }, 5000);
+              return response;
           }
           catch (err) {
               throw err;
           }
       };
       const handleExportPdf = () => {
+          trackWidgetEvent({
+              ...analyticsContext,
+              type: 'pdf_exported',
+              metadata: {
+                  source: 'room_planner',
+                  recommendationCount: recommendations?.recommendations?.length ?? 0,
+              },
+          });
           if (typeof window !== 'undefined')
               window.print();
       };
@@ -3320,6 +4228,11 @@
           setWidthValue(formatDimensionForUnit(widthMeters, nextUnitSystem));
           setHeightValue(formatDimensionForUnit(heightMeters, nextUnitSystem));
       };
+      const applyRoomPreset = (preset) => {
+          setLengthValue(formatDimensionForUnit(preset.dimensions.length, unitSystem));
+          setWidthValue(formatDimensionForUnit(preset.dimensions.width, unitSystem));
+          setHeightValue(formatDimensionForUnit(preset.dimensions.height, unitSystem));
+      };
       const toggleStyle = (style) => {
           setSelectedStyles((currentStyles) => currentStyles.includes(style)
               ? currentStyles.filter((currentStyle) => currentStyle !== style)
@@ -3364,51 +4277,523 @@
             .print-only { display: block !important; }
             body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
           }
-        ` }), jsxRuntimeExports.jsx("section", { className: "py-12 bg-gradient-to-br from-blue-600 to-blue-800 text-white", children: jsxRuntimeExports.jsx("div", { className: "max-w-7xl mx-auto px-4", children: jsxRuntimeExports.jsxs("div", { className: "max-w-3xl", children: [jsxRuntimeExports.jsxs("div", { className: "inline-flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full mb-4", children: [jsxRuntimeExports.jsx(Sparkles, { className: "w-4 h-4" }), jsxRuntimeExports.jsx("span", { className: "text-sm font-medium", children: "AI-Powered Room Analysis" })] }), jsxRuntimeExports.jsx("h1", { className: "text-5xl font-bold mb-4", children: "Room Planner" }), jsxRuntimeExports.jsx("p", { className: "text-xl text-blue-100 mb-8", children: "Upload a photo of your room and get catalog-based furniture and customization suggestions based on your space and style." }), jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap gap-4", children: [jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 text-sm", children: [jsxRuntimeExports.jsx(Check, { className: "w-5 h-5 text-green-300" }), jsxRuntimeExports.jsx("span", { children: "Room photo upload" })] }), jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 text-sm", children: [jsxRuntimeExports.jsx(Check, { className: "w-5 h-5 text-green-300" }), jsxRuntimeExports.jsx("span", { children: "Catalog-based product suggestions" })] }), jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 text-sm", children: [jsxRuntimeExports.jsx(Check, { className: "w-5 h-5 text-green-300" }), jsxRuntimeExports.jsx("span", { children: "Style-aware recommendations" })] }), jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 text-sm", children: [jsxRuntimeExports.jsx(Check, { className: "w-5 h-5 text-green-300" }), jsxRuntimeExports.jsx("span", { children: "Placement guidance" })] })] })] }) }) }), jsxRuntimeExports.jsx("section", { className: "py-12 bg-gray-50", children: jsxRuntimeExports.jsxs("div", { className: "max-w-7xl mx-auto px-4", children: [jsxRuntimeExports.jsxs("div", { className: "rounded-[28px] border border-gray-200 bg-white p-5 shadow-xl md:p-6", children: [recommendations && (jsxRuntimeExports.jsx("div", { className: "mb-4 flex justify-end", children: jsxRuntimeExports.jsx("div", { className: "inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-sm font-medium text-green-700", children: "Suggested analysis" }) })), jsxRuntimeExports.jsx("input", { ref: fileInputRef, type: "file", accept: "image/*", multiple: true, onChange: handleFileChange, className: "hidden" }), jsxRuntimeExports.jsxs("div", { className: "mt-6 grid gap-4 lg:grid-cols-2", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsxs("div", { className: "mb-3 flex items-center justify-between gap-3", children: [jsxRuntimeExports.jsx("h2", { className: "text-lg font-semibold text-gray-900", children: "Upload Room Photos" }), uploadedPhotos.length > 0 && (jsxRuntimeExports.jsx("button", { type: "button", onClick: () => setUploadedPhotos([]), className: "text-sm font-medium text-gray-500 transition hover:text-gray-900", children: "Remove" }))] }), jsxRuntimeExports.jsx("div", { role: "button", tabIndex: 0, onClick: () => fileInputRef.current?.click(), onKeyDown: (e) => {
+        ` }), jsxRuntimeExports.jsx("section", { className: "py-12 bg-gradient-to-br from-blue-600 to-blue-800 text-white", children: jsxRuntimeExports.jsx("div", { className: "max-w-7xl mx-auto px-4", children: jsxRuntimeExports.jsxs("div", { className: "max-w-3xl", children: [jsxRuntimeExports.jsxs("div", { className: "inline-flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full mb-4", children: [jsxRuntimeExports.jsx(Sparkles, { className: "w-4 h-4" }), jsxRuntimeExports.jsx("span", { className: "text-sm font-medium", children: "AI-Powered Room Analysis" })] }), jsxRuntimeExports.jsx("h1", { className: "text-5xl font-bold mb-4", children: "Room Planner" }), jsxRuntimeExports.jsx("p", { className: "text-xl text-blue-100 mb-8", children: "Upload a photo of your room and get catalog-based furniture and customization suggestions based on your space and style." }), jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap gap-4", children: [jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 text-sm", children: [jsxRuntimeExports.jsx(Check, { className: "w-5 h-5 text-green-300" }), jsxRuntimeExports.jsx("span", { children: "Room photo upload" })] }), jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 text-sm", children: [jsxRuntimeExports.jsx(Check, { className: "w-5 h-5 text-green-300" }), jsxRuntimeExports.jsx("span", { children: "Catalog-based product suggestions" })] }), jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 text-sm", children: [jsxRuntimeExports.jsx(Check, { className: "w-5 h-5 text-green-300" }), jsxRuntimeExports.jsx("span", { children: "Style-aware recommendations" })] }), jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 text-sm", children: [jsxRuntimeExports.jsx(Check, { className: "w-5 h-5 text-green-300" }), jsxRuntimeExports.jsx("span", { children: "Placement guidance" })] })] })] }) }) }), jsxRuntimeExports.jsx("section", { className: "py-12 bg-gray-50", children: jsxRuntimeExports.jsxs("div", { className: "max-w-7xl mx-auto px-4", children: [jsxRuntimeExports.jsxs("div", { className: "rounded-[28px] border border-gray-200 bg-white p-5 shadow-xl md:p-6", children: [recommendations && (jsxRuntimeExports.jsx("div", { className: "mb-4 flex justify-end", children: jsxRuntimeExports.jsx("div", { className: "inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-sm font-medium text-green-700", children: "Suggested analysis" }) })), jsxRuntimeExports.jsx("input", { ref: fileInputRef, type: "file", accept: "image/*", multiple: true, onChange: handleFileChange, className: "hidden" }), jsxRuntimeExports.jsxs("div", { className: "mt-6 grid gap-5 lg:grid-cols-2", children: [jsxRuntimeExports.jsxs("div", { className: "rounded-2xl border border-stone-200 bg-[#fffdf9] p-5 shadow-sm", children: [jsxRuntimeExports.jsxs("div", { className: "mb-3 flex items-center justify-between gap-3", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h2", { className: "text-lg font-semibold text-gray-950", children: "Upload a room photo" }), jsxRuntimeExports.jsx("p", { className: "mt-1 text-sm leading-6 text-gray-600", children: "ModlyAI compares your room, style, and budget with products in this store's catalog." })] }), uploadedPhotos.length > 0 && (jsxRuntimeExports.jsx("button", { type: "button", onClick: () => setUploadedPhotos([]), className: "shrink-0 rounded-full border border-stone-200 px-3 py-1 text-sm font-medium text-gray-500 transition hover:border-stone-300 hover:text-gray-900", children: "Remove" }))] }), jsxRuntimeExports.jsx("div", { role: "button", tabIndex: 0, onClick: () => fileInputRef.current?.click(), onKeyDown: (e) => {
                                                                   if (e.key === 'Enter' || e.key === ' ')
                                                                       fileInputRef.current?.click();
                                                               }, onDragOver: (e) => {
                                                                   e.preventDefault();
                                                                   e.stopPropagation();
-                                                              }, onDrop: handleDrop, className: "w-full aspect-video rounded-xl border-2 border-dashed border-gray-300 bg-gray-50 px-6 text-center transition-colors hover:border-blue-500 hover:bg-blue-50/50 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 flex items-center justify-center cursor-pointer outline-none", children: jsxRuntimeExports.jsxs("div", { className: "flex max-w-sm flex-col items-center gap-4", children: [jsxRuntimeExports.jsx("div", { className: "flex h-16 w-16 items-center justify-center rounded-full bg-blue-100", children: jsxRuntimeExports.jsx(Upload, { className: "h-8 w-8 text-blue-600" }) }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("p", { className: "text-lg font-semibold text-gray-900", children: uploadedPhotos.length > 0
+                                                              }, onDrop: handleDrop, className: "mt-5 flex aspect-video w-full cursor-pointer items-center justify-center rounded-xl border-2 border-dashed border-stone-300 bg-white px-6 text-center outline-none transition-colors hover:border-blue-500 hover:bg-blue-50/40 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2", children: jsxRuntimeExports.jsxs("div", { className: "flex max-w-sm flex-col items-center gap-4", children: [jsxRuntimeExports.jsx("div", { className: "flex h-16 w-16 items-center justify-center rounded-full bg-blue-100 shadow-inner", children: jsxRuntimeExports.jsx(Upload, { className: "h-8 w-8 text-blue-600" }) }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("p", { className: "text-lg font-semibold text-gray-900", children: uploadedPhotos.length > 0
                                                                                       ? `${uploadedPhotos.length} photo${uploadedPhotos.length > 1 ? 's' : ''} ready`
-                                                                                      : 'Drop your room photo here' }), jsxRuntimeExports.jsx("p", { className: "mt-1 text-sm text-gray-500", children: "Click to browse or drag and drop a JPG or PNG." })] }), jsxRuntimeExports.jsx("button", { type: "button", onClick: (e) => {
+                                                                                      : 'Drag your photo here' }), jsxRuntimeExports.jsx("p", { className: "mt-1 text-sm text-gray-500", children: "JPG or PNG. For best results, use a clear photo with good lighting." })] }), jsxRuntimeExports.jsx("button", { type: "button", onClick: (e) => {
                                                                               e.stopPropagation();
                                                                               fileInputRef.current?.click();
-                                                                          }, className: "rounded-lg bg-blue-600 px-6 py-3 font-semibold text-white transition hover:bg-blue-700", children: "Choose File" })] }) })] }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsxs("div", { className: "mb-3 flex items-center justify-between gap-3", children: [jsxRuntimeExports.jsx("h2", { className: "text-lg font-semibold text-gray-900", children: "Room Preview" }), jsxRuntimeExports.jsx("span", { className: "text-sm text-gray-500", children: uploadedPhotos[0] ? 'Photo loaded' : 'Awaiting upload' })] }), jsxRuntimeExports.jsx("div", { className: "w-full aspect-video rounded-xl bg-gray-100 border border-gray-200 overflow-hidden flex items-center justify-center", children: uploadedPhotos[0] ? (jsxRuntimeExports.jsx("img", { src: uploadedPhotos[0], alt: "Uploaded room preview", className: "w-full aspect-video object-cover rounded-xl" })) : (jsxRuntimeExports.jsxs("div", { className: "px-6 text-center text-gray-400", children: [jsxRuntimeExports.jsx(Camera, { className: "mx-auto mb-2 h-12 w-12" }), jsxRuntimeExports.jsx("p", { className: "text-sm font-medium", children: "Your room photo will appear here" })] })) })] })] }), jsxRuntimeExports.jsx("div", { className: "mt-6 bg-white rounded-2xl border border-gray-200 p-8 shadow-lg", children: jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-1 lg:grid-cols-12 gap-6", children: [jsxRuntimeExports.jsx("div", { className: "lg:col-span-4 space-y-6", children: jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h3", { className: "text-lg font-bold text-gray-900 mb-4", children: "Room Details" }), jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-gray-700 mb-2", children: "Room Type" }), jsxRuntimeExports.jsxs("select", { value: roomType, onChange: (e) => setRoomType(e.target.value), className: "w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500", children: [jsxRuntimeExports.jsx("option", { value: "living", children: "Living Room" }), jsxRuntimeExports.jsx("option", { value: "bedroom", children: "Bedroom" }), jsxRuntimeExports.jsx("option", { value: "dining", children: "Dining Room" }), jsxRuntimeExports.jsx("option", { value: "office", children: "Office" }), jsxRuntimeExports.jsx("option", { value: "kitchen", children: "Kitchen" }), jsxRuntimeExports.jsx("option", { value: "other", children: "Other" })] }), jsxRuntimeExports.jsx("p", { className: "mt-2 text-xs text-gray-500", children: "Select the room type that best matches the uploaded photo." })] }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mb-2", children: [jsxRuntimeExports.jsx("label", { className: "text-sm font-medium text-gray-700", children: "Room Dimensions" }), jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 text-xs text-gray-600", children: [jsxRuntimeExports.jsx("span", { children: "Meters" }), jsxRuntimeExports.jsx("button", { type: "button", onClick: handleUnitToggle, className: `relative inline-flex h-6 w-11 items-center rounded-full transition ${unitSystem === 'feet' ? 'bg-blue-600' : 'bg-gray-200'}`, children: jsxRuntimeExports.jsx("span", { className: `inline-block h-4 w-4 transform rounded-full bg-white transition ${unitSystem === 'feet' ? 'translate-x-6' : 'translate-x-1'}` }) }), jsxRuntimeExports.jsx("span", { children: "Feet" })] })] }), jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-2 gap-3", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("label", { className: "block text-xs text-gray-600 mb-1", children: "Length" }), jsxRuntimeExports.jsx("input", { type: "number", placeholder: unitSystem === 'meters' ? '12' : '39.4', value: lengthValue, onChange: (e) => setLengthValue(e.target.value), className: "w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" })] }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("label", { className: "block text-xs text-gray-600 mb-1", children: "Width" }), jsxRuntimeExports.jsx("input", { type: "number", placeholder: unitSystem === 'meters' ? '15' : '49.2', value: widthValue, onChange: (e) => setWidthValue(e.target.value), className: "w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" })] })] }), jsxRuntimeExports.jsxs("div", { className: "mt-3", children: [jsxRuntimeExports.jsx("label", { className: "block text-xs text-gray-600 mb-1", children: "Ceiling Height" }), jsxRuntimeExports.jsx("input", { type: "number", placeholder: unitSystem === 'meters' ? '2.4' : '8', value: heightValue, onChange: (e) => setHeightValue(e.target.value), className: "w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" })] })] })] })] }) }), jsxRuntimeExports.jsx("div", { className: "lg:col-span-4 space-y-6", children: jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h3", { className: "text-lg font-bold text-gray-900 mb-4", children: "Preferences" }), jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-gray-700 mb-3", children: "Preferred Styles" }), jsxRuntimeExports.jsx("div", { className: "grid grid-cols-2 gap-3", children: styleOptions.map((styleOption) => {
-                                                                                          const isSelected = selectedStyles.includes(styleOption.id);
-                                                                                          return (jsxRuntimeExports.jsxs("button", { type: "button", onClick: () => toggleStyle(styleOption.id), className: [
-                                                                                                  'p-3 rounded-lg text-center transition border',
+                                                                          }, className: "rounded-lg bg-blue-600 px-6 py-3 font-semibold text-white shadow-sm transition hover:bg-blue-700", style: { backgroundColor: primaryColor }, children: "Choose Room Photo" })] }) }), jsxRuntimeExports.jsx("p", { className: "mt-3 text-xs text-gray-500", children: "Use room details and catalog data to improve recommendations." })] }), jsxRuntimeExports.jsxs("div", { className: "rounded-2xl border border-stone-200 bg-white p-5 shadow-sm", children: [jsxRuntimeExports.jsxs("div", { className: "mb-3 flex items-center justify-between gap-3", children: [jsxRuntimeExports.jsx("h2", { className: "text-lg font-semibold text-gray-950", children: "Room preview" }), jsxRuntimeExports.jsx("span", { className: "text-sm text-gray-500", children: uploadedPhotos[0] ? 'Photo loaded' : 'Awaiting upload' })] }), jsxRuntimeExports.jsx("div", { className: "flex aspect-video w-full items-center justify-center overflow-hidden rounded-xl border border-stone-200 bg-stone-50", children: uploadedPhotos[0] ? (jsxRuntimeExports.jsx("img", { src: uploadedPhotos[0], alt: "Uploaded room preview", className: "aspect-video w-full rounded-xl object-cover" })) : (jsxRuntimeExports.jsxs("div", { className: "px-6 text-center text-gray-500", children: [jsxRuntimeExports.jsx("div", { className: "mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-white shadow-sm", children: jsxRuntimeExports.jsx(Camera, { className: "h-7 w-7 text-blue-500" }) }), jsxRuntimeExports.jsx("p", { className: "text-sm font-semibold text-gray-800", children: "Your uploaded room photo will appear here." }), jsxRuntimeExports.jsx("p", { className: "mt-2 text-xs leading-5 text-gray-500", children: "Tip: Take the photo from a corner or doorway to capture more of the room." })] })) })] })] }), jsxRuntimeExports.jsxs("div", { className: "mt-6 grid grid-cols-1 gap-5 lg:grid-cols-12", children: [jsxRuntimeExports.jsxs("div", { className: "rounded-2xl border border-stone-200 bg-white p-5 shadow-sm lg:col-span-4", children: [jsxRuntimeExports.jsxs("div", { className: "mb-5 flex items-start gap-3", children: [jsxRuntimeExports.jsx("div", { className: "flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600", children: jsxRuntimeExports.jsx(Ruler, { className: "h-5 w-5" }) }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h3", { className: "text-lg font-bold text-gray-950", children: "Room Details" }), jsxRuntimeExports.jsx("p", { className: "mt-1 text-sm text-gray-500", children: "Optional, but improves fit recommendations." })] })] }), jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-gray-700 mb-2", children: "Room Type" }), jsxRuntimeExports.jsxs("select", { value: roomType, onChange: (e) => setRoomType(e.target.value), className: "w-full rounded-lg border border-stone-300 bg-white px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500", children: [jsxRuntimeExports.jsx("option", { value: "living", children: "Living Room" }), jsxRuntimeExports.jsx("option", { value: "bedroom", children: "Bedroom" }), jsxRuntimeExports.jsx("option", { value: "dining", children: "Dining Room" }), jsxRuntimeExports.jsx("option", { value: "office", children: "Office" }), jsxRuntimeExports.jsx("option", { value: "kitchen", children: "Kitchen" }), jsxRuntimeExports.jsx("option", { value: "other", children: "Other" })] })] }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsxs("div", { className: "mb-3 flex items-center justify-between gap-3", children: [jsxRuntimeExports.jsx("label", { className: "text-sm font-medium text-gray-700", children: "Room Dimensions" }), jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 text-xs font-medium text-gray-600", children: [jsxRuntimeExports.jsx("span", { children: "Meters" }), jsxRuntimeExports.jsx("button", { type: "button", onClick: handleUnitToggle, className: `relative inline-flex h-6 w-11 items-center rounded-full transition ${unitSystem === 'feet' ? 'bg-blue-600' : 'bg-stone-200'}`, "aria-label": "Toggle meters or feet", children: jsxRuntimeExports.jsx("span", { className: `inline-block h-4 w-4 transform rounded-full bg-white transition ${unitSystem === 'feet' ? 'translate-x-6' : 'translate-x-1'}` }) }), jsxRuntimeExports.jsx("span", { children: "Feet" })] })] }), jsxRuntimeExports.jsx("div", { className: "mb-3 grid grid-cols-3 gap-2", children: roomSizePresets.map((preset) => (jsxRuntimeExports.jsx("button", { type: "button", onClick: () => applyRoomPreset(preset), className: "rounded-full border border-stone-300 bg-stone-50 px-3 py-2 text-xs font-semibold text-gray-700 transition hover:border-blue-300 hover:bg-blue-50 hover:text-blue-800", children: preset.label }, preset.id))) }), jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-2 gap-3", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("label", { className: "block text-xs font-medium text-gray-600 mb-1", children: "Length" }), jsxRuntimeExports.jsx("input", { type: "number", placeholder: unitSystem === 'meters' ? '4.6' : '15.1', value: lengthValue, onChange: (e) => setLengthValue(e.target.value), className: "w-full rounded-lg border border-stone-300 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" })] }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("label", { className: "block text-xs font-medium text-gray-600 mb-1", children: "Width" }), jsxRuntimeExports.jsx("input", { type: "number", placeholder: unitSystem === 'meters' ? '3.8' : '12.5', value: widthValue, onChange: (e) => setWidthValue(e.target.value), className: "w-full rounded-lg border border-stone-300 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" })] })] }), jsxRuntimeExports.jsxs("div", { className: "mt-3", children: [jsxRuntimeExports.jsx("label", { className: "block text-xs font-medium text-gray-600 mb-1", children: "Ceiling Height" }), jsxRuntimeExports.jsx("input", { type: "number", placeholder: unitSystem === 'meters' ? '2.6' : '8.5', value: heightValue, onChange: (e) => setHeightValue(e.target.value), className: "w-full rounded-lg border border-stone-300 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" })] })] })] })] }), jsxRuntimeExports.jsxs("div", { className: "rounded-2xl border border-stone-200 bg-white p-5 shadow-sm lg:col-span-4", children: [jsxRuntimeExports.jsxs("div", { className: "mb-5 flex items-start gap-3", children: [jsxRuntimeExports.jsx("div", { className: "flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-amber-50 text-amber-700", children: jsxRuntimeExports.jsx(Sofa, { className: "h-5 w-5" }) }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h3", { className: "text-lg font-bold text-gray-950", children: "Preferences" }), jsxRuntimeExports.jsx("p", { className: "mt-1 text-sm text-gray-500", children: "Guide matches toward the showroom look you want." })] })] }), jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-gray-700 mb-3", children: "Preferred Styles" }), jsxRuntimeExports.jsx("div", { className: "grid grid-cols-2 gap-3", children: styleOptions.map((styleOption) => {
+                                                                                  const isSelected = selectedStyles.includes(styleOption.id);
+                                                                                  const StyleIcon = styleOption.Icon;
+                                                                                  return (jsxRuntimeExports.jsxs("button", { type: "button", onClick: () => toggleStyle(styleOption.id), className: [
+                                                                                          `rounded-xl border bg-gradient-to-br ${styleOption.tone} p-3 text-left transition`,
+                                                                                          isSelected
+                                                                                              ? 'border-blue-500 shadow-sm ring-2 ring-blue-100'
+                                                                                              : 'border-stone-200 hover:border-stone-300 hover:shadow-sm',
+                                                                                      ].join(' '), children: [jsxRuntimeExports.jsx("span", { className: [
+                                                                                                  'mb-3 flex h-10 w-10 items-center justify-center rounded-lg border',
                                                                                                   isSelected
-                                                                                                      ? 'border-2 border-blue-600 bg-blue-50 hover:bg-blue-100'
-                                                                                                      : 'border-gray-300 hover:bg-gray-50',
-                                                                                              ].join(' '), children: [jsxRuntimeExports.jsx("span", { className: "text-2xl mb-1 block", children: styleOption.icon }), jsxRuntimeExports.jsx("span", { className: [
-                                                                                                          'text-sm font-medium',
-                                                                                                          isSelected ? 'text-blue-900' : 'text-gray-700',
-                                                                                                      ].join(' '), children: styleOption.label })] }, styleOption.id));
-                                                                                      }) })] }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-gray-700 mb-2", children: "Preferred Colors" }), jsxRuntimeExports.jsx("input", { type: "text", value: colorInput, onChange: (e) => setColorInput(e.target.value), placeholder: "e.g., Beige, Forest Green, Terracotta", className: "w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm" }), jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500 mt-1", children: "Comma-separated" })] })] })] }) }), jsxRuntimeExports.jsx("div", { className: "lg:col-span-4 space-y-6", children: jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h3", { className: "text-lg font-bold text-gray-900 mb-4", children: "Budget & Actions" }), jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-2 gap-3", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-gray-700 mb-2", children: "Budget Min ($)" }), jsxRuntimeExports.jsx("input", { type: "number", value: budgetMin, onChange: (e) => setBudgetMin(e.target.value), placeholder: "500", className: "w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" })] }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-gray-700 mb-2", children: "Budget Max ($)" }), jsxRuntimeExports.jsx("input", { type: "number", value: budgetMax, onChange: (e) => setBudgetMax(e.target.value), placeholder: "2000", className: "w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" })] })] }), jsxRuntimeExports.jsxs("div", { className: "space-y-3 pt-4", children: [jsxRuntimeExports.jsx("button", { type: "button", onClick: handleAnalyze, disabled: isLoading, className: "w-full py-4 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition shadow-lg shadow-blue-600/30 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed", style: { backgroundColor: primaryColor }, children: isLoading ? (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsx("span", { className: "h-5 w-5 rounded-full border-2 border-white/50 border-t-white animate-spin" }), "Analyzing..."] })) : (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsx(Sparkles, { className: "w-5 h-5" }), "Analyze Room"] })) }), jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-2 gap-3", children: [jsxRuntimeExports.jsx("button", { type: "button", onClick: handleExportPdf, className: "px-4 py-3 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition text-sm", children: "Export PDF" }), jsxRuntimeExports.jsx("button", { type: "button", onClick: handleShare, className: "px-4 py-3 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition text-sm", children: "Share" })] }), jsxRuntimeExports.jsxs("div", { className: "rounded-xl border border-blue-100 bg-blue-50 px-4 py-3 text-sm text-blue-900", children: [jsxRuntimeExports.jsx("p", { className: "font-medium", children: "All options are visible at once." }), jsxRuntimeExports.jsx("p", { className: "mt-1 text-blue-800/80", children: "No collapsible sections, less scrolling, and faster setup on desktop." })] })] })] })] }) })] }) }), shareMessage && (jsxRuntimeExports.jsx("div", { className: "mt-4 rounded-lg border border-blue-200 bg-blue-50 px-4 py-3 text-sm text-blue-900", children: shareMessage })), error && (jsxRuntimeExports.jsxs("div", { className: "mt-4 rounded-xl border border-red-200 bg-red-50 p-4 text-red-700", children: [jsxRuntimeExports.jsx("p", { className: "font-semibold", children: "Error" }), jsxRuntimeExports.jsx("p", { className: "text-sm", children: error })] })), jsxRuntimeExports.jsxs("div", { className: "print-only hidden mt-6 text-left", children: [jsxRuntimeExports.jsx("h3", { className: "text-xl font-semibold text-gray-900", children: "Room Planner Share Summary" }), jsxRuntimeExports.jsx("pre", { className: "mt-2 whitespace-pre-wrap text-sm text-gray-700", children: buildShareText() })] })] }), jsxRuntimeExports.jsx("div", { className: "mt-8 bg-white p-6 md:p-8 rounded-2xl shadow-lg border border-gray-200", children: jsxRuntimeExports.jsx(CustomizedFurnitureList, { items: customizedFurniture, onItemRemoved: handleItemRemoved, onNavigateToCustomizer: handleNavigateToCustomizer }) }), recommendations && (jsxRuntimeExports.jsxs("div", { className: "mt-8 bg-white p-6 md:p-8 rounded-2xl shadow-lg border border-gray-200 transition-all", children: [recommendations.roomAnalysis && (jsxRuntimeExports.jsxs("div", { className: "mb-8 p-6 bg-blue-50 rounded-xl border border-blue-200", children: [jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between gap-4 mb-4", children: [jsxRuntimeExports.jsx("h2", { className: "text-2xl font-semibold text-gray-900", children: "Room Analysis" }), jsxRuntimeExports.jsx("span", { className: "px-3 py-1 bg-green-100 text-green-700 text-sm font-medium rounded-full", children: "Success" })] }), jsxRuntimeExports.jsxs("div", { className: "grid md:grid-cols-2 gap-4", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-600 mb-1", children: "Detected Style" }), jsxRuntimeExports.jsx("p", { className: "text-lg font-semibold text-gray-900", children: recommendations.roomAnalysis.detectedStyle })] }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-600 mb-1", children: "Dominant Colors" }), jsxRuntimeExports.jsx("div", { className: "flex flex-wrap gap-2 mt-1", children: recommendations.roomAnalysis.dominantColors.map((color, i) => (jsxRuntimeExports.jsx("span", { className: "px-3 py-1 bg-white border border-blue-200 rounded-full text-sm text-gray-900", children: color }, i))) })] }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-600 mb-1", children: "Free Space" }), jsxRuntimeExports.jsx("p", { className: "text-lg font-semibold text-gray-900", children: recommendations.roomAnalysis.freeSpace.description })] })] })] })), jsxRuntimeExports.jsx(RecommendationsList, { recommendations: recommendations.recommendations, onCustomize: enabledActions.customize ? handleCustomize : undefined, onFinalize: enabledActions.requestQuote ? handleFinalizeRecommendation : undefined, enabledActions: enabledActions, primaryColor: primaryColor }), enabledActions.requestQuote && recommendations.recommendations && recommendations.recommendations.length > 0 && (jsxRuntimeExports.jsxs("div", { className: "mt-8 pt-6 border-t border-gray-200 text-center", children: [jsxRuntimeExports.jsx("p", { className: "text-gray-700 mb-4 font-medium", children: "Ready to convert this into a quote?" }), jsxRuntimeExports.jsx("div", { className: "grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3", children: recommendations.recommendations.slice(0, 3).map((rec, idx) => (jsxRuntimeExports.jsxs("button", { onClick: () => handleFinalizeRecommendation(rec), className: "w-full px-4 py-3 text-white rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2 shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2", style: { backgroundColor: primaryColor }, children: [jsxRuntimeExports.jsxs("span", { className: "text-center leading-snug", children: ["Request Quote for ", rec.item.name] }), jsxRuntimeExports.jsx(ArrowRight, { className: "w-5 h-5 flex-shrink-0" })] }, rec.item.id || idx))) })] }))] }))] }) })] }), jsxRuntimeExports.jsx(FinalizeQuoteModal, { isOpen: enabledActions.requestQuote && showFinalizeModal, onClose: () => {
+                                                                                                      ? 'border-blue-200 bg-blue-50 text-blue-700'
+                                                                                                      : 'border-stone-200 bg-white text-gray-600',
+                                                                                              ].join(' '), children: jsxRuntimeExports.jsx(StyleIcon, { className: "h-5 w-5" }) }), jsxRuntimeExports.jsx("span", { className: [
+                                                                                                  'block text-sm font-semibold',
+                                                                                                  isSelected ? 'text-blue-950' : 'text-gray-800',
+                                                                                              ].join(' '), children: styleOption.label })] }, styleOption.id));
+                                                                              }) })] }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-gray-700 mb-2", children: "Preferred Colors" }), jsxRuntimeExports.jsx("input", { type: "text", value: colorInput, onChange: (e) => setColorInput(e.target.value), placeholder: "e.g., Beige, Forest Green, Terracotta", className: "w-full rounded-lg border border-stone-300 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" }), jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500 mt-1", children: "Comma-separated" })] })] })] }), jsxRuntimeExports.jsxs("div", { className: "rounded-2xl border border-stone-200 bg-white p-5 shadow-sm lg:col-span-4", children: [jsxRuntimeExports.jsxs("div", { className: "mb-5 flex items-start gap-3", children: [jsxRuntimeExports.jsx("div", { className: "flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700", children: jsxRuntimeExports.jsx(ShoppingBag, { className: "h-5 w-5" }) }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h3", { className: "text-lg font-bold text-gray-950", children: "Budget & Actions" }), jsxRuntimeExports.jsx("p", { className: "mt-1 text-sm text-gray-500", children: "Recommendations stay grounded in your imported catalog." })] })] }), jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-2 gap-3", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-gray-700 mb-2", children: "Budget Min ($)" }), jsxRuntimeExports.jsx("input", { type: "number", value: budgetMin, onChange: (e) => setBudgetMin(e.target.value), placeholder: "500", className: "w-full rounded-lg border border-stone-300 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" })] }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-gray-700 mb-2", children: "Budget Max ($)" }), jsxRuntimeExports.jsx("input", { type: "number", value: budgetMax, onChange: (e) => setBudgetMax(e.target.value), placeholder: "2000", className: "w-full rounded-lg border border-stone-300 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" })] })] }), jsxRuntimeExports.jsxs("div", { className: "rounded-xl border border-blue-100 bg-blue-50/80 px-4 py-4 text-sm text-blue-950", children: [jsxRuntimeExports.jsx("p", { className: "font-semibold", children: "What ModlyAI checks" }), jsxRuntimeExports.jsx("div", { className: "mt-3 grid gap-2", children: trustItems.map((item) => (jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 text-blue-900", children: [jsxRuntimeExports.jsx(Check, { className: "h-4 w-4 shrink-0 text-blue-600" }), jsxRuntimeExports.jsx("span", { children: item })] }, item))) })] }), jsxRuntimeExports.jsxs("div", { className: "space-y-3 pt-1", children: [jsxRuntimeExports.jsx("button", { type: "button", onClick: handleAnalyze, disabled: isLoading, className: "flex w-full items-center justify-center gap-2 rounded-lg bg-blue-600 py-4 font-semibold text-white shadow-lg shadow-blue-600/20 transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50", style: { backgroundColor: primaryColor }, children: isLoading ? (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsx("span", { className: "h-5 w-5 rounded-full border-2 border-white/50 border-t-white animate-spin" }), "Finding matches..."] })) : (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsx(Sparkles, { className: "w-5 h-5" }), "Find matching catalog products"] })) }), jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-1 gap-3 sm:grid-cols-2", children: [jsxRuntimeExports.jsx("button", { type: "button", onClick: handleExportPdf, className: "min-h-11 rounded-lg border border-stone-300 bg-white px-4 py-3 text-sm font-semibold text-gray-700 transition hover:bg-stone-50", children: "Export PDF" }), jsxRuntimeExports.jsx("button", { type: "button", onClick: handleShare, className: "min-h-11 rounded-lg border border-stone-300 bg-white px-4 py-3 text-sm font-semibold text-gray-700 transition hover:bg-stone-50", children: "Share" })] })] })] })] })] }), shareMessage && (jsxRuntimeExports.jsx("div", { className: "mt-4 rounded-lg border border-blue-200 bg-blue-50 px-4 py-3 text-sm text-blue-900", children: shareMessage })), error && (jsxRuntimeExports.jsxs("div", { className: "mt-4 rounded-xl border border-red-200 bg-red-50 p-4 text-red-700", children: [jsxRuntimeExports.jsx("p", { className: "font-semibold", children: "Error" }), jsxRuntimeExports.jsx("p", { className: "text-sm", children: error })] })), jsxRuntimeExports.jsxs("div", { className: "print-only hidden mt-6 text-left", children: [jsxRuntimeExports.jsx("h3", { className: "text-xl font-semibold text-gray-900", children: "Room Planner Share Summary" }), jsxRuntimeExports.jsx("pre", { className: "mt-2 whitespace-pre-wrap text-sm text-gray-700", children: buildShareText() })] })] }), jsxRuntimeExports.jsx("div", { className: "mt-8 bg-white p-6 md:p-8 rounded-2xl shadow-lg border border-gray-200", children: jsxRuntimeExports.jsx(CustomizedFurnitureList, { items: customizedFurniture, onItemRemoved: handleItemRemoved, onNavigateToCustomizer: handleNavigateToCustomizer, onRequestQuote: enabledActions.requestQuote ? handleRequestQuoteForCustomizedItem : undefined }) }), recommendations && (jsxRuntimeExports.jsxs("div", { ref: resultsRef, className: "mt-8 scroll-mt-24 rounded-2xl border border-gray-200 bg-white p-6 shadow-lg transition-all md:p-8", children: [recommendations.roomAnalysis && (jsxRuntimeExports.jsxs("div", { className: "mb-8 rounded-xl border border-blue-100 bg-blue-50/80 p-6", children: [jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between gap-4 mb-4", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h2", { className: "text-2xl font-semibold text-gray-950", children: "Room analysis" }), jsxRuntimeExports.jsx("p", { className: "mt-1 text-sm text-blue-900/70", children: "Use room details and catalog data to improve recommendations." })] }), jsxRuntimeExports.jsx("span", { className: "px-3 py-1 bg-green-100 text-green-700 text-sm font-medium rounded-full", children: "Success" })] }), jsxRuntimeExports.jsxs("div", { className: "grid md:grid-cols-2 gap-4", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-600 mb-1", children: "Observed style cues" }), jsxRuntimeExports.jsx("p", { className: "text-lg font-semibold text-gray-900", children: recommendations.roomAnalysis.detectedStyle })] }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-600 mb-1", children: "Color cues" }), jsxRuntimeExports.jsx("div", { className: "flex flex-wrap gap-2 mt-1", children: recommendations.roomAnalysis.dominantColors.map((color, i) => (jsxRuntimeExports.jsx("span", { className: "px-3 py-1 bg-white border border-blue-200 rounded-full text-sm text-gray-900", children: color }, i))) })] }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-600 mb-1", children: "Layout notes" }), jsxRuntimeExports.jsx("p", { className: "text-lg font-semibold text-gray-900", children: recommendations.roomAnalysis.freeSpace.description })] })] })] })), jsxRuntimeExports.jsx(RecommendationsList, { recommendations: recommendations.recommendations, onCustomize: enabledActions.customize ? handleCustomize : undefined, onFinalize: enabledActions.requestQuote ? handleFinalizeRecommendation : undefined, enabledActions: enabledActions, primaryColor: primaryColor, analyticsContext: analyticsContext }), enabledActions.requestQuote && recommendations.recommendations && recommendations.recommendations.length > 0 && (jsxRuntimeExports.jsxs("div", { className: "mt-8 pt-6 border-t border-gray-200 text-center", children: [jsxRuntimeExports.jsx("p", { className: "text-gray-700 mb-4 font-medium", children: "Ready to convert this into a quote?" }), jsxRuntimeExports.jsx("div", { className: "grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3", children: recommendations.recommendations.slice(0, 3).map((rec, idx) => (jsxRuntimeExports.jsxs("button", { type: "button", onClick: (event) => {
+                                                              event.preventDefault();
+                                                              event.stopPropagation();
+                                                              handleFinalizeRecommendation(rec);
+                                                          }, className: "w-full px-4 py-3 text-white rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2 shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2", style: { backgroundColor: primaryColor }, children: [jsxRuntimeExports.jsxs("span", { className: "text-center leading-snug", children: ["Request Quote for ", rec.item.name] }), jsxRuntimeExports.jsx(ArrowRight, { className: "w-5 h-5 flex-shrink-0" })] }, rec.item.id || idx))) })] }))] }))] }) })] }), jsxRuntimeExports.jsx(FinalizeQuoteModal, { isOpen: enabledActions.requestQuote && showFinalizeModal, onClose: () => {
                       setShowFinalizeModal(false);
                       setSelectedRecommendation(null);
-                  }, onProceed: handleProceedToQuote, recommendation: selectedRecommendation }), jsxRuntimeExports.jsx(QuoteRequestForm, { isOpen: enabledActions.requestQuote && showQuoteForm, onClose: () => {
+                      setSelectedCustomizedItem(null);
+                  }, onProceed: handleProceedToQuote, item: selectedCustomizedItem, recommendation: selectedRecommendation, roomDimensions: savedDimensions, roomAnalysis: recommendations?.roomAnalysis }), jsxRuntimeExports.jsx(QuoteRequestForm, { isOpen: enabledActions.requestQuote && showQuoteForm, onClose: () => {
                       setShowQuoteForm(false);
                       setSelectedRecommendation(null);
-                  }, onSubmit: handleQuoteSubmit, recommendation: selectedRecommendation }), quoteSuccess && (jsxRuntimeExports.jsxs("div", { className: "fixed bottom-6 right-6 bg-emerald-600 text-white px-6 py-4 rounded-xl shadow-2xl flex items-center gap-3 z-50", children: [jsxRuntimeExports.jsx(Sparkles, { className: "w-6 h-6" }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("p", { className: "font-semibold", children: "Quote Request Submitted!" }), jsxRuntimeExports.jsx("p", { className: "text-sm text-white/90", children: "We'll contact you soon with details." })] })] }))] }));
+                      setSelectedCustomizedItem(null);
+                  }, item: selectedCustomizedItem, onSubmit: handleQuoteSubmit, recommendation: selectedRecommendation, storeId: mergedConfig.storeId, widgetId: mergedConfig.widgetId, roomDimensions: savedDimensions, roomAnalysis: recommendations?.roomAnalysis }), quoteSuccess && (jsxRuntimeExports.jsxs("div", { className: "fixed bottom-6 right-6 bg-emerald-600 text-white px-6 py-4 rounded-xl shadow-2xl flex items-center gap-3 z-50", children: [jsxRuntimeExports.jsx(Sparkles, { className: "w-6 h-6" }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("p", { className: "font-semibold", children: "Quote Request Submitted!" }), jsxRuntimeExports.jsx("p", { className: "text-sm text-white/90", children: "Quote request sent. The store will follow up with pricing and next steps." })] })] }))] }));
   }
 
+  const PAGE_WIDTH = 612;
+  const PAGE_HEIGHT = 792;
+  const MARGIN = 42;
+  const FOOTER_TOP = 58;
+  const CONTENT_BOTTOM = 86;
+  const CONTENT_WIDTH = PAGE_WIDTH - MARGIN * 2;
+  const BLUE = [38 / 255, 99 / 255, 235 / 255];
+  const PURPLE = [124 / 255, 58 / 255, 237 / 255];
+  const DARK = [17 / 255, 24 / 255, 39 / 255];
+  const MUTED = [107 / 255, 114 / 255, 128 / 255];
+  const BORDER = [229 / 255, 231 / 255, 235 / 255];
+  const SOFT = [249 / 255, 250 / 255, 251 / 255];
+  const formatCurrency = (value) => typeof value === 'number' && Number.isFinite(value)
+      ? new Intl.NumberFormat('en-US', {
+          style: 'currency',
+          currency: 'USD',
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+      }).format(value)
+      : undefined;
+  const formatPriceModifier = (value) => {
+      if (typeof value !== 'number' || !Number.isFinite(value))
+          return undefined;
+      const formatted = formatCurrency(Math.abs(value));
+      if (!formatted)
+          return undefined;
+      return value < 0 ? `-${formatted}` : `+${formatted}`;
+  };
+  const formatDimensions = (dimensions) => {
+      if (!dimensions)
+          return [];
+      const unit = dimensions.unit || 'in';
+      return [
+          dimensions.length !== undefined ? { label: 'Length', value: `${dimensions.length} ${unit}` } : undefined,
+          dimensions.width !== undefined ? { label: 'Width', value: `${dimensions.width} ${unit}` } : undefined,
+          dimensions.height !== undefined ? { label: 'Height', value: `${dimensions.height} ${unit}` } : undefined,
+      ].filter((row) => Boolean(row));
+  };
+  const formatDimensionPricing = (adjustments) => {
+      if (!adjustments)
+          return [];
+      return [
+          ['Width adjustment', adjustments.width],
+          ['Length adjustment', adjustments.length],
+          ['Height adjustment', adjustments.height],
+      ]
+          .map(([label, amount]) => {
+          const value = formatPriceModifier(amount);
+          return value && amount !== 0 ? { label, value } : undefined;
+      })
+          .filter((row) => Boolean(row));
+  };
+  const calculateCustomizationTotal = (lineItems) => lineItems.reduce((sum, lineItem) => sum + (Number.isFinite(lineItem.amount) ? lineItem.amount : 0), 0);
+  const sanitizePdfText = (value) => String(value ?? '')
+      .replace(/[^\x09\x0A\x0D\x20-\x7E]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  const escapePdfText = (value) => sanitizePdfText(value)
+      .replace(/\\/g, '\\\\')
+      .replace(/\(/g, '\\(')
+      .replace(/\)/g, '\\)');
+  const rgb = ([r, g, b]) => `${r.toFixed(3)} ${g.toFixed(3)} ${b.toFixed(3)}`;
+  const drawRect = (x, y, width, height, fill, stroke) => {
+      if (fill && stroke)
+          return `q ${rgb(fill)} rg ${rgb(stroke)} RG ${x} ${y} ${width} ${height} re B Q`;
+      if (fill)
+          return `q ${rgb(fill)} rg ${x} ${y} ${width} ${height} re f Q`;
+      if (stroke)
+          return `q ${rgb(stroke)} RG ${x} ${y} ${width} ${height} re S Q`;
+      return '';
+  };
+  const drawLine = (x1, y1, x2, y2, color) => `q ${rgb(color)} RG 0.8 w ${x1} ${y1} m ${x2} ${y2} l S Q`;
+  const textWidth = (text, size) => sanitizePdfText(text).length * size * 0.52;
+  const wrapText = (text, width, size) => {
+      const words = sanitizePdfText(text).split(' ').filter(Boolean);
+      const lines = [];
+      let current = '';
+      words.forEach((word) => {
+          const next = current ? `${current} ${word}` : word;
+          if (textWidth(next, size) <= width) {
+              current = next;
+              return;
+          }
+          if (current)
+              lines.push(current);
+          current = word;
+      });
+      if (current)
+          lines.push(current);
+      return lines.length > 0 ? lines : [''];
+  };
+  class PdfLayout {
+      constructor(footerMeta) {
+          this.footerMeta = footerMeta;
+          this.pages = [[]];
+          this.y = PAGE_HEIGHT - MARGIN;
+      }
+      get page() {
+          return this.pages[this.pages.length - 1];
+      }
+      add(command) {
+          if (command)
+              this.page.push(command);
+      }
+      addPage() {
+          this.pages.push([]);
+          this.y = PAGE_HEIGHT - 86;
+          this.addText('Customized Furniture Quote', MARGIN, PAGE_HEIGHT - 48, 14, 'F2', DARK);
+          this.add(drawLine(MARGIN, PAGE_HEIGHT - 62, PAGE_WIDTH - MARGIN, PAGE_HEIGHT - 62, BORDER));
+      }
+      ensureSpace(height) {
+          if (this.y - height < CONTENT_BOTTOM) {
+              this.addPage();
+          }
+      }
+      addText(text, x, y, size = 10, font = 'F1', color = DARK) {
+          this.add(`BT /${font} ${size} Tf ${rgb(color)} rg ${x} ${y} Td (${escapePdfText(text)}) Tj ET`);
+      }
+      addRightText(text, rightX, y, size = 10, font = 'F1', color = DARK) {
+          this.addText(text, rightX - textWidth(text, size), y, size, font, color);
+      }
+      addWrappedText(text, x, y, width, size = 10, font = 'F1', color = DARK) {
+          const lines = wrapText(text, width, size);
+          lines.forEach((line, index) => this.addText(line, x, y - index * (size + 4), size, font, color));
+          return y - lines.length * (size + 4);
+      }
+      drawHeader(brandName, generatedAt, referenceId) {
+          this.add(drawRect(0, PAGE_HEIGHT - 82, PAGE_WIDTH, 82, [0.98, 0.98, 1]));
+          this.add(drawRect(0, PAGE_HEIGHT - 82, 8, 82, BLUE));
+          this.add(drawRect(8, PAGE_HEIGHT - 82, 4, 82, PURPLE));
+          this.addText(brandName || 'ModlyAI', MARGIN, PAGE_HEIGHT - 42, 18, 'F2', DARK);
+          this.addText('Generated by ModlyAI', MARGIN, PAGE_HEIGHT - 60, 9, 'F1', MUTED);
+          this.addRightText('Customized Furniture Quote', PAGE_WIDTH - MARGIN, PAGE_HEIGHT - 42, 16, 'F2', DARK);
+          this.addRightText(`Generated: ${generatedAt.toLocaleString()}`, PAGE_WIDTH - MARGIN, PAGE_HEIGHT - 60, 9, 'F1', MUTED);
+          if (referenceId) {
+              this.addRightText(`Reference: ${referenceId}`, PAGE_WIDTH - MARGIN, PAGE_HEIGHT - 74, 8, 'F1', MUTED);
+          }
+          this.add(drawLine(MARGIN, PAGE_HEIGHT - 92, PAGE_WIDTH - MARGIN, PAGE_HEIGHT - 92, BORDER));
+          this.y = PAGE_HEIGHT - 118;
+      }
+      drawCard(title, height, drawContent) {
+          this.ensureSpace(height + 14);
+          const top = this.y;
+          this.add(drawRect(MARGIN, top - height, CONTENT_WIDTH, height, [1, 1, 1], BORDER));
+          this.addText(title, MARGIN + 16, top - 24, 12, 'F2', DARK);
+          this.add(drawLine(MARGIN + 16, top - 34, PAGE_WIDTH - MARGIN - 16, top - 34, BORDER));
+          drawContent(top - 52);
+          this.y = top - height - 14;
+      }
+      drawRows(rows, x, y, labelWidth = 122, valueWidth = 310) {
+          let cursor = y;
+          rows.forEach((row) => {
+              this.addText(row.label, x, cursor, 9, 'F1', MUTED);
+              cursor = this.addWrappedText(row.value, x + labelWidth, cursor, valueWidth, 9, 'F1', DARK) - 4;
+          });
+          return cursor;
+      }
+      drawFooter() {
+          this.pages.forEach((page) => {
+              page.push(drawLine(MARGIN, FOOTER_TOP, PAGE_WIDTH - MARGIN, FOOTER_TOP, BORDER));
+              page.push(`BT /F2 8 Tf ${rgb(MUTED)} rg ${MARGIN} ${FOOTER_TOP - 16} Td (Generated by ModlyAI) Tj ET`);
+              page.push(`BT /F1 8 Tf ${rgb(MUTED)} rg ${MARGIN} ${FOOTER_TOP - 29} Td (Final pricing, availability, and delivery are subject to merchant confirmation.) Tj ET`);
+              if (this.footerMeta) {
+                  page.push(`BT /F1 7 Tf ${rgb(MUTED)} rg ${MARGIN} ${FOOTER_TOP - 42} Td (${escapePdfText(this.footerMeta)}) Tj ET`);
+              }
+          });
+      }
+      toBlob() {
+          this.drawFooter();
+          const pageObjects = [];
+          const contentObjects = [];
+          const firstPageObject = 3;
+          const firstContentObject = firstPageObject + this.pages.length;
+          this.pages.forEach((commands, index) => {
+              const pageObjectId = firstPageObject + index;
+              const contentObjectId = firstContentObject + index;
+              pageObjects.push(`${pageObjectId} 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${PAGE_WIDTH} ${PAGE_HEIGHT}] /Resources << /Font << /F1 ${firstContentObject + this.pages.length} 0 R /F2 ${firstContentObject + this.pages.length + 1} 0 R >> >> /Contents ${contentObjectId} 0 R >>\nendobj\n`);
+              const content = `${commands.join('\n')}\n`;
+              contentObjects.push(`${contentObjectId} 0 obj\n<< /Length ${content.length} >>\nstream\n${content}endstream\nendobj\n`);
+          });
+          const fontStart = firstContentObject + this.pages.length;
+          const objects = [
+              `1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n`,
+              `2 0 obj\n<< /Type /Pages /Kids [${this.pages.map((_, index) => `${firstPageObject + index} 0 R`).join(' ')}] /Count ${this.pages.length} >>\nendobj\n`,
+              ...pageObjects,
+              ...contentObjects,
+              `${fontStart} 0 obj\n<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>\nendobj\n`,
+              `${fontStart + 1} 0 obj\n<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>\nendobj\n`,
+          ];
+          let pdf = '%PDF-1.4\n';
+          const offsets = [0];
+          objects.forEach((object) => {
+              offsets.push(pdf.length);
+              pdf += object;
+          });
+          const xrefOffset = pdf.length;
+          pdf += `xref\n0 ${objects.length + 1}\n`;
+          pdf += '0000000000 65535 f \n';
+          offsets.slice(1).forEach((offset) => {
+              pdf += `${String(offset).padStart(10, '0')} 00000 n \n`;
+          });
+          pdf += `trailer\n<< /Size ${objects.length + 1} /Root 1 0 R >>\nstartxref\n${xrefOffset}\n%%EOF`;
+          return new Blob([pdf], { type: 'application/pdf' });
+      }
+  }
+  const choiceValue = (choice) => {
+      const price = formatPriceModifier(choice.price);
+      return price ? `${choice.value} (${price})` : choice.value;
+  };
+  const estimateRowsHeight = (rows, width = 310, size = 9) => rows.reduce((total, row) => total + wrapText(row.value, width, size).length * (size + 4) + 4, 0);
+  function generateCustomizationPdf(input) {
+      const technicalMeta = [input.storeId ? `Store: ${input.storeId}` : '', input.widgetId ? `Widget: ${input.widgetId}` : '']
+          .filter(Boolean)
+          .join(' / ');
+      const pdf = new PdfLayout(technicalMeta || undefined);
+      const referenceId = input.referenceId ?? `MOD-${input.generatedAt.getTime().toString(36).toUpperCase()}`;
+      const basePrice = formatCurrency(input.product.basePrice ?? input.pricing.basePrice);
+      const estimatedTotal = input.pricing.quoteRequired
+          ? 'Quote required'
+          : formatCurrency(input.product.estimatedTotal ?? input.pricing.estimatedTotal);
+      const productRows = [
+          { label: 'Product', value: input.product.name },
+          input.product.category ? { label: 'Category', value: input.product.category } : undefined,
+          input.product.productUrl ? { label: 'Product URL', value: input.product.productUrl } : undefined,
+          basePrice ? { label: 'Base price', value: basePrice } : undefined,
+          { label: 'Pricing mode', value: input.product.pricingMode === 'quote_required' ? 'Quote required' : 'Estimated' },
+          estimatedTotal ? { label: 'Estimated total', value: estimatedTotal } : undefined,
+      ].filter((row) => Boolean(row));
+      const dimensionRows = formatDimensions(input.selectedCustomizations.dimensions);
+      const dimensionPricingRows = formatDimensionPricing(input.selectedCustomizations.dimensionPriceAdjustments);
+      const selectedRows = [
+          input.selectedCustomizations.color
+              ? { label: 'Color', value: choiceValue(input.selectedCustomizations.color) }
+              : undefined,
+          input.selectedCustomizations.material
+              ? { label: 'Material', value: choiceValue(input.selectedCustomizations.material) }
+              : undefined,
+          ...(input.selectedCustomizations.shopifyOptions ?? []).map((option) => ({
+              label: option.label,
+              value: choiceValue(option),
+          })),
+          ...dimensionRows,
+          ...dimensionPricingRows,
+          ...(input.selectedCustomizations.addOns ?? []).map((addOn) => ({
+              label: 'Add-on',
+              value: choiceValue(addOn),
+          })),
+      ].filter((row) => Boolean(row));
+      const pricingRows = [
+          basePrice ? { label: 'Base price', value: basePrice } : undefined,
+          ...input.pricing.lineItems
+              .filter((lineItem) => lineItem.amount !== 0)
+              .map((lineItem) => ({ label: lineItem.label, value: formatPriceModifier(lineItem.amount) ?? '' })),
+          {
+              label: 'Customization total',
+              value: formatPriceModifier(input.pricing.customizationTotal ?? calculateCustomizationTotal(input.pricing.lineItems)) ?? '+$0.00',
+          },
+          {
+              label: 'Estimated total',
+              value: input.pricing.quoteRequired ? 'Quote required' : estimatedTotal ?? 'Quote required',
+          },
+      ].filter((row) => Boolean(row));
+      pdf.drawHeader(input.brandName, input.generatedAt, referenceId);
+      pdf.drawCard('Product Summary', Math.max(150, 58 + estimateRowsHeight(productRows, 230)), (topY) => {
+          pdf.drawRows(productRows, MARGIN + 16, topY, 104, 238);
+          if (input.product.imageUrl) {
+              const imageX = PAGE_WIDTH - MARGIN - 154;
+              pdf.add(drawRect(imageX, topY - 86, 138, 86, SOFT, BORDER));
+              pdf.addText('Product image available', imageX + 16, topY - 36, 10, 'F2', DARK);
+              pdf.addWrappedText('See product URL or catalog for the original image.', imageX + 16, topY - 54, 106, 8, 'F1', MUTED);
+          }
+      });
+      if (selectedRows.length > 0) {
+          pdf.drawCard('Selected Customizations', Math.max(112, 58 + estimateRowsHeight(selectedRows, 340)), (topY) => {
+              pdf.drawRows(selectedRows, MARGIN + 16, topY, 130, 340);
+          });
+      }
+      pdf.drawCard('Pricing Breakdown', Math.max(128, 62 + estimateRowsHeight(pricingRows, 220)), (topY) => {
+          let cursor = topY;
+          pricingRows.forEach((row, index) => {
+              const isTotal = row.label === 'Estimated total';
+              if (isTotal) {
+                  pdf.add(drawLine(MARGIN + 16, cursor + 9, PAGE_WIDTH - MARGIN - 16, cursor + 9, BORDER));
+              }
+              pdf.addText(row.label, MARGIN + 16, cursor, 10, isTotal ? 'F2' : 'F1', isTotal ? DARK : MUTED);
+              pdf.addRightText(row.value, PAGE_WIDTH - MARGIN - 18, cursor, 10, isTotal ? 'F2' : 'F1', isTotal ? DARK : DARK);
+              cursor -= index === pricingRows.length - 2 ? 22 : 17;
+          });
+      });
+      const notes = input.selectedCustomizations.customerRequestText?.trim();
+      if (notes) {
+          const noteLines = wrapText(notes, CONTENT_WIDTH - 32, 10);
+          pdf.drawCard('Customer Request', Math.max(92, 58 + noteLines.length * 15), (topY) => {
+              pdf.addWrappedText(notes, MARGIN + 16, topY, CONTENT_WIDTH - 32, 10, 'F1', DARK);
+          });
+      }
+      return pdf.toBlob();
+  }
+  const createCustomizationPdfFilename = (productName, generatedAt = new Date()) => {
+      const slug = productName
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, '-')
+          .replace(/^-+|-+$/g, '')
+          .slice(0, 64);
+      const date = generatedAt.toISOString().slice(0, 10);
+      return `modlyai-customized-furniture-${slug || date}.pdf`;
+  };
+
   const ROOM_PLANNER_STORAGE_KEY = 'modly-room-planner-state';
-  function FurnitureCustomizerPanel({ products, draft, setDraft, isApplying, validationErrors, price, onApply, onUndo, onRedo, canUndo, canRedo, onSaveConfig, onShareLink, onExportPdf, }) {
-      const selectedProduct = require$$0$1.useMemo(() => products.find((p) => p.id === draft.productId) ?? products[0], [draft.productId, products]);
-      const materialOptions = require$$0$1.useMemo(() => selectedProduct?.customizer.materialOptions ?? [], [selectedProduct]);
-      const colorSwatches = require$$0$1.useMemo(() => selectedProduct?.colors.filter((color) => color.available) ?? [], [selectedProduct]);
-      const baseDimensions = {
-          width: selectedProduct?.customizer.defaultWidthIn || 36,
-          length: selectedProduct?.customizer.defaultDepthIn || 60,
-          height: selectedProduct?.dimensions.height || 30,
+  const CUSTOMIZER_SUGGESTION_LIMIT = 3;
+  const SHORT_REASON_MAX_LENGTH = 120;
+  const isDemoProduct$1 = (product) => Boolean(product && !product.source);
+  const normalizeDisplayOptions$1 = (value) => normalizeCustomizationOptionValues(value).map((option) => ({
+      name: getOptionName(option),
+      price: getOptionPrice(option),
+  }));
+  const formatModifierLabel = (price, includedLabel = 'Included') => {
+      if (typeof price !== 'number')
+          return null;
+      if (price <= 0)
+          return includedLabel;
+      return `+$${price.toLocaleString()}`;
+  };
+  const getShortReason = (reason) => {
+      const normalized = (reason || 'Recommended by Room Planner.').replace(/\s+/g, ' ').trim();
+      const firstSentence = normalized.match(/^.*?[.!?](?:\s|$)/)?.[0]?.trim() || normalized;
+      return firstSentence.length > SHORT_REASON_MAX_LENGTH
+          ? `${firstSentence.slice(0, SHORT_REASON_MAX_LENGTH - 3).trim()}...`
+          : firstSentence;
+  };
+  const hasDimensionRange$1 = (dimension) => dimension?.min !== undefined || dimension?.max !== undefined;
+  const readFlatDimension = (value) => {
+      if (typeof value === 'number' && Number.isFinite(value) && value > 0)
+          return value;
+      if (typeof value === 'string' && value.trim()) {
+          const parsed = Number(value);
+          if (Number.isFinite(parsed) && parsed > 0)
+              return parsed;
+      }
+      return undefined;
+  };
+  const toDimensionRange = (dimension, fallbackDefault, fallbackRange, allowFallback = false) => {
+      const min = dimension?.min ?? (allowFallback ? fallbackRange?.[0] : undefined);
+      const max = dimension?.max ?? (allowFallback ? fallbackRange?.[1] : undefined);
+      const defaultValue = dimension?.default ?? (allowFallback ? fallbackDefault : undefined);
+      if (min === undefined && max === undefined && defaultValue === undefined)
+          return null;
+      const resolvedDefault = defaultValue ?? min ?? max ?? fallbackDefault;
+      return {
+          min: min ?? resolvedDefault,
+          max: max ?? resolvedDefault,
+          default: resolvedDefault,
+          unit: dimension?.unit ?? 'in',
       };
-      const widthMin = Math.round(baseDimensions.width * 0.8);
-      const widthMax = Math.round(baseDimensions.width * 1.2);
-      const lengthMin = Math.round(baseDimensions.length * 0.8);
-      const lengthMax = Math.round(baseDimensions.length * 1.2);
+  };
+  const getProductCustomization = (product) => {
+      if (!product) {
+          return {
+              colors: [],
+              materials: [],
+              dimensions: {},
+              dimensionSummary: {},
+              addOns: [],
+              optionLabels: [],
+              hasOptions: false,
+          };
+      }
+      const explicit = product.customizationOptions;
+      const allowDemoFallback = isDemoProduct$1(product);
+      const explicitColorOptions = normalizeDisplayOptions$1(explicit?.colors);
+      const explicitMaterialOptions = normalizeDisplayOptions$1(explicit?.materials);
+      const explicitColorNames = explicitColorOptions.map((option) => option.name);
+      const explicitMaterialNames = explicitMaterialOptions.map((option) => option.name);
+      const productColorNames = product.colors
+          .map((color) => color.name)
+          .filter((name) => allowDemoFallback || name.toLowerCase() !== 'custom');
+      const productMaterialNames = product.materials
+          .filter((name) => allowDemoFallback || name.toLowerCase() !== 'custom');
+      const colorNames = explicitColorNames.length > 0 ? explicitColorNames : productColorNames;
+      const materialNames = explicitMaterialNames.length > 0 ? explicitMaterialNames : productMaterialNames;
+      const colors = colorNames
+          .map((name, index) => {
+          const existing = product.colors.find((color) => color.name.toLowerCase() === name.toLowerCase());
+          const pricedOption = explicitColorOptions.find((option) => option.name.toLowerCase() === name.toLowerCase());
+          return {
+              ...(existing ?? { name, hex: product.colors[index]?.hex ?? '#E5E7EB', available: true }),
+              price: pricedOption?.price,
+          };
+      })
+          .filter((color) => color.available);
+      const materials = materialNames.map((name, index) => {
+          const existing = product.customizer.materialOptions.find((option) => option.name.toLowerCase() === name.toLowerCase());
+          const pricedOption = explicitMaterialOptions.find((option) => option.name.toLowerCase() === name.toLowerCase());
+          return existing
+              ? { ...existing, priceDelta: explicitMaterialOptions.length > 0 ? pricedOption?.price : existing.priceDelta }
+              : {
+                  id: name.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '') || `material_${index}`,
+                  name,
+                  priceDelta: pricedOption?.price ?? 0,
+                  description: getMaterialDescription(name),
+              };
+      });
+      const dimensions = {
+          width: toDimensionRange(hasDimensionRange$1(explicit?.dimensions?.width) ? explicit?.dimensions?.width : undefined, product.customizer.defaultWidthIn, product.customizer.widthRangeIn, allowDemoFallback),
+          length: toDimensionRange(hasDimensionRange$1(explicit?.dimensions?.length) ? explicit?.dimensions?.length : undefined, product.customizer.defaultDepthIn, product.customizer.depthRangeIn, allowDemoFallback),
+          height: toDimensionRange(hasDimensionRange$1(explicit?.dimensions?.height) ? explicit?.dimensions?.height : undefined, product.dimensions.height, undefined, false),
+      };
+      const dimensionSummary = {
+          width: !dimensions.width && readFlatDimension(product.width)
+              ? { value: readFlatDimension(product.width), unit: 'in' }
+              : undefined,
+          length: !dimensions.length && readFlatDimension(product.length)
+              ? { value: readFlatDimension(product.length), unit: 'in' }
+              : undefined,
+          height: !dimensions.height && readFlatDimension(product.height)
+              ? { value: readFlatDimension(product.height), unit: 'in' }
+              : undefined,
+      };
+      const addOns = explicit?.addOns ??
+          (allowDemoFallback
+              ? [
+                  { name: 'Throw Pillows (2)', price: 60 },
+                  { name: 'Ottoman', price: 350 },
+              ]
+              : []);
+      const optionLabels = (explicit?.shopifyOptions ?? explicit?.optionLabels ?? []).map((option) => ({
+          name: option.name,
+          values: normalizeDisplayOptions$1(option.values),
+      }));
+      return {
+          colors,
+          materials,
+          dimensions,
+          dimensionSummary,
+          addOns,
+          optionLabels,
+          hasOptions: colors.length > 0 ||
+              materials.length > 0 ||
+              Boolean(dimensions.width || dimensions.length || dimensions.height) ||
+              Boolean(dimensionSummary.width || dimensionSummary.length || dimensionSummary.height) ||
+              addOns.length > 0 ||
+              optionLabels.length > 0,
+      };
+  };
+  function FurnitureCustomizerPanel({ products, draft, setDraft, isApplying, validationErrors, price, onApply, onUndo, onRedo, canUndo, canRedo, onSaveConfig, onShareLink, onExportPdf, onViewFullRoomAnalysis, }) {
+      const selectedProduct = require$$0$1.useMemo(() => products.find((p) => p.id === draft.productId) ?? products[0], [draft.productId, products]);
+      const customization = require$$0$1.useMemo(() => getProductCustomization(selectedProduct), [selectedProduct]);
+      require$$0$1.useEffect(() => {
+          if (process.env.NODE_ENV !== 'development' || !selectedProduct) {
+              return;
+          }
+          console.debug('[Modly customizer] selected product customization fields', {
+              name: selectedProduct.name,
+              colors: selectedProduct.colors,
+              materials: selectedProduct.materials,
+              length: selectedProduct.length,
+              width: selectedProduct.width,
+              height: selectedProduct.height,
+              customization,
+          });
+      }, [customization, selectedProduct]);
+      const materialOptions = customization.materials;
+      const colorSwatches = customization.colors;
+      const baseDimensions = {
+          width: customization.dimensions.width?.default ?? selectedProduct?.customizer.defaultWidthIn ?? 36,
+          length: customization.dimensions.length?.default ?? selectedProduct?.customizer.defaultDepthIn ?? 60,
+          height: customization.dimensions.height?.default ?? selectedProduct?.dimensions.height ?? 30,
+      };
+      const widthMin = customization.dimensions.width?.min ?? baseDimensions.width;
+      const widthMax = customization.dimensions.width?.max ?? baseDimensions.width;
+      const lengthMin = customization.dimensions.length?.min ?? baseDimensions.length;
+      const lengthMax = customization.dimensions.length?.max ?? baseDimensions.length;
+      const heightMin = customization.dimensions.height?.min ?? baseDimensions.height;
+      const heightMax = customization.dimensions.height?.max ?? baseDimensions.height;
       const [additionalDetails, setAdditionalDetails] = require$$0$1.useState('');
       const [charCount, setCharCount] = require$$0$1.useState(0);
       const [roomPlannerPhoto, setRoomPlannerPhoto] = require$$0$1.useState(null);
@@ -3426,7 +4811,7 @@
                   'Room Planner analysis is ready for this space.',
               roomStyle: roomPlannerRecommendations.roomAnalysis?.detectedStyle || 'Unknown',
               dominantColors: roomPlannerRecommendations.roomAnalysis?.dominantColors || [],
-              recommendations: roomPlannerRecommendations.recommendations?.slice(0, 4).map((rec) => ({
+              recommendations: roomPlannerRecommendations.recommendations?.map((rec) => ({
                   type: rec.item.category || 'recommendation',
                   suggestion: rec.item.name,
                   reason: rec.reasoning || rec.placement?.reasoning || 'Recommended by Room Planner.',
@@ -3509,7 +4894,18 @@
               return;
           analyzeRoom(payload.imageBase64, payload.imageType);
       };
-      return (jsxRuntimeExports.jsx("section", { className: "py-12 bg-gray-50 min-h-screen", children: jsxRuntimeExports.jsx("div", { className: "max-w-7xl mx-auto px-4", children: jsxRuntimeExports.jsxs("div", { className: "grid lg:grid-cols-12 gap-6", children: [jsxRuntimeExports.jsx("div", { className: "lg:col-span-3", children: jsxRuntimeExports.jsxs("div", { className: "bg-white rounded-2xl border border-gray-200 p-6 shadow-lg sticky top-6", children: [jsxRuntimeExports.jsxs("div", { className: "flex items-start justify-between gap-4 mb-4", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h3", { className: "text-lg font-bold text-gray-900 mb-4", children: "Select Product" }), jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-600 mb-4", children: "B2B-ready configs with instant pricing" })] }), jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [jsxRuntimeExports.jsx("button", { type: "button", onClick: onUndo, disabled: !canUndo || isApplying, className: "p-2 border border-gray-200 rounded-lg hover:bg-gray-50 transition disabled:opacity-50 disabled:cursor-not-allowed", title: "Undo", children: jsxRuntimeExports.jsx(Undo2, { className: "w-4 h-4 text-gray-600" }) }), jsxRuntimeExports.jsx("button", { type: "button", onClick: onRedo, disabled: !canRedo || isApplying, className: "p-2 border border-gray-200 rounded-lg hover:bg-gray-50 transition disabled:opacity-50 disabled:cursor-not-allowed", title: "Redo", children: jsxRuntimeExports.jsx(Redo2, { className: "w-4 h-4 text-gray-600" }) })] })] }), jsxRuntimeExports.jsx("select", { value: draft.productId, onChange: (e) => {
+      const compactSuggestions = require$$0$1.useMemo(() => (aiSuggestions?.recommendations ?? []).slice(0, CUSTOMIZER_SUGGESTION_LIMIT), [aiSuggestions]);
+      const hasMoreSuggestions = (aiSuggestions?.recommendations?.length ?? 0) > CUSTOMIZER_SUGGESTION_LIMIT;
+      const handleViewFullRoomAnalysis = () => {
+          if (onViewFullRoomAnalysis) {
+              onViewFullRoomAnalysis();
+              return;
+          }
+          if (typeof window !== 'undefined') {
+              window.dispatchEvent(new CustomEvent('modly:navigate-to-room-planner'));
+          }
+      };
+      return (jsxRuntimeExports.jsx("section", { className: "py-12 bg-gray-50", children: jsxRuntimeExports.jsx("div", { className: "max-w-7xl mx-auto px-4", children: jsxRuntimeExports.jsxs("div", { className: "grid items-start gap-6 lg:grid-cols-12", children: [jsxRuntimeExports.jsx("div", { className: "self-start lg:col-span-3", children: jsxRuntimeExports.jsxs("div", { className: "bg-white rounded-2xl border border-gray-200 p-6 shadow-lg sticky top-6", children: [jsxRuntimeExports.jsxs("div", { className: "flex items-start justify-between gap-4 mb-4", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h3", { className: "text-lg font-bold text-gray-900 mb-4", children: "Select Product" }), jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-600 mb-4", children: "B2B-ready configs with instant pricing" })] }), jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [jsxRuntimeExports.jsx("button", { type: "button", onClick: onUndo, disabled: !canUndo || isApplying, className: "p-2 border border-gray-200 rounded-lg hover:bg-gray-50 transition disabled:opacity-50 disabled:cursor-not-allowed", title: "Undo", children: jsxRuntimeExports.jsx(Undo2, { className: "w-4 h-4 text-gray-600" }) }), jsxRuntimeExports.jsx("button", { type: "button", onClick: onRedo, disabled: !canRedo || isApplying, className: "p-2 border border-gray-200 rounded-lg hover:bg-gray-50 transition disabled:opacity-50 disabled:cursor-not-allowed", title: "Redo", children: jsxRuntimeExports.jsx(Redo2, { className: "w-4 h-4 text-gray-600" }) })] })] }), jsxRuntimeExports.jsx("select", { value: draft.productId, onChange: (e) => {
                                           const nextProduct = products.find((product) => product.id === e.target.value);
                                           if (!nextProduct) {
                                               return;
@@ -3517,44 +4913,61 @@
                                           setDraft({
                                               ...draft,
                                               productId: nextProduct.id,
-                                              fabricColor: nextProduct.colors[0]?.hex ?? draft.fabricColor,
-                                              materialId: nextProduct.customizer.materialOptions[0]?.id ?? draft.materialId,
-                                              widthIn: nextProduct.customizer.defaultWidthIn,
-                                              depthIn: nextProduct.customizer.defaultDepthIn,
+                                              fabricColor: getProductCustomization(nextProduct).colors[0]?.hex ?? draft.fabricColor,
+                                              selectedColor: getProductCustomization(nextProduct).colors[0]?.name,
+                                              materialId: getProductCustomization(nextProduct).materials[0]?.id ?? draft.materialId,
+                                              selectedMaterial: getProductCustomization(nextProduct).materials[0]?.name,
+                                              widthIn: getProductCustomization(nextProduct).dimensions.width?.default ??
+                                                  nextProduct.customizer.defaultWidthIn,
+                                              depthIn: getProductCustomization(nextProduct).dimensions.length?.default ??
+                                                  nextProduct.customizer.defaultDepthIn,
+                                              heightIn: getProductCustomization(nextProduct).dimensions.height?.default,
+                                              selectedAddOns: [],
                                           });
-                                      }, disabled: isApplying, className: "w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 mb-6 disabled:opacity-60", children: products.map((p) => (jsxRuntimeExports.jsx("option", { value: p.id, children: p.name }, p.id))) }), jsxRuntimeExports.jsxs("div", { className: "aspect-square bg-purple-50 rounded-lg mb-6 flex flex-col items-center justify-center border border-purple-200 text-center px-4", children: [jsxRuntimeExports.jsx(Layers, { className: "w-12 h-12 text-purple-400 mb-2" }), jsxRuntimeExports.jsx("p", { className: "text-sm text-purple-600 font-medium", children: selectedProduct?.customizer.thumbnailLabel ?? 'Sectional' }), jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500", children: "Instantly updates with your selections" })] }), jsxRuntimeExports.jsxs("div", { className: "space-y-3 text-sm border-t border-gray-200 pt-4", children: [jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-gray-600", children: [jsxRuntimeExports.jsx("span", { children: "Base Price:" }), jsxRuntimeExports.jsxs("span", { className: "font-medium text-gray-900", children: ["$", price.base.toLocaleString()] })] }), jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-gray-600", children: [jsxRuntimeExports.jsx("span", { children: "Base Size:" }), jsxRuntimeExports.jsxs("span", { className: "font-medium text-gray-900", children: [selectedProduct?.dimensions.width, selectedProduct?.dimensions.unit, " W"] })] }), jsxRuntimeExports.jsxs("div", { className: "text-gray-600", children: [jsxRuntimeExports.jsx("span", { className: "block mb-1", children: "Materials:" }), jsxRuntimeExports.jsx("span", { className: "font-medium text-gray-900", children: selectedProduct?.materials.join(', ') || 'Custom' })] }), jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-gray-600", children: [jsxRuntimeExports.jsx("span", { children: "Customizations:" }), jsxRuntimeExports.jsxs("span", { className: "font-medium text-purple-600", children: ["+$", price.customizations.toLocaleString()] })] }), jsxRuntimeExports.jsxs("div", { className: "border-t border-gray-200 pt-3 flex justify-between", children: [jsxRuntimeExports.jsx("span", { className: "font-bold text-gray-900", children: "Total:" }), jsxRuntimeExports.jsxs("span", { className: "font-bold text-lg text-gray-900", children: ["$", price.total.toLocaleString()] })] })] }), jsxRuntimeExports.jsxs("div", { className: "mt-6 grid grid-cols-3 gap-2", children: [jsxRuntimeExports.jsx("button", { type: "button", onClick: onSaveConfig, disabled: isApplying, className: "px-3 py-2 border border-gray-200 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gray-50 transition disabled:opacity-50", children: "Save" }), jsxRuntimeExports.jsxs("button", { type: "button", onClick: onShareLink, disabled: isApplying, className: "px-3 py-2 border border-gray-200 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gray-50 transition disabled:opacity-50 inline-flex items-center justify-center gap-2", children: [jsxRuntimeExports.jsx(Link2, { className: "w-4 h-4" }), "Share"] }), jsxRuntimeExports.jsxs("button", { type: "button", onClick: onExportPdf, disabled: isApplying, className: "px-3 py-2 border border-gray-200 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gray-50 transition disabled:opacity-50 inline-flex items-center justify-center gap-2", children: [jsxRuntimeExports.jsx(FileDown, { className: "w-4 h-4" }), "PDF"] })] })] }) }), jsxRuntimeExports.jsx("div", { className: "lg:col-span-4", children: jsxRuntimeExports.jsxs("div", { className: "bg-white rounded-2xl border border-gray-200 p-6 shadow-lg", children: [jsxRuntimeExports.jsxs("h3", { className: "text-lg font-bold text-gray-900 mb-6 flex items-center gap-2", children: [jsxRuntimeExports.jsx(Palette, { className: "w-5 h-5 text-purple-600" }), "Customization Options"] }), jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-gray-900 mb-3", children: "Fabric Color" }), colorSwatches.length > 0 ? (jsxRuntimeExports.jsx("div", { className: "flex flex-wrap gap-2", children: colorSwatches.map((color) => {
+                                      }, disabled: isApplying, className: "w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 mb-6 disabled:opacity-60", children: products.map((p) => (jsxRuntimeExports.jsx("option", { value: p.id, children: p.name }, p.id))) }), jsxRuntimeExports.jsxs("div", { className: "aspect-square bg-purple-50 rounded-lg mb-6 flex flex-col items-center justify-center border border-purple-200 text-center px-4", children: [jsxRuntimeExports.jsx(Layers, { className: "w-12 h-12 text-purple-400 mb-2" }), jsxRuntimeExports.jsx("p", { className: "text-sm text-purple-600 font-medium", children: selectedProduct?.customizer.thumbnailLabel ?? 'Sectional' }), jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500", children: "Instantly updates with your selections" })] }), jsxRuntimeExports.jsxs("div", { className: "space-y-3 text-sm border-t border-gray-200 pt-4", children: [jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-gray-600", children: [jsxRuntimeExports.jsx("span", { children: "Base Price:" }), jsxRuntimeExports.jsx("span", { className: "font-medium text-gray-900", children: price.base > 0 ? `$${price.base.toLocaleString()}` : 'Quote required' })] }), jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-gray-600", children: [jsxRuntimeExports.jsx("span", { children: "Base Size:" }), jsxRuntimeExports.jsxs("span", { className: "font-medium text-gray-900", children: [selectedProduct?.dimensions.width, selectedProduct?.dimensions.unit, " W"] })] }), jsxRuntimeExports.jsxs("div", { className: "text-gray-600", children: [jsxRuntimeExports.jsx("span", { className: "block mb-1", children: "Materials:" }), jsxRuntimeExports.jsx("span", { className: "font-medium text-gray-900", children: selectedProduct?.materials.join(', ') || 'Custom' })] }), jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-gray-600", children: [jsxRuntimeExports.jsx("span", { children: "Customizations:" }), jsxRuntimeExports.jsxs("span", { className: "font-medium text-purple-600", children: ["+$", price.customizations.toLocaleString()] })] }), jsxRuntimeExports.jsxs("div", { className: "border-t border-gray-200 pt-3 flex justify-between", children: [jsxRuntimeExports.jsx("span", { className: "font-bold text-gray-900", children: "Total:" }), jsxRuntimeExports.jsx("span", { className: "font-bold text-lg text-gray-900", children: price.quoteRequired ? 'Quote required' : `$${price.total.toLocaleString()}` })] })] }), jsxRuntimeExports.jsxs("div", { className: "mt-6 grid grid-cols-3 gap-2", children: [jsxRuntimeExports.jsx("button", { type: "button", onClick: onSaveConfig, disabled: isApplying, className: "px-3 py-2 border border-gray-200 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gray-50 transition disabled:opacity-50", children: "Save" }), jsxRuntimeExports.jsxs("button", { type: "button", onClick: onShareLink, disabled: isApplying, className: "px-3 py-2 border border-gray-200 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gray-50 transition disabled:opacity-50 inline-flex items-center justify-center gap-2", children: [jsxRuntimeExports.jsx(Link2, { className: "w-4 h-4" }), "Share"] }), jsxRuntimeExports.jsxs("button", { type: "button", onClick: onExportPdf, disabled: isApplying, className: "px-3 py-2 border border-gray-200 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gray-50 transition disabled:opacity-50 inline-flex items-center justify-center gap-2", children: [jsxRuntimeExports.jsx(FileDown, { className: "w-4 h-4" }), "PDF"] })] })] }) }), jsxRuntimeExports.jsx("div", { className: "self-start lg:col-span-4", children: jsxRuntimeExports.jsxs("div", { className: "bg-white rounded-2xl border border-gray-200 p-6 shadow-lg", children: [jsxRuntimeExports.jsxs("h3", { className: "text-lg font-bold text-gray-900 mb-6 flex items-center gap-2", children: [jsxRuntimeExports.jsx(Palette, { className: "w-5 h-5 text-purple-600" }), "Customization Options"] }), jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-gray-900 mb-3", children: "Color" }), colorSwatches.length > 0 ? (jsxRuntimeExports.jsx("div", { className: "flex flex-wrap gap-2", children: colorSwatches.map((color) => {
                                                   const isSelected = draft.fabricColor.toLowerCase() === color.hex.toLowerCase();
-                                                  return (jsxRuntimeExports.jsxs("button", { type: "button", onClick: () => setDraft({ ...draft, fabricColor: color.hex }), disabled: isApplying, className: [
+                                                  return (jsxRuntimeExports.jsxs("button", { type: "button", onClick: () => setDraft({ ...draft, fabricColor: color.hex, selectedColor: color.name }), disabled: isApplying, className: [
                                                           'flex items-center gap-2 px-3 py-2 rounded-xl border-2 text-sm transition-all',
                                                           isSelected
                                                               ? 'border-blue-500 bg-blue-50'
                                                               : 'border-gray-200 hover:border-gray-300',
                                                           isApplying ? 'opacity-60 cursor-not-allowed' : '',
-                                                      ].join(' '), "aria-label": `Select color ${color.name}`, title: color.name, children: [jsxRuntimeExports.jsx("div", { className: "w-4 h-4 rounded-full border border-gray-200", style: { backgroundColor: color.hex } }), color.name] }, color.name));
+                                                      ].join(' '), "aria-label": `Select color ${color.name}`, title: color.name, children: [jsxRuntimeExports.jsx("div", { className: "w-4 h-4 rounded-full border border-gray-200", style: { backgroundColor: color.hex } }), jsxRuntimeExports.jsx("span", { children: color.name }), formatModifierLabel(color.price) && (jsxRuntimeExports.jsx("span", { className: "text-xs font-semibold text-gray-500", children: formatModifierLabel(color.price) }))] }, color.name));
                                               }) })) : (jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-400", children: "No colors available for this product" }))] }), jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-gray-900 mb-3", children: "Material" }), materialOptions.length > 0 ? (jsxRuntimeExports.jsx("div", { className: "space-y-2", children: materialOptions.map((m) => {
                                                   const isSelected = draft.materialId === m.id;
-                                                  return (jsxRuntimeExports.jsxs("button", { type: "button", onClick: () => setDraft({ ...draft, materialId: m.id }), disabled: isApplying, className: [
+                                                  return (jsxRuntimeExports.jsxs("button", { type: "button", onClick: () => setDraft({ ...draft, materialId: m.id, selectedMaterial: m.name }), disabled: isApplying, className: [
                                                           'w-full flex items-center justify-between px-4 py-3 rounded-xl border-2 text-sm transition-all text-left',
                                                           isSelected
                                                               ? 'border-purple-500 bg-purple-50'
                                                               : 'border-gray-200 hover:border-gray-300',
                                                           isApplying ? 'opacity-60 cursor-not-allowed' : '',
-                                                      ].join(' '), children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsxs("p", { className: "font-medium text-gray-900", children: [m.name, " (", m.priceDelta === 0 ? '+$0' : `+$${m.priceDelta}`, ")"] }), jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500", children: m.description || getMaterialDescription(m.name) })] }), isSelected && jsxRuntimeExports.jsx(Check, { className: "w-4 h-4 text-purple-500" })] }, m.id));
-                                              }) })) : (jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-400", children: "No materials available for this product" }))] }), jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [jsxRuntimeExports.jsxs("label", { className: "block text-sm font-medium text-gray-900 mb-3 flex items-center gap-2", children: [jsxRuntimeExports.jsx(Maximize2, { className: "w-4 h-4 text-purple-600" }), "Dimensions"] }), jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-sm mb-2", children: [jsxRuntimeExports.jsx("span", { className: "text-gray-600", children: "Width" }), jsxRuntimeExports.jsxs("span", { className: "font-medium text-gray-900", children: [draft.widthIn, " inches"] })] }), jsxRuntimeExports.jsx("input", { type: "range", min: widthMin, max: widthMax, value: draft.widthIn, onChange: (e) => setDraft({ ...draft, widthIn: Number(e.target.value) }), disabled: isApplying, className: "w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-600" }), jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-xs text-gray-500 mt-1", children: [jsxRuntimeExports.jsxs("span", { children: [widthMin, "\""] }), jsxRuntimeExports.jsxs("span", { children: [widthMax, "\""] })] })] }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-sm mb-2", children: [jsxRuntimeExports.jsx("span", { className: "text-gray-600", children: "Length" }), jsxRuntimeExports.jsxs("span", { className: "font-medium text-gray-900", children: [draft.depthIn, " inches"] })] }), jsxRuntimeExports.jsx("input", { type: "range", min: lengthMin, max: lengthMax, value: draft.depthIn, onChange: (e) => setDraft({ ...draft, depthIn: Number(e.target.value) }), disabled: isApplying, className: "w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-600" }), jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-xs text-gray-500 mt-1", children: [jsxRuntimeExports.jsxs("span", { children: [lengthMin, "\""] }), jsxRuntimeExports.jsxs("span", { children: [lengthMax, "\""] })] })] })] }), validationErrors && validationErrors.length > 0 && (jsxRuntimeExports.jsxs("div", { className: "mt-4 bg-red-50 border border-red-200 text-red-700 rounded-lg p-3 text-sm", children: [jsxRuntimeExports.jsx("div", { className: "font-semibold mb-1", children: "Adjustments need review" }), jsxRuntimeExports.jsx("ul", { className: "list-disc pl-5 space-y-1", children: validationErrors.map((e, i) => (jsxRuntimeExports.jsx("li", { children: e }, i))) })] }))] }), jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [jsxRuntimeExports.jsxs("label", { className: "block text-sm font-medium text-gray-900 mb-3 flex items-center gap-2", children: [jsxRuntimeExports.jsx(Layers, { className: "w-4 h-4 text-purple-600" }), "Add-ons"] }), jsxRuntimeExports.jsxs("div", { className: "space-y-2", children: [jsxRuntimeExports.jsxs("label", { className: "flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition", children: [jsxRuntimeExports.jsx("input", { type: "checkbox", checked: draft.addons.throwPillows, onChange: (e) => setDraft({
-                                                                  ...draft,
-                                                                  addons: { ...draft.addons, throwPillows: e.target.checked },
-                                                              }), disabled: isApplying, className: "w-4 h-4 text-purple-600 rounded accent-purple-600" }), jsxRuntimeExports.jsx("span", { className: "flex-1 text-sm text-gray-900", children: "Throw Pillows (2)" }), jsxRuntimeExports.jsx("span", { className: "text-sm font-medium text-gray-900", children: "+$60" })] }), jsxRuntimeExports.jsxs("label", { className: "flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition", children: [jsxRuntimeExports.jsx("input", { type: "checkbox", checked: draft.addons.ottoman, onChange: (e) => setDraft({
-                                                                  ...draft,
-                                                                  addons: { ...draft.addons, ottoman: e.target.checked },
-                                                              }), disabled: isApplying, className: "w-4 h-4 text-purple-600 rounded accent-purple-600" }), jsxRuntimeExports.jsx("span", { className: "flex-1 text-sm text-gray-900", children: "Ottoman" }), jsxRuntimeExports.jsx("span", { className: "text-sm font-medium text-gray-900", children: "+$350" })] })] })] }), jsxRuntimeExports.jsxs("button", { type: "button", onClick: onApply, disabled: isApplying || (validationErrors?.length ?? 0) > 0, className: "w-full py-4 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-700 transition shadow-lg shadow-purple-600/30 flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed", children: [jsxRuntimeExports.jsx(Sparkles, { className: "w-5 h-5" }), isApplying ? 'Applying...' : 'Apply Customizations'] })] }) }), jsxRuntimeExports.jsx("div", { className: "lg:col-span-5", children: jsxRuntimeExports.jsxs("div", { className: "bg-white rounded-2xl border border-gray-200 p-6 shadow-lg sticky top-6", children: [jsxRuntimeExports.jsxs("div", { className: "bg-white rounded-xl border border-gray-200 p-5 mb-4", children: [jsxRuntimeExports.jsx("h3", { className: "font-semibold text-gray-900 mb-1", children: "Tell Us What You Want" }), jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500 mb-3", children: "Describe exactly what you need - AI will tailor suggestions to your specific request" }), jsxRuntimeExports.jsx("textarea", { value: additionalDetails, onChange: (e) => {
+                                                      ].join(' '), children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("p", { className: "font-medium text-gray-900", children: m.name }), jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500", children: m.description || getMaterialDescription(m.name) })] }), jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [formatModifierLabel(m.priceDelta) && (jsxRuntimeExports.jsx("span", { className: "text-xs font-semibold text-gray-500", children: formatModifierLabel(m.priceDelta) })), isSelected && jsxRuntimeExports.jsx(Check, { className: "w-4 h-4 text-purple-500" })] })] }, m.id));
+                                              }) })) : (jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-400", children: "No materials available for this product" }))] }), (customization.dimensions.width || customization.dimensions.length || customization.dimensions.height) && (jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [jsxRuntimeExports.jsxs("label", { className: "block text-sm font-medium text-gray-900 mb-3 flex items-center gap-2", children: [jsxRuntimeExports.jsx(Maximize2, { className: "w-4 h-4 text-purple-600" }), "Dimensions"] }), jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [customization.dimensions.width && (jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-sm mb-2", children: [jsxRuntimeExports.jsx("span", { className: "text-gray-600", children: "Width" }), jsxRuntimeExports.jsxs("span", { className: "font-medium text-gray-900", children: [draft.widthIn, " ", customization.dimensions.width.unit] })] }), jsxRuntimeExports.jsx("input", { type: "range", min: widthMin, max: widthMax, value: draft.widthIn, onChange: (e) => setDraft({ ...draft, widthIn: Number(e.target.value) }), disabled: isApplying, className: "w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-600" }), jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-xs text-gray-500 mt-1", children: [jsxRuntimeExports.jsxs("span", { children: [widthMin, customization.dimensions.width.unit] }), jsxRuntimeExports.jsxs("span", { children: [widthMax, customization.dimensions.width.unit] })] }), typeof customization.dimensions.width.pricePerExtraUnit === 'number' && (jsxRuntimeExports.jsxs("p", { className: "mt-1 text-xs text-gray-500", children: ["+$", customization.dimensions.width.pricePerExtraUnit.toLocaleString(), " per extra ", customization.dimensions.width.unit] }))] })), customization.dimensions.length && (jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-sm mb-2", children: [jsxRuntimeExports.jsx("span", { className: "text-gray-600", children: "Length" }), jsxRuntimeExports.jsxs("span", { className: "font-medium text-gray-900", children: [draft.depthIn, " ", customization.dimensions.length.unit] })] }), jsxRuntimeExports.jsx("input", { type: "range", min: lengthMin, max: lengthMax, value: draft.depthIn, onChange: (e) => setDraft({ ...draft, depthIn: Number(e.target.value) }), disabled: isApplying, className: "w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-600" }), jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-xs text-gray-500 mt-1", children: [jsxRuntimeExports.jsxs("span", { children: [lengthMin, customization.dimensions.length.unit] }), jsxRuntimeExports.jsxs("span", { children: [lengthMax, customization.dimensions.length.unit] })] }), typeof customization.dimensions.length.pricePerExtraUnit === 'number' && (jsxRuntimeExports.jsxs("p", { className: "mt-1 text-xs text-gray-500", children: ["+$", customization.dimensions.length.pricePerExtraUnit.toLocaleString(), " per extra ", customization.dimensions.length.unit] }))] })), customization.dimensions.height && (jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-sm mb-2", children: [jsxRuntimeExports.jsx("span", { className: "text-gray-600", children: "Height" }), jsxRuntimeExports.jsxs("span", { className: "font-medium text-gray-900", children: [draft.heightIn ?? baseDimensions.height, " ", customization.dimensions.height.unit] })] }), jsxRuntimeExports.jsx("input", { type: "range", min: heightMin, max: heightMax, value: draft.heightIn ?? baseDimensions.height, onChange: (e) => setDraft({ ...draft, heightIn: Number(e.target.value) }), disabled: isApplying, className: "w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-600" }), jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-xs text-gray-500 mt-1", children: [jsxRuntimeExports.jsxs("span", { children: [heightMin, customization.dimensions.height.unit] }), jsxRuntimeExports.jsxs("span", { children: [heightMax, customization.dimensions.height.unit] })] }), typeof customization.dimensions.height.pricePerExtraUnit === 'number' && (jsxRuntimeExports.jsxs("p", { className: "mt-1 text-xs text-gray-500", children: ["+$", customization.dimensions.height.pricePerExtraUnit.toLocaleString(), " per extra ", customization.dimensions.height.unit] }))] }))] }), validationErrors && validationErrors.length > 0 && (jsxRuntimeExports.jsxs("div", { className: "mt-4 bg-red-50 border border-red-200 text-red-700 rounded-lg p-3 text-sm", children: [jsxRuntimeExports.jsx("div", { className: "font-semibold mb-1", children: "Adjustments need review" }), jsxRuntimeExports.jsx("ul", { className: "list-disc pl-5 space-y-1", children: validationErrors.map((e, i) => (jsxRuntimeExports.jsx("li", { children: e }, i))) })] }))] })), !(customization.dimensions.width || customization.dimensions.length || customization.dimensions.height) &&
+                                      (customization.dimensionSummary.width ||
+                                          customization.dimensionSummary.length ||
+                                          customization.dimensionSummary.height) && (jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [jsxRuntimeExports.jsxs("label", { className: "block text-sm font-medium text-gray-900 mb-3 flex items-center gap-2", children: [jsxRuntimeExports.jsx(Maximize2, { className: "w-4 h-4 text-purple-600" }), "Dimensions"] }), jsxRuntimeExports.jsxs("div", { className: "space-y-2 rounded-xl border border-gray-200 bg-gray-50 p-4 text-sm", children: [customization.dimensionSummary.width && (jsxRuntimeExports.jsxs("div", { className: "flex justify-between gap-4", children: [jsxRuntimeExports.jsx("span", { className: "text-gray-600", children: "Width" }), jsxRuntimeExports.jsxs("span", { className: "font-medium text-gray-900", children: [customization.dimensionSummary.width.value, " ", customization.dimensionSummary.width.unit] })] })), customization.dimensionSummary.length && (jsxRuntimeExports.jsxs("div", { className: "flex justify-between gap-4", children: [jsxRuntimeExports.jsx("span", { className: "text-gray-600", children: "Length" }), jsxRuntimeExports.jsxs("span", { className: "font-medium text-gray-900", children: [customization.dimensionSummary.length.value, " ", customization.dimensionSummary.length.unit] })] })), customization.dimensionSummary.height && (jsxRuntimeExports.jsxs("div", { className: "flex justify-between gap-4", children: [jsxRuntimeExports.jsx("span", { className: "text-gray-600", children: "Height" }), jsxRuntimeExports.jsxs("span", { className: "font-medium text-gray-900", children: [customization.dimensionSummary.height.value, " ", customization.dimensionSummary.height.unit] })] }))] })] })), customization.optionLabels.length > 0 && (jsxRuntimeExports.jsx("div", { className: "mb-6 space-y-3", children: customization.optionLabels.map((option) => (jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-gray-900 mb-2", children: option.name }), jsxRuntimeExports.jsx("div", { className: "flex flex-wrap gap-2", children: option.values.map((value) => (jsxRuntimeExports.jsxs("span", { className: "px-3 py-1.5 rounded-full border border-gray-200 bg-gray-50 text-sm text-gray-700", children: [value.name, formatModifierLabel(value.price, '') && (jsxRuntimeExports.jsx("span", { className: "ml-1 text-xs font-semibold text-gray-500", children: formatModifierLabel(value.price, '') }))] }, value.name))) })] }, option.name))) })), customization.addOns.length > 0 && (jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [jsxRuntimeExports.jsxs("label", { className: "block text-sm font-medium text-gray-900 mb-3 flex items-center gap-2", children: [jsxRuntimeExports.jsx(Layers, { className: "w-4 h-4 text-purple-600" }), "Add-ons"] }), jsxRuntimeExports.jsx("div", { className: "space-y-2", children: customization.addOns.map((addOn) => {
+                                                  const selectedAddOns = draft.selectedAddOns ?? [];
+                                                  const isChecked = selectedAddOns.includes(addOn.name);
+                                                  return (jsxRuntimeExports.jsxs("label", { className: "flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition", children: [jsxRuntimeExports.jsx("input", { type: "checkbox", checked: isChecked, onChange: (e) => {
+                                                                  const nextSelectedAddOns = e.target.checked
+                                                                      ? [...selectedAddOns, addOn.name]
+                                                                      : selectedAddOns.filter((name) => name !== addOn.name);
+                                                                  setDraft({ ...draft, selectedAddOns: nextSelectedAddOns });
+                                                              }, disabled: isApplying, className: "w-4 h-4 text-purple-600 rounded accent-purple-600" }), jsxRuntimeExports.jsx("span", { className: "flex-1 text-sm text-gray-900", children: addOn.name }), jsxRuntimeExports.jsx("span", { className: "text-sm font-medium text-gray-900", children: typeof addOn.price === 'number' ? `+$${addOn.price.toLocaleString()}` : 'Quote' })] }, addOn.name));
+                                              }) })] })), !customization.hasOptions && (jsxRuntimeExports.jsx("div", { className: "mb-6 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900", children: "This product does not have predefined customization options. Tell us what you want and we'll send it as a quote request." })), jsxRuntimeExports.jsxs("button", { type: "button", onClick: onApply, disabled: isApplying || (validationErrors?.length ?? 0) > 0, className: "w-full py-4 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-700 transition shadow-lg shadow-purple-600/30 flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed", children: [jsxRuntimeExports.jsx(Sparkles, { className: "w-5 h-5" }), isApplying ? 'Applying...' : 'Apply Customizations'] })] }) }), jsxRuntimeExports.jsx("div", { className: "self-start lg:col-span-5", children: jsxRuntimeExports.jsxs("div", { className: "bg-white rounded-2xl border border-gray-200 p-6 shadow-lg sticky top-6", children: [jsxRuntimeExports.jsxs("div", { className: "bg-white rounded-xl border border-gray-200 p-5 mb-4", children: [jsxRuntimeExports.jsx("h3", { className: "font-semibold text-gray-900 mb-1", children: "Tell Us What You Want" }), jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500 mb-3", children: "Describe exactly what you need - AI will tailor suggestions to your specific request" }), jsxRuntimeExports.jsx("textarea", { value: additionalDetails, onChange: (e) => {
                                                   setAdditionalDetails(e.target.value);
                                                   setCharCount(e.target.value.length);
+                                                  setDraft({ ...draft, customerRequestText: e.target.value });
                                               }, maxLength: 500, rows: 5, placeholder: `Examples:
 - I want something that matches my grey walls
 - Need storage space underneath
 - Looking for pet-friendly fabric
 - Want it to feel cozy but modern
-- Must fit through a 32 inch doorway`, className: "w-full border border-gray-300 rounded-xl px-4 py-3 text-sm text-gray-700 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400" }), jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mt-2", children: [jsxRuntimeExports.jsxs("span", { className: "text-xs text-gray-400", children: [charCount, "/500 characters"] }), additionalDetails && (jsxRuntimeExports.jsx("button", { onClick: () => { setAdditionalDetails(''); setCharCount(0); }, className: "text-xs text-gray-400 hover:text-gray-600", children: "Clear" }))] }), jsxRuntimeExports.jsxs("div", { className: "mt-3", children: [jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-400 mb-2", children: "Quick adds:" }), jsxRuntimeExports.jsx("div", { className: "flex flex-wrap gap-2", children: [
+- Must fit through a 32 inch doorway`, className: "w-full border border-gray-300 rounded-xl px-4 py-3 text-sm text-gray-700 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400" }), jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mt-2", children: [jsxRuntimeExports.jsxs("span", { className: "text-xs text-gray-400", children: [charCount, "/500 characters"] }), additionalDetails && (jsxRuntimeExports.jsx("button", { onClick: () => {
+                                                          setAdditionalDetails('');
+                                                          setCharCount(0);
+                                                          setDraft({ ...draft, customerRequestText: '' });
+                                                      }, className: "text-xs text-gray-400 hover:text-gray-600", children: "Clear" }))] }), jsxRuntimeExports.jsxs("div", { className: "mt-3", children: [jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-400 mb-2", children: "Quick adds:" }), jsxRuntimeExports.jsx("div", { className: "flex flex-wrap gap-2", children: [
                                                           'Pet-friendly fabric',
                                                           'Easy to clean',
                                                           'Extra storage',
@@ -3569,38 +4982,148 @@
                                                                   : chip;
                                                               setAdditionalDetails(newText);
                                                               setCharCount(newText.length);
-                                                          }, className: "text-xs bg-gray-100 hover:bg-blue-50 hover:text-blue-600 text-gray-600 px-3 py-1 rounded-full transition-colors", children: ["+ ", chip] }, chip))) })] })] }), roomPlannerPhoto && (jsxRuntimeExports.jsx("button", { onClick: handleAnalyzeWithRoomPlannerPhoto, disabled: analyzing, className: "w-full bg-blue-600 text-white py-3 rounded-xl font-medium hover:bg-blue-700 disabled:opacity-50 flex items-center justify-center gap-2 mb-4", children: analyzing ? (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsx("div", { className: "animate-spin rounded-full h-4 w-4 border-b-2 border-white" }), "Analyzing your room..."] })) : ('✨ Get AI Suggestions') })), jsxRuntimeExports.jsxs("div", { className: "bg-white rounded-xl border border-gray-200 p-5", children: [jsxRuntimeExports.jsx("h3", { className: "font-semibold text-gray-900 mb-4", children: "AI Suggestions" }), !roomPlannerPhoto && !analyzing && (jsxRuntimeExports.jsxs("div", { className: "text-center py-8", children: [jsxRuntimeExports.jsx("p", { className: "text-3xl mb-2", children: "\uD83C\uDFE0" }), jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-500", children: "Use Room Planner first to upload a room photo and get personalized suggestions" })] })), analyzing && (jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center py-8 gap-3", children: [jsxRuntimeExports.jsx("div", { className: "animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600" }), jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-500", children: "Analyzing your room and requirements..." })] })), aiSuggestions && !analyzing && (jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [jsxRuntimeExports.jsxs("div", { className: "bg-blue-50 rounded-xl p-4", children: [jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mb-1", children: [jsxRuntimeExports.jsx("span", { className: "text-sm font-medium text-blue-900", children: "Room Fit Score" }), jsxRuntimeExports.jsxs("span", { className: "text-lg font-bold text-blue-600", children: [aiSuggestions.fitScore, "%"] })] }), jsxRuntimeExports.jsx("div", { className: "w-full bg-blue-200 rounded-full h-2", children: jsxRuntimeExports.jsx("div", { className: "bg-blue-600 h-2 rounded-full transition-all", style: { width: `${aiSuggestions.fitScore}%` } }) }), jsxRuntimeExports.jsx("p", { className: "text-xs text-blue-700 mt-2", children: aiSuggestions.fitReason })] }), jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [jsxRuntimeExports.jsx("span", { className: "text-xs text-gray-500", children: "Room style detected:" }), jsxRuntimeExports.jsx("span", { className: "text-xs font-medium bg-gray-100 text-gray-700 px-2 py-1 rounded-full", children: aiSuggestions.roomStyle })] }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500 mb-2", children: "Room colors:" }), jsxRuntimeExports.jsx("div", { className: "flex flex-wrap gap-2", children: aiSuggestions.dominantColors?.map((color, i) => (jsxRuntimeExports.jsx("span", { className: "text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded-full", children: color }, i))) })] }), jsxRuntimeExports.jsx("div", { className: "space-y-3", children: aiSuggestions.recommendations?.map((rec, i) => (jsxRuntimeExports.jsxs("div", { className: "border border-gray-100 rounded-xl p-3", children: [jsxRuntimeExports.jsx("span", { className: `text-xs font-medium px-2 py-0.5 rounded-full ${rec.type === 'color'
+                                                              setDraft({ ...draft, customerRequestText: newText });
+                                                          }, className: "text-xs bg-gray-100 hover:bg-blue-50 hover:text-blue-600 text-gray-600 px-3 py-1 rounded-full transition-colors", children: ["+ ", chip] }, chip))) })] })] }), roomPlannerPhoto && (jsxRuntimeExports.jsx("button", { onClick: handleAnalyzeWithRoomPlannerPhoto, disabled: analyzing, className: "w-full bg-blue-600 text-white py-3 rounded-xl font-medium hover:bg-blue-700 disabled:opacity-50 flex items-center justify-center gap-2 mb-4", children: analyzing ? (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsx("div", { className: "animate-spin rounded-full h-4 w-4 border-b-2 border-white" }), "Analyzing your room..."] })) : ('✨ Get AI Suggestions') })), jsxRuntimeExports.jsxs("div", { className: "bg-white rounded-xl border border-gray-200 p-4 max-h-[380px] overflow-y-auto", children: [jsxRuntimeExports.jsx("h3", { className: "font-semibold text-gray-900 mb-3", children: "AI Suggestions" }), !roomPlannerPhoto && !analyzing && (jsxRuntimeExports.jsxs("div", { className: "text-center py-8", children: [jsxRuntimeExports.jsx("p", { className: "text-3xl mb-2", children: "\uD83C\uDFE0" }), jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-500", children: "Use Room Planner first to upload a room photo and get personalized suggestions" })] })), analyzing && (jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center py-8 gap-3", children: [jsxRuntimeExports.jsx("div", { className: "animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600" }), jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-500", children: "Analyzing your room and requirements..." })] })), aiSuggestions && !analyzing && (jsxRuntimeExports.jsxs("div", { className: "space-y-3", children: [jsxRuntimeExports.jsxs("div", { className: "bg-blue-50 rounded-lg p-3", children: [jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mb-1", children: [jsxRuntimeExports.jsx("span", { className: "text-sm font-medium text-blue-900", children: "Room Fit Score" }), jsxRuntimeExports.jsxs("span", { className: "text-lg font-bold text-blue-600", children: [aiSuggestions.fitScore, "%"] })] }), jsxRuntimeExports.jsx("div", { className: "w-full bg-blue-200 rounded-full h-2", children: jsxRuntimeExports.jsx("div", { className: "bg-blue-600 h-2 rounded-full transition-all", style: { width: `${aiSuggestions.fitScore}%` } }) }), jsxRuntimeExports.jsx("p", { className: "text-xs text-blue-700 mt-2", children: getShortReason(aiSuggestions.fitReason) })] }), jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap items-center gap-2", children: [jsxRuntimeExports.jsx("span", { className: "text-xs text-gray-500", children: "Room style detected:" }), jsxRuntimeExports.jsx("span", { className: "text-xs font-medium bg-gray-100 text-gray-700 px-2 py-1 rounded-full", children: aiSuggestions.roomStyle })] }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500 mb-1.5", children: "Room colors:" }), jsxRuntimeExports.jsx("div", { className: "flex flex-wrap gap-1.5", children: aiSuggestions.dominantColors?.map((color, i) => (jsxRuntimeExports.jsx("span", { className: "text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded-full", children: color }, i))) })] }), jsxRuntimeExports.jsx("div", { className: "space-y-2", children: compactSuggestions.map((rec, i) => (jsxRuntimeExports.jsxs("div", { className: "border border-gray-100 rounded-lg p-2.5", children: [jsxRuntimeExports.jsx("span", { className: `text-xs font-medium px-2 py-0.5 rounded-full ${rec.type === 'color'
                                                                     ? 'bg-purple-100 text-purple-700'
                                                                     : rec.type === 'material'
                                                                         ? 'bg-green-100 text-green-700'
                                                                         : rec.type === 'customization'
                                                                             ? 'bg-blue-100 text-blue-700'
-                                                                            : 'bg-orange-100 text-orange-700'}`, children: rec.type }), jsxRuntimeExports.jsx("p", { className: "text-sm font-medium text-gray-900 mt-2", children: rec.suggestion }), jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500 mt-0.5", children: rec.reason })] }, i))) }), aiSuggestions.warning && (jsxRuntimeExports.jsx("div", { className: "bg-yellow-50 border border-yellow-200 rounded-xl p-3", children: jsxRuntimeExports.jsxs("p", { className: "text-xs text-yellow-800", children: ["\u26A0\uFE0F ", aiSuggestions.warning] }) })), roomPlannerPhoto && (jsxRuntimeExports.jsx("button", { onClick: handleAnalyzeWithRoomPlannerPhoto, className: "w-full text-sm text-blue-600 hover:underline text-center mt-2", children: "Re-analyze with updated details" }))] }))] })] }) })] }) }) }));
+                                                                            : 'bg-orange-100 text-orange-700'}`, children: rec.type }), jsxRuntimeExports.jsx("p", { className: "text-sm font-medium text-gray-900 mt-1.5", children: rec.suggestion }), jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500 mt-0.5", children: getShortReason(rec.reason) })] }, i))) }), hasMoreSuggestions && (jsxRuntimeExports.jsx("button", { type: "button", onClick: handleViewFullRoomAnalysis, className: "w-full rounded-lg border border-blue-200 bg-blue-50 px-3 py-2 text-sm font-medium text-blue-700 transition hover:bg-blue-100", children: "View full room analysis" })), aiSuggestions.warning && (jsxRuntimeExports.jsx("div", { className: "bg-yellow-50 border border-yellow-200 rounded-lg p-2.5", children: jsxRuntimeExports.jsxs("p", { className: "text-xs text-yellow-800", children: ["\u26A0\uFE0F ", aiSuggestions.warning] }) })), roomPlannerPhoto && (jsxRuntimeExports.jsx("button", { onClick: handleAnalyzeWithRoomPlannerPhoto, className: "w-full text-sm text-blue-600 hover:underline text-center mt-2", children: "Re-analyze with updated details" }))] }))] })] }) })] }) }) }));
   }
 
   const createDraftForProduct = (product) => ({
       productId: product.id,
-      fabricColor: product.colors[0]?.hex ?? '#9CA3AF',
-      materialId: product.customizer.materialOptions[0]?.id ?? 'standard_material',
-      widthIn: product.customizer.defaultWidthIn,
-      depthIn: product.customizer.defaultDepthIn,
+      fabricColor: getCustomizationForProduct(product).colors[0]?.hex ?? '#9CA3AF',
+      selectedColor: getCustomizationForProduct(product).colors[0]?.name,
+      materialId: getCustomizationForProduct(product).materials[0]?.id ?? 'standard_material',
+      selectedMaterial: getCustomizationForProduct(product).materials[0]?.name,
+      widthIn: getCustomizationForProduct(product).dimensions.width?.default ?? product.customizer.defaultWidthIn,
+      depthIn: getCustomizationForProduct(product).dimensions.length?.default ?? product.customizer.defaultDepthIn,
+      heightIn: getCustomizationForProduct(product).dimensions.height?.default,
       addons: { throwPillows: false, ottoman: false },
+      selectedAddOns: [],
       rotationDeg: 0,
       zoom: 1,
       roomContext: { lengthFt: 12.5, widthFt: 15.2 },
   });
+  const isDemoProduct = (product) => !product.source;
+  const normalizeDisplayOptions = (value) => normalizeCustomizationOptionValues(value).map((option) => ({
+      name: getOptionName(option),
+      price: getOptionPrice(option),
+  }));
+  const hasDimensionRange = (dimension) => dimension?.min !== undefined || dimension?.max !== undefined;
+  const getCustomizationForProduct = (product) => {
+      const explicit = product.customizationOptions;
+      const allowDemoFallback = isDemoProduct(product);
+      const pricedColors = normalizeDisplayOptions(explicit?.colors);
+      const pricedMaterials = normalizeDisplayOptions(explicit?.materials);
+      const colorNames = pricedColors.map((option) => option.name);
+      const materialNames = pricedMaterials.map((option) => option.name);
+      const productColorNames = product.colors
+          .map((color) => color.name)
+          .filter((name) => allowDemoFallback || name.toLowerCase() !== 'custom');
+      const productMaterialNames = product.materials
+          .filter((name) => allowDemoFallback || name.toLowerCase() !== 'custom');
+      const colors = (colorNames.length > 0 ? colorNames : productColorNames)
+          .map((name, index) => {
+          const existing = product.colors.find((color) => color.name.toLowerCase() === name.toLowerCase());
+          const pricedColor = pricedColors.find((option) => option.name.toLowerCase() === name.toLowerCase());
+          return {
+              ...(existing ?? { name, hex: product.colors[index]?.hex ?? '#E5E7EB', available: true }),
+              price: pricedColor?.price,
+          };
+      })
+          .filter((color) => color.available);
+      const materials = (materialNames.length > 0 ? materialNames : productMaterialNames).map((name, index) => {
+          const existing = product.customizer.materialOptions.find((option) => option.name.toLowerCase() === name.toLowerCase());
+          const pricedMaterial = pricedMaterials.find((option) => option.name.toLowerCase() === name.toLowerCase());
+          return existing
+              ? { ...existing, priceDelta: pricedMaterials.length > 0 ? pricedMaterial?.price : existing.priceDelta }
+              : {
+                  id: name.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '') || `material_${index}`,
+                  name,
+                  priceDelta: pricedMaterial?.price ?? 0,
+                  description: getMaterialDescription(name),
+              };
+      });
+      return {
+          colors,
+          materials,
+          dimensions: {
+              width: hasDimensionRange(explicit?.dimensions?.width)
+                  ? explicit?.dimensions?.width
+                  : (allowDemoFallback ? { default: product.customizer.defaultWidthIn, unit: 'in' } : undefined),
+              length: hasDimensionRange(explicit?.dimensions?.length)
+                  ? explicit?.dimensions?.length
+                  : (allowDemoFallback ? { default: product.customizer.defaultDepthIn, unit: 'in' } : undefined),
+              height: hasDimensionRange(explicit?.dimensions?.height) ? explicit?.dimensions?.height : undefined,
+          },
+          addOns: explicit?.addOns ??
+              (allowDemoFallback
+                  ? [
+                      { name: 'Throw Pillows (2)', price: 60 },
+                      { name: 'Ottoman', price: 350 },
+                  ]
+                  : []),
+          shopifyOptions: explicit?.shopifyOptions ?? explicit?.optionLabels ?? [],
+      };
+  };
   const getColorName = (product, hex) => product.colors.find((color) => color.hex.toLowerCase() === hex.toLowerCase())?.name ?? hex;
   const getMaterialOption = (product, materialId) => product.customizer.materialOptions.find((option) => option.id === materialId) ??
       product.customizer.materialOptions[0];
-  const dimensionRange = (base) => [
-      Math.round(base * 0.8),
-      Math.round(base * 1.2),
-  ];
+  const getSelectedColorOption = (product, draft) => getCustomizationForProduct(product).colors.find((color) => draft.selectedColor
+      ? color.name.toLowerCase() === draft.selectedColor.toLowerCase()
+      : color.hex.toLowerCase() === draft.fabricColor.toLowerCase());
+  const getProductImageUrl = (product) => {
+      const candidate = product.imageUrl ||
+          product.image ||
+          product.thumbnail ||
+          product.images.front ||
+          product.images.thumbnail ||
+          product.images.angle ||
+          product.images.side;
+      return candidate?.trim() || undefined;
+  };
+  const getSelectedShopifyOptions = (product) => {
+      const customization = getCustomizationForProduct(product);
+      const selectedOptions = [];
+      customization.shopifyOptions.forEach((option) => {
+          const values = normalizeCustomizationOptionValues(option.values);
+          if (values.length !== 1)
+              return;
+          const value = values[0];
+          const price = getOptionPrice(value);
+          selectedOptions.push({
+              name: option.name,
+              value: getOptionName(value),
+              ...(price !== undefined ? { price } : {}),
+          });
+      });
+      return selectedOptions;
+  };
+  const calculateDimensionAdjustment = (selected, dimension) => {
+      if (!dimension || selected === undefined)
+          return { amount: 0, quoteRequired: false };
+      if (selected <= (dimension.default ?? selected))
+          return { amount: 0, quoteRequired: false };
+      if (typeof dimension.pricePerExtraUnit !== 'number')
+          return { amount: 0, quoteRequired: true };
+      return {
+          amount: Number(((selected - (dimension.default ?? selected)) * dimension.pricePerExtraUnit).toFixed(2)),
+          quoteRequired: false,
+      };
+  };
   function FurnitureCustomizerWidget({ config = {}, onNavigateToRoomPlanner, selectedProduct: sharedSelectedProduct, onSelectedProductChange, }) {
       const mergedConfig = require$$0$1.useMemo(() => mergeConfig(config), [config]);
       const apiClient = require$$0$1.useMemo(() => new ApiClient(mergedConfig), [mergedConfig]);
       const storage = require$$0$1.useMemo(() => new Storage(mergedConfig.storageKey), [mergedConfig.storageKey]);
       const enabledActions = require$$0$1.useMemo(() => getEnabledActions(mergedConfig), [mergedConfig]);
+      const analyticsContext = require$$0$1.useMemo(() => ({
+          apiBaseUrl: mergedConfig.apiBaseUrl,
+          storeId: mergedConfig.storeId || mergedConfig.widgetId,
+          widgetId: mergedConfig.widgetId,
+      }), [mergedConfig.apiBaseUrl, mergedConfig.storeId, mergedConfig.widgetId]);
       const primaryColor = getPrimaryColor(mergedConfig);
       const [catalogProducts, setCatalogProducts] = require$$0$1.useState([]);
       const availableProducts = require$$0$1.useMemo(() => {
@@ -3612,7 +5135,7 @@
           return existing ? baseProducts : [sharedSelectedProduct, ...baseProducts];
       }, [catalogProducts, sharedSelectedProduct]);
       const defaultProduct = require$$0$1.useMemo(() => sharedSelectedProduct ?? availableProducts[0] ?? products[0], [availableProducts, sharedSelectedProduct]);
-      const [customizedItem, setCustomizedItem] = require$$0$1.useState(null);
+      const [, setCustomizedItem] = require$$0$1.useState(null);
       const [savedItem, setSavedItem] = require$$0$1.useState(null);
       const [isLoading, setIsLoading] = require$$0$1.useState(false);
       const [error, setError] = require$$0$1.useState(null);
@@ -3629,6 +5152,9 @@
       const canRedo = historyIndex < history.length - 1;
       const setDraftWithHistory = require$$0$1.useCallback((next) => {
           setDraft(next);
+          setSavedItem(null);
+          setCustomizedItem(null);
+          setLastConfig(null);
           setHistory((prev) => {
               const sliced = prev.slice(0, historyIndex + 1);
               const nextHistory = [...sliced, next];
@@ -3660,9 +5186,12 @@
                   if (cancelled) {
                       return;
                   }
-                  const nextProducts = Array.isArray(response.items)
-                      ? response.items.map((item) => productFromFurnitureItem(item))
-                      : [];
+                  const catalogItems = Array.isArray(response.catalog?.products) ? response.catalog.products : [];
+                  const nextProducts = catalogItems.length > 0
+                      ? catalogItems.map((product, index) => productFromCatalogProduct(product, index))
+                      : Array.isArray(response.items)
+                          ? response.items.map((item) => productFromFurnitureItem(item))
+                          : [];
                   setCatalogProducts(nextProducts.filter(Boolean));
               }
               catch (catalogError) {
@@ -3712,6 +5241,9 @@
           };
       }, [applySelectedProduct, baseProduct.id]);
       const handleUndo = require$$0$1.useCallback(() => {
+          setSavedItem(null);
+          setCustomizedItem(null);
+          setLastConfig(null);
           setHistoryIndex((idx) => {
               const nextIdx = Math.max(0, idx - 1);
               setDraft(history[nextIdx] ?? createDraftForProduct(baseProduct));
@@ -3719,6 +5251,9 @@
           });
       }, [baseProduct, history]);
       const handleRedo = require$$0$1.useCallback(() => {
+          setSavedItem(null);
+          setCustomizedItem(null);
+          setLastConfig(null);
           setHistoryIndex((idx) => {
               const nextIdx = Math.min(history.length - 1, idx + 1);
               setDraft(history[nextIdx] ?? createDraftForProduct(baseProduct));
@@ -3734,12 +5269,19 @@
       }, [baseProduct.id, onSelectedProductChange, selectedProduct]);
       const validationErrors = require$$0$1.useMemo(() => {
           const errs = [];
-          const widthRange = dimensionRange(selectedProduct.customizer.defaultWidthIn);
-          const depthRange = dimensionRange(selectedProduct.customizer.defaultDepthIn);
-          if (draft.widthIn < widthRange[0] || draft.widthIn > widthRange[1]) {
+          const customization = getCustomizationForProduct(selectedProduct);
+          const widthRange = [
+              customization.dimensions.width?.min ?? selectedProduct.customizer.widthRangeIn[0],
+              customization.dimensions.width?.max ?? selectedProduct.customizer.widthRangeIn[1],
+          ];
+          const depthRange = [
+              customization.dimensions.length?.min ?? selectedProduct.customizer.depthRangeIn[0],
+              customization.dimensions.length?.max ?? selectedProduct.customizer.depthRangeIn[1],
+          ];
+          if (customization.dimensions.width && (draft.widthIn < widthRange[0] || draft.widthIn > widthRange[1])) {
               errs.push(`Width must be between ${widthRange[0]} and ${widthRange[1]} inches.`);
           }
-          if (draft.depthIn < depthRange[0] || draft.depthIn > depthRange[1]) {
+          if (customization.dimensions.length && (draft.depthIn < depthRange[0] || draft.depthIn > depthRange[1])) {
               errs.push(`Depth must be between ${depthRange[0]} and ${depthRange[1]} inches.`);
           }
           if (draft.zoom < 0.8 || draft.zoom > 1.4) {
@@ -3748,25 +5290,65 @@
           return errs;
       }, [draft.depthIn, draft.widthIn, draft.zoom, selectedProduct]);
       const price = require$$0$1.useMemo(() => {
-          const materialUpcharge = getMaterialOption(selectedProduct, draft.materialId)?.priceDelta ?? 0;
-          const addonsUpcharge = (draft.addons.throwPillows ? 60 : 0) + (draft.addons.ottoman ? 350 : 0);
-          const deltaW = Math.abs(draft.widthIn - selectedProduct.customizer.defaultWidthIn);
-          const deltaD = Math.abs(draft.depthIn - selectedProduct.customizer.defaultDepthIn);
-          const dimensionUpcharge = Math.round(deltaW * 6 + deltaD * 10);
-          const customizations = materialUpcharge + addonsUpcharge + dimensionUpcharge;
+          const customization = getCustomizationForProduct(selectedProduct);
+          const selectedColor = getSelectedColorOption(selectedProduct, draft);
+          const selectedMaterial = customization.materials.find((material) => draft.selectedMaterial
+              ? material.name.toLowerCase() === draft.selectedMaterial.toLowerCase()
+              : material.id === draft.materialId);
+          const selectedAddOns = draft.selectedAddOns ?? [];
+          const selectedAddOnDetails = customization.addOns.filter((addOn) => selectedAddOns.includes(addOn.name));
+          const colorPrice = selectedColor?.price;
+          const materialPrice = selectedMaterial?.priceDelta;
+          const widthAdjustment = calculateDimensionAdjustment(draft.widthIn, customization.dimensions.width);
+          const lengthAdjustment = calculateDimensionAdjustment(draft.depthIn, customization.dimensions.length);
+          const heightAdjustment = calculateDimensionAdjustment(draft.heightIn, customization.dimensions.height);
+          const hasUnpricedAddOn = selectedAddOnDetails.some((addOn) => typeof addOn.price !== 'number');
+          const selectedPricedColorIsUnknown = selectedColor !== undefined && typeof selectedColor.price !== 'number';
+          const selectedPricedMaterialIsUnknown = selectedMaterial !== undefined && typeof selectedMaterial.priceDelta !== 'number';
+          const addonsUpcharge = selectedAddOnDetails.reduce((sum, addOn) => sum + (typeof addOn.price === 'number' ? addOn.price : 0), 0);
+          const dimensionsUpcharge = widthAdjustment.amount + lengthAdjustment.amount + heightAdjustment.amount;
+          const dimensionAdjustments = {
+              width: widthAdjustment.amount,
+              length: lengthAdjustment.amount,
+              height: heightAdjustment.amount,
+              total: dimensionsUpcharge,
+          };
+          const customizations = (typeof colorPrice === 'number' ? colorPrice : 0) +
+              (typeof materialPrice === 'number' ? materialPrice : 0) +
+              dimensionsUpcharge +
+              addonsUpcharge;
           const total = selectedProduct.basePrice + customizations;
           const lineItems = [
-              { label: 'Material', amount: materialUpcharge },
+              { label: 'Color', amount: typeof colorPrice === 'number' ? colorPrice : 0 },
+              { label: 'Material', amount: typeof materialPrice === 'number' ? materialPrice : 0 },
+              { label: 'Dimensions', amount: dimensionsUpcharge },
               { label: 'Add-ons', amount: addonsUpcharge },
-              { label: 'Dimensions', amount: dimensionUpcharge },
           ].filter((lineItem) => lineItem.amount !== 0);
           return {
               base: selectedProduct.basePrice,
               customizations,
               total,
+              quoteRequired: selectedProduct.basePrice <= 0 ||
+                  selectedPricedColorIsUnknown ||
+                  selectedPricedMaterialIsUnknown ||
+                  widthAdjustment.quoteRequired ||
+                  lengthAdjustment.quoteRequired ||
+                  heightAdjustment.quoteRequired ||
+                  hasUnpricedAddOn,
+              dimensionAdjustments,
               lineItems,
           };
-      }, [draft.addons.ottoman, draft.addons.throwPillows, draft.depthIn, draft.materialId, draft.widthIn, selectedProduct]);
+      }, [
+          draft.depthIn,
+          draft.fabricColor,
+          draft.heightIn,
+          draft.materialId,
+          draft.selectedAddOns,
+          draft.selectedColor,
+          draft.selectedMaterial,
+          draft.widthIn,
+          selectedProduct,
+      ]);
       const configStorageKey = require$$0$1.useMemo(() => `${mergedConfig.storageKey}:customizer-configs`, [mergedConfig.storageKey]);
       const saveDraftConfig = require$$0$1.useCallback(() => {
           try {
@@ -3786,6 +5368,18 @@
                   price: price.total,
               };
               localStorage.setItem(configStorageKey, JSON.stringify([entry, ...existing].slice(0, 25)));
+              trackWidgetEvent({
+                  ...analyticsContext,
+                  type: 'configuration_saved',
+                  productId: selectedProduct.id,
+                  productName: selectedProduct.name,
+                  metadata: {
+                      source: 'customizer',
+                      category: selectedProduct.category,
+                      estimatedTotal: price.quoteRequired ? undefined : price.total,
+                      pricingMode: price.quoteRequired ? 'quote_required' : 'estimated',
+                  },
+              });
               setSaveNotification('Configuration saved!');
               setTimeout(() => setSaveNotification(null), 2500);
           }
@@ -3793,7 +5387,7 @@
               console.error('Failed to save configuration:', saveError);
               setError('Failed to save configuration.');
           }
-      }, [configStorageKey, draft, price.total, selectedProduct]);
+      }, [analyticsContext, configStorageKey, draft, price, selectedProduct]);
       const encodeSharePayload = require$$0$1.useCallback((payload) => {
           const json = JSON.stringify(payload);
           const b64 = typeof window !== 'undefined' ? window.btoa(unescape(encodeURIComponent(json))) : '';
@@ -3832,68 +5426,103 @@
       const exportAsPdf = require$$0$1.useCallback(() => {
           if (typeof window === 'undefined')
               return;
-          const materialName = getMaterialOption(selectedProduct, draft.materialId)?.name ?? draft.materialId;
-          const colorName = getColorName(selectedProduct, draft.fabricColor);
-          const previewWindow = window.open('', '_blank', 'noopener,noreferrer,width=900,height=700');
-          if (!previewWindow) {
-              setError('Popup blocked. Please allow popups to export PDF.');
-              return;
+          try {
+              const customization = getCustomizationForProduct(selectedProduct);
+              const selectedColor = getSelectedColorOption(selectedProduct, draft);
+              const selectedMaterial = customization.materials.find((material) => draft.selectedMaterial
+                  ? material.name.toLowerCase() === draft.selectedMaterial.toLowerCase()
+                  : material.id === draft.materialId);
+              const selectedColorName = draft.selectedColor ??
+                  (customization.colors.length > 0
+                      ? getColorName(selectedProduct, draft.fabricColor)
+                      : undefined);
+              const selectedMaterialName = draft.selectedMaterial ??
+                  (customization.materials.length > 0
+                      ? getMaterialOption(selectedProduct, draft.materialId)?.name
+                      : undefined);
+              const selectedAddOns = customization.addOns.filter((addOn) => (draft.selectedAddOns ?? []).includes(addOn.name));
+              const generatedAt = new Date();
+              const blob = generateCustomizationPdf({
+                  brandName: mergedConfig.widgetTitle || mergedConfig.storeName || 'ModlyAI',
+                  generatedAt,
+                  referenceId: savedItem?.id,
+                  storeId: selectedProduct.storeId ?? mergedConfig.storeId,
+                  widgetId: mergedConfig.widgetId,
+                  product: {
+                      name: selectedProduct.name,
+                      category: selectedProduct.category,
+                      productUrl: selectedProduct.productUrl,
+                      imageUrl: getProductImageUrl(selectedProduct),
+                      basePrice: selectedProduct.basePrice,
+                      pricingMode: price.quoteRequired ? 'quote_required' : 'estimated',
+                      estimatedTotal: price.quoteRequired ? undefined : price.total,
+                  },
+                  selectedCustomizations: {
+                      color: selectedColorName
+                          ? { label: 'Color', value: selectedColorName, price: selectedColor?.price }
+                          : undefined,
+                      material: selectedMaterialName
+                          ? { label: 'Material', value: selectedMaterialName, price: selectedMaterial?.priceDelta }
+                          : undefined,
+                      shopifyOptions: getSelectedShopifyOptions(selectedProduct).map((option) => ({
+                          label: option.name,
+                          value: option.value,
+                          price: option.price,
+                      })),
+                      dimensions: {
+                          length: draft.depthIn,
+                          width: draft.widthIn,
+                          height: draft.heightIn,
+                          unit: customization.dimensions.width?.unit ?? customization.dimensions.length?.unit ?? 'in',
+                      },
+                      dimensionPriceAdjustments: price.dimensionAdjustments,
+                      addOns: selectedAddOns.map((addOn) => ({
+                          label: 'Add-on',
+                          value: addOn.name,
+                          price: addOn.price,
+                      })),
+                      customerRequestText: draft.customerRequestText,
+                  },
+                  pricing: {
+                      basePrice: price.base,
+                      lineItems: price.lineItems.map((lineItem) => ({
+                          label: lineItem.label === 'Dimensions' ? 'Dimension adjustment' : lineItem.label,
+                          amount: lineItem.amount,
+                      })),
+                      customizationTotal: price.customizations,
+                      estimatedTotal: price.quoteRequired ? undefined : price.total,
+                      quoteRequired: price.quoteRequired,
+                  },
+              });
+              const blobUrl = URL.createObjectURL(blob);
+              const link = document.createElement('a');
+              link.href = blobUrl;
+              link.download = createCustomizationPdfFilename(selectedProduct.name, generatedAt);
+              document.body.appendChild(link);
+              link.click();
+              link.remove();
+              window.setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
+              setError(null);
+              trackWidgetEvent({
+                  ...analyticsContext,
+                  type: 'pdf_exported',
+                  productId: selectedProduct.id,
+                  productName: selectedProduct.name,
+                  metadata: {
+                      source: 'customizer',
+                      category: selectedProduct.category,
+                      estimatedTotal: price.quoteRequired ? undefined : price.total,
+                      pricingMode: price.quoteRequired ? 'quote_required' : 'estimated',
+                  },
+              });
+              setSaveNotification('Export started.');
+              setTimeout(() => setSaveNotification(null), 2500);
           }
-          const html = `
-      <html>
-        <head>
-          <title>Furniture Configuration</title>
-          <meta charset="utf-8" />
-          <style>
-            body { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial; padding: 24px; color: #111827; }
-            .card { border: 1px solid #E5E7EB; border-radius: 16px; padding: 18px; margin-bottom: 14px; }
-            h1 { margin: 0 0 8px 0; font-size: 22px; }
-            h2 { margin: 0 0 10px 0; font-size: 14px; color: #6B7280; text-transform: uppercase; letter-spacing: .08em; }
-            .row { display: flex; justify-content: space-between; gap: 12px; margin: 8px 0; }
-            .muted { color: #6B7280; }
-            .total { font-size: 18px; font-weight: 800; }
-            .swatch { width: 16px; height: 16px; border-radius: 4px; border: 1px solid #E5E7EB; display:inline-block; vertical-align: middle; margin-right: 8px; }
-            @media print { body { padding: 0; } }
-          </style>
-        </head>
-        <body>
-          <div class="card">
-            <h1>${selectedProduct.name.replace(/</g, '&lt;')}</h1>
-            <div class="muted">Generated: ${new Date().toLocaleString()}</div>
-          </div>
-          <div class="card">
-            <h2>Configuration</h2>
-            <div class="row"><div class="muted">Material</div><div>${materialName}</div></div>
-            <div class="row"><div class="muted">Color</div><div><span class="swatch" style="background:${draft.fabricColor}"></span>${colorName}</div></div>
-            <div class="row"><div class="muted">Width</div><div>${draft.widthIn} in</div></div>
-            <div class="row"><div class="muted">Depth</div><div>${draft.depthIn} in</div></div>
-            <div class="row"><div class="muted">Base Dimensions</div><div>${selectedProduct.dimensions.length}${selectedProduct.dimensions.unit} L × ${selectedProduct.dimensions.width}${selectedProduct.dimensions.unit} W × ${selectedProduct.dimensions.height}${selectedProduct.dimensions.unit} H</div></div>
-            <div class="row"><div class="muted">Add-ons</div><div>${[
-            draft.addons.throwPillows ? 'Throw pillows (2)' : '',
-            draft.addons.ottoman ? 'Ottoman' : '',
-        ]
-            .filter(Boolean)
-            .join(', ') || 'None'}</div></div>
-          </div>
-          <div class="card">
-            <h2>Pricing</h2>
-            <div class="row"><div class="muted">Base</div><div>$${price.base.toLocaleString()}</div></div>
-            ${price.lineItems
-            .map((lineItem) => `<div class="row"><div class="muted">${lineItem.label}</div><div>+$${lineItem.amount.toLocaleString()}</div></div>`)
-            .join('')}
-            <div class="row total"><div>Total</div><div>$${price.total.toLocaleString()}</div></div>
-          </div>
-          <script>
-            window.focus();
-            setTimeout(() => window.print(), 250);
-          </script>
-        </body>
-      </html>
-    `;
-          previewWindow.document.open();
-          previewWindow.document.write(html);
-          previewWindow.document.close();
-      }, [draft, price, selectedProduct]);
+          catch (exportError) {
+              console.error('Failed to export customization:', exportError);
+              setError('Could not export your customization. Please try again.');
+          }
+      }, [analyticsContext, draft, mergedConfig, price, savedItem?.id, selectedProduct]);
       const handleNavigateToRoomPlanner = () => {
           if (onNavigateToRoomPlanner) {
               onNavigateToRoomPlanner();
@@ -3903,36 +5532,129 @@
           }
       };
       const buildCustomizationConfig = require$$0$1.useCallback(() => {
-          const currentMaterial = getMaterialOption(selectedProduct, draft.materialId);
-          const widthDeltaIn = draft.widthIn - selectedProduct.customizer.defaultWidthIn;
-          const depthDeltaIn = draft.depthIn - selectedProduct.customizer.defaultDepthIn;
+          const customization = getCustomizationForProduct(selectedProduct);
+          const currentMaterial = customization.materials.length > 0
+              ? getMaterialOption(selectedProduct, draft.materialId)
+              : undefined;
+          const baseWidth = customization.dimensions.width?.default ?? selectedProduct.customizer.defaultWidthIn;
+          const baseLength = customization.dimensions.length?.default ?? selectedProduct.customizer.defaultDepthIn;
+          const baseHeight = customization.dimensions.height?.default ?? selectedProduct.dimensions.height;
+          const widthDeltaIn = draft.widthIn - baseWidth;
+          const depthDeltaIn = draft.depthIn - baseLength;
+          const heightDeltaIn = (draft.heightIn ?? baseHeight) - baseHeight;
           const inchToMeters = 0.0254;
-          const ornamentDetails = [];
-          if (draft.addons.throwPillows)
-              ornamentDetails.push('Throw Pillows (2)');
-          if (draft.addons.ottoman)
-              ornamentDetails.push('Ottoman');
+          const selectedAddOns = customization.addOns.filter((addOn) => (draft.selectedAddOns ?? []).includes(addOn.name));
+          const ornamentDetails = selectedAddOns.map((addOn) => addOn.name);
           return {
               baseItemId: selectedProduct.id,
               baseItemType: selectedProduct.customizer.type,
               baseItemName: selectedProduct.name,
+              source: selectedProduct.source,
+              productUrl: selectedProduct.productUrl,
+              price: selectedProduct.basePrice,
+              externalId: selectedProduct.externalId,
+              shopifyProductId: selectedProduct.shopifyProductId,
+              storeId: selectedProduct.storeId,
               colorScheme: {
                   primary: draft.fabricColor,
                   secondary: selectedProduct.colors[1]?.hex,
               },
               materialOverrides: {
-                  primary: currentMaterial?.name,
-                  upholstery: currentMaterial?.name,
-                  legs: selectedProduct.materials[1],
+                  ...(currentMaterial?.name ? { primary: currentMaterial.name, upholstery: currentMaterial.name } : {}),
+                  ...(selectedProduct.materials[1] ? { legs: selectedProduct.materials[1] } : {}),
               },
               ornamentDetails,
               dimensionAdjustments: {
                   width: Number((widthDeltaIn * inchToMeters).toFixed(3)),
                   length: Number((depthDeltaIn * inchToMeters).toFixed(3)),
+                  height: Number((heightDeltaIn * inchToMeters).toFixed(3)),
               },
               aiNotes: `Configurator snapshot · ${selectedProduct.name} · Total $${price.total.toLocaleString()}`,
           };
-      }, [draft.addons.ottoman, draft.addons.throwPillows, draft.depthIn, draft.fabricColor, draft.materialId, draft.widthIn, price.total, selectedProduct]);
+      }, [draft.depthIn, draft.fabricColor, draft.heightIn, draft.materialId, draft.selectedAddOns, draft.widthIn, price.total, selectedProduct]);
+      const buildCustomizedFurniturePayload = require$$0$1.useCallback((customizedData) => {
+          const customization = getCustomizationForProduct(selectedProduct);
+          const selectedColor = getSelectedColorOption(selectedProduct, draft);
+          const selectedMaterial = customization.materials.find((material) => draft.selectedMaterial
+              ? material.name.toLowerCase() === draft.selectedMaterial.toLowerCase()
+              : material.id === draft.materialId);
+          const selectedAddOns = customization.addOns.filter((addOn) => (draft.selectedAddOns ?? []).includes(addOn.name));
+          const selectedColorName = draft.selectedColor ??
+              (customization.colors.length > 0
+                  ? getColorName(selectedProduct, draft.fabricColor)
+                  : undefined);
+          const selectedMaterialName = draft.selectedMaterial ??
+              (customization.materials.length > 0
+                  ? getMaterialOption(selectedProduct, draft.materialId)?.name
+                  : undefined);
+          const selectedShopifyOptions = getSelectedShopifyOptions(selectedProduct);
+          const baseWidth = customization.dimensions.width?.default ?? selectedProduct.customizer.defaultWidthIn;
+          const baseLength = customization.dimensions.length?.default ?? selectedProduct.customizer.defaultDepthIn;
+          const baseHeight = customization.dimensions.height?.default ?? selectedProduct.dimensions.height;
+          const inchToMeters = 0.0254;
+          const dimensionAdjustments = customizedData?.dimensionAdjustments ?? {
+              width: Number(((draft.widthIn - baseWidth) * inchToMeters).toFixed(3)),
+              length: Number(((draft.depthIn - baseLength) * inchToMeters).toFixed(3)),
+              height: Number((((draft.heightIn ?? baseHeight) - baseHeight) * inchToMeters).toFixed(3)),
+          };
+          const dimensions = customizedData?.dimensions ?? {
+              length: Number((selectedProduct.dimensions.length + (dimensionAdjustments.length ?? 0)).toFixed(3)),
+              width: Number((selectedProduct.dimensions.width + (dimensionAdjustments.width ?? 0)).toFixed(3)),
+              height: Number((selectedProduct.dimensions.height + (dimensionAdjustments.height ?? 0)).toFixed(3)),
+          };
+          return {
+              productId: selectedProduct.id,
+              productName: selectedProduct.name,
+              category: selectedProduct.category,
+              imageUrl: getProductImageUrl(selectedProduct),
+              source: selectedProduct.source,
+              productUrl: selectedProduct.productUrl,
+              price: selectedProduct.basePrice,
+              basePrice: selectedProduct.basePrice,
+              externalId: selectedProduct.externalId,
+              shopifyProductId: selectedProduct.shopifyProductId,
+              storeId: selectedProduct.storeId ?? mergedConfig.storeId,
+              widgetId: mergedConfig.widgetId,
+              name: selectedProduct.name,
+              baseItemType: selectedProduct.category,
+              dimensions,
+              colorScheme: {
+                  primary: selectedColorName ?? getColorName(selectedProduct, draft.fabricColor),
+                  secondary: selectedProduct.colors[1]?.name,
+              },
+              materials: selectedMaterialName ? { primary: selectedMaterialName } : {},
+              ornamentDetails: customizedData?.ornamentDetails ?? selectedAddOns.map((addOn) => addOn.name),
+              aiNotes: customizedData?.aiNotes ??
+                  `Configurator snapshot - ${selectedProduct.name} - ${price.quoteRequired ? 'Quote required' : `$${price.total.toLocaleString()}`}`,
+              dimensionChanges: dimensionAdjustments,
+              selectedColor: selectedColorName
+                  ? { name: selectedColorName, price: selectedColor?.price }
+                  : undefined,
+              selectedColorPrice: selectedColor?.price,
+              selectedMaterial: selectedMaterialName
+                  ? { name: selectedMaterialName, price: selectedMaterial?.priceDelta }
+                  : undefined,
+              selectedMaterialPrice: selectedMaterial?.priceDelta,
+              selectedShopifyOptions,
+              selectedDimensions: {
+                  width: draft.widthIn,
+                  length: draft.depthIn,
+                  height: draft.heightIn,
+                  unit: customization.dimensions.width?.unit ?? customization.dimensions.length?.unit ?? 'in',
+              },
+              dimensionPriceAdjustments: price.dimensionAdjustments,
+              selectedAddOns,
+              customerRequestText: draft.customerRequestText,
+              customizationPrice: price.customizations,
+              estimatedTotal: price.quoteRequired ? undefined : price.total,
+              pricingMode: price.quoteRequired ? 'quote_required' : 'estimated',
+          };
+      }, [draft, mergedConfig.storeId, mergedConfig.widgetId, price, selectedProduct]);
+      const saveCustomizedFurnitureForCurrentDraft = require$$0$1.useCallback((customizedData) => {
+          const saved = storage.saveCustomizedFurniture(buildCustomizedFurniturePayload(customizedData));
+          setSavedItem(saved);
+          return saved;
+      }, [buildCustomizedFurniturePayload, storage]);
       const handleCustomize = require$$0$1.useCallback(async (customizationConfig) => {
           setIsLoading(true);
           setError(null);
@@ -3977,21 +5699,7 @@
               };
               setCustomizedItem(mergedData);
               try {
-                  const saved = storage.saveCustomizedFurniture({
-                      productId: selectedProduct.id,
-                      name: selectedProduct.name,
-                      baseItemType: selectedProduct.category,
-                      dimensions: mergedData.dimensions,
-                      colorScheme: {
-                          primary: getColorName(selectedProduct, draft.fabricColor),
-                          secondary: selectedProduct.colors[1]?.name,
-                      },
-                      materials: mergedData.materials,
-                      ornamentDetails: mergedData.ornamentDetails,
-                      aiNotes: mergedData.aiNotes,
-                      dimensionChanges: mergedData.dimensionAdjustments,
-                  });
-                  setSavedItem(saved);
+                  saveCustomizedFurnitureForCurrentDraft(mergedData);
                   setSaveNotification('Customized furniture saved automatically!');
                   setTimeout(() => setSaveNotification(null), 3000);
               }
@@ -4007,7 +5715,12 @@
           finally {
               setIsLoading(false);
           }
-      }, [apiClient, draft.fabricColor, mergedConfig, selectedProduct, storage]);
+      }, [
+          apiClient,
+          mergedConfig,
+          saveCustomizedFurnitureForCurrentDraft,
+          selectedProduct,
+      ]);
       const handleApply = require$$0$1.useCallback(() => {
           setError(null);
           if (validationErrors.length > 0) {
@@ -4019,37 +5732,77 @@
       const handleFinalize = () => {
           if (!enabledActions.requestQuote)
               return;
-          if (!savedItem && !customizedItem) {
+          setError(null);
+          setSaveNotification(null);
+          if (!selectedProduct?.id) {
               setError('Please customize an item first before requesting a quote.');
               return;
           }
-          setShowFinalizeModal(true);
+          if (validationErrors.length > 0) {
+              setError(validationErrors[0] ?? 'Please review your customizations.');
+              return;
+          }
+          try {
+              if (!savedItem) {
+                  saveCustomizedFurnitureForCurrentDraft();
+              }
+              trackWidgetEvent({
+                  ...analyticsContext,
+                  type: 'quote_started',
+                  productId: selectedProduct.id,
+                  productName: selectedProduct.name,
+                  metadata: {
+                      source: 'customizer',
+                      quoteType: 'customized_furniture',
+                      estimatedTotal: price.quoteRequired ? undefined : price.total,
+                      pricingMode: price.quoteRequired ? 'quote_required' : 'estimated',
+                  },
+              });
+              setShowFinalizeModal(false);
+              setShowQuoteForm(true);
+          }
+          catch (saveError) {
+              console.error('Failed to save customization before quote:', saveError);
+              setError('Could not prepare your customization for quote. Please try again.');
+          }
       };
       const handleProceedToQuote = () => {
           if (!enabledActions.requestQuote)
               return;
+          trackWidgetEvent({
+              ...analyticsContext,
+              type: 'quote_started',
+              productId: selectedProduct.id,
+              productName: selectedProduct.name,
+              metadata: {
+                  source: 'customizer',
+                  quoteType: 'customized_furniture',
+                  estimatedTotal: price.quoteRequired ? undefined : price.total,
+                  pricingMode: price.quoteRequired ? 'quote_required' : 'estimated',
+              },
+          });
           setShowFinalizeModal(false);
           setShowQuoteForm(true);
       };
       const handleQuoteSubmit = async (quoteRequest) => {
           try {
-              await apiClient.submitQuoteRequest(quoteRequest);
-              setShowQuoteForm(false);
+              const response = await apiClient.submitQuoteRequest(quoteRequest);
               setQuoteSuccess(true);
-              setSaveNotification("Quote request submitted successfully! We'll contact you soon.");
+              setSaveNotification('Quote request sent. The store will follow up with pricing and next steps.');
               setTimeout(() => {
                   setQuoteSuccess(false);
                   setSaveNotification(null);
               }, 5000);
+              return response;
           }
           catch (quoteError) {
               throw quoteError;
           }
       };
-      return (jsxRuntimeExports.jsxs(WidgetProvider, { apiClient: apiClient, storage: storage, config: mergedConfig, children: [jsxRuntimeExports.jsxs("div", { className: "min-h-screen bg-white", children: [jsxRuntimeExports.jsx("section", { className: "py-12 bg-gradient-to-br from-purple-600 to-purple-800 text-white", children: jsxRuntimeExports.jsx("div", { className: "max-w-7xl mx-auto px-4", children: jsxRuntimeExports.jsxs("div", { className: "max-w-3xl", children: [jsxRuntimeExports.jsxs("div", { className: "inline-flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full mb-4", children: [jsxRuntimeExports.jsx(Palette, { className: "w-4 h-4" }), jsxRuntimeExports.jsx("span", { className: "text-sm font-medium", children: "AI-Powered Customization" })] }), jsxRuntimeExports.jsx("h1", { className: "text-5xl font-bold mb-4", children: "Furniture Customizer" }), jsxRuntimeExports.jsx("p", { className: "text-xl text-purple-100 mb-8", children: "Customize furniture colors, materials, and dimensions with AI assistance. See changes in real-time and get instant feasibility feedback." }), jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap gap-4", children: [jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 text-sm", children: [jsxRuntimeExports.jsx(Check, { className: "w-5 h-5 text-green-300" }), jsxRuntimeExports.jsx("span", { children: "Real-time preview" })] }), jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 text-sm", children: [jsxRuntimeExports.jsx(Check, { className: "w-5 h-5 text-green-300" }), jsxRuntimeExports.jsx("span", { children: "Factory-approved options" })] }), jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 text-sm", children: [jsxRuntimeExports.jsx(Check, { className: "w-5 h-5 text-green-300" }), jsxRuntimeExports.jsx("span", { children: "Instant pricing" })] })] })] }) }) }), jsxRuntimeExports.jsxs("div", { className: "max-w-7xl mx-auto px-4", children: [saveNotification && (jsxRuntimeExports.jsxs("div", { className: "mt-6 bg-emerald-50 border border-emerald-200 text-emerald-800 p-4 rounded-xl flex items-center gap-3", children: [jsxRuntimeExports.jsx(Check, { className: "w-5 h-5" }), jsxRuntimeExports.jsx("span", { className: "font-medium", children: saveNotification })] })), error && (jsxRuntimeExports.jsx("div", { className: "mt-6 bg-red-50 border border-red-200 text-red-700 p-4 rounded-xl", children: jsxRuntimeExports.jsxs("div", { className: "flex items-start gap-2", children: [jsxRuntimeExports.jsx(Info, { className: "w-5 h-5 mt-0.5" }), jsxRuntimeExports.jsx("div", { children: error })] }) }))] }), jsxRuntimeExports.jsx(FurnitureCustomizerPanel, { products: availableProducts, draft: draft, setDraft: setDraftWithHistory, isApplying: isLoading, validationErrors: validationErrors, price: price, onApply: handleApply, onUndo: handleUndo, onRedo: handleRedo, canUndo: canUndo, canRedo: canRedo, onSaveConfig: saveDraftConfig, onShareLink: copyShareLink, onExportPdf: exportAsPdf }), jsxRuntimeExports.jsx("section", { className: "py-12 bg-white border-t border-gray-200", children: jsxRuntimeExports.jsxs("div", { className: "max-w-5xl mx-auto px-4 text-center", children: [jsxRuntimeExports.jsx("h2", { className: "text-2xl font-bold text-gray-900 mb-4", children: "Love Your Custom Design?" }), jsxRuntimeExports.jsx("p", { className: "text-gray-600 mb-8", children: "Save your configuration or share it with others" }), jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap justify-center gap-4", children: [enabledActions.requestQuote && (jsxRuntimeExports.jsxs("button", { type: "button", onClick: handleFinalize, className: "px-8 py-4 text-white rounded-lg font-semibold transition shadow-lg", style: { backgroundColor: primaryColor }, children: ["Add to Quote - $", price.total.toLocaleString()] })), jsxRuntimeExports.jsx("button", { type: "button", onClick: saveDraftConfig, className: "px-8 py-4 border-2 border-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-50 transition", children: "Save Configuration" }), jsxRuntimeExports.jsx("button", { type: "button", onClick: copyShareLink, className: "px-8 py-4 border-2 border-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-50 transition", children: "Share Design" }), jsxRuntimeExports.jsx("button", { type: "button", onClick: exportAsPdf, className: "px-8 py-4 border-2 border-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-50 transition", children: "Export PDF" }), jsxRuntimeExports.jsx("button", { type: "button", onClick: handleNavigateToRoomPlanner, className: "px-8 py-4 border-2 border-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-50 transition", children: "View in Room Planner" })] })] }) })] }), jsxRuntimeExports.jsx(FinalizeQuoteModal, { isOpen: enabledActions.requestQuote && showFinalizeModal, onClose: () => setShowFinalizeModal(false), onProceed: handleProceedToQuote, item: savedItem }), jsxRuntimeExports.jsx(QuoteRequestForm, { isOpen: enabledActions.requestQuote && showQuoteForm, onClose: () => setShowQuoteForm(false), onSubmit: handleQuoteSubmit, item: savedItem }), quoteSuccess && (jsxRuntimeExports.jsxs("div", { className: "fixed bottom-6 right-6 bg-emerald-600 text-white px-6 py-4 rounded-xl shadow-2xl flex items-center gap-3 z-50 animate-slide-up", children: [jsxRuntimeExports.jsx("svg", { className: "w-6 h-6", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" }) }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("p", { className: "font-semibold", children: "Quote Request Submitted!" }), jsxRuntimeExports.jsx("p", { className: "text-sm text-white/90", children: "We'll contact you soon with details." })] })] }))] }));
+      return (jsxRuntimeExports.jsxs(WidgetProvider, { apiClient: apiClient, storage: storage, config: mergedConfig, children: [jsxRuntimeExports.jsxs("div", { className: "min-h-screen bg-white", children: [jsxRuntimeExports.jsx("section", { className: "py-12 bg-gradient-to-br from-purple-600 to-purple-800 text-white", children: jsxRuntimeExports.jsx("div", { className: "max-w-7xl mx-auto px-4", children: jsxRuntimeExports.jsxs("div", { className: "max-w-3xl", children: [jsxRuntimeExports.jsxs("div", { className: "inline-flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full mb-4", children: [jsxRuntimeExports.jsx(Palette, { className: "w-4 h-4" }), jsxRuntimeExports.jsx("span", { className: "text-sm font-medium", children: "AI-Powered Customization" })] }), jsxRuntimeExports.jsx("h1", { className: "text-5xl font-bold mb-4", children: "Furniture Customizer" }), jsxRuntimeExports.jsx("p", { className: "text-xl text-purple-100 mb-8", children: "Customize furniture colors, materials, and dimensions with AI assistance. See changes in real-time and get instant feasibility feedback." }), jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap gap-4", children: [jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 text-sm", children: [jsxRuntimeExports.jsx(Check, { className: "w-5 h-5 text-green-300" }), jsxRuntimeExports.jsx("span", { children: "Real-time preview" })] }), jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 text-sm", children: [jsxRuntimeExports.jsx(Check, { className: "w-5 h-5 text-green-300" }), jsxRuntimeExports.jsx("span", { children: "Factory-approved options" })] }), jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 text-sm", children: [jsxRuntimeExports.jsx(Check, { className: "w-5 h-5 text-green-300" }), jsxRuntimeExports.jsx("span", { children: "Instant pricing" })] })] })] }) }) }), jsxRuntimeExports.jsxs("div", { className: "max-w-7xl mx-auto px-4", children: [saveNotification && (jsxRuntimeExports.jsxs("div", { className: "mt-6 bg-emerald-50 border border-emerald-200 text-emerald-800 p-4 rounded-xl flex items-center gap-3", children: [jsxRuntimeExports.jsx(Check, { className: "w-5 h-5" }), jsxRuntimeExports.jsx("span", { className: "font-medium", children: saveNotification })] })), error && (jsxRuntimeExports.jsx("div", { className: "mt-6 bg-red-50 border border-red-200 text-red-700 p-4 rounded-xl", children: jsxRuntimeExports.jsxs("div", { className: "flex items-start gap-2", children: [jsxRuntimeExports.jsx(Info, { className: "w-5 h-5 mt-0.5" }), jsxRuntimeExports.jsx("div", { children: error })] }) }))] }), jsxRuntimeExports.jsx(FurnitureCustomizerPanel, { products: availableProducts, draft: draft, setDraft: setDraftWithHistory, isApplying: isLoading, validationErrors: validationErrors, price: price, onApply: handleApply, onUndo: handleUndo, onRedo: handleRedo, canUndo: canUndo, canRedo: canRedo, onSaveConfig: saveDraftConfig, onShareLink: copyShareLink, onExportPdf: exportAsPdf, onViewFullRoomAnalysis: handleNavigateToRoomPlanner }), jsxRuntimeExports.jsx("section", { className: "py-8 bg-stone-50/70 border-t border-stone-200", children: jsxRuntimeExports.jsx("div", { className: "max-w-5xl mx-auto px-4", children: jsxRuntimeExports.jsxs("div", { className: "rounded-2xl border border-stone-200 bg-[#fffaf4] p-5 shadow-sm", children: [jsxRuntimeExports.jsxs("div", { className: "mb-5 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h2", { className: "text-xl font-bold text-gray-950", children: "Love Your Custom Design?" }), jsxRuntimeExports.jsx("p", { className: "mt-1 text-sm text-gray-600", children: "Save, share, export, or send this configuration to the store." })] }), jsxRuntimeExports.jsxs("p", { className: "text-sm font-semibold text-gray-900", children: ["Estimated total: ", price.quoteRequired ? 'Quote required' : `$${price.total.toLocaleString()}`] })] }), jsxRuntimeExports.jsxs("div", { className: "grid gap-3 sm:grid-cols-2 lg:grid-cols-5", children: [enabledActions.requestQuote && (jsxRuntimeExports.jsx("button", { type: "button", onClick: handleFinalize, className: "min-h-12 rounded-lg px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:opacity-95 sm:col-span-2 lg:col-span-1", style: { backgroundColor: primaryColor }, children: "Add to Quote" })), jsxRuntimeExports.jsx("button", { type: "button", onClick: saveDraftConfig, className: "min-h-12 rounded-lg border border-stone-300 bg-white px-5 py-3 text-sm font-semibold text-gray-800 transition hover:bg-stone-50", children: "Save Configuration" }), jsxRuntimeExports.jsx("button", { type: "button", onClick: copyShareLink, className: "min-h-12 rounded-lg border border-stone-300 bg-white px-5 py-3 text-sm font-semibold text-gray-800 transition hover:bg-stone-50", children: "Share Design" }), jsxRuntimeExports.jsx("button", { type: "button", onClick: exportAsPdf, className: "min-h-12 rounded-lg border border-stone-300 bg-white px-5 py-3 text-sm font-semibold text-gray-800 transition hover:bg-stone-50", children: "Export PDF" }), jsxRuntimeExports.jsx("button", { type: "button", onClick: handleNavigateToRoomPlanner, className: "min-h-12 rounded-lg border border-stone-300 bg-white px-5 py-3 text-sm font-semibold text-gray-800 transition hover:bg-stone-50", children: "View in Room Planner" })] })] }) }) })] }), jsxRuntimeExports.jsx(FinalizeQuoteModal, { isOpen: enabledActions.requestQuote && showFinalizeModal, onClose: () => setShowFinalizeModal(false), onProceed: handleProceedToQuote, item: savedItem }), jsxRuntimeExports.jsx(QuoteRequestForm, { isOpen: enabledActions.requestQuote && showQuoteForm, onClose: () => setShowQuoteForm(false), onSubmit: handleQuoteSubmit, item: savedItem }), quoteSuccess && (jsxRuntimeExports.jsxs("div", { className: "fixed bottom-6 right-6 bg-emerald-600 text-white px-6 py-4 rounded-xl shadow-2xl flex items-center gap-3 z-50 animate-slide-up", children: [jsxRuntimeExports.jsx("svg", { className: "w-6 h-6", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" }) }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("p", { className: "font-semibold", children: "Quote Request Submitted!" }), jsxRuntimeExports.jsx("p", { className: "text-sm text-white/90", children: "We'll contact you soon with details." })] })] }))] }));
   }
 
-  function MessageBubble({ message, onCustomizeItem, onAddToRoomPlanner, onViewInCatalog, enabledActions, primaryColor }) {
+  function MessageBubble({ message, onCustomizeItem, onAddToRoomPlanner, onViewInCatalog, enabledActions, primaryColor, analyticsContext }) {
       const isUser = message.role === 'user';
       const isThinking = message.type === 'thinking';
       const actions = enabledActions ?? { viewInCatalog: true, customize: true, requestQuote: true };
@@ -4057,21 +5810,42 @@
                 ? 'bg-blue-500 text-white'
                 : isThinking
                     ? 'bg-gray-100 text-gray-600'
-                    : 'bg-gray-50 text-gray-900 border border-gray-200'}`, children: isThinking ? (jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [jsxRuntimeExports.jsxs("div", { className: "flex gap-1", children: [jsxRuntimeExports.jsx("div", { className: "w-2 h-2 bg-gray-400 rounded-full animate-bounce", style: { animationDelay: '0ms' } }), jsxRuntimeExports.jsx("div", { className: "w-2 h-2 bg-gray-400 rounded-full animate-bounce", style: { animationDelay: '150ms' } }), jsxRuntimeExports.jsx("div", { className: "w-2 h-2 bg-gray-400 rounded-full animate-bounce", style: { animationDelay: '300ms' } })] }), jsxRuntimeExports.jsx("span", { className: "text-sm", children: "Thinking..." })] })) : (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsx("div", { className: "whitespace-pre-wrap text-sm leading-relaxed", children: message.content }), message.metadata?.recommendations && message.metadata?.recommendations.length > 0 && (jsxRuntimeExports.jsx("div", { className: "mt-4 space-y-3", children: message.metadata?.recommendations.map((rec, index) => (jsxRuntimeExports.jsx(RecommendationCard, { recommendation: rec, onCustomize: onCustomizeItem, onAddToRoomPlanner: onAddToRoomPlanner, onViewInCatalog: onViewInCatalog, enabledActions: actions, primaryColor: primaryColor }, rec.item.id || index))) })), message.metadata?.action && (jsxRuntimeExports.jsx("div", { className: "mt-3 pt-3 border-t border-gray-200", children: jsxRuntimeExports.jsxs("div", { className: "text-xs text-gray-500", children: [message.metadata?.action?.type === 'open_room_planner' && 'Ready to analyze your room', message.metadata?.action?.type === 'open_customizer' && 'Ready to customize', message.metadata?.action?.type === 'show_catalog' && 'Ready to browse catalog'] }) }))] })) }) }));
+                    : 'bg-gray-50 text-gray-900 border border-gray-200'}`, children: isThinking ? (jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [jsxRuntimeExports.jsxs("div", { className: "flex gap-1", children: [jsxRuntimeExports.jsx("div", { className: "w-2 h-2 bg-gray-400 rounded-full animate-bounce", style: { animationDelay: '0ms' } }), jsxRuntimeExports.jsx("div", { className: "w-2 h-2 bg-gray-400 rounded-full animate-bounce", style: { animationDelay: '150ms' } }), jsxRuntimeExports.jsx("div", { className: "w-2 h-2 bg-gray-400 rounded-full animate-bounce", style: { animationDelay: '300ms' } })] }), jsxRuntimeExports.jsx("span", { className: "text-sm", children: "Thinking..." })] })) : (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsx("div", { className: "whitespace-pre-wrap text-sm leading-relaxed", children: message.content }), message.metadata?.recommendations && message.metadata?.recommendations.length > 0 && (jsxRuntimeExports.jsx("div", { className: "mt-4 space-y-3", children: message.metadata?.recommendations.map((rec, index) => (jsxRuntimeExports.jsx(RecommendationCard, { recommendation: rec, onCustomize: onCustomizeItem, onAddToRoomPlanner: onAddToRoomPlanner, onViewInCatalog: onViewInCatalog, enabledActions: actions, primaryColor: primaryColor, analyticsContext: analyticsContext }, rec.item.id || index))) })), message.metadata?.action && (jsxRuntimeExports.jsx("div", { className: "mt-3 pt-3 border-t border-gray-200", children: jsxRuntimeExports.jsxs("div", { className: "text-xs text-gray-500", children: [message.metadata?.action?.type === 'open_room_planner' && 'Ready to analyze your room', message.metadata?.action?.type === 'open_customizer' && 'Ready to customize', message.metadata?.action?.type === 'show_catalog' && 'Ready to browse catalog'] }) }))] })) }) }));
   }
   function getProductCatalogUrl(item) {
       return getRealProductUrl(item);
   }
-  function RecommendationCard({ recommendation, onCustomize, onAddToRoomPlanner, onViewInCatalog, enabledActions, primaryColor, }) {
+  function RecommendationCard({ recommendation, onCustomize, onAddToRoomPlanner, onViewInCatalog, enabledActions, primaryColor, analyticsContext, }) {
       const item = recommendation.item;
       const catalogUrl = getProductCatalogUrl(item);
       const primaryTextColor = primaryColor ? getReadableTextColor(primaryColor) : undefined;
+      const handleViewInCatalogClick = (event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          if (!catalogUrl || typeof window === 'undefined')
+              return;
+          if (onViewInCatalog) {
+              onViewInCatalog(item);
+              return;
+          }
+          trackWidgetEvent({
+              ...analyticsContext,
+              type: 'view_in_catalog_clicked',
+              productId: item.id,
+              productName: item.name,
+              metadata: {
+                  category: item.category,
+                  productUrl: catalogUrl,
+              },
+          });
+          window.open(catalogUrl, '_blank', 'noopener,noreferrer');
+      };
       return (jsxRuntimeExports.jsxs("div", { className: "bg-white rounded-lg border border-gray-200 p-3 shadow-sm", children: [jsxRuntimeExports.jsxs("div", { className: "flex items-start justify-between mb-2", children: [jsxRuntimeExports.jsx("h4", { className: "font-semibold text-sm text-gray-900", children: item.name }), recommendation.matchScore && (jsxRuntimeExports.jsxs("span", { className: "text-xs px-2 py-0.5 bg-blue-100 text-blue-700 rounded", children: [Math.round(recommendation.matchScore * 100), "% match"] }))] }), jsxRuntimeExports.jsxs("p", { className: "text-xs text-gray-600 mb-2", children: [item.category, item.subCategory ? ` • ${item.subCategory}` : ''] }), item.priceRange && (jsxRuntimeExports.jsxs("p", { className: "text-xs font-medium text-gray-900 mb-2", children: ["$", item.priceRange.min?.toLocaleString(), item.priceRange.max && item.priceRange.max !== item.priceRange.min
                           ? ` - $${item.priceRange.max.toLocaleString()}`
-                          : ''] })), recommendation.reasoning && (jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500 mb-2", children: recommendation.reasoning })), jsxRuntimeExports.jsxs("div", { className: "mt-3 flex gap-2", children: [enabledActions.viewInCatalog && catalogUrl ? (jsxRuntimeExports.jsxs("a", { href: catalogUrl, target: "_blank", rel: "noopener noreferrer", className: "flex-1 py-1.5 px-3 bg-gray-100 text-gray-700 text-xs rounded hover:bg-gray-200 transition-colors flex items-center justify-center gap-1 border border-gray-300", children: [jsxRuntimeExports.jsxs("svg", { className: "w-3 h-3", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: [jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M15 12a3 3 0 11-6 0 3 3 0 016 0z" }), jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" })] }), "View in Catalog"] })) : enabledActions.viewInCatalog ? (jsxRuntimeExports.jsx("button", { type: "button", disabled: true, className: "flex-1 py-1.5 px-3 bg-gray-100 text-gray-400 text-xs rounded cursor-not-allowed flex items-center justify-center gap-1 border border-gray-300", children: "Catalog link unavailable" })) : null, enabledActions.customize && onCustomize && (jsxRuntimeExports.jsxs("button", { onClick: () => onCustomize(item), className: "flex-1 py-1.5 px-3 bg-blue-500 text-white text-xs rounded hover:bg-blue-600 transition-colors flex items-center justify-center gap-1", style: primaryColor ? { backgroundColor: primaryColor, color: primaryTextColor } : undefined, children: [jsxRuntimeExports.jsx("svg", { className: "w-3 h-3", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" }) }), "Customize this"] }))] })] }));
+                          : ''] })), recommendation.reasoning && (jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500 mb-2", children: recommendation.reasoning })), jsxRuntimeExports.jsxs("div", { className: "mt-3 flex gap-2", children: [enabledActions.viewInCatalog && catalogUrl ? (jsxRuntimeExports.jsxs("button", { type: "button", onClick: handleViewInCatalogClick, className: "flex-1 py-1.5 px-3 bg-gray-100 text-gray-700 text-xs rounded hover:bg-gray-200 transition-colors flex items-center justify-center gap-1 border border-gray-300", children: [jsxRuntimeExports.jsxs("svg", { className: "w-3 h-3", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: [jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M15 12a3 3 0 11-6 0 3 3 0 016 0z" }), jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" })] }), "View in Catalog"] })) : enabledActions.viewInCatalog ? (jsxRuntimeExports.jsx("button", { type: "button", disabled: true, className: "flex-1 py-1.5 px-3 bg-gray-100 text-gray-400 text-xs rounded cursor-not-allowed flex items-center justify-center gap-1 border border-gray-300", children: "Catalog link unavailable" })) : null, enabledActions.customize && onCustomize && (jsxRuntimeExports.jsxs("button", { type: "button", onClick: () => onCustomize(item), className: "flex-1 py-1.5 px-3 bg-blue-500 text-white text-xs rounded hover:bg-blue-600 transition-colors flex items-center justify-center gap-1", style: primaryColor ? { backgroundColor: primaryColor, color: primaryTextColor } : undefined, children: [jsxRuntimeExports.jsx("svg", { className: "w-3 h-3", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" }) }), "Customize this"] }))] })] }));
   }
 
-  function ConversationInterface({ aiService, onCustomizeItem, onAddToRoomPlanner, onOpenRoomPlanner, onOpenCustomizer, onShowCatalog, onViewInCatalog, enabledActions, primaryColor, }) {
+  function ConversationInterface({ aiService, onCustomizeItem, onAddToRoomPlanner, onOpenRoomPlanner, onOpenCustomizer, onShowCatalog, onViewInCatalog, enabledActions, primaryColor, analyticsContext, }) {
       const [input, setInput] = require$$0$1.useState('');
       const [isLoading, setIsLoading] = require$$0$1.useState(false);
       const [messages, setMessages] = require$$0$1.useState([]);
@@ -4091,8 +5865,22 @@
           if (!input.trim() || isLoading)
               return;
           const userMessage = input.trim();
+          const hasExistingUserMessage = messages.some((message) => message.role === 'user');
           setInput('');
           setIsLoading(true);
+          if (!hasExistingUserMessage) {
+              trackWidgetEvent({
+                  ...analyticsContext,
+                  type: 'chat_started',
+              });
+          }
+          trackWidgetEvent({
+              ...analyticsContext,
+              type: 'message_sent',
+              metadata: {
+                  messageLength: userMessage.length,
+              },
+          });
           // Add user message immediately
           const userMsg = {
               id: `msg-user-${Date.now()}`,
@@ -4117,6 +5905,19 @@
               setMessages((prev) => {
                   const withoutThinking = prev.filter((m) => m.type !== 'thinking');
                   return [...withoutThinking, response.message];
+              });
+              response.message.metadata?.recommendations?.forEach((rec) => {
+                  trackWidgetEvent({
+                      ...analyticsContext,
+                      type: 'product_recommended',
+                      productId: rec.item.id,
+                      productName: rec.item.name,
+                      metadata: {
+                          category: rec.item.category,
+                          price: rec.item.priceRange?.min ?? rec.item.price,
+                          recommendationSource: 'chat',
+                      },
+                  });
               });
               // Handle actions
               if (response.message.metadata?.action) {
@@ -4163,7 +5964,7 @@
               handleSend();
           }
       };
-      return (jsxRuntimeExports.jsxs("div", { className: "flex flex-col h-full bg-white", children: [jsxRuntimeExports.jsxs("div", { className: "flex-1 overflow-y-auto p-4 space-y-2", children: [messages.length === 0 ? (jsxRuntimeExports.jsx("div", { className: "text-center text-gray-500 py-8", children: jsxRuntimeExports.jsx("p", { children: "Start a conversation to get help with your furniture needs." }) })) : (messages.map((message) => (jsxRuntimeExports.jsx(MessageBubble, { message: message, onCustomizeItem: onCustomizeItem, onAddToRoomPlanner: onAddToRoomPlanner, onViewInCatalog: onViewInCatalog, enabledActions: enabledActions, primaryColor: primaryColor }, message.id)))), jsxRuntimeExports.jsx("div", { ref: messagesEndRef })] }), jsxRuntimeExports.jsxs("div", { className: "border-t border-gray-200 p-4 bg-gray-50", children: [jsxRuntimeExports.jsxs("div", { className: "flex gap-2", children: [jsxRuntimeExports.jsx("textarea", { ref: inputRef, value: input, onChange: (e) => setInput(e.target.value), onKeyDown: handleKeyPress, placeholder: "Type your message...", className: "flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none", rows: 1, style: { minHeight: '40px', maxHeight: '120px' }, disabled: isLoading }), jsxRuntimeExports.jsx("button", { onClick: handleSend, disabled: !input.trim() || isLoading, className: "px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium", style: primaryColor ? { backgroundColor: primaryColor, color: primaryTextColor } : undefined, children: isLoading ? (jsxRuntimeExports.jsxs("svg", { className: "animate-spin h-5 w-5", xmlns: "http://www.w3.org/2000/svg", fill: "none", viewBox: "0 0 24 24", children: [jsxRuntimeExports.jsx("circle", { className: "opacity-25", cx: "12", cy: "12", r: "10", stroke: "currentColor", strokeWidth: "4" }), jsxRuntimeExports.jsx("path", { className: "opacity-75", fill: "currentColor", d: "M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" })] })) : ('Send') })] }), jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500 mt-2 text-center", children: "Press Enter to send, Shift+Enter for new line" })] })] }));
+      return (jsxRuntimeExports.jsxs("div", { className: "flex flex-col h-full bg-white", children: [jsxRuntimeExports.jsxs("div", { className: "flex-1 overflow-y-auto p-4 space-y-2", children: [messages.length === 0 ? (jsxRuntimeExports.jsx("div", { className: "text-center text-gray-500 py-8", children: jsxRuntimeExports.jsx("p", { children: "Start a conversation to get help with your furniture needs." }) })) : (messages.map((message) => (jsxRuntimeExports.jsx(MessageBubble, { message: message, onCustomizeItem: onCustomizeItem, onAddToRoomPlanner: onAddToRoomPlanner, onViewInCatalog: onViewInCatalog, enabledActions: enabledActions, primaryColor: primaryColor, analyticsContext: analyticsContext }, message.id)))), jsxRuntimeExports.jsx("div", { ref: messagesEndRef })] }), jsxRuntimeExports.jsxs("div", { className: "border-t border-gray-200 p-4 bg-gray-50", children: [jsxRuntimeExports.jsxs("div", { className: "flex gap-2", children: [jsxRuntimeExports.jsx("textarea", { ref: inputRef, value: input, onChange: (e) => setInput(e.target.value), onKeyDown: handleKeyPress, placeholder: "Type your message...", className: "flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none", rows: 1, style: { minHeight: '40px', maxHeight: '120px' }, disabled: isLoading }), jsxRuntimeExports.jsx("button", { type: "button", onClick: handleSend, disabled: !input.trim() || isLoading, className: "px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium", style: primaryColor ? { backgroundColor: primaryColor, color: primaryTextColor } : undefined, children: isLoading ? (jsxRuntimeExports.jsxs("svg", { className: "animate-spin h-5 w-5", xmlns: "http://www.w3.org/2000/svg", fill: "none", viewBox: "0 0 24 24", children: [jsxRuntimeExports.jsx("circle", { className: "opacity-25", cx: "12", cy: "12", r: "10", stroke: "currentColor", strokeWidth: "4" }), jsxRuntimeExports.jsx("path", { className: "opacity-75", fill: "currentColor", d: "M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" })] })) : ('Send') })] }), jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500 mt-2 text-center", children: "Press Enter to send, Shift+Enter for new line" })] })] }));
   }
 
   /**
@@ -4759,7 +6560,7 @@
           const validationResult = validateConfiguration(config);
           setValidation(validationResult);
           // Determine flow type based on product pricing
-          const requiresQuote = !product?.priceRange || product.stockStatus === 'custom_order';
+          const requiresQuote = !product?.priceRange || product.stockStatus === 'custom_order' || product.source === 'shopify';
           setFlowType(requiresQuote ? 'quote' : 'cart');
           // Generate spec sheet
           const sheet = generateSpecSheet(config, {
@@ -4780,6 +6581,19 @@
               handleAddToCart();
           }
           else {
+              const widgetConfig = apiClient['config'];
+              trackWidgetEvent({
+                  apiBaseUrl: widgetConfig.apiBaseUrl,
+                  storeId: widgetConfig.storeId || widgetConfig.widgetId || config.storeId || product?.storeId,
+                  widgetId: widgetConfig.widgetId,
+                  type: 'quote_started',
+                  productId: product?.id || config.baseItemId,
+                  productName: product?.name || config.baseItemName,
+                  metadata: {
+                      source: 'customizer_submit_flow',
+                      quoteType: 'customized_furniture',
+                  },
+              });
               setStep('form');
           }
       };
@@ -4840,6 +6654,12 @@
                       dimensions: config.dimensionAdjustments || {},
                       materials: config.materialOverrides,
                       colorScheme: config.colorScheme,
+                      productUrl: config.productUrl || product?.productUrl || product?.url,
+                      price: config.price ?? product?.priceRange?.min ?? product?.price,
+                      externalId: config.externalId || product?.externalId,
+                      shopifyProductId: config.shopifyProductId || product?.shopifyProductId,
+                      storeId: config.storeId || product?.storeId,
+                      source: config.source || product?.source,
                       aiNotes: config.aiNotes,
                   },
                   specSheet,
@@ -4858,10 +6678,10 @@
           return (jsxRuntimeExports.jsx("div", { className: "fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4", children: jsxRuntimeExports.jsxs("div", { className: "bg-white rounded-lg max-w-md w-full p-6", children: [jsxRuntimeExports.jsx("h3", { className: "text-lg font-semibold text-gray-900 mb-4", children: "Configuration Issues" }), jsxRuntimeExports.jsxs("div", { className: "space-y-3 mb-6", children: [validation.errors.map((error, index) => (jsxRuntimeExports.jsxs("div", { className: "bg-red-50 border border-red-200 rounded p-3", children: [jsxRuntimeExports.jsx("p", { className: "text-sm font-medium text-red-900", children: error.field }), jsxRuntimeExports.jsx("p", { className: "text-sm text-red-700", children: error.message })] }, index))), validation.warnings.map((warning, index) => (jsxRuntimeExports.jsxs("div", { className: "bg-yellow-50 border border-yellow-200 rounded p-3", children: [jsxRuntimeExports.jsx("p", { className: "text-sm font-medium text-yellow-900", children: warning.field }), jsxRuntimeExports.jsx("p", { className: "text-sm text-yellow-700", children: warning.message })] }, index)))] }), jsxRuntimeExports.jsx("div", { className: "flex gap-3", children: jsxRuntimeExports.jsx("button", { onClick: onClose, className: "flex-1 py-2 px-4 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 transition-colors", children: "Go Back & Fix" }) })] }) }));
       }
       if (step === 'preview' && specSheet) {
-          return (jsxRuntimeExports.jsx("div", { className: "fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4", children: jsxRuntimeExports.jsxs("div", { className: "bg-white rounded-lg max-w-3xl w-full max-h-[90vh] overflow-hidden flex flex-col", children: [jsxRuntimeExports.jsx(SpecSheetPreview, { specSheet: specSheet, onClose: onClose }), validation && validation.warnings.length > 0 && (jsxRuntimeExports.jsxs("div", { className: "px-6 py-3 bg-yellow-50 border-t border-yellow-200", children: [jsxRuntimeExports.jsx("p", { className: "text-sm text-yellow-800 font-medium mb-1", children: "\u26A0\uFE0F Warnings:" }), validation.warnings.map((warning, index) => (jsxRuntimeExports.jsxs("p", { className: "text-xs text-yellow-700", children: ["\u2022 ", warning.message] }, index)))] })), error && (jsxRuntimeExports.jsx("div", { className: "px-6 py-3 bg-red-50 border-t border-red-200", children: jsxRuntimeExports.jsx("p", { className: "text-sm text-red-700", children: error }) })), jsxRuntimeExports.jsxs("div", { className: "border-t border-gray-200 p-4 flex gap-3", children: [jsxRuntimeExports.jsx("button", { onClick: onClose, className: "px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors", children: "Cancel" }), jsxRuntimeExports.jsx("button", { onClick: handleContinue, className: "flex-1 py-2 px-4 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 transition-colors", children: flowType === 'cart' ? 'Add to Cart' : 'Request Quote' })] })] }) }));
+          return (jsxRuntimeExports.jsx("div", { className: "fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4", children: jsxRuntimeExports.jsxs("div", { className: "bg-white rounded-lg max-w-3xl w-full max-h-[90vh] overflow-hidden flex flex-col", children: [jsxRuntimeExports.jsx(SpecSheetPreview, { specSheet: specSheet, onClose: onClose }), validation && validation.warnings.length > 0 && (jsxRuntimeExports.jsxs("div", { className: "px-6 py-3 bg-yellow-50 border-t border-yellow-200", children: [jsxRuntimeExports.jsx("p", { className: "text-sm text-yellow-800 font-medium mb-1", children: "\u26A0\uFE0F Warnings:" }), validation.warnings.map((warning, index) => (jsxRuntimeExports.jsxs("p", { className: "text-xs text-yellow-700", children: ["\u2022 ", warning.message] }, index)))] })), error && (jsxRuntimeExports.jsx("div", { className: "px-6 py-3 bg-red-50 border-t border-red-200", children: jsxRuntimeExports.jsx("p", { className: "text-sm text-red-700", children: error }) })), jsxRuntimeExports.jsxs("div", { className: "border-t border-gray-200 p-4 flex gap-3", children: [jsxRuntimeExports.jsx("button", { type: "button", onClick: onClose, className: "px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors", children: "Cancel" }), jsxRuntimeExports.jsx("button", { type: "button", onClick: handleContinue, className: "flex-1 py-2 px-4 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 transition-colors", children: flowType === 'cart' ? 'Add to Cart' : 'Request Quote' })] })] }) }));
       }
       if (step === 'form') {
-          return (jsxRuntimeExports.jsx("div", { className: "fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4", children: jsxRuntimeExports.jsxs("div", { className: "bg-white rounded-lg max-w-md w-full p-6", children: [jsxRuntimeExports.jsx("h3", { className: "text-lg font-semibold text-gray-900 mb-4", children: "Request a Quote" }), jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-600 mb-6", children: "Fill in your details and we'll get back to you with a personalized quote." }), error && (jsxRuntimeExports.jsx("div", { className: "bg-red-50 border border-red-200 text-red-700 p-3 rounded mb-4 text-sm", children: error })), jsxRuntimeExports.jsxs("div", { className: "space-y-4 mb-6", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsxs("label", { className: "block text-sm font-medium text-gray-700 mb-1", children: ["Name ", jsxRuntimeExports.jsx("span", { className: "text-red-500", children: "*" })] }), jsxRuntimeExports.jsx("input", { type: "text", value: customerName, onChange: (e) => setCustomerName(e.target.value), className: "w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500", placeholder: "Your full name" })] }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsxs("label", { className: "block text-sm font-medium text-gray-700 mb-1", children: ["Email ", jsxRuntimeExports.jsx("span", { className: "text-red-500", children: "*" })] }), jsxRuntimeExports.jsx("input", { type: "email", value: customerEmail, onChange: (e) => setCustomerEmail(e.target.value), className: "w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500", placeholder: "your.email@example.com" })] }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-gray-700 mb-1", children: "Phone" }), jsxRuntimeExports.jsx("input", { type: "tel", value: customerPhone, onChange: (e) => setCustomerPhone(e.target.value), className: "w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500", placeholder: "Optional" })] }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-gray-700 mb-1", children: "Additional Notes" }), jsxRuntimeExports.jsx("textarea", { value: customerNotes, onChange: (e) => setCustomerNotes(e.target.value), rows: 3, className: "w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none", placeholder: "Any special requests or questions?" })] })] }), jsxRuntimeExports.jsxs("div", { className: "flex gap-3", children: [jsxRuntimeExports.jsx("button", { onClick: () => setStep('preview'), className: "px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors", children: "Back" }), jsxRuntimeExports.jsx("button", { onClick: handleSubmitQuote, className: "flex-1 py-2 px-4 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 transition-colors", children: "Submit Quote Request" })] })] }) }));
+          return (jsxRuntimeExports.jsx("div", { className: "fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4", children: jsxRuntimeExports.jsxs("div", { className: "bg-white rounded-lg max-w-md w-full p-6", children: [jsxRuntimeExports.jsx("h3", { className: "text-lg font-semibold text-gray-900 mb-4", children: "Request a Quote" }), jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-600 mb-6", children: "Fill in your details and we'll get back to you with a personalized quote." }), error && (jsxRuntimeExports.jsx("div", { className: "bg-red-50 border border-red-200 text-red-700 p-3 rounded mb-4 text-sm", children: error })), jsxRuntimeExports.jsxs("div", { className: "space-y-4 mb-6", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsxs("label", { className: "block text-sm font-medium text-gray-700 mb-1", children: ["Name ", jsxRuntimeExports.jsx("span", { className: "text-red-500", children: "*" })] }), jsxRuntimeExports.jsx("input", { type: "text", value: customerName, onChange: (e) => setCustomerName(e.target.value), className: "w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500", placeholder: "Your full name" })] }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsxs("label", { className: "block text-sm font-medium text-gray-700 mb-1", children: ["Email ", jsxRuntimeExports.jsx("span", { className: "text-red-500", children: "*" })] }), jsxRuntimeExports.jsx("input", { type: "email", value: customerEmail, onChange: (e) => setCustomerEmail(e.target.value), className: "w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500", placeholder: "your.email@example.com" })] }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-gray-700 mb-1", children: "Phone" }), jsxRuntimeExports.jsx("input", { type: "tel", value: customerPhone, onChange: (e) => setCustomerPhone(e.target.value), className: "w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500", placeholder: "Optional" })] }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-gray-700 mb-1", children: "Additional Notes" }), jsxRuntimeExports.jsx("textarea", { value: customerNotes, onChange: (e) => setCustomerNotes(e.target.value), rows: 3, className: "w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none", placeholder: "Any special requests or questions?" })] })] }), jsxRuntimeExports.jsxs("div", { className: "flex gap-3", children: [jsxRuntimeExports.jsx("button", { type: "button", onClick: () => setStep('preview'), className: "px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors", children: "Back" }), jsxRuntimeExports.jsx("button", { type: "button", onClick: handleSubmitQuote, className: "flex-1 py-2 px-4 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 transition-colors", children: "Submit Quote Request" })] })] }) }));
       }
       if (step === 'submitting') {
           return (jsxRuntimeExports.jsx("div", { className: "fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4", children: jsxRuntimeExports.jsxs("div", { className: "bg-white rounded-lg p-8 text-center", children: [jsxRuntimeExports.jsx("div", { className: "animate-spin h-12 w-12 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-4" }), jsxRuntimeExports.jsx("p", { className: "text-gray-600", children: flowType === 'cart' ? 'Adding to cart...' : 'Submitting quote request...' })] }) }));
@@ -4869,7 +6689,7 @@
       if (step === 'success') {
           return (jsxRuntimeExports.jsx("div", { className: "fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4", children: jsxRuntimeExports.jsxs("div", { className: "bg-white rounded-lg p-8 text-center max-w-md", children: [jsxRuntimeExports.jsx("div", { className: "w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4", children: jsxRuntimeExports.jsx("svg", { className: "w-8 h-8 text-green-500", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M5 13l4 4L19 7" }) }) }), jsxRuntimeExports.jsx("h3", { className: "text-xl font-semibold text-gray-900 mb-2", children: flowType === 'cart' ? 'Added to Cart!' : 'Quote Request Submitted!' }), jsxRuntimeExports.jsx("p", { className: "text-gray-600", children: flowType === 'cart'
                               ? 'Your customized product has been added to your cart.'
-                              : "We'll review your request and get back to you soon." })] }) }));
+                              : 'Quote request sent. The store will follow up with pricing and next steps.' })] }) }));
       }
       return null;
   }
@@ -5243,6 +7063,11 @@
       const storage = require$$0$1.useMemo(() => new Storage(mergedConfig.storageKey), [mergedConfig.storageKey]);
       const aiService = require$$0$1.useMemo(() => new AIService(apiClient, mergedConfig), [apiClient, mergedConfig]);
       const enabledActions = require$$0$1.useMemo(() => getEnabledActions(mergedConfig), [mergedConfig]);
+      const analyticsContext = require$$0$1.useMemo(() => ({
+          apiBaseUrl: mergedConfig.apiBaseUrl,
+          storeId: mergedConfig.storeId || mergedConfig.widgetId,
+          widgetId: mergedConfig.widgetId,
+      }), [mergedConfig.apiBaseUrl, mergedConfig.storeId, mergedConfig.widgetId]);
       const primaryColor = getPrimaryColor(mergedConfig);
       const displayTitle = widgetTitle ||
           config.widgetTitle ||
@@ -5261,6 +7086,16 @@
           const handleCustomizeItem = (event) => {
               if (!enabledActions.customize)
                   return;
+              trackWidgetEvent({
+                  ...analyticsContext,
+                  type: 'customize_clicked',
+                  productId: event.detail.id,
+                  productName: event.detail.name,
+                  metadata: {
+                      source: 'customize_event',
+                      category: event.detail.category,
+                  },
+              });
               setSelectedProduct(productFromFurnitureItem(event.detail));
               setViewMode('customizer');
           };
@@ -5280,7 +7115,7 @@
               window.removeEventListener('modly:navigate-to-room-planner', handleNavigateToRoomPlanner);
               window.removeEventListener('modly:navigate-to-customizer', handleNavigateToCustomizer);
           };
-      }, [enabledActions.customize]);
+      }, [analyticsContext, enabledActions.customize]);
       // Cleanup AI service on unmount
       require$$0$1.useEffect(() => {
           return () => {
@@ -5292,6 +7127,15 @@
           const product = productFromFurnitureItem(item);
           return {
               productId: product.id,
+              productName: product.name,
+              category: product.category || item.category || item.subCategory || 'furniture',
+              imageUrl: item.images?.[0] || product.imageUrl || product.image || product.thumbnail,
+              source: item.source,
+              productUrl: item.productUrl || item.url,
+              price: item.priceRange?.min ?? item.price,
+              externalId: item.externalId,
+              shopifyProductId: item.shopifyProductId,
+              storeId: item.storeId,
               name: product.name,
               baseItemType: product.category || item.category || item.subCategory || 'furniture',
               dimensions: {
@@ -5326,6 +7170,16 @@
       const handleCustomizeItem = (item) => {
           if (!enabledActions.customize)
               return;
+          trackWidgetEvent({
+              ...analyticsContext,
+              type: 'customize_clicked',
+              productId: item.id,
+              productName: item.name,
+              metadata: {
+                  source: 'chat',
+                  category: item.category,
+              },
+          });
           setSelectedProduct(productFromFurnitureItem(item));
           setViewMode('customizer');
       };
@@ -5335,14 +7189,30 @@
       const handleOpenCustomizer = () => {
           if (!enabledActions.customize)
               return;
+          trackWidgetEvent({
+              ...analyticsContext,
+              type: 'customize_clicked',
+              metadata: {
+                  source: 'navigation',
+              },
+          });
           setViewMode('customizer');
       };
       const handleShowCatalog = () => {
-          // Catalog doesn't exist yet - show message in conversation or do nothing
-          aiService.sendMessage('Show me the catalog');
+          // Catalog navigation should not create a follow-up chat request.
       };
       const handleViewInCatalog = (item) => {
           const catalogUrl = getRealProductUrl(item);
+          trackWidgetEvent({
+              ...analyticsContext,
+              type: 'view_in_catalog_clicked',
+              productId: item.id,
+              productName: item.name,
+              metadata: {
+                  category: item.category,
+                  productUrl: catalogUrl,
+              },
+          });
           if (catalogUrl && typeof window !== 'undefined') {
               window.open(catalogUrl, '_blank', 'noopener,noreferrer');
           }
@@ -5372,7 +7242,7 @@
           setShowSubmitModal(false);
           setSubmitConfig(null);
       };
-      return (jsxRuntimeExports.jsxs("div", { className: "furniture-widget-ai h-full flex flex-col", children: [jsxRuntimeExports.jsxs("div", { className: "bg-gray-50 border-b border-gray-200 px-6 py-4 pr-16 flex items-center justify-between", children: [jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-4", children: [jsxRuntimeExports.jsx("h1", { className: "text-2xl font-bold text-gray-900", children: displayTitle === DEFAULT_WIDGET_TITLE ? (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsx("span", { children: "Modly" }), jsxRuntimeExports.jsx("span", { style: { color: primaryColor }, children: "AI" })] })) : (jsxRuntimeExports.jsx("span", { children: displayTitle })) }), viewMode === 'conversation' && (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsx("button", { onClick: handleOpenRoomPlanner, className: "text-sm px-3 py-1.5 text-gray-700 hover:bg-gray-100 rounded transition-colors", children: "Room Planner" }), enabledActions.customize && (jsxRuntimeExports.jsx("button", { onClick: handleOpenCustomizer, className: "text-sm px-3 py-1.5 text-gray-700 hover:bg-gray-100 rounded transition-colors", children: "Customizer" }))] })), viewMode !== 'conversation' && (jsxRuntimeExports.jsxs("button", { onClick: handleBackToConversation, className: "text-sm text-gray-600 hover:text-gray-900 flex items-center gap-1", children: [jsxRuntimeExports.jsx("svg", { className: "w-4 h-4", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M10 19l-7-7m0 0l7-7m-7 7h18" }) }), "Back to Chat"] }))] }), jsxRuntimeExports.jsx("div", { className: "flex gap-2" })] }), jsxRuntimeExports.jsxs("div", { className: "flex-1 overflow-hidden", children: [viewMode === 'conversation' && (jsxRuntimeExports.jsxs("div", { className: "h-full flex flex-col", children: [saveNotification && (jsxRuntimeExports.jsx("div", { className: "bg-green-500 text-white px-4 py-2 text-sm text-center flex-shrink-0", children: saveNotification })), jsxRuntimeExports.jsx("div", { className: "flex-1 min-h-0", children: jsxRuntimeExports.jsx(ConversationInterface, { aiService: aiService, onCustomizeItem: handleCustomizeItem, onAddToRoomPlanner: handleAddToRoomPlanner, onOpenRoomPlanner: handleOpenRoomPlanner, onOpenCustomizer: handleOpenCustomizer, onShowCatalog: handleShowCatalog, onViewInCatalog: handleViewInCatalog, enabledActions: enabledActions, primaryColor: primaryColor }) })] })), viewMode === 'room-planner' && (jsxRuntimeExports.jsx("div", { className: "h-full overflow-y-auto", children: jsxRuntimeExports.jsx(FurnitureRoomPlannerWidget, { config: mergedConfig, onCustomizeItem: enabledActions.customize ? handleCustomizeItem : undefined, onNavigateToCustomizer: enabledActions.customize ? handleOpenCustomizer : undefined }) })), viewMode === 'customizer' && (jsxRuntimeExports.jsx("div", { className: "h-full overflow-y-auto", children: enabledActions.customize && (jsxRuntimeExports.jsx(FurnitureCustomizerWidget, { config: mergedConfig, onNavigateToRoomPlanner: handleOpenRoomPlanner, selectedProduct: selectedProduct, onSelectedProductChange: setSelectedProduct })) }))] }), showSubmitModal && submitConfig && (jsxRuntimeExports.jsx(SubmitFlowModal, { config: submitConfig.config, product: submitConfig.product, apiClient: apiClient, onSuccess: handleSubmitSuccess, onClose: handleCloseSubmitModal })), isCatalogModalOpen && selectedCatalogItem && (jsxRuntimeExports.jsx("div", { className: "fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4", children: jsxRuntimeExports.jsxs("div", { className: "bg-white rounded-lg shadow-xl max-w-md w-full p-6", children: [jsxRuntimeExports.jsx("h2", { className: "text-2xl font-bold text-gray-900 mb-4", children: selectedCatalogItem.name }), jsxRuntimeExports.jsxs("div", { className: "space-y-3 mb-6", children: [selectedCatalogItem.dimensions && (jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h3", { className: "text-sm font-semibold text-gray-700 mb-1", children: "Dimensions" }), jsxRuntimeExports.jsxs("p", { className: "text-sm text-gray-600", children: [selectedCatalogItem.dimensions.length, "\" L \u00D7 ", selectedCatalogItem.dimensions.width, "\" W \u00D7 ", selectedCatalogItem.dimensions.height, "\" H"] })] })), selectedCatalogItem.materials && (jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h3", { className: "text-sm font-semibold text-gray-700 mb-1", children: "Materials" }), jsxRuntimeExports.jsxs("p", { className: "text-sm text-gray-600", children: [selectedCatalogItem.materials.primary, selectedCatalogItem.materials.secondary && `, ${selectedCatalogItem.materials.secondary}`] })] })), selectedCatalogItem.colors && (jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h3", { className: "text-sm font-semibold text-gray-700 mb-1", children: "Colors" }), jsxRuntimeExports.jsxs("p", { className: "text-sm text-gray-600", children: [selectedCatalogItem.colors.main, selectedCatalogItem.colors.accent && ` / ${selectedCatalogItem.colors.accent}`] })] })), jsxRuntimeExports.jsx("div", { className: "bg-blue-50 border border-blue-200 rounded-lg p-4 mt-4", children: jsxRuntimeExports.jsxs("p", { className: "text-sm text-blue-900", children: [jsxRuntimeExports.jsx("strong", { children: "Catalog coming soon." }), " You can customize this item instead."] }) })] }), jsxRuntimeExports.jsxs("div", { className: "flex gap-3", children: [enabledActions.customize && (jsxRuntimeExports.jsx("button", { onClick: handleCustomizeFromCatalog, className: "flex-1 text-white px-4 py-2 rounded-lg transition-colors font-medium", style: { backgroundColor: primaryColor, color: primaryTextColor }, children: "Customize This" })), jsxRuntimeExports.jsx("button", { onClick: handleCloseCatalogModal, className: "flex-1 bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors font-medium", children: "Close" })] })] }) }))] }));
+      return (jsxRuntimeExports.jsxs("div", { className: "furniture-widget-ai h-full flex flex-col", children: [jsxRuntimeExports.jsxs("div", { className: "bg-gray-50 border-b border-gray-200 px-6 py-4 pr-16 flex items-center justify-between", children: [jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-4", children: [jsxRuntimeExports.jsx("h1", { className: "text-2xl font-bold text-gray-900", children: displayTitle === DEFAULT_WIDGET_TITLE ? (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsx("span", { children: "Modly" }), jsxRuntimeExports.jsx("span", { style: { color: primaryColor }, children: "AI" })] })) : (jsxRuntimeExports.jsx("span", { children: displayTitle })) }), viewMode === 'conversation' && (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsx("button", { type: "button", onClick: handleOpenRoomPlanner, className: "text-sm px-3 py-1.5 text-gray-700 hover:bg-gray-100 rounded transition-colors", children: "Room Planner" }), enabledActions.customize && (jsxRuntimeExports.jsx("button", { type: "button", onClick: handleOpenCustomizer, className: "text-sm px-3 py-1.5 text-gray-700 hover:bg-gray-100 rounded transition-colors", children: "Customizer" }))] })), viewMode !== 'conversation' && (jsxRuntimeExports.jsxs("button", { type: "button", onClick: handleBackToConversation, className: "text-sm text-gray-600 hover:text-gray-900 flex items-center gap-1", children: [jsxRuntimeExports.jsx("svg", { className: "w-4 h-4", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M10 19l-7-7m0 0l7-7m-7 7h18" }) }), "Back to Chat"] }))] }), jsxRuntimeExports.jsx("div", { className: "flex gap-2" })] }), jsxRuntimeExports.jsxs("div", { className: "flex-1 overflow-hidden", children: [viewMode === 'conversation' && (jsxRuntimeExports.jsxs("div", { className: "h-full flex flex-col", children: [saveNotification && (jsxRuntimeExports.jsx("div", { className: "bg-green-500 text-white px-4 py-2 text-sm text-center flex-shrink-0", children: saveNotification })), jsxRuntimeExports.jsx("div", { className: "flex-1 min-h-0", children: jsxRuntimeExports.jsx(ConversationInterface, { aiService: aiService, onCustomizeItem: handleCustomizeItem, onAddToRoomPlanner: handleAddToRoomPlanner, onOpenRoomPlanner: handleOpenRoomPlanner, onOpenCustomizer: handleOpenCustomizer, onShowCatalog: handleShowCatalog, onViewInCatalog: handleViewInCatalog, enabledActions: enabledActions, primaryColor: primaryColor, analyticsContext: analyticsContext }) })] })), viewMode === 'room-planner' && (jsxRuntimeExports.jsx("div", { className: "h-full overflow-y-auto", children: jsxRuntimeExports.jsx(FurnitureRoomPlannerWidget, { config: mergedConfig, onCustomizeItem: enabledActions.customize ? handleCustomizeItem : undefined, onNavigateToCustomizer: enabledActions.customize ? handleOpenCustomizer : undefined }) })), viewMode === 'customizer' && (jsxRuntimeExports.jsx("div", { className: "h-full overflow-y-auto", children: enabledActions.customize && (jsxRuntimeExports.jsx(FurnitureCustomizerWidget, { config: mergedConfig, onNavigateToRoomPlanner: handleOpenRoomPlanner, selectedProduct: selectedProduct, onSelectedProductChange: setSelectedProduct })) }))] }), showSubmitModal && submitConfig && (jsxRuntimeExports.jsx(SubmitFlowModal, { config: submitConfig.config, product: submitConfig.product, apiClient: apiClient, onSuccess: handleSubmitSuccess, onClose: handleCloseSubmitModal })), isCatalogModalOpen && selectedCatalogItem && (jsxRuntimeExports.jsx("div", { className: "fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4", children: jsxRuntimeExports.jsxs("div", { className: "bg-white rounded-lg shadow-xl max-w-md w-full p-6", children: [jsxRuntimeExports.jsx("h2", { className: "text-2xl font-bold text-gray-900 mb-4", children: selectedCatalogItem.name }), jsxRuntimeExports.jsxs("div", { className: "space-y-3 mb-6", children: [selectedCatalogItem.dimensions && (jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h3", { className: "text-sm font-semibold text-gray-700 mb-1", children: "Dimensions" }), jsxRuntimeExports.jsxs("p", { className: "text-sm text-gray-600", children: [selectedCatalogItem.dimensions.length, "\" L \u00D7 ", selectedCatalogItem.dimensions.width, "\" W \u00D7 ", selectedCatalogItem.dimensions.height, "\" H"] })] })), selectedCatalogItem.materials && (jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h3", { className: "text-sm font-semibold text-gray-700 mb-1", children: "Materials" }), jsxRuntimeExports.jsxs("p", { className: "text-sm text-gray-600", children: [selectedCatalogItem.materials.primary, selectedCatalogItem.materials.secondary && `, ${selectedCatalogItem.materials.secondary}`] })] })), selectedCatalogItem.colors && (jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h3", { className: "text-sm font-semibold text-gray-700 mb-1", children: "Colors" }), jsxRuntimeExports.jsxs("p", { className: "text-sm text-gray-600", children: [selectedCatalogItem.colors.main, selectedCatalogItem.colors.accent && ` / ${selectedCatalogItem.colors.accent}`] })] })), jsxRuntimeExports.jsx("div", { className: "bg-blue-50 border border-blue-200 rounded-lg p-4 mt-4", children: jsxRuntimeExports.jsxs("p", { className: "text-sm text-blue-900", children: [jsxRuntimeExports.jsx("strong", { children: "Catalog coming soon." }), " You can customize this item instead."] }) })] }), jsxRuntimeExports.jsxs("div", { className: "flex gap-3", children: [enabledActions.customize && (jsxRuntimeExports.jsx("button", { type: "button", onClick: handleCustomizeFromCatalog, className: "flex-1 text-white px-4 py-2 rounded-lg transition-colors font-medium", style: { backgroundColor: primaryColor, color: primaryTextColor }, children: "Customize This" })), jsxRuntimeExports.jsx("button", { type: "button", onClick: handleCloseCatalogModal, className: "flex-1 bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors font-medium", children: "Close" })] })] }) }))] }));
   }
 
   function FurnitureAIWidgetButton({ config = {}, defaultTab = 'room-planner', buttonText, buttonPosition = 'bottom-right', buttonStyle, className = '' }) {
@@ -5381,11 +7251,25 @@
           config.theme?.buttonText ||
           buttonText ||
           DEFAULT_WIDGET_TITLE;
+      const trackOpen = () => {
+          trackWidgetEvent({
+              apiBaseUrl: config.apiBaseUrl,
+              storeId: config.storeId || config.widgetId,
+              widgetId: config.widgetId,
+              type: 'widget_opened',
+              metadata: {
+                  source: 'widget_button',
+              },
+          });
+      };
       require$$0$1.useEffect(() => {
-          const onOpen = () => setIsOpen(true);
+          const onOpen = () => {
+              setIsOpen(true);
+              trackOpen();
+          };
           window.addEventListener('modly:open-widget', onOpen);
           return () => window.removeEventListener('modly:open-widget', onOpen);
-      }, []);
+      }, [config.apiBaseUrl, config.storeId, config.widgetId]);
       require$$0$1.useEffect(() => {
           const handleEscape = (e) => {
               if (e.key === 'Escape' && isOpen) {
@@ -5432,7 +7316,10 @@
           };
           return baseStyle;
       }, [config, buttonStyle]);
-      return (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsxs("button", { onClick: () => setIsOpen(true), style: finalButtonStyle, className: `modly-widget-button fixed ${positionClasses[buttonPosition]} z-50 cursor-pointer rounded-full inline-flex items-center justify-center gap-2 transition-all duration-200 ease-out ${className}`, onMouseEnter: (e) => {
+      return (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsxs("button", { onClick: () => {
+                      setIsOpen(true);
+                      trackOpen();
+                  }, style: finalButtonStyle, className: `modly-widget-button fixed ${positionClasses[buttonPosition]} z-50 cursor-pointer rounded-full inline-flex items-center justify-center gap-2 transition-all duration-200 ease-out ${className}`, onMouseEnter: (e) => {
                       e.currentTarget.style.transform = 'translateY(-2px)';
                       e.currentTarget.style.filter = 'brightness(1.04)';
                       e.currentTarget.style.boxShadow = '0 14px 30px rgba(15, 23, 42, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.24)';
