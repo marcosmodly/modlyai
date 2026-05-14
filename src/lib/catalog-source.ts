@@ -18,8 +18,9 @@ export type NormalizedCatalogProduct = {
   length?: number
   width?: number
   height?: number
-  colors?: string[]
-  materials?: string[]
+  colors?: string
+  materials?: string
+  customizationOptions?: unknown
   productUrl?: string
   url?: string
   handle?: string
@@ -147,8 +148,9 @@ export function normalizeCatalogProduct(
     length,
     width,
     height,
-    colors: normalizeStringList(product.colors),
-    materials: normalizeStringList(product.materials),
+    colors: readString(product.colors) ?? normalizeStringList(product.colors)?.join('|'),
+    materials: readString(product.materials) ?? normalizeStringList(product.materials)?.join('|'),
+    customizationOptions: product.customizationOptions,
     productUrl,
     url,
     handle: readString(product.handle),

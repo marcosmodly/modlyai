@@ -5,6 +5,7 @@ import {
   type CatalogSnapshot,
   type NormalizedCatalogProduct,
 } from '@/lib/catalog-source'
+import { generatePublicApiKey, resolveWidgetId } from '@/lib/store-public-identity'
 import { checkProductLimit } from '@/lib/usage-limits'
 
 export type CatalogSource = 'shopify' | 'woocommerce' | 'csv' | 'custom'
@@ -26,7 +27,9 @@ export interface Store {
   id: string
   name: string
   apiKey: string
+  widgetId?: string
   userId: string
+  ownerEmail?: string
   storeUrl?: string
   url?: string
   supportEmail?: string
@@ -86,6 +89,18 @@ function inchesToMeters(value: number): number {
   return Number((value * 0.0254).toFixed(3))
 }
 
+function normalizeStringList(value: unknown): string[] {
+  const entries = Array.isArray(value)
+    ? value
+    : typeof value === 'string'
+      ? value.split(/[|,]/)
+      : []
+
+  return Array.from(
+    new Set(entries.map((entry) => String(entry ?? '').trim()).filter(Boolean))
+  )
+}
+
 function withProductLinks(
   products: NormalizedCatalogProduct[]
 ): NormalizedCatalogProduct[] {
@@ -104,7 +119,9 @@ function mapStore(store: any): Store {
     id: String(store.id),
     name: String(store.name),
     apiKey: String(store.apiKey),
+    widgetId: store.widgetId ? String(store.widgetId) : undefined,
     userId: String(store.userId),
+    ownerEmail: store.ownerEmail ? String(store.ownerEmail) : undefined,
     storeUrl: store.storeUrl ? String(store.storeUrl) : undefined,
     url: store.storeUrl ? String(store.storeUrl) : store.url ? String(store.url) : undefined,
     supportEmail: store.supportEmail ? String(store.supportEmail) : undefined,
@@ -152,8 +169,8 @@ function mapStore(store: any): Store {
 
 function productToFurnitureItem(product: NormalizedCatalogProduct): FurnitureItem {
   const price = ensureNumber(product.price)
-  const materials = product.materials?.filter(Boolean) ?? []
-  const colors = product.colors?.filter(Boolean) ?? []
+  const materials = normalizeStringList(product.materials)
+  const colors = normalizeStringList(product.colors)
   const lengthIn = ensureNumber(product.length)
   const widthIn = ensureNumber(product.width)
   const heightIn = ensureNumber(product.height)
@@ -190,6 +207,7 @@ function productToFurnitureItem(product: NormalizedCatalogProduct): FurnitureIte
     shopifyProductId: product.shopifyProductId,
     storeId: product.storeId,
     status: product.status,
+    customizationOptions: product.customizationOptions,
     stockStatus: product.source === 'shopify' ? 'custom_order' : undefined,
   }
 }
@@ -243,20 +261,28 @@ export async function createStore(input: { name: string; userId: string }): Prom
   const nowDate = new Date()
   const now = nowDate.toISOString()
   const trialEndsAt = new Date(nowDate.getTime() + 14 * 24 * 60 * 60 * 1000).toISOString()
-  const apiKey = `pk_live_${id()}`
+  const apiKey = generatePublicApiKey()
+  const widgetId = resolveWidgetId(storeId)
 
   await adminDb.transact([
     adminDb.tx.stores[storeId].update({
       name: input.name.trim(),
       apiKey,
+      widgetId,
       userId: input.userId,
-      subscriptionPlan: 'free_trial',
+      storeUrl: '',
+      widgetTitle: 'ModlyAI Assistant',
+      primaryColor: '#2563eb',
+      welcomeMessage: 'Hi! I can help you find the right furniture.',
+      enableViewInCatalog: true,
+      enableCustomize: true,
+      enableRequestQuote: true,
+      subscriptionPlan: 'free',
       subscriptionStatus: 'trialing',
       trialStartedAt: now,
       trialEndsAt,
       aiChatsUsed: 0,
       roomPlannerAnalysesUsed: 0,
-      setupComplete: false,
       createdAt: now,
       updatedAt: now,
     }),
@@ -267,8 +293,8 @@ export async function createStore(input: { name: string; userId: string }): Prom
     id: storeId,
     name: input.name.trim(),
     apiKey,
+    widgetId,
     userId: input.userId,
-    setupComplete: false,
     createdAt: now,
     updatedAt: now,
   }
@@ -315,6 +341,19 @@ export async function findStoreById(idValue: string): Promise<Store | null> {
   const result = await adminDb.query({
     stores: {
       $: { where: { id: idValue } },
+    },
+  })
+
+  return result.stores?.[0] ? mapStore(result.stores[0]) : null
+}
+
+export async function findStoreByWidgetId(widgetId: string): Promise<Store | null> {
+  const normalizedWidgetId = String(widgetId || '').trim()
+  if (!normalizedWidgetId) return null
+
+  const result = await adminDb.query({
+    stores: {
+      $: { where: { widgetId: normalizedWidgetId } },
     },
   })
 
@@ -466,6 +505,7 @@ export async function loadDemoCatalog(): Promise<FurnitureItem[]> {
 
 export async function getCatalogForRequest(options: {
   storeId?: string | null
+  widgetId?: string | null
   apiKey?: string | null
   domain?: string | null
 }): Promise<{
@@ -477,6 +517,7 @@ export async function getCatalogForRequest(options: {
 }> {
   const store =
     (options.storeId ? await findStoreById(options.storeId) : null) ??
+    (options.widgetId ? await findStoreByWidgetId(options.widgetId) : null) ??
     (options.apiKey ? await findStoreByApiKey(options.apiKey) : null) ??
     (options.domain ? await findStoreByDomain(options.domain) : null)
 

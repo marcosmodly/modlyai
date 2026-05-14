@@ -1109,7 +1109,7 @@
 	    return {
 	        ...defaultConfig,
 	        ...userConfig,
-	        storeId: userConfig.storeId || userConfig.widgetId,
+	        storeId: userConfig.storeId,
 	        widgetTitle,
 	        primaryColor,
 	        welcomeMessage,
@@ -1192,8 +1192,31 @@
 	            : DEFAULT_ENABLED_ACTIONS.requestQuote,
 	    };
 	}
+	function getApiBaseUrlFromConfigUrl(configUrl) {
+	    if (!configUrl)
+	        return undefined;
+	    try {
+	        const url = new URL(configUrl, typeof window !== 'undefined' ? window.location.origin : 'http://localhost');
+	        return url.origin;
+	    }
+	    catch (error) {
+	        return undefined;
+	    }
+	}
+	function isLocalhostUrl(value) {
+	    if (!value)
+	        return false;
+	    try {
+	        const url = new URL(value);
+	        return ['localhost', '127.0.0.1', '::1'].includes(url.hostname);
+	    }
+	    catch (error) {
+	        return false;
+	    }
+	}
 	// NEW: Fetch config from server
 	async function fetchRemoteConfig(configUrl, widgetId, storeId) {
+	    const apiBaseUrl = getApiBaseUrlFromConfigUrl(configUrl);
 	    try {
 	        const url = new URL(configUrl, typeof window !== 'undefined' ? window.location.origin : 'http://localhost');
 	        if (storeId) {
@@ -1209,11 +1232,18 @@
 	        if (!response.ok) {
 	            throw new Error(`Failed to fetch config: ${response.statusText}`);
 	        }
-	        return await response.json();
+	        const remoteConfig = await response.json();
+	        const remoteApiBaseUrl = hasText(remoteConfig?.apiBaseUrl) && !isLocalhostUrl(remoteConfig.apiBaseUrl)
+	            ? remoteConfig.apiBaseUrl.trim()
+	            : undefined;
+	        return {
+	            ...remoteConfig,
+	            apiBaseUrl: apiBaseUrl || remoteApiBaseUrl,
+	        };
 	    }
 	    catch (error) {
 	        console.warn('Failed to fetch remote config, using defaults:', error);
-	        return {};
+	        return apiBaseUrl ? { apiBaseUrl } : {};
 	    }
 	}
 
@@ -1770,17 +1800,37 @@
 	    constructor(config) {
 	        this.config = config;
 	    }
+	    isAbsoluteUrl(path) {
+	        return /^https?:\/\//i.test(path);
+	    }
 	    getBaseUrl() {
-	        return this.config.apiBaseUrl || (typeof window !== 'undefined' ? window.location.origin : '');
+	        if (this.config.apiBaseUrl) {
+	            return this.config.apiBaseUrl.replace(/\/$/, '');
+	        }
+	        if (this.config.configUrl) {
+	            try {
+	                return new URL(this.config.configUrl, typeof window !== 'undefined' ? window.location.origin : 'http://localhost').origin;
+	            }
+	            catch (error) {
+	                // Fall through to the window origin fallback below.
+	            }
+	        }
+	        return typeof window !== 'undefined' ? window.location.origin : '';
 	    }
 	    getEndpoint(path) {
+	        if (this.isAbsoluteUrl(path)) {
+	            return path;
+	        }
 	        const baseUrl = this.getBaseUrl();
-	        return `${baseUrl}${path}`;
+	        return `${baseUrl}${path.startsWith('/') ? path : `/${path}`}`;
 	    }
 	    withStoreQuery(url) {
 	        const parsed = new URL(url, this.getBaseUrl() || 'http://localhost');
-	        if (this.config.storeId || this.config.widgetId) {
-	            parsed.searchParams.set('storeId', String(this.config.storeId || this.config.widgetId));
+	        if (this.config.storeId) {
+	            parsed.searchParams.set('storeId', String(this.config.storeId));
+	        }
+	        if (this.config.widgetId) {
+	            parsed.searchParams.set('widgetId', String(this.config.widgetId));
 	        }
 	        if (this.config.apiKey) {
 	            parsed.searchParams.set('apiKey', this.config.apiKey);
@@ -1796,7 +1846,7 @@
 	    withStorePayload(payload) {
 	        return {
 	            ...payload,
-	            ...((this.config.storeId || this.config.widgetId) ? { storeId: this.config.storeId || this.config.widgetId } : {}),
+	            ...(this.config.storeId ? { storeId: this.config.storeId } : {}),
 	            ...(this.config.widgetId ? { widgetId: this.config.widgetId } : {}),
 	            ...(this.config.apiKey ? { apiKey: this.config.apiKey } : {}),
 	            ...(this.config.publicApiKey ? { publicApiKey: this.config.publicApiKey } : {}),
@@ -1934,6 +1984,12 @@
 	            formData.append('photos', photo);
 	        });
 	        formData.append('dimensions', JSON.stringify(dimensions));
+	        if (this.config.storeId) {
+	            formData.append('storeId', this.config.storeId);
+	        }
+	        if (this.config.widgetId) {
+	            formData.append('widgetId', this.config.widgetId);
+	        }
 	        if (this.config.apiKey) {
 	            formData.append('apiKey', this.config.apiKey);
 	        }
@@ -2013,7 +2069,7 @@
 	            console.error('Chat request failed:', error);
 	            // Re-throw with more context if it's a network error
 	            if (error instanceof TypeError && error.message.includes('fetch')) {
-	                const networkError = new Error('Network error: Unable to connect to the server. Please check your connection.');
+	                const networkError = new Error("Sorry, I couldn't reach ModlyAI right now. Please try again.");
 	                this.config.onError?.(networkError);
 	                throw networkError;
 	            }
@@ -3315,7 +3371,7 @@
 	        setError(null);
 	        setShareMessage(null);
 	        if (uploadedPhotos.length === 0) {
-	            setError('Please upload at least one room photo.');
+	            setError('Please upload a room photo first.');
 	            return;
 	        }
 	        const dimensions = {
@@ -4720,6 +4776,10 @@
 	        return saved;
 	    }, [buildCustomizedFurniturePayload, storage]);
 	    const handleCustomize = reactExports.useCallback(async (customizationConfig) => {
+	        if (!selectedProduct?.id) {
+	            setError('Please select a product first.');
+	            return;
+	        }
 	        setIsLoading(true);
 	        setError(null);
 	        setSaveNotification(null);
@@ -4915,7 +4975,7 @@
 	    const [messages, setMessages] = reactExports.useState([]);
 	    const messagesEndRef = reactExports.useRef(null);
 	    const inputRef = reactExports.useRef(null);
-	    const fallbackMessage = 'Sorry, I could not generate a response right now. Please try again.';
+	    const fallbackMessage = "Sorry, I couldn't reach ModlyAI right now. Please try again.";
 	    const primaryTextColor = primaryColor ? getReadableTextColor(primaryColor) : undefined;
 	    // Load messages from AI service
 	    reactExports.useEffect(() => {
@@ -5970,7 +6030,7 @@
 
 	class AIService {
 	    constructor(apiClient, config) {
-	        this.fallbackMessage = 'Sorry, I could not generate a response right now. Please try again.';
+	        this.fallbackMessage = "Sorry, I couldn't reach ModlyAI right now. Please try again.";
 	        this.apiClient = apiClient;
 	        this.config = config;
 	        this.stateManager = new ConversationStateManager();
@@ -6442,12 +6502,14 @@
 	    // Fetch remote config if configUrl is provided
 	    let remoteConfig = {};
 	    const configUrl = userConfig?.configUrl || ((userConfig?.widgetId || userConfig?.storeId) ? '/api/widget/config' : undefined);
+	    const apiBaseUrl = userConfig?.apiBaseUrl || getApiBaseUrlFromConfigUrl(configUrl);
 	    if (configUrl) {
 	        remoteConfig = await fetchRemoteConfig(configUrl, userConfig?.widgetId, userConfig?.storeId);
 	    }
 	    // Merge configs (remote > user > defaults)
 	    const finalConfig = mergeConfig({
 	        ...userConfig,
+	        ...(apiBaseUrl ? { apiBaseUrl } : {}),
 	        ...remoteConfig,
 	    });
 	    // Render widget

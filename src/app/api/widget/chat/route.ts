@@ -3,6 +3,7 @@ import { ChatCatalogPayload, ChatRequest, ChatResponse, ConversationMessage, Fur
 import { getCatalogForRequest, catalogProductToFurnitureItem } from '@/lib/store-catalog';
 import { getCatalogSnapshot, type CatalogSource, type NormalizedCatalogProduct } from '@/lib/catalog-source';
 import { checkAiChatLimit, findStoreForUsage, incrementUsage } from '@/lib/usage-limits';
+import { publicWidgetOptionsResponse, withPublicWidgetCors } from '@/lib/public-widget-cors';
 
 type ChatCatalog = {
   products: NormalizedCatalogProduct[];
@@ -12,8 +13,8 @@ type ChatCatalog = {
 };
 
 // Fetch the same active catalog used by dashboard/product surfaces.
-async function getChatCatalog(storeId?: string, apiKey?: string, storeDomain?: string): Promise<ChatCatalog> {
-  const { catalog } = await getCatalogForRequest({ storeId, apiKey, domain: storeDomain });
+async function getChatCatalog(storeId?: string, widgetId?: string, apiKey?: string, storeDomain?: string): Promise<ChatCatalog> {
+  const { catalog } = await getCatalogForRequest({ storeId, widgetId, apiKey, domain: storeDomain });
   const products = Array.isArray(catalog.products) ? catalog.products : [];
 
   return {
@@ -395,7 +396,7 @@ function parseAIResponse(
   return { text, recommendations: recommendations.length > 0 ? recommendations : undefined, action };
 }
 
-export async function POST(request: NextRequest) {
+async function handlePOST(request: NextRequest) {
   try {
     let body: Partial<ChatRequest>;
     try {
@@ -412,6 +413,7 @@ export async function POST(request: NextRequest) {
       message = '',
       conversationHistory = [],
       storeId,
+      widgetId,
       context,
       apiKey,
       publicApiKey,
@@ -431,10 +433,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ reply: 'Test response from ModlyAI backend.' });
     }
 
-    // Prefer the catalog sent by the widget, then fall back to the shared server catalog.
-    const requestCatalog = getChatCatalogFromRequest(catalog);
-    const activeCatalog = requestCatalog ?? await getChatCatalog(storeId, resolvedApiKey, storeDomain);
-    const catalogItems = activeCatalog.items;
     const usageStore = await findStoreForUsage({
       storeId,
       apiKey: resolvedApiKey,
@@ -444,13 +442,25 @@ export async function POST(request: NextRequest) {
     if (usageStore) {
       const usageCheck = checkAiChatLimit(usageStore);
       if (!usageCheck.allowed) {
-        return createAssistantResponse(
+        return NextResponse.json(
           usageCheck.trialExpired
-            ? 'Your free trial has ended. Upgrade to continue using ModlyAI.'
-            : 'This store has reached its monthly AI chat limit. Please contact the store owner or upgrade the ModlyAI plan.'
+            ? {
+                error: 'trial_expired',
+                message: "This store's ModlyAI trial has ended. Please upgrade to continue using the AI widget.",
+              }
+            : {
+                error: 'usage_limit_reached',
+                message: 'You have reached your plan limit. Upgrade to continue.',
+              },
+          { status: 402 }
         );
       }
     }
+
+    // Prefer the catalog sent by the widget, then fall back to the shared server catalog.
+    const requestCatalog = getChatCatalogFromRequest(catalog);
+    const activeCatalog = requestCatalog ?? await getChatCatalog(storeId, widgetId, resolvedApiKey, storeDomain);
+    const catalogItems = activeCatalog.items;
 
     if (activeCatalog.count === 0) {
       return createAssistantResponse(
@@ -584,4 +594,12 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     );
   }
+}
+
+export async function POST(request: NextRequest) {
+  return withPublicWidgetCors(await handlePOST(request));
+}
+
+export async function OPTIONS() {
+  return publicWidgetOptionsResponse();
 }

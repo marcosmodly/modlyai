@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { CustomizationConfig } from '@/types';
+import { checkAiChatLimit, findStoreForUsage, incrementUsage } from '@/lib/usage-limits';
+import { publicWidgetOptionsResponse, withPublicWidgetCors } from '@/lib/public-widget-cors';
 
 // Generate material preview image using DALL-E 3
 async function generateMaterialPreviewWithDALLE(
@@ -129,9 +131,14 @@ async function customizeFurnitureWithAI(
   };
 }
 
-export async function POST(request: NextRequest) {
+async function handlePOST(request: NextRequest) {
   try {
-    const config: CustomizationConfig = await request.json();
+    const config: CustomizationConfig & {
+      apiKey?: string;
+      publicApiKey?: string;
+      storeDomain?: string;
+      domain?: string;
+    } = await request.json();
 
     if (!config.baseItemId && !config.baseItemType) {
       return NextResponse.json(
@@ -140,7 +147,35 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const usageStore = await findStoreForUsage({
+      storeId: config.storeId || request.nextUrl.searchParams.get('storeId'),
+      apiKey: config.apiKey || config.publicApiKey || request.nextUrl.searchParams.get('apiKey'),
+      domain: config.storeDomain || config.domain || request.nextUrl.searchParams.get('domain'),
+    });
+
+    if (usageStore) {
+      const usageCheck = checkAiChatLimit(usageStore);
+      if (!usageCheck.allowed) {
+        return NextResponse.json(
+          usageCheck.trialExpired
+            ? {
+                error: 'trial_expired',
+                message: "This store's ModlyAI trial has ended. Please upgrade to continue using the AI widget.",
+              }
+            : {
+                error: 'usage_limit_reached',
+                message: 'You have reached your plan limit. Upgrade to continue.',
+              },
+          { status: 402 }
+        );
+      }
+    }
+
     const result = await customizeFurnitureWithAI(config);
+
+    if (usageStore) {
+      await incrementUsage(usageStore.id, 'aiChat', usageStore.aiChatsUsed);
+    }
 
     return NextResponse.json(result);
   } catch (error) {
@@ -150,4 +185,12 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     );
   }
+}
+
+export async function POST(request: NextRequest) {
+  return withPublicWidgetCors(await handlePOST(request));
+}
+
+export async function OPTIONS() {
+  return publicWidgetOptionsResponse();
 }

@@ -1,5 +1,20 @@
 import { RoomAnalysisResponse, RoomDimensions, RoomPreferences, CustomizationConfig, ChatRequest, ChatResponse, ConversationMessage, ChatCatalogProduct, ChatCatalogPayload } from '../types';
 import { WidgetConfig } from './config';
+import { getWidgetSessionId } from './analytics';
+
+const TRIAL_EXPIRED_WIDGET_MESSAGE = "This store's ModlyAI trial has ended. Please contact the store owner.";
+
+const normalizeStringList = (value: unknown): string[] | undefined => {
+  const entries = Array.isArray(value)
+    ? value
+    : typeof value === 'string'
+      ? value.split(/[|,]/)
+      : [];
+  const normalized = Array.from(
+    new Set(entries.map((entry) => String(entry ?? '').trim()).filter(Boolean))
+  );
+  return normalized.length > 0 ? normalized : undefined;
+};
 
 export class ApiClient {
   private config: WidgetConfig;
@@ -8,20 +23,47 @@ export class ApiClient {
     this.config = config;
   }
 
+  private isAbsoluteUrl(path: string): boolean {
+    return /^https?:\/\//i.test(path);
+  }
+
   private getBaseUrl(): string {
-    return this.config.apiBaseUrl || (typeof window !== 'undefined' ? window.location.origin : '');
+    if (this.config.apiBaseUrl) {
+      return this.config.apiBaseUrl.replace(/\/$/, '');
+    }
+
+    if (this.config.configUrl) {
+      try {
+        return new URL(
+          this.config.configUrl,
+          typeof window !== 'undefined' ? window.location.origin : 'http://localhost'
+        ).origin;
+      } catch (error) {
+        // Fall through to the window origin fallback below.
+      }
+    }
+
+    return typeof window !== 'undefined' ? window.location.origin : '';
   }
 
   private getEndpoint(path: string): string {
+    if (this.isAbsoluteUrl(path)) {
+      return path;
+    }
+
     const baseUrl = this.getBaseUrl();
-    return `${baseUrl}${path}`;
+    return `${baseUrl}${path.startsWith('/') ? path : `/${path}`}`;
   }
 
   private withStoreQuery(url: string): string {
     const parsed = new URL(url, this.getBaseUrl() || 'http://localhost');
 
-    if (this.config.storeId || this.config.widgetId) {
-      parsed.searchParams.set('storeId', String(this.config.storeId || this.config.widgetId));
+    if (this.config.storeId) {
+      parsed.searchParams.set('storeId', String(this.config.storeId));
+    }
+
+    if (this.config.widgetId) {
+      parsed.searchParams.set('widgetId', String(this.config.widgetId));
     }
 
     if (this.config.apiKey) {
@@ -40,7 +82,7 @@ export class ApiClient {
   private withStorePayload<T extends Record<string, any>>(payload: T): T {
     return {
       ...payload,
-      ...((this.config.storeId || this.config.widgetId) ? { storeId: this.config.storeId || this.config.widgetId } : {}),
+      ...(this.config.storeId ? { storeId: this.config.storeId } : {}),
       ...(this.config.widgetId ? { widgetId: this.config.widgetId } : {}),
       ...(this.config.apiKey ? { apiKey: this.config.apiKey } : {}),
       ...(this.config.publicApiKey ? { publicApiKey: this.config.publicApiKey } : {}),
@@ -82,6 +124,8 @@ export class ApiClient {
       length: product?.length ?? product?.dimensions?.length,
       width: product?.width ?? product?.dimensions?.width,
       height: product?.height ?? product?.dimensions?.height,
+      colors: normalizeStringList(product?.colors),
+      materials: normalizeStringList(product?.materials),
       productUrl: product?.productUrl ? String(product.productUrl) : product?.url ? String(product.url) : undefined,
       url: product?.url ? String(product.url) : product?.productUrl ? String(product.productUrl) : undefined,
       handle: product?.handle ? String(product.handle) : undefined,
@@ -89,6 +133,7 @@ export class ApiClient {
       shopifyProductId: product?.shopifyProductId ? String(product.shopifyProductId) : undefined,
       storeId: product?.storeId ? String(product.storeId) : undefined,
       status: product?.status ? String(product.status) : undefined,
+      customizationOptions: product?.customizationOptions,
     };
   }
 
@@ -149,6 +194,38 @@ export class ApiClient {
     };
   }
 
+  private createTextChatResponse(content: string): ChatResponse {
+    return {
+      message: {
+        id: `msg-assistant-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+        role: 'assistant',
+        type: 'text',
+        content,
+        timestamp: Date.now(),
+      },
+    };
+  }
+
+  private async readErrorResponse(response: Response): Promise<any> {
+    try {
+      return await response.json();
+    } catch (e) {
+      return null;
+    }
+  }
+
+  private getFriendlyApiError(response: Response, data: any, fallback: string) {
+    if (response.status === 402 && data?.error === 'trial_expired') {
+      return TRIAL_EXPIRED_WIDGET_MESSAGE;
+    }
+
+    if ((response.status === 402 || response.status === 403) && data?.error === 'usage_limit_reached') {
+      return data?.message || 'You have reached this store\'s plan limit. Please contact the store owner.';
+    }
+
+    return data?.message || data?.error || fallback;
+  }
+
   async analyzeRoom(
     photos: File[],
     dimensions: RoomDimensions,
@@ -162,6 +239,12 @@ export class ApiClient {
       formData.append('photos', photo);
     });
     formData.append('dimensions', JSON.stringify(dimensions));
+    if (this.config.storeId) {
+      formData.append('storeId', this.config.storeId);
+    }
+    if (this.config.widgetId) {
+      formData.append('widgetId', this.config.widgetId);
+    }
     if (this.config.apiKey) {
       formData.append('apiKey', this.config.apiKey);
     }
@@ -178,7 +261,8 @@ export class ApiClient {
     });
 
     if (!response.ok) {
-      const error = new Error(`Failed to analyze room: ${response.statusText}`);
+      const errorData = await this.readErrorResponse(response);
+      const error = new Error(this.getFriendlyApiError(response, errorData, `Failed to analyze room: ${response.statusText}`));
       this.config.onError?.(error);
       throw error;
     }
@@ -197,11 +281,12 @@ export class ApiClient {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(config),
+      body: JSON.stringify(this.withStorePayload(config)),
     });
 
     if (!response.ok) {
-      const error = new Error(`Failed to customize furniture: ${response.statusText}`);
+      const errorData = await this.readErrorResponse(response);
+      const error = new Error(this.getFriendlyApiError(response, errorData, `Failed to customize furniture: ${response.statusText}`));
       this.config.onError?.(error);
       throw error;
     }
@@ -232,15 +317,13 @@ export class ApiClient {
 
       if (!response.ok) {
         let errorMessage = `Failed to get chat response: ${response.statusText}`;
-        try {
-          const errorData = await response.json();
-          console.warn('ModlyAI chat error response:', errorData);
-          if (errorData.error) {
-            errorMessage = errorData.error;
-          }
-        } catch (e) {
-          // If error response is not JSON, use status text
+        const errorData = await this.readErrorResponse(response);
+        console.warn('ModlyAI chat error response:', errorData);
+        if (response.status === 402 && errorData?.error === 'trial_expired') {
+          return this.createTextChatResponse(TRIAL_EXPIRED_WIDGET_MESSAGE);
         }
+
+        errorMessage = this.getFriendlyApiError(response, errorData, errorMessage);
         const error = new Error(errorMessage);
         this.config.onError?.(error);
         throw error;
@@ -252,7 +335,7 @@ export class ApiClient {
       console.error('Chat request failed:', error);
       // Re-throw with more context if it's a network error
       if (error instanceof TypeError && error.message.includes('fetch')) {
-        const networkError = new Error('Network error: Unable to connect to the server. Please check your connection.');
+        const networkError = new Error("Sorry, I couldn't reach ModlyAI right now. Please try again.");
         this.config.onError?.(networkError);
         throw networkError;
       }
@@ -283,7 +366,9 @@ export class ApiClient {
     const url = this.getEndpoint(endpoint);
     const payload = {
       ...quoteRequest,
+      sessionId: quoteRequest.sessionId || getWidgetSessionId(),
       ...(this.config.quoteEmail ? { quoteEmail: this.config.quoteEmail } : {}),
+      ...(this.config.supportEmail ? { supportEmail: this.config.supportEmail } : {}),
     };
 
     const response = await fetch(url, {
@@ -295,7 +380,26 @@ export class ApiClient {
     });
 
     if (!response.ok) {
-      const error = new Error(`Failed to submit quote request: ${response.statusText}`);
+      let errorMessage = `Failed to submit quote request: ${response.statusText}`;
+      try {
+        const errorData = await response.json();
+        console.warn('ModlyAI quote request error response:', errorData);
+
+        if (errorData?.reason === 'validation_failed') {
+          errorMessage = errorData.message || 'Please check your contact details and try again.';
+        } else if (errorData?.reason === 'missing_destination') {
+          errorMessage = errorData.message || 'Quote delivery is not configured for this store.';
+        } else if (errorData?.reason === 'instantdb_save_failed') {
+          errorMessage = errorData.message || 'We could not save the quote request. Please try again.';
+        } else if (errorData?.reason === 'email_send_failed') {
+          errorMessage = errorData.message || 'We could not deliver the quote request email. Please try again.';
+        } else if (errorData?.error) {
+          errorMessage = errorData.message || errorData.error;
+        }
+      } catch (e) {
+        // If the error response is not JSON, keep the status text fallback.
+      }
+      const error = new Error(errorMessage);
       this.config.onError?.(error);
       throw error;
     }
@@ -334,7 +438,8 @@ export class ApiClient {
     });
 
     if (!response.ok) {
-      const error = new Error(`Failed to get recommendations: ${response.statusText}`);
+      const errorData = await this.readErrorResponse(response);
+      const error = new Error(this.getFriendlyApiError(response, errorData, `Failed to get recommendations: ${response.statusText}`));
       this.config.onError?.(error);
       throw error;
     }

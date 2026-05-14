@@ -1,5 +1,6 @@
 import { adminDb } from '@/lib/instant-admin'
-import { getPlanLimits, isTrialExpired, plans, type PlanId } from '@/lib/plans'
+import { getBillingAccess } from '@/lib/billing/access'
+import { getPlanLimits, plans, type PlanId } from '@/lib/plans'
 
 export type UsageKind = 'aiChat' | 'roomPlanner'
 
@@ -9,7 +10,11 @@ type StoreLike = {
   domain?: string
   subscriptionPlan?: string | null
   subscriptionStatus?: string | null
+  currentPeriodEnd?: string | null
+  cancelAtPeriodEnd?: boolean | string | null
+  trialStartedAt?: string | null
   trialEndsAt?: string | null
+  createdAt?: string | null
   aiChatsUsed?: number | string | null
   roomPlannerAnalysesUsed?: number | string | null
   productCount?: number | string | null
@@ -39,10 +44,8 @@ function toCount(value: unknown) {
 }
 
 export function getCurrentPlan(store?: StoreLike | null): PlanId {
-  if (!store || store.subscriptionStatus !== 'active') return 'free_trial'
-  return store.subscriptionPlan === 'starter' || store.subscriptionPlan === 'growth'
-    ? store.subscriptionPlan
-    : 'free_trial'
+  const access = getBillingAccess(store)
+  return access.hasActiveAccess ? access.plan : 'free_trial'
 }
 
 export function getUsageSnapshot(store: StoreLike | null | undefined, productCount?: number) {
@@ -62,11 +65,14 @@ export function getUsageSnapshot(store: StoreLike | null | undefined, productCou
 export function checkAiChatLimit(store: StoreLike | null | undefined) {
   const snapshot = getUsageSnapshot(store)
   const limit = snapshot.limits.aiChatLimit
-  const trialExpired = isTrialExpired(store)
+  const access = getBillingAccess(store)
+  const limitReached = limit !== null && snapshot.aiChatsUsed >= limit
 
   return {
-    allowed: !trialExpired && (limit === null || snapshot.aiChatsUsed < limit),
-    trialExpired,
+    allowed: access.hasActiveAccess && !limitReached,
+    trialExpired: access.isTrialExpired,
+    limitReached,
+    accessReason: access.reason,
     used: snapshot.aiChatsUsed,
     limit,
     plan: snapshot.plan,
@@ -76,11 +82,14 @@ export function checkAiChatLimit(store: StoreLike | null | undefined) {
 export function checkRoomPlannerLimit(store: StoreLike | null | undefined) {
   const snapshot = getUsageSnapshot(store)
   const limit = snapshot.limits.roomPlannerLimit
-  const trialExpired = isTrialExpired(store)
+  const access = getBillingAccess(store)
+  const limitReached = limit !== null && snapshot.roomPlannerAnalysesUsed >= limit
 
   return {
-    allowed: !trialExpired && (limit === null || snapshot.roomPlannerAnalysesUsed < limit),
-    trialExpired,
+    allowed: access.hasActiveAccess && !limitReached,
+    trialExpired: access.isTrialExpired,
+    limitReached,
+    accessReason: access.reason,
     used: snapshot.roomPlannerAnalysesUsed,
     limit,
     plan: snapshot.plan,
@@ -90,11 +99,14 @@ export function checkRoomPlannerLimit(store: StoreLike | null | undefined) {
 export function checkProductLimit(store: StoreLike | null | undefined, nextProductCount: number) {
   const snapshot = getUsageSnapshot(store, nextProductCount)
   const limit = snapshot.limits.productLimit
-  const trialExpired = isTrialExpired(store)
+  const access = getBillingAccess(store)
+  const limitReached = limit !== null && nextProductCount > limit
 
   return {
-    allowed: !trialExpired && (limit === null || nextProductCount <= limit),
-    trialExpired,
+    allowed: access.hasActiveAccess && !limitReached,
+    trialExpired: access.isTrialExpired,
+    limitReached,
+    accessReason: access.reason,
     used: nextProductCount,
     limit,
     plan: snapshot.plan,

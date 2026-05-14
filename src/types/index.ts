@@ -59,6 +59,7 @@ export interface FurnitureItem {
   shopifyProductId?: string;
   storeId?: string;
   status?: string;
+  customizationOptions?: unknown;
 }
 
 export interface Recommendation {
@@ -227,6 +228,7 @@ export interface ChatCatalogProduct {
   shopifyProductId?: string;
   storeId?: string;
   status?: string;
+  customizationOptions?: unknown;
 }
 
 export interface ChatCatalogPayload {
@@ -238,6 +240,7 @@ export interface ChatRequest {
   message: string;
   conversationHistory: ConversationMessage[];
   storeId?: string;
+  widgetId?: string;
   apiKey?: string;
   publicApiKey?: string;
   storeDomain?: string;

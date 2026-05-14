@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server'
 import { getCatalogSnapshot } from '@/lib/catalog-source'
+import { normalizeStorePublicIdentity } from '@/lib/current-store'
 import { adminDb } from '@/lib/instant-admin'
+import { publicWidgetOptionsResponse, withPublicWidgetCors } from '@/lib/public-widget-cors'
 
 export const dynamic = 'force-dynamic'
 
@@ -47,33 +49,82 @@ function readText(value: unknown, fallback = '') {
   return typeof value === 'string' && value.trim() ? value.trim() : fallback
 }
 
-export async function GET(req: Request) {
+async function handleGET(req: Request) {
   try {
     const { searchParams } = new URL(req.url)
-    const widgetId = searchParams.get('widgetId') || searchParams.get('storeId')
+    const apiOrigin = new URL(req.url).origin
+    const widgetId = readText(searchParams.get('widgetId'))
+    const storeId = readText(searchParams.get('storeId'))
 
-    if (!widgetId) {
+    if (!widgetId && !storeId) {
       return NextResponse.json(
         { error: 'Missing widgetId' },
         { status: 400 }
       )
     }
 
-    const result = await adminDb.query({
-      stores: {
-        $: {
-          where: {
-            id: widgetId,
+    let store: any = null
+    let products: any[] = []
+
+    if (widgetId) {
+      const storeResult = await adminDb.query({
+        stores: {
+          $: {
+            where: {
+              widgetId,
+            },
           },
         },
-      },
-      products: {
-        $: { where: { storeId: widgetId } },
-      },
-    })
+      })
 
-    const store = result.stores[0]
-    const catalog = getCatalogSnapshot(result.products, store)
+      store = storeResult.stores[0]
+
+      if (store?.id) {
+        const productResult = await adminDb.query({
+          products: {
+            $: { where: { storeId: store.id } },
+          },
+        })
+
+        products = productResult.products ?? []
+      }
+    }
+
+    if (!store && storeId) {
+      const result = await adminDb.query({
+        stores: {
+          $: {
+            where: {
+              id: storeId,
+            },
+          },
+        },
+        products: {
+          $: { where: { storeId } },
+        },
+      })
+
+      store = result.stores[0]
+      products = result.products ?? []
+    }
+
+    if (!store && widgetId) {
+      const result = await adminDb.query({
+        stores: {
+          $: {
+            where: {
+              id: widgetId,
+            },
+          },
+        },
+        products: {
+          $: { where: { storeId: widgetId } },
+        },
+      })
+
+      store = result.stores[0]
+      products = result.products ?? []
+    }
 
     if (!store) {
       return NextResponse.json(
@@ -82,6 +133,9 @@ export async function GET(req: Request) {
       )
     }
 
+    store = await normalizeStorePublicIdentity(store)
+
+    const catalog = getCatalogSnapshot(products, store)
     const storeName = readText(store.name)
     const storeUrl = readText(store.storeUrl) || readText(store.url) || readText(store.domain)
     const supportEmail = readText(store.supportEmail)
@@ -109,9 +163,9 @@ export async function GET(req: Request) {
       welcomeMessage,
       enabledActions,
       quoteEmail,
-      apiBaseUrl: process.env.NEXTAUTH_URL || '',
+      apiBaseUrl: apiOrigin,
       storeId: store.id,
-      widgetId: store.id,
+      widgetId: readText(store.widgetId),
       publicApiKey: store.apiKey,
       apiKey: store.apiKey,
       storeDomain: storeUrl || null,
@@ -130,4 +184,12 @@ export async function GET(req: Request) {
       { status: 500 }
     )
   }
+}
+
+export async function GET(req: Request) {
+  return withPublicWidgetCors(await handleGET(req))
+}
+
+export async function OPTIONS() {
+  return publicWidgetOptionsResponse()
 }

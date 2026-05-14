@@ -2,10 +2,11 @@ import { NextRequest, NextResponse } from 'next/server';
 import { RoomAnalysisResponse, Recommendation, FurnitureItem, RoomDimensions, RoomPreferences } from '@/types';
 import { getCatalogForRequest } from '@/lib/store-catalog';
 import { checkRoomPlannerLimit, findStoreForUsage, incrementUsage } from '@/lib/usage-limits';
+import { publicWidgetOptionsResponse, withPublicWidgetCors } from '@/lib/public-widget-cors';
 
 // Fetch catalog items
-async function getCatalogItems(apiKey?: string, storeDomain?: string): Promise<FurnitureItem[]> {
-  const { items } = await getCatalogForRequest({ apiKey, domain: storeDomain });
+async function getCatalogItems(storeId?: string, widgetId?: string, apiKey?: string, storeDomain?: string): Promise<FurnitureItem[]> {
+  const { items } = await getCatalogForRequest({ storeId, widgetId, apiKey, domain: storeDomain });
   return items;
 }
 
@@ -290,13 +291,20 @@ Important:
   }
 }
 
-export async function POST(request: NextRequest) {
+async function handlePOST(request: NextRequest) {
   try {
     const formData = await request.formData();
     const photos = formData.getAll('photos') as File[];
     const dimensions = JSON.parse(formData.get('dimensions') as string) as RoomDimensions;
-    const apiKey = String(formData.get('apiKey') || '');
-    const storeDomain = String(formData.get('storeDomain') || '');
+    const storeId = String(formData.get('storeId') || request.nextUrl.searchParams.get('storeId') || '');
+    const widgetId = String(formData.get('widgetId') || request.nextUrl.searchParams.get('widgetId') || '');
+    const apiKey = String(formData.get('apiKey') || request.nextUrl.searchParams.get('apiKey') || '');
+    const storeDomain = String(
+      formData.get('storeDomain') ||
+      request.nextUrl.searchParams.get('storeDomain') ||
+      request.nextUrl.searchParams.get('domain') ||
+      ''
+    );
     const preferences = formData.get('preferences')
       ? JSON.parse(formData.get('preferences') as string) as RoomPreferences
       : undefined;
@@ -332,9 +340,8 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Fetch catalog items
-    const catalogItems = await getCatalogItems(apiKey || undefined, storeDomain || undefined);
     const usageStore = await findStoreForUsage({
+      storeId: storeId || undefined,
       apiKey: apiKey || undefined,
       domain: storeDomain || undefined,
     });
@@ -343,15 +350,27 @@ export async function POST(request: NextRequest) {
       const usageCheck = checkRoomPlannerLimit(usageStore);
       if (!usageCheck.allowed) {
         return NextResponse.json(
-          {
-            error: usageCheck.trialExpired
-              ? 'Your free trial has ended. Upgrade to continue using ModlyAI.'
-              : 'This store has reached its monthly room planner analysis limit. Please contact the store owner or upgrade the ModlyAI plan.',
-          },
-          { status: 429 }
+          usageCheck.trialExpired
+            ? {
+                error: 'trial_expired',
+                message: "This store's ModlyAI trial has ended. Please upgrade to continue using the AI widget.",
+              }
+            : {
+                error: 'usage_limit_reached',
+                message: 'You have reached your plan limit. Upgrade to continue.',
+              },
+          { status: 402 }
         );
       }
     }
+
+    // Fetch catalog items
+    const catalogItems = await getCatalogItems(
+      storeId || undefined,
+      widgetId || undefined,
+      apiKey || undefined,
+      storeDomain || undefined
+    );
 
     // Analyze room with AI
     const result = await analyzeRoomWithAI(photos, dimensions, preferences, catalogItems);
@@ -369,4 +388,12 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     );
   }
+}
+
+export async function POST(request: NextRequest) {
+  return withPublicWidgetCors(await handlePOST(request));
+}
+
+export async function OPTIONS() {
+  return publicWidgetOptionsResponse();
 }

@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { RecommendationMatchRequest, RecommendationMatchResponse, FurnitureItem } from '@/types';
+import { checkAiChatLimit, findStoreForUsage, incrementUsage } from '@/lib/usage-limits';
+import { publicWidgetOptionsResponse, withPublicWidgetCors } from '@/lib/public-widget-cors';
 
 // Step 1: Rule-based filtering
 function filterProducts(
@@ -257,9 +259,38 @@ CRITICAL: Return ONLY the JSON object. No other text.`;
 }
 
 // Step 3: Main endpoint handler
-export async function POST(request: NextRequest) {
+async function handlePOST(request: NextRequest) {
   try {
-    const body: RecommendationMatchRequest = await request.json();
+    const body: RecommendationMatchRequest & {
+      storeId?: string;
+      apiKey?: string;
+      publicApiKey?: string;
+      storeDomain?: string;
+      domain?: string;
+    } = await request.json();
+    const usageStore = await findStoreForUsage({
+      storeId: body.storeId || request.nextUrl.searchParams.get('storeId'),
+      apiKey: body.apiKey || body.publicApiKey || request.nextUrl.searchParams.get('apiKey'),
+      domain: body.storeDomain || body.domain || request.nextUrl.searchParams.get('domain'),
+    });
+
+    if (usageStore) {
+      const usageCheck = checkAiChatLimit(usageStore);
+      if (!usageCheck.allowed) {
+        return NextResponse.json(
+          usageCheck.trialExpired
+            ? {
+                error: 'trial_expired',
+                message: "This store's ModlyAI trial has ended. Please upgrade to continue using the AI widget.",
+              }
+            : {
+                error: 'usage_limit_reached',
+                message: 'You have reached your plan limit. Upgrade to continue.',
+              },
+          { status: 402 }
+        );
+      }
+    }
 
     // Validate input
     if (!body.catalog || !Array.isArray(body.catalog) || body.catalog.length === 0) {
@@ -309,6 +340,10 @@ export async function POST(request: NextRequest) {
     const maxResults = body.maxResults || 10;
     result.recommendations = result.recommendations.slice(0, maxResults);
 
+    if (usageStore) {
+      await incrementUsage(usageStore.id, 'aiChat', usageStore.aiChatsUsed);
+    }
+
     return NextResponse.json(result);
   } catch (error) {
     console.error('Error in recommendation matching:', error);
@@ -321,4 +356,12 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     );
   }
+}
+
+export async function POST(request: NextRequest) {
+  return withPublicWidgetCors(await handlePOST(request));
+}
+
+export async function OPTIONS() {
+  return publicWidgetOptionsResponse();
 }
