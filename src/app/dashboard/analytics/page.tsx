@@ -5,6 +5,54 @@ import NoStoreState from '@/components/dashboard/NoStoreState'
 import { authOptions } from '@/lib/auth-options'
 import { adminDb } from '@/lib/instant-admin'
 
+type AnalyticsEvent = {
+  id: string
+  type?: string
+  metadata?: Record<string, unknown>
+  createdAt?: string
+}
+
+const sessionEventTypes = new Set([
+  'widget_opened',
+  'chat_started',
+  'message_sent',
+  'room_analyzed',
+  'quote_requested',
+])
+
+const eventLabels: Record<string, string> = {
+  widget_opened: 'Widget opened',
+  chat_started: 'Chat started',
+  message_sent: 'Message sent',
+  product_recommended: 'Product recommended',
+  view_in_catalog_clicked: 'Product viewed in catalog',
+  customize_clicked: 'Customizer opened',
+  quote_started: 'Quote started',
+  quote_requested: 'Quote requested',
+  room_planner_opened: 'Room planner opened',
+  room_analyzed: 'Room analyzed',
+  pdf_exported: 'PDF exported',
+  configuration_saved: 'Configuration saved',
+}
+
+function getSessionId(event: AnalyticsEvent) {
+  const value = event.metadata?.sessionId
+  return typeof value === 'string' && value.trim() ? value : null
+}
+
+function getEventLabel(type?: string) {
+  return type ? eventLabels[type] ?? type.replace(/_/g, ' ') : 'Store activity'
+}
+
+function getProductName(event: AnalyticsEvent) {
+  const value = event.metadata?.productName
+  return typeof value === 'string' && value.trim() ? value : null
+}
+
+function formatEventTime(value?: string) {
+  return value ? new Date(value).toLocaleString() : 'No timestamp'
+}
+
 export default async function AnalyticsPage() {
   const session = await getServerSession(authOptions)
 
@@ -21,18 +69,31 @@ export default async function AnalyticsPage() {
   const result = await adminDb.query({
     stores: {
       $: { where: { id: storeId } },
-      events: {},
+    },
+    events: {
+      $: { where: { storeId } },
     },
   })
 
   const store = result.stores[0]
-  const recentEvents = [...(store?.events ?? [])].sort((a, b) => {
-    return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  const recentEvents = [...((result.events ?? []) as AnalyticsEvent[])].sort((a, b) => {
+    return new Date(b.createdAt ?? 0).getTime() - new Date(a.createdAt ?? 0).getTime()
   })
-  const guidedSessions = recentEvents.filter((event) => event.type === 'session_start').length
-  const conversions = recentEvents.filter((event) => event.type === 'conversion').length
-  const recentSession = recentEvents.find((event) => event.type === 'session_start')
-  const recentConversion = recentEvents.find((event) => event.type === 'conversion')
+  const guidedSessions = new Set(
+    recentEvents
+      .filter((event) => event.type && sessionEventTypes.has(event.type))
+      .map(getSessionId)
+      .filter(Boolean)
+  ).size
+  const quoteRequests = recentEvents.filter((event) => event.type === 'quote_requested').length
+  const viewInCatalogClicks = recentEvents.filter((event) => event.type === 'view_in_catalog_clicked').length
+  const customizeClicks = recentEvents.filter((event) => event.type === 'customize_clicked').length
+  const roomAnalyses = recentEvents.filter((event) => event.type === 'room_analyzed').length
+  const conversions = quoteRequests + viewInCatalogClicks
+  const latestEvent = recentEvents[0]
+  const recentConversion = recentEvents.find(
+    (event) => event.type === 'quote_requested' || event.type === 'view_in_catalog_clicked'
+  )
 
   const conversionRate = guidedSessions > 0 ? ((conversions / guidedSessions) * 100).toFixed(1) : '0.0'
 
@@ -41,11 +102,11 @@ export default async function AnalyticsPage() {
     { label: 'Assisted conversions', value: String(conversions), delta: `${conversions} total`, icon: Target },
     {
       label: 'Latest session',
-      value: recentSession ? new Date(recentSession.createdAt).toLocaleDateString() : 'No data',
-      delta: recentSession ? new Date(recentSession.createdAt).toLocaleTimeString() : 'Waiting for traffic',
+      value: latestEvent ? new Date(latestEvent.createdAt ?? 0).toLocaleDateString() : 'No data',
+      delta: latestEvent ? new Date(latestEvent.createdAt ?? 0).toLocaleTimeString() : 'Waiting for traffic',
       icon: Clock3,
     },
-    { label: 'Store', value: session.user.storeName || 'Unassigned', delta: 'Current account scope', icon: Sofa },
+    { label: 'Store', value: store?.name || session.user.storeName || 'Unassigned', delta: 'Current account scope', icon: Sofa },
   ]
 
   return (
@@ -86,14 +147,33 @@ export default async function AnalyticsPage() {
           <h2 className="text-2xl font-bold tracking-tight text-stone-950">Recent Event Timeline</h2>
           <div className="mt-6 space-y-3">
             {recentEvents.length === 0 ? (
-              <div className="rounded-2xl border border-dashed border-stone-300 bg-stone-50 px-4 py-6 text-sm text-stone-500">
-                No analytics events have been captured for this store yet.
+              <div className="rounded-2xl border border-dashed border-stone-300 bg-stone-50 px-5 py-6 text-sm text-stone-600">
+                <p className="font-semibold text-stone-900">
+                  Analytics will appear after your widget starts receiving traffic.
+                </p>
+                <div className="mt-4 grid gap-2 text-stone-600">
+                  <div>Install widget snippet</div>
+                  <div>Connect catalog</div>
+                  <div>Start receiving shopper interactions</div>
+                </div>
               </div>
             ) : (
-              recentEvents.map((event) => (
+              recentEvents.slice(0, 12).map((event) => (
                 <div key={event.id} className="rounded-2xl border border-stone-200 bg-stone-50 px-4 py-4">
-                  <div className="text-xs font-semibold uppercase tracking-[0.18em] text-stone-500">{event.type}</div>
-                  <p className="mt-2 text-sm leading-6 text-stone-700">{new Date(event.createdAt).toLocaleString()}</p>
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <div className="text-sm font-semibold text-stone-900">{getEventLabel(event.type)}</div>
+                      {getProductName(event) && (
+                        <p className="mt-1 text-sm text-stone-600">{getProductName(event)}</p>
+                      )}
+                      <p className="mt-2 text-sm leading-6 text-stone-700">{formatEventTime(event.createdAt)}</p>
+                    </div>
+                    {event.type && (
+                      <span className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-stone-500">
+                        {event.type}
+                      </span>
+                    )}
+                  </div>
                 </div>
               ))
             )}
@@ -108,13 +188,27 @@ export default async function AnalyticsPage() {
               <p className="mt-2 text-3xl font-bold text-stone-950">{guidedSessions}</p>
             </div>
             <div className="rounded-2xl border border-stone-200 bg-stone-50 px-4 py-4">
-              <div className="text-xs font-semibold uppercase tracking-[0.18em] text-stone-500">Conversions</div>
-              <p className="mt-2 text-3xl font-bold text-stone-950">{conversions}</p>
+              <div className="text-xs font-semibold uppercase tracking-[0.18em] text-stone-500">Quote requests</div>
+              <p className="mt-2 text-3xl font-bold text-stone-950">{quoteRequests}</p>
             </div>
             <div className="rounded-2xl border border-stone-200 bg-stone-50 px-4 py-4">
-              <div className="text-xs font-semibold uppercase tracking-[0.18em] text-stone-500">Most recent conversion</div>
+              <div className="text-xs font-semibold uppercase tracking-[0.18em] text-stone-500">View in catalog clicks</div>
+              <p className="mt-2 text-3xl font-bold text-stone-950">{viewInCatalogClicks}</p>
+            </div>
+            <div className="rounded-2xl border border-stone-200 bg-stone-50 px-4 py-4">
+              <div className="text-xs font-semibold uppercase tracking-[0.18em] text-stone-500">Customize clicks</div>
+              <p className="mt-2 text-3xl font-bold text-stone-950">{customizeClicks}</p>
+            </div>
+            <div className="rounded-2xl border border-stone-200 bg-stone-50 px-4 py-4">
+              <div className="text-xs font-semibold uppercase tracking-[0.18em] text-stone-500">Room analyses</div>
+              <p className="mt-2 text-3xl font-bold text-stone-950">{roomAnalyses}</p>
+            </div>
+            <div className="rounded-2xl border border-stone-200 bg-stone-50 px-4 py-4">
+              <div className="text-xs font-semibold uppercase tracking-[0.18em] text-stone-500">Most recent assisted action</div>
               <p className="mt-2 text-sm text-stone-700">
-                {recentConversion ? new Date(recentConversion.createdAt).toLocaleString() : 'No conversion event yet'}
+                {recentConversion
+                  ? `${getEventLabel(recentConversion.type)}${getProductName(recentConversion) ? ` - ${getProductName(recentConversion)}` : ''} - ${formatEventTime(recentConversion.createdAt)}`
+                  : 'No assisted action yet'}
               </p>
             </div>
           </div>

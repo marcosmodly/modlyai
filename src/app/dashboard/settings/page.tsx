@@ -1,6 +1,5 @@
 import { getServerSession } from 'next-auth'
 import { redirect } from 'next/navigation'
-import BillingCard from '@/components/dashboard/BillingCard'
 import NoStoreState from '@/components/dashboard/NoStoreState'
 import WhiteLabelSettingsForm from '@/components/dashboard/WhiteLabelSettingsForm'
 import { authOptions } from '@/lib/auth-options'
@@ -22,9 +21,6 @@ export default async function SettingsPage() {
       $: { where: { id: session.user.storeId } },
       user: {},
     },
-    products: {
-      $: { where: { storeId: session.user.storeId } },
-    },
   })
 
   const store = result.stores[0]
@@ -35,16 +31,6 @@ export default async function SettingsPage() {
 
   return (
     <div className="space-y-6">
-      <BillingCard
-        store={{
-          subscriptionStatus: store.subscriptionStatus,
-          subscriptionPlan: store.subscriptionPlan,
-          trialEndsAt: store.trialEndsAt,
-          aiChatsUsed: store.aiChatsUsed,
-          roomPlannerAnalysesUsed: store.roomPlannerAnalysesUsed,
-          productCount: result.products?.length ?? store.productCount ?? 0,
-        }}
-      />
       <WhiteLabelSettingsForm
         store={{
           id: store.id,
@@ -60,9 +46,7 @@ export default async function SettingsPage() {
           enableRequestQuote: store.enableRequestQuote,
           enabledActions: store.enabledActions,
           quoteEmail: store.quoteEmail,
-          apiKey: store.apiKey,
         }}
-        fallbackApiKey={session.user.apiKey}
         fallbackStoreName={session.user.storeName}
       />
     </div>

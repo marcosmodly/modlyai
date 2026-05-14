@@ -1,23 +1,8 @@
 import type { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import bcrypt from 'bcryptjs'
+import { getCurrentStoreForUser } from '@/lib/current-store'
 import { adminDb } from '@/lib/instant-admin'
-
-async function getStoreForUser(userId: string) {
-  const result = await adminDb.query({
-    stores: {
-      $: { where: { userId } },
-    },
-  })
-
-  const stores = [...(result.stores ?? [])].sort((a: any, b: any) => {
-    const aDate = new Date(a.updatedAt ?? a.createdAt ?? 0).getTime()
-    const bDate = new Date(b.updatedAt ?? b.createdAt ?? 0).getTime()
-    return bDate - aDate
-  })
-
-  return stores[0] ?? null
-}
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -32,10 +17,11 @@ export const authOptions: NextAuthOptions = {
           if (!credentials?.email || !credentials?.password) {
             return null
           }
+          const email = credentials.email.trim().toLowerCase()
 
           const result = await adminDb.query({
             users: {
-              $: { where: { email: credentials.email } },
+              $: { where: { email } },
               store: {},
             },
           })
@@ -50,15 +36,15 @@ export const authOptions: NextAuthOptions = {
               continue
             }
 
-            const store = await getStoreForUser(user.id)
+            const store = await getCurrentStoreForUser({ id: user.id, email: user.email })
 
             return {
               id: user.id,
               email: user.email,
               name: user.name,
               storeId: store?.id,
-              storeName: store?.name,
-              apiKey: store?.apiKey,
+              storeName: store?.name ?? undefined,
+              apiKey: store?.apiKey ?? undefined,
             }
           }
 
@@ -77,6 +63,7 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user }: any) {
       if (user) {
         token.id = user.id
+        token.email = user.email
         token.storeId = user.storeId
         token.storeName = user.storeName
         token.apiKey = user.apiKey
@@ -85,9 +72,17 @@ export const authOptions: NextAuthOptions = {
     },
     async session({ session, token }: any) {
       session.user.id = token.id
-      session.user.storeId = token.storeId
-      session.user.storeName = token.storeName
-      session.user.apiKey = token.apiKey
+      const store = token.id
+        ? await getCurrentStoreForUser({
+            id: String(token.id),
+            email: session.user.email ?? token.email ?? null,
+            storeId: token.storeId ?? null,
+          })
+        : null
+
+      session.user.storeId = store?.id ?? undefined
+      session.user.storeName = store?.name ?? token.storeName
+      session.user.apiKey = store?.apiKey ?? token.apiKey
       return session
     },
     async redirect({ baseUrl }: { url: string; baseUrl: string }) {

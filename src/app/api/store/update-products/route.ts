@@ -1,4 +1,7 @@
+import { getServerSession } from 'next-auth'
 import { NextResponse } from 'next/server'
+import { authOptions } from '@/lib/auth-options'
+import { getCurrentStoreForUser } from '@/lib/current-store'
 import { adminDbLenient as db } from '@/lib/instant-admin'
 
 const productDefaults: Record<string, { colors: string[]; materials: string[] }> = {
@@ -70,10 +73,68 @@ function fixDimension(value: unknown) {
   return numberValue > 200 ? numberValue / 10 : numberValue
 }
 
-export async function POST() {
+async function readRequestedProductIds(request: Request) {
+  const contentType = request.headers.get('content-type') ?? ''
+  if (!contentType.includes('application/json')) return []
+
+  const body = await request.json().catch(() => null)
+  const rawIds = Array.isArray(body?.productIds)
+    ? body.productIds
+    : Array.isArray(body?.ids)
+      ? body.ids
+      : []
+
+  return Array.from(
+    new Set(rawIds.map((value: unknown) => String(value ?? '').trim()).filter(Boolean))
+  )
+}
+
+export async function POST(request: Request) {
+  if (process.env.NODE_ENV === 'production') {
+    return NextResponse.json({ error: 'Not found' }, { status: 404 })
+  }
+
   try {
-    const result = await db.query({ products: {} })
-    const products = result.products || []
+    const session = await getServerSession(authOptions)
+
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    const currentStore = await getCurrentStoreForUser(session.user)
+    const storeId = currentStore?.id ? String(currentStore.id).trim() : ''
+
+    if (!currentStore || !storeId) {
+      return NextResponse.json({ error: 'No current store found.' }, { status: 404 })
+    }
+
+    const requestedProductIds = await readRequestedProductIds(request)
+    const result = await db.query({
+      products: {
+        $: { where: { storeId } },
+      },
+    })
+    const scopedProducts = result.products || []
+    const productsWithoutStoreId = scopedProducts.filter((product: any) => !String(product.storeId ?? '').trim())
+
+    if (process.env.NODE_ENV === 'development' && productsWithoutStoreId.length > 0) {
+      console.warn('[update-products skipped products without storeId]', {
+        storeId,
+        productIds: productsWithoutStoreId.map((product: any) => product.id),
+      })
+    }
+
+    const productsForStore = scopedProducts.filter((product: any) => String(product.storeId ?? '') === storeId)
+    const products = requestedProductIds.length > 0
+      ? productsForStore.filter((product: any) => requestedProductIds.includes(String(product.id)))
+      : productsForStore
+
+    if (requestedProductIds.length > 0 && products.length !== requestedProductIds.length) {
+      return NextResponse.json(
+        { error: 'One or more products do not belong to the current store.' },
+        { status: 403 }
+      )
+    }
 
     const transactions = products.map((product: any) => {
       const defaults = productDefaults[product.name]
@@ -93,6 +154,7 @@ export async function POST() {
 
     return NextResponse.json({
       success: true,
+      storeId,
       updated: products.length,
     })
   } catch (error: any) {

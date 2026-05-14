@@ -27,6 +27,7 @@ export function useCatalogProducts(storeId?: string | null) {
 
   return {
     ...catalog,
+    store,
     isLoading,
     error,
   }

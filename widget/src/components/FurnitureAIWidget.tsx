@@ -11,6 +11,7 @@ import { ApiClient } from '../utils/apiClient';
 import { Storage } from '../utils/storage';
 import { DEFAULT_WIDGET_TITLE, getEnabledActions, getPrimaryColor, getReadableTextColor, mergeConfig } from '../utils/config';
 import { getRealProductUrl } from '../utils/productUrl';
+import { trackWidgetEvent } from '../utils/analytics';
 
 type ViewMode = 'conversation' | 'room-planner' | 'customizer';
 
@@ -26,6 +27,14 @@ export function FurnitureAIWidget({ config = {}, defaultTab, widgetTitle }: Furn
   const storage = useMemo(() => new Storage(mergedConfig.storageKey), [mergedConfig.storageKey]);
   const aiService = useMemo(() => new AIService(apiClient, mergedConfig), [apiClient, mergedConfig]);
   const enabledActions = useMemo(() => getEnabledActions(mergedConfig), [mergedConfig]);
+  const analyticsContext = useMemo(
+    () => ({
+      apiBaseUrl: mergedConfig.apiBaseUrl,
+      storeId: mergedConfig.storeId || mergedConfig.widgetId,
+      widgetId: mergedConfig.widgetId,
+    }),
+    [mergedConfig.apiBaseUrl, mergedConfig.storeId, mergedConfig.widgetId]
+  );
   const primaryColor = getPrimaryColor(mergedConfig);
   const displayTitle =
     widgetTitle ||
@@ -46,6 +55,16 @@ export function FurnitureAIWidget({ config = {}, defaultTab, widgetTitle }: Furn
     // Handle external events for backward compatibility
     const handleCustomizeItem = (event: CustomEvent<FurnitureItem>) => {
       if (!enabledActions.customize) return;
+      trackWidgetEvent({
+        ...analyticsContext,
+        type: 'customize_clicked',
+        productId: event.detail.id,
+        productName: event.detail.name,
+        metadata: {
+          source: 'customize_event',
+          category: event.detail.category,
+        },
+      });
       setSelectedProduct(productFromFurnitureItem(event.detail));
       setViewMode('customizer');
     };
@@ -68,7 +87,7 @@ export function FurnitureAIWidget({ config = {}, defaultTab, widgetTitle }: Furn
       window.removeEventListener('modly:navigate-to-room-planner', handleNavigateToRoomPlanner);
       window.removeEventListener('modly:navigate-to-customizer', handleNavigateToCustomizer);
     };
-  }, [enabledActions.customize]);
+  }, [analyticsContext, enabledActions.customize]);
 
   // Cleanup AI service on unmount
   useEffect(() => {
@@ -82,6 +101,9 @@ export function FurnitureAIWidget({ config = {}, defaultTab, widgetTitle }: Furn
     const product = productFromFurnitureItem(item);
     return {
       productId: product.id,
+      productName: product.name,
+      category: product.category || item.category || item.subCategory || 'furniture',
+      imageUrl: item.images?.[0] || product.imageUrl || product.image || product.thumbnail,
       source: item.source,
       productUrl: item.productUrl || item.url,
       price: item.priceRange?.min ?? item.price,
@@ -122,6 +144,16 @@ export function FurnitureAIWidget({ config = {}, defaultTab, widgetTitle }: Furn
 
   const handleCustomizeItem = (item: FurnitureItem) => {
     if (!enabledActions.customize) return;
+    trackWidgetEvent({
+      ...analyticsContext,
+      type: 'customize_clicked',
+      productId: item.id,
+      productName: item.name,
+      metadata: {
+        source: 'chat',
+        category: item.category,
+      },
+    });
     setSelectedProduct(productFromFurnitureItem(item));
     setViewMode('customizer');
   };
@@ -132,16 +164,32 @@ export function FurnitureAIWidget({ config = {}, defaultTab, widgetTitle }: Furn
 
   const handleOpenCustomizer = () => {
     if (!enabledActions.customize) return;
+    trackWidgetEvent({
+      ...analyticsContext,
+      type: 'customize_clicked',
+      metadata: {
+        source: 'navigation',
+      },
+    });
     setViewMode('customizer');
   };
 
   const handleShowCatalog = () => {
-    // Catalog doesn't exist yet - show message in conversation or do nothing
-    aiService.sendMessage('Show me the catalog');
+    // Catalog navigation should not create a follow-up chat request.
   };
 
   const handleViewInCatalog = (item: FurnitureItem) => {
     const catalogUrl = getRealProductUrl(item);
+    trackWidgetEvent({
+      ...analyticsContext,
+      type: 'view_in_catalog_clicked',
+      productId: item.id,
+      productName: item.name,
+      metadata: {
+        category: item.category,
+        productUrl: catalogUrl,
+      },
+    });
     if (catalogUrl && typeof window !== 'undefined') {
       window.open(catalogUrl, '_blank', 'noopener,noreferrer');
     }
@@ -203,6 +251,7 @@ export function FurnitureAIWidget({ config = {}, defaultTab, widgetTitle }: Furn
           {viewMode === 'conversation' && (
             <>
               <button
+                type="button"
                 onClick={handleOpenRoomPlanner}
                 className="text-sm px-3 py-1.5 text-gray-700 hover:bg-gray-100 rounded transition-colors"
               >
@@ -210,6 +259,7 @@ export function FurnitureAIWidget({ config = {}, defaultTab, widgetTitle }: Furn
               </button>
               {enabledActions.customize && (
                 <button
+                  type="button"
                   onClick={handleOpenCustomizer}
                   className="text-sm px-3 py-1.5 text-gray-700 hover:bg-gray-100 rounded transition-colors"
                 >
@@ -220,6 +270,7 @@ export function FurnitureAIWidget({ config = {}, defaultTab, widgetTitle }: Furn
           )}
           {viewMode !== 'conversation' && (
             <button
+              type="button"
               onClick={handleBackToConversation}
               className="text-sm text-gray-600 hover:text-gray-900 flex items-center gap-1"
             >
@@ -255,6 +306,7 @@ export function FurnitureAIWidget({ config = {}, defaultTab, widgetTitle }: Furn
                 onViewInCatalog={handleViewInCatalog}
                 enabledActions={enabledActions}
                 primaryColor={primaryColor}
+                analyticsContext={analyticsContext}
               />
             </div>
           </div>
@@ -344,6 +396,7 @@ export function FurnitureAIWidget({ config = {}, defaultTab, widgetTitle }: Furn
             <div className="flex gap-3">
             {enabledActions.customize && (
               <button
+                type="button"
                 onClick={handleCustomizeFromCatalog}
                 className="flex-1 text-white px-4 py-2 rounded-lg transition-colors font-medium"
                 style={{ backgroundColor: primaryColor, color: primaryTextColor }}
@@ -352,6 +405,7 @@ export function FurnitureAIWidget({ config = {}, defaultTab, widgetTitle }: Furn
               </button>
             )}
               <button
+                type="button"
                 onClick={handleCloseCatalogModal}
                 className="flex-1 bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors font-medium"
               >

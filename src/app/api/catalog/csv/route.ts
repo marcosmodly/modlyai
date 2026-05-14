@@ -6,6 +6,7 @@ import {
   buildProductIdentityIndex,
   findProductByIdentity,
 } from '@/lib/product-dedupe'
+import { buildCustomizationOptionsFromFlatFields } from '@/lib/product-customization'
 import { checkProductLimit, findStoreForUsage } from '@/lib/usage-limits'
 
 type CsvRow = Record<string, string | undefined>
@@ -16,6 +17,23 @@ function readCsvString(row: CsvRow, ...columns: string[]) {
     if (value) return value
   }
   return ''
+}
+
+function readCsvNumber(row: CsvRow, column: string) {
+  const value = row[column]?.trim()
+  if (!value) return undefined
+  const parsed = Number(value)
+  return Number.isFinite(parsed) ? parsed : undefined
+}
+
+function isCustomizationDisabled(row: CsvRow) {
+  const value = row.customizationEnabled?.trim().toLowerCase()
+  return value === 'false' || value === '0' || value === 'no'
+}
+
+function isActiveProduct(product: any) {
+  const status = String(product?.status || '').trim().toLowerCase()
+  return status !== 'archived' && status !== 'inactive' && status !== 'draft'
 }
 
 export async function POST(req: Request) {
@@ -47,6 +65,7 @@ export async function POST(req: Request) {
       },
     })
     const existingProducts = existingResult.products ?? []
+    const existingActiveCount = existingProducts.filter(isActiveProduct).length
     const productIndex = buildProductIdentityIndex(existingProducts)
     let createdCount = 0
     let updatedCount = 0
@@ -68,6 +87,33 @@ export async function POST(req: Request) {
       const existingProduct = existingMatch?.product as any
       const productId = existingProduct?.id ? String(existingProduct.id) : id()
       const isUpdate = Boolean(existingProduct?.id)
+      const rawColors = row.colors?.trim() || ''
+      const rawMaterials = row.materials?.trim() || ''
+      const customizationOptions = isCustomizationDisabled(row)
+        ? undefined
+        : buildCustomizationOptionsFromFlatFields({
+            colors: rawColors,
+            colorPricing: row.colorPricing,
+            materials: rawMaterials,
+            materialPricing: row.materialPricing,
+            width: readCsvNumber(row, 'width'),
+            length: readCsvNumber(row, 'length'),
+            height: readCsvNumber(row, 'height'),
+            widthMin: readCsvNumber(row, 'widthMin'),
+            widthMax: readCsvNumber(row, 'widthMax'),
+            widthDefault: readCsvNumber(row, 'widthDefault'),
+            lengthMin: readCsvNumber(row, 'lengthMin'),
+            lengthMax: readCsvNumber(row, 'lengthMax'),
+            lengthDefault: readCsvNumber(row, 'lengthDefault'),
+            heightMin: readCsvNumber(row, 'heightMin'),
+            heightMax: readCsvNumber(row, 'heightMax'),
+            heightDefault: readCsvNumber(row, 'heightDefault'),
+            dimensionPricePerInch: readCsvNumber(row, 'dimensionPricePerInch'),
+            widthPricePerInch: readCsvNumber(row, 'widthPricePerInch'),
+            lengthPricePerInch: readCsvNumber(row, 'lengthPricePerInch'),
+            heightPricePerInch: readCsvNumber(row, 'heightPricePerInch'),
+            addons: row.addons,
+          })
       const productUpdate = {
         storeId,
         name: row.name || '',
@@ -82,12 +128,9 @@ export async function POST(req: Request) {
         productUrl,
         url: productUrl,
         handle,
-        colors: row.colors
-          ? row.colors.split('|').map((color: string) => color.trim()).filter(Boolean).join('|')
-          : 'Beige|Gray|White|Black|Brown',
-        materials: row.materials
-          ? row.materials.split('|').map((material: string) => material.trim()).filter(Boolean).join('|')
-          : 'Fabric|Leather|Velvet',
+        colors: rawColors,
+        materials: rawMaterials,
+        customizationOptions: customizationOptions ?? null,
         createdAt: existingProduct?.createdAt ? String(existingProduct.createdAt) : now,
         ...(isUpdate ? { updatedAt: now } : {}),
       }
@@ -106,16 +149,22 @@ export async function POST(req: Request) {
       }
     })
 
-    const productLimitCheck = checkProductLimit(usageStore, existingProducts.length + createdCount)
+    const productLimitCheck = checkProductLimit(usageStore, existingActiveCount + createdCount)
 
     if (!productLimitCheck.allowed) {
       return NextResponse.json(
-        {
-          error: productLimitCheck.trialExpired
-            ? 'Your free trial has ended. Upgrade to continue using ModlyAI.'
-            : `This plan supports up to ${productLimitCheck.limit} products. Upgrade to import more.`,
-        },
-        { status: 403 }
+        productLimitCheck.trialExpired
+          ? {
+              error: 'trial_expired',
+              message: "This store's ModlyAI trial has ended. Please upgrade to continue using the AI widget.",
+            }
+          : {
+              error: 'usage_limit_reached',
+              message: productLimitCheck.limit
+                ? `Your plan allows ${productLimitCheck.limit} products. Upgrade to import more.`
+                : 'You have reached your plan limit. Upgrade to continue.',
+            },
+        { status: productLimitCheck.trialExpired ? 402 : 403 }
       )
     }
 
@@ -133,7 +182,7 @@ export async function POST(req: Request) {
       db.tx.stores[storeId].update({
         catalogSource: 'csv',
         platform: 'csv',
-        productCount: existingProducts.length + createdCount,
+        productCount: existingActiveCount + createdCount,
         lastSyncedAt: now,
         updatedAt: now,
       }),

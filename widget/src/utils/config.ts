@@ -101,7 +101,7 @@ export function mergeConfig(userConfig: WidgetConfig = {}): WidgetConfig {
   return {
     ...defaultConfig,
     ...userConfig,
-    storeId: userConfig.storeId || userConfig.widgetId,
+    storeId: userConfig.storeId,
     widgetTitle,
     primaryColor,
     welcomeMessage,
@@ -197,8 +197,35 @@ export function getEnabledActions(config: WidgetConfig = {}) {
   };
 }
 
+export function getApiBaseUrlFromConfigUrl(configUrl?: string): string | undefined {
+  if (!configUrl) return undefined;
+
+  try {
+    const url = new URL(
+      configUrl,
+      typeof window !== 'undefined' ? window.location.origin : 'http://localhost'
+    );
+    return url.origin;
+  } catch (error) {
+    return undefined;
+  }
+}
+
+function isLocalhostUrl(value?: string) {
+  if (!value) return false;
+
+  try {
+    const url = new URL(value);
+    return ['localhost', '127.0.0.1', '::1'].includes(url.hostname);
+  } catch (error) {
+    return false;
+  }
+}
+
 // NEW: Fetch config from server
 export async function fetchRemoteConfig(configUrl: string, widgetId?: string, storeId?: string): Promise<WidgetConfig> {
+  const apiBaseUrl = getApiBaseUrlFromConfigUrl(configUrl);
+
   try {
     const url = new URL(configUrl, typeof window !== 'undefined' ? window.location.origin : 'http://localhost');
     if (storeId) {
@@ -214,9 +241,18 @@ export async function fetchRemoteConfig(configUrl: string, widgetId?: string, st
     if (!response.ok) {
       throw new Error(`Failed to fetch config: ${response.statusText}`);
     }
-    return await response.json();
+    const remoteConfig = await response.json();
+    const remoteApiBaseUrl =
+      hasText(remoteConfig?.apiBaseUrl) && !isLocalhostUrl(remoteConfig.apiBaseUrl)
+        ? remoteConfig.apiBaseUrl.trim()
+        : undefined;
+
+    return {
+      ...remoteConfig,
+      apiBaseUrl: apiBaseUrl || remoteApiBaseUrl,
+    };
   } catch (error) {
     console.warn('Failed to fetch remote config, using defaults:', error);
-    return {};
+    return apiBaseUrl ? { apiBaseUrl } : {};
   }
 }

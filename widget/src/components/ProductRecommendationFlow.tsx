@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FurnitureItem } from '../types';
 import { ApiClient } from '../utils/apiClient';
+import { trackWidgetEvent } from '../utils/analytics';
 
 interface RecommendationMatchRequest {
   catalog: FurnitureItem[];
@@ -87,6 +88,24 @@ export function ProductRecommendationFlow({
       // Get recommendations
       const result: RecommendationResponse = await apiClient.getRecommendations(request);
       setRecommendations(result);
+      const widgetConfig = apiClient['config'];
+      result.recommendations.forEach((rec) => {
+        const product = catalogResponse.items.find((item) => item.id === rec.productId);
+        if (!product) return;
+        trackWidgetEvent({
+          apiBaseUrl: widgetConfig.apiBaseUrl,
+          storeId: widgetConfig.storeId || widgetConfig.widgetId || product.storeId,
+          widgetId: widgetConfig.widgetId,
+          type: 'product_recommended',
+          productId: product.id,
+          productName: product.name,
+          metadata: {
+            category: product.category,
+            price: product.priceRange?.min ?? product.price,
+            recommendationSource: 'room_planner',
+          },
+        });
+      });
       setStep('results');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
@@ -124,6 +143,7 @@ export function ProductRecommendationFlow({
             <p className="text-sm text-gray-600 mt-1">{recommendations.summary}</p>
           </div>
           <button
+            type="button"
             onClick={() => {
               setStep('input');
               setRecommendations(null);
@@ -183,7 +203,23 @@ export function ProductRecommendationFlow({
 
                   <div className="flex items-center gap-2">
                     <button
-                      onClick={() => onCustomizeProduct(product)}
+                      type="button"
+                      onClick={() => {
+                        const widgetConfig = apiClient['config'];
+                        trackWidgetEvent({
+                          apiBaseUrl: widgetConfig.apiBaseUrl,
+                          storeId: widgetConfig.storeId || widgetConfig.widgetId || product.storeId,
+                          widgetId: widgetConfig.widgetId,
+                          type: 'customize_clicked',
+                          productId: product.id,
+                          productName: product.name,
+                          metadata: {
+                            source: 'recommendation_flow',
+                            category: product.category,
+                          },
+                        });
+                        onCustomizeProduct(product);
+                      }}
                       className="flex-1 py-2 px-4 bg-blue-500 text-white text-sm rounded hover:bg-blue-600 transition-colors"
                     >
                       Customize This
@@ -286,6 +322,7 @@ export function ProductRecommendationFlow({
             (style) => (
               <button
                 key={style}
+                type="button"
                 onClick={() => toggleStyle(style)}
                 className={`px-3 py-1 text-sm rounded-full border transition-colors ${
                   stylePreferences.includes(style)
@@ -330,6 +367,7 @@ export function ProductRecommendationFlow({
       {/* Action Buttons */}
       <div className="flex gap-3">
         <button
+          type="button"
           onClick={handleGetRecommendations}
           className="flex-1 py-3 px-4 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition-colors"
         >
@@ -337,6 +375,7 @@ export function ProductRecommendationFlow({
         </button>
         {onClose && (
           <button
+            type="button"
             onClick={onClose}
             className="px-4 py-3 text-gray-600 hover:text-gray-800 transition-colors"
           >

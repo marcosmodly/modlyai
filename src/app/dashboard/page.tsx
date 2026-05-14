@@ -1,10 +1,67 @@
-import { Package, Sparkles, TrendingUp, Users } from 'lucide-react'
+import { CheckCircle2, Circle, Package, Sparkles, TrendingUp, Users } from 'lucide-react'
 import { getServerSession } from 'next-auth'
+import Link from 'next/link'
 import { redirect } from 'next/navigation'
-import CopyButton from '@/components/dashboard/CopyButton'
 import NoStoreState from '@/components/dashboard/NoStoreState'
 import { authOptions } from '@/lib/auth-options'
+import { normalizeStorePublicIdentity } from '@/lib/current-store'
 import { adminDb } from '@/lib/instant-admin'
+
+type AnalyticsEvent = {
+  id: string
+  type?: string
+  metadata?: Record<string, unknown>
+  createdAt?: string
+}
+
+const sessionEventTypes = new Set([
+  'widget_opened',
+  'chat_started',
+  'message_sent',
+  'room_analyzed',
+  'quote_requested',
+])
+
+const assistedActionTypes = new Set(['view_in_catalog_clicked', 'quote_requested'])
+
+const eventLabels: Record<string, string> = {
+  widget_opened: 'Widget opened',
+  chat_started: 'Chat started',
+  message_sent: 'Message sent',
+  product_recommended: 'Product recommended',
+  view_in_catalog_clicked: 'Product viewed in catalog',
+  customize_clicked: 'Customizer opened',
+  quote_started: 'Quote started',
+  quote_requested: 'Quote requested',
+  room_planner_opened: 'Room planner opened',
+  room_analyzed: 'Room analyzed',
+  pdf_exported: 'PDF exported',
+  configuration_saved: 'Configuration saved',
+}
+
+function getSessionId(event: AnalyticsEvent) {
+  const value = event.metadata?.sessionId
+  return typeof value === 'string' && value.trim() ? value : null
+}
+
+function getEventLabel(type?: string) {
+  return type ? eventLabels[type] ?? type.replace(/_/g, ' ') : 'Store activity'
+}
+
+function getProductName(event: AnalyticsEvent) {
+  const value = event.metadata?.productName
+  return typeof value === 'string' && value.trim() ? value : null
+}
+
+function readObject(value: unknown): Record<string, any> {
+  return value && typeof value === 'object' && !Array.isArray(value) ? (value as Record<string, any>) : {}
+}
+
+function externalUrl(value: unknown) {
+  const url = typeof value === 'string' ? value.trim() : ''
+  if (!url) return ''
+  return /^https?:\/\//i.test(url) ? url : `https://${url}`
+}
 
 export default async function DashboardPage() {
   const session = await getServerSession(authOptions)
@@ -13,7 +70,7 @@ export default async function DashboardPage() {
     redirect('/auth/signin')
   }
 
-  const isDeveloper = session.user.email === 'hello@modlyai.tech'
+  const isDeveloper = false
 
   if (!session.user.storeId) {
     return <NoStoreState title="Dashboard" />
@@ -24,24 +81,68 @@ export default async function DashboardPage() {
   const result = await adminDb.query({
     stores: {
       $: { where: { id: storeId } },
-      events: {},
     },
     products: {
       $: { where: { storeId } },
     },
+    events: {
+      $: { where: { storeId } },
+    },
   })
 
-  const store = result.stores[0]
-  if (!store?.setupComplete && !isDeveloper) {
-    redirect('/onboarding')
+  let store = result.stores[0] as any
+  if (store) {
+    store = await normalizeStorePublicIdentity(store)
   }
-
-  const events = [...(store?.events ?? [])].sort((a, b) => {
-    return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  const events = [...((result.events ?? []) as AnalyticsEvent[])].sort((a, b) => {
+    return new Date(b.createdAt ?? 0).getTime() - new Date(a.createdAt ?? 0).getTime()
   })
   const productsSynced = result.products.length
-  const aiSessions = 0
-  const recentEvents = events.slice(0, 5)
+  const storeUrl = externalUrl(store?.storeUrl) || externalUrl(store?.url)
+  const credentials = readObject(store?.credentials)
+  const shopifyCredentials = readObject(credentials.shopify)
+  const shopifyConnected = Boolean(
+    store?.shopifyConnectedAt ||
+      store?.shopifyAccessToken ||
+      shopifyCredentials.connectedAt ||
+      shopifyCredentials.accessToken
+  )
+  const aiSessions = new Set(
+    events
+      .filter((event) => event.type && sessionEventTypes.has(event.type))
+      .map(getSessionId)
+      .filter(Boolean)
+  ).size
+  const assistedActions = events.filter((event) => event.type && assistedActionTypes.has(event.type)).length
+  const conversionRate = aiSessions > 0 ? `${((assistedActions / aiSessions) * 100).toFixed(1)}%` : 'Coming soon'
+  const recentEvents = events.slice(0, 8)
+  const onboardingItems = [
+    {
+      title: 'Add your store details',
+      href: '/dashboard/settings',
+      complete: Boolean(storeUrl),
+      action: 'Open settings',
+    },
+    {
+      title: 'Upload products with CSV or connect Shopify',
+      href: productsSynced > 0 ? '/dashboard/products' : '/dashboard/integrations',
+      complete: productsSynced > 0 || shopifyConnected,
+      action: productsSynced > 0 ? 'View products' : 'Import products',
+    },
+    {
+      title: 'Install the widget snippet',
+      href: '/dashboard/integrations',
+      complete: true,
+      action: 'Get snippet',
+    },
+    {
+      title: 'Test your live widget',
+      href: storeUrl || '/dashboard/integrations',
+      complete: false,
+      action: storeUrl ? 'Open website' : 'Set store URL',
+      external: Boolean(storeUrl),
+    },
+  ]
 
   const stats = [
     {
@@ -54,21 +155,21 @@ export default async function DashboardPage() {
     {
       name: 'AI Sessions',
       value: String(aiSessions),
-      note: 'Session tracking is not connected yet.',
+      note: aiSessions > 0 ? 'Unique widget sessions with shopper activity.' : 'Waiting for widget traffic.',
       icon: Users,
       accent: 'bg-stone-900 text-amber-300',
     },
     {
       name: 'Conversion Rate',
-      value: 'Coming soon',
-      note: 'Analytics tracking is not connected yet.',
+      value: conversionRate,
+      note: aiSessions > 0 ? 'Assisted action rate from catalog views and quote requests.' : 'Waiting for widget traffic.',
       icon: Sparkles,
       accent: 'bg-emerald-100 text-emerald-700',
     },
     {
       name: 'Revenue Impact',
       value: 'Coming soon',
-      note: 'Billing and revenue impact tracking are not connected yet.',
+      note: 'Revenue attribution requires checkout/order tracking.',
       icon: TrendingUp,
       accent: 'bg-amber-100 text-amber-700',
     },
@@ -105,22 +206,67 @@ export default async function DashboardPage() {
         <div className="rounded-[32px] border border-stone-200 bg-white p-6 shadow-sm">
           <div className="flex items-start justify-between gap-4">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-stone-500">Live Widget Key</p>
-              <h2 className="mt-3 text-2xl font-bold tracking-tight text-stone-950">Your API key</h2>
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-stone-500">Widget setup</p>
+              <h2 className="mt-3 text-2xl font-bold tracking-tight text-stone-950">Install your widget</h2>
             </div>
             <div className="rounded-2xl bg-emerald-50 px-3 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-emerald-700">
-              Active
+              Ready
             </div>
           </div>
 
-          <div className="mt-6 rounded-3xl border border-stone-200 bg-stone-50 p-4">
-            <code className="block break-all text-sm text-stone-700">{session.user.apiKey || 'No API key found'}</code>
-          </div>
+          <p className="mt-6 text-sm leading-6 text-stone-600">
+            Copy your install snippet from Integrations to add ModlyAI to your storefront.
+          </p>
 
-          <div className="mt-4 flex items-center justify-between gap-4">
-            <p className="text-sm leading-6 text-stone-600">Use this key to connect the widget and any catalog syncs to your store only.</p>
-            {session.user.apiKey ? <CopyButton value={session.user.apiKey} /> : null}
+          <div className="mt-6">
+            <Link
+              href="/dashboard/integrations"
+              className="inline-flex items-center justify-center rounded-xl bg-stone-950 px-4 py-3 text-sm font-semibold text-white transition hover:bg-stone-800"
+            >
+              Get snippet
+            </Link>
           </div>
+        </div>
+      </section>
+
+      <section className="rounded-[32px] border border-stone-200 bg-white p-6 shadow-sm">
+        <div className="flex flex-wrap items-start justify-between gap-4">
+          <div>
+            <h2 className="text-2xl font-bold tracking-tight text-stone-950">Get started with ModlyAI</h2>
+            <p className="mt-2 text-sm leading-6 text-stone-600">
+              Complete these steps to launch your AI shopping assistant.
+            </p>
+          </div>
+          <span className="rounded-full bg-stone-100 px-3 py-1 text-xs font-semibold text-stone-600">
+            You can update these anytime from your dashboard.
+          </span>
+        </div>
+
+        <div className="mt-5 grid gap-3 md:grid-cols-2">
+          {onboardingItems.map((item) => {
+            const Icon = item.complete ? CheckCircle2 : Circle
+            return (
+              <div key={item.title} className="rounded-2xl border border-stone-200 bg-stone-50 p-4">
+                <div className="flex items-start gap-3">
+                  <Icon className={`mt-0.5 h-5 w-5 ${item.complete ? 'text-emerald-600' : 'text-stone-300'}`} />
+                  <div className="min-w-0 flex-1">
+                    <p className="font-semibold text-stone-950">{item.title}</p>
+                    <p className="mt-1 text-xs font-medium text-stone-500">
+                      {item.complete ? 'Complete' : 'Recommended next step'}
+                    </p>
+                  </div>
+                  <Link
+                    href={item.href}
+                    target={item.external ? '_blank' : undefined}
+                    rel={item.external ? 'noreferrer' : undefined}
+                    className="shrink-0 rounded-lg border border-stone-200 bg-white px-3 py-2 text-xs font-semibold text-stone-700 transition hover:border-blue-200 hover:text-blue-700"
+                  >
+                    {item.action}
+                  </Link>
+                </div>
+              </div>
+            )
+          })}
         </div>
       </section>
 
@@ -159,9 +305,19 @@ export default async function DashboardPage() {
               <div key={event.id} className="rounded-2xl border border-stone-200 bg-stone-50 px-4 py-4">
                 <div className="flex items-center justify-between gap-4">
                   <div>
-                    <p className="text-sm font-semibold text-stone-900">{event.type}</p>
-                    <p className="mt-1 text-xs text-stone-500">{new Date(event.createdAt).toLocaleString()}</p>
+                    <p className="text-sm font-semibold text-stone-900">{getEventLabel(event.type)}</p>
+                    {getProductName(event) && (
+                      <p className="mt-1 text-xs text-stone-600">{getProductName(event)}</p>
+                    )}
+                    <p className="mt-1 text-xs text-stone-500">
+                      {event.createdAt ? new Date(event.createdAt).toLocaleString() : 'No timestamp'}
+                    </p>
                   </div>
+                  {event.type && (
+                    <span className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-stone-500">
+                      {event.type}
+                    </span>
+                  )}
                 </div>
               </div>
             ))

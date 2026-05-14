@@ -55,7 +55,7 @@ export default function ConditionalWidgetButton() {
     ...remoteConfig,
   }), [remoteConfig, session?.user?.apiKey, storeId]);
 
-  if (pathname?.startsWith('/dashboard') || pathname?.startsWith('/onboarding')) {
+  if (pathname?.startsWith('/dashboard')) {
     return null;
   }
 

@@ -209,6 +209,7 @@ export function CatalogView({ onCustomizeItem, highlightItemId }: CatalogViewPro
                     {/* Customize Button */}
                     <div className="pt-4 border-t border-white/10">
                       <button
+                        type="button"
                         onClick={() => handleCustomize(item)}
                         className="w-full py-2.5 px-4 rounded-lg font-medium text-sm transition-all duration-200 hover:opacity-90 flex items-center justify-center gap-2"
                         style={{

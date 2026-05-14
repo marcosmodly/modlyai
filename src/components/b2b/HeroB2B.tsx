@@ -1,328 +1,195 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useMemo, useState } from "react";
+import type { MouseEvent } from "react";
 import TrackedLink from "@/components/b2b/TrackedLink";
 
-const HEADLINES = [
-  "Your Customers Want to Know: Will It Fit?",
-  "Stop Losing $X,XXX Monthly to Furniture Returns",
-  "34% of Furniture Gets Returned. We Fix That.",
-  "AI That Stops Returns Before They Happen",
-] as const;
+const proofBadges = ["Shopify-ready", "Catalog-grounded", "No fake products"] as const;
 
-function usePrefersReducedMotion() {
-  const [reduced, setReduced] = useState(false);
-  useEffect(() => {
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const onChange = () => setReduced(!!mq.matches);
-    onChange();
-    mq.addEventListener?.("change", onChange);
-    return () => mq.removeEventListener?.("change", onChange);
-  }, []);
-  return reduced;
-}
+function ProductDemo() {
+  const handleCatalogPreviewClick = (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
 
-function DemoModal({
-  open,
-  onClose,
-}: {
-  open: boolean;
-  onClose: () => void;
-}) {
-  useEffect(() => {
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
-    if (open) window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
-  }, [open, onClose]);
+    document.getElementById("how-it-works")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
 
-  if (!open) return null;
+  const handleRequestPilotClick = (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    window.location.href = "/contact";
+  };
+
+  const recommendations = [
+    { name: "Linen Track Arm Sofa", detail: "84 in, warm ivory", status: "Best fit" },
+    { name: "Oak Nesting Table", detail: "36 in, natural oak", status: "Pairs well" },
+    { name: "Custom Ottoman", detail: "Quote requested", status: "Customize" },
+  ];
 
   return (
-    <div
-      className="fixed inset-0 z-[100] flex items-center justify-center px-4 py-10"
-      role="dialog"
-      aria-modal="true"
-      aria-label="2-minute demo"
-    >
-      <button
-        className="absolute inset-0 bg-black/70 backdrop-blur-sm"
-        aria-label="Close demo modal"
-        onClick={onClose}
-      />
-      <div className="relative w-full max-w-3xl rounded-2xl border border-white/10 bg-[#071A33] shadow-[0_30px_120px_rgba(0,0,0,0.6)] overflow-hidden">
-        <div className="flex items-center justify-between px-5 py-4 border-b border-white/10">
-          <div className="text-sm font-semibold text-text-primary">2‑Minute Demo</div>
-          <button
-            className="rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-[rgba(226,232,240,0.86)] hover:bg-white/10 transition-colors"
-            onClick={onClose}
-          >
-            Close
-          </button>
-        </div>
-        <div className="p-5 md:p-6">
-          <div className="rounded-2xl border border-white/10 bg-white/4 p-5">
-            <div className="text-sm font-semibold text-text-primary">What your shopper experiences</div>
-            <div className="mt-3 grid md:grid-cols-2 gap-4 items-start">
-              <div className="rounded-xl border border-white/10 bg-[#0A1630]/60 p-4">
-                <div className="text-xs text-[rgba(226,232,240,0.72)]">Room photo</div>
-                <div className="mt-3 h-[140px] rounded-lg bg-gradient-to-br from-white/10 to-white/0 relative overflow-hidden">
-                  <div className="absolute inset-0 modly-hero-scan" />
-                  <div className="absolute bottom-3 left-3 right-3 flex items-center gap-2">
-                    <span className="h-2.5 w-2.5 rounded-full bg-[#2BE7C6]" />
-                    <span className="text-xs text-[rgba(226,232,240,0.86)]">AI analyzing layout & space…</span>
-                  </div>
-                </div>
-              </div>
-              <div className="rounded-xl border border-white/10 bg-[#0A1630]/60 p-4">
-                <div className="text-xs text-[rgba(226,232,240,0.72)]">Fits‑confirmed picks</div>
-                <div className="mt-3 space-y-2">
-                  {[
-                    { name: "Sofa • 84in", fit: "Fits", tone: "bg-[#2BE7C6]/15 border-[#2BE7C6]/30 text-[#BFF9F0]" },
-                    { name: "Coffee table • 48in", fit: "Fits", tone: "bg-[#2BE7C6]/15 border-[#2BE7C6]/30 text-[#BFF9F0]" },
-                    { name: "Sectional • 110in", fit: "Too large", tone: "bg-[#FF6B6B]/10 border-[#FF6B6B]/25 text-[#FFD1D1]" },
-                  ].map((p) => (
-                    <div key={p.name} className={`rounded-lg border px-3 py-2 ${p.tone}`}>
-                      <div className="flex items-center justify-between gap-3">
-                        <div className="text-xs font-semibold">{p.name}</div>
-                        <div className="text-[11px]">{p.fit}</div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <div className="mt-3">
-                  <div className="inline-flex items-center gap-2 rounded-lg bg-white/5 border border-white/10 px-3 py-2">
-                    <span className="h-2 w-2 rounded-full bg-[#2D6BFF]" />
-                    <span className="text-xs text-[rgba(226,232,240,0.90)]">Add to cart with confidence</span>
-                  </div>
-                </div>
-              </div>
+    <div className="relative w-full justify-self-center lg:max-w-[760px] lg:justify-self-end xl:max-w-[820px]">
+      <div className="absolute -inset-x-5 -inset-y-7 rounded-[2rem] bg-[radial-gradient(circle_at_42%_42%,rgba(201,178,132,0.24),transparent_46%),radial-gradient(circle_at_74%_24%,rgba(161,184,205,0.2),transparent_38%),radial-gradient(circle_at_22%_78%,rgba(190,137,83,0.14),transparent_42%)] blur-2xl" />
+      <div className="relative overflow-hidden rounded-[1.5rem] border border-[#ded4c6] bg-white shadow-[0_28px_80px_rgba(75,61,47,0.16)]">
+        <div className="border-b border-[#e6ded3] bg-[#fbf7f0] px-4 py-3">
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex items-center gap-2">
+              <span className="h-2.5 w-2.5 rounded-full bg-[#d7b88f]" />
+              <span className="h-2.5 w-2.5 rounded-full bg-[#c9d3df]" />
+              <span className="h-2.5 w-2.5 rounded-full bg-[#9aa681]" />
             </div>
-            <div className="mt-4 text-xs text-[rgba(226,232,240,0.70)]">
-              This is a lightweight preview. On your store, recommendations are generated from your catalog + product dimensions.
-            </div>
+            <div className="text-xs font-medium text-[#7c7164]">Product page preview</div>
           </div>
         </div>
-      </div>
-    </div>
-  );
-}
 
-function VisualProof() {
-  return (
-    <div className="relative">
-      <div className="absolute -inset-6 bg-gradient-to-br from-[#2D6BFF]/15 via-transparent to-[#2BE7C6]/10 blur-2xl" />
-      <div className="relative rounded-2xl border border-white/10 bg-white/5 overflow-hidden shadow-soft">
-        <div className="relative">
-          <div className="absolute inset-0">
-            <div className="absolute inset-0 opacity-[0.20] blur-[0.4px] modly-hero-grid" />
+        <div className="grid gap-0 lg:grid-cols-[1.05fr_0.95fr] lg:items-stretch">
+          <div className="flex h-full flex-col bg-[#f5efe5] p-4 md:p-5">
+            <div className="min-h-[320px] flex-1 overflow-hidden rounded-2xl border border-[#e0d5c8] bg-[#efe4d4] md:min-h-[420px] lg:min-h-0">
+              <Image
+                src="/images/living-room-hero.png"
+                alt="Modern living room with modular sofa"
+                width={720}
+                height={520}
+                className="h-full min-h-[320px] w-full object-cover md:min-h-[420px] lg:min-h-0"
+                priority
+              />
+            </div>
+            <div className="mt-3 grid grid-cols-3 gap-2.5">
+              {["Performance linen", "84 in width", "Ships in 3 colors"].map((item) => (
+                <div key={item} className="rounded-xl border border-[#e1d7ca] bg-white/80 px-3 py-2 text-xs font-medium text-[#5c5248]">
+                  {item}
+                </div>
+              ))}
+            </div>
           </div>
 
-          <div className="p-5 border-b border-white/10 bg-[#0A1630]/40">
-            <div className="flex items-center justify-between gap-4">
-              <div>
-                <div className="text-sm font-semibold text-text-primary">Visual proof</div>
-                <div className="text-xs text-[rgba(226,232,240,0.72)] mt-1">
-                  Shoppers confirm fit before purchase. You ship fewer returns.
+          <div className="p-5 md:p-6">
+            <div className="text-xs font-semibold uppercase tracking-[0.16em] text-[#8b6f4d]">Modern Living</div>
+            <h3 className="mt-2 text-2xl font-semibold text-[#171411]">Linden Modular Sofa</h3>
+            <p className="mt-2 text-sm leading-6 text-[#665d54]">
+              A low-profile sofa with soft edges, modular seating, and a calm neutral finish.
+            </p>
+
+            <div className="mt-5 rounded-2xl border border-[#d9cec0] bg-[#fbf8f2] p-4 shadow-[0_18px_40px_rgba(75,61,47,0.08)]">
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <div className="text-sm font-semibold text-[#171411]">ModlyAI room match</div>
+                  <div className="mt-1 text-xs leading-5 text-[#756a5f]">Catalog-grounded recommendations for this room.</div>
                 </div>
-              </div>
-              <div className="hidden sm:flex items-center gap-2 text-[11px] text-[rgba(226,232,240,0.70)]">
-                <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5">
-                  <span className="h-2 w-2 rounded-full bg-[#2BE7C6] modly-hero-pulse" />
-                  Live preview
+                <span className="rounded-full bg-[#e8eef8] px-3 py-1 text-[11px] font-semibold text-[#315f9b]">
+                  Live widget
                 </span>
               </div>
-            </div>
-          </div>
 
-          <div className="p-5 grid gap-4">
-            <div className="rounded-xl border border-white/10 bg-[#0A1630]/55 p-4">
-              <div className="text-xs font-semibold text-[rgba(226,232,240,0.88)]">Animated flow</div>
-              <div className="mt-3 grid grid-cols-4 gap-2">
-                {[
-                  { title: "Upload photo", sub: "Room image", color: "from-[#2D6BFF]/25 to-transparent" },
-                  { title: "AI analyzes", sub: "Space + style", color: "from-[#2BE7C6]/20 to-transparent" },
-                  { title: "Shows what fits", sub: "Matches catalog", color: "from-[#2D6BFF]/20 to-transparent" },
-                  { title: "Confident cart", sub: "Fewer returns", color: "from-[#2BE7C6]/20 to-transparent" },
-                ].map((s, idx) => (
-                  <div key={s.title} className="relative rounded-lg border border-white/10 bg-white/5 p-3 overflow-hidden">
-                    <div
-                      className="absolute inset-0 bg-gradient-to-b opacity-70"
-                      style={{ backgroundImage: `linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0))` }}
-                    />
-                    <div className={`absolute inset-0 bg-gradient-to-br ${s.color} modly-hero-step-${idx + 1}`} />
-                    <div className="relative">
-                      <div className="text-[11px] font-semibold text-text-primary leading-snug">{s.title}</div>
-                      <div className="text-[10px] text-[rgba(226,232,240,0.70)] mt-1">{s.sub}</div>
+              <div className="mt-4 rounded-xl border border-dashed border-[#cfc2b3] bg-white p-3">
+                <div className="text-xs font-medium text-[#7b7167]">Shopper question</div>
+                <p className="mt-1 text-sm font-semibold text-[#2a241f]">What sofa fits my 11 ft living room?</p>
+              </div>
+
+              <div className="mt-4 space-y-2">
+                {recommendations.map((item) => (
+                  <div key={item.name} className="rounded-xl border border-[#e2d8ca] bg-white p-3">
+                    <div className="flex items-center justify-between gap-3">
+                      <div>
+                        <div className="text-sm font-semibold text-[#211d19]">{item.name}</div>
+                        <div className="mt-0.5 text-xs text-[#7a7065]">{item.detail}</div>
+                      </div>
+                      <span className="shrink-0 rounded-full bg-[#f1eadf] px-2.5 py-1 text-[11px] font-semibold text-[#765f42]">
+                        {item.status}
+                      </span>
                     </div>
                   </div>
                 ))}
               </div>
-              <div className="mt-3 h-1.5 rounded-full bg-white/5 border border-white/10 overflow-hidden">
-                <div className="h-full w-1/3 bg-gradient-to-r from-[#2D6BFF] via-[#2BE7C6] to-[#2D6BFF] modly-hero-progress" />
-              </div>
-            </div>
 
-            <div className="rounded-xl border border-white/10 bg-[#0A1630]/55 p-4">
-              <div className="flex items-end justify-between gap-3">
-                <div>
-                  <div className="text-xs font-semibold text-[rgba(226,232,240,0.88)]">Before vs After</div>
-                  <div className="text-[11px] text-[rgba(226,232,240,0.70)] mt-1">
-                    Returns trend (illustrative)
-                  </div>
-                </div>
-                <div className="text-[11px] text-[rgba(226,232,240,0.70)]">Monthly</div>
+              <div className="mt-4 grid grid-cols-2 gap-2">
+                <button
+                  className="rounded-lg bg-[#244f85] px-3 py-2.5 text-sm font-semibold text-white shadow-sm"
+                  type="button"
+                  aria-label="Demo preview: view in catalog"
+                  onClick={handleCatalogPreviewClick}
+                >
+                  View in catalog
+                </button>
+                <button
+                  className="rounded-lg border border-[#cfc3b4] bg-white px-3 py-2.5 text-sm font-semibold text-[#2d2721]"
+                  type="button"
+                  aria-label="Request a ModlyAI pilot"
+                  onClick={handleRequestPilotClick}
+                >
+                  Request quote
+                </button>
               </div>
-              <div className="mt-4 grid grid-cols-2 gap-4">
-                <div className="rounded-lg border border-white/10 bg-white/4 p-3">
-                  <div className="text-[11px] font-semibold text-[rgba(226,232,240,0.86)]">Before ModlyAI</div>
-                  <div className="mt-3 flex items-end gap-1.5 h-16">
-                    {[65, 72, 68, 75, 70].map((h, i) => (
-                      <div key={i} className="w-1/5 rounded-sm bg-[#FF6B6B]/40 border border-[#FF6B6B]/25 modly-hero-bar" style={{ height: `${h}%` }} />
-                    ))}
-                  </div>
-                  <div className="mt-2 text-[11px] text-[#FFD1D1]">High return rates</div>
-                </div>
-                <div className="rounded-lg border border-white/10 bg-white/4 p-3">
-                  <div className="text-[11px] font-semibold text-[rgba(226,232,240,0.86)]">After ModlyAI</div>
-                  <div className="mt-3 flex items-end gap-1.5 h-16">
-                    {[40, 38, 35, 33, 30].map((h, i) => (
-                      <div key={i} className="w-1/5 rounded-sm bg-[#2BE7C6]/35 border border-[#2BE7C6]/25 modly-hero-bar" style={{ height: `${h}%` }} />
-                    ))}
-                  </div>
-                  <div className="mt-2 text-[11px] text-[#BFF9F0]">Fewer returns</div>
-                </div>
-              </div>
-            </div>
-
-            <div className="rounded-xl border border-white/10 bg-white/4 overflow-hidden">
-              <img
-                src="/images/dashboard-screenshot.png"
-                alt="Merchant dashboard showing top-level performance stats"
-                className="w-full h-full object-cover object-top rounded-lg"
-              />
             </div>
           </div>
         </div>
       </div>
-      <div className="mt-3 text-xs text-[rgba(226,232,240,0.70)]">
-        Customer-side room matching + merchant analytics dashboard.
-      </div>
+      <p className="mt-3 text-xs leading-5 text-[#807569]">
+        Example storefront view using an existing room image asset and catalog-style recommendations.
+      </p>
     </div>
   );
 }
 
 export default function HeroB2B() {
-  const prefersReducedMotion = usePrefersReducedMotion();
-  const [headlineIdx, setHeadlineIdx] = useState(0);
-  const [demoOpen, setDemoOpen] = useState(false);
-
-  const initialHeadlineIdx = useMemo(() => {
-    // Slightly "A/B test-like" behavior without infra: randomize initial headline per page load.
-    return Math.floor(Math.random() * HEADLINES.length);
-  }, []);
-
-  useEffect(() => {
-    setHeadlineIdx(initialHeadlineIdx);
-  }, [initialHeadlineIdx]);
-
-  useEffect(() => {
-    if (prefersReducedMotion) return;
-    const id = window.setInterval(() => {
-      setHeadlineIdx((i) => (i + 1) % HEADLINES.length);
-    }, 4500);
-    return () => window.clearInterval(id);
-  }, [prefersReducedMotion]);
-
   return (
-    <section className="relative px-6 pt-10 md:pt-14 pb-16 md:pb-20 overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-[#071A33] via-[#071A33] to-[#0A1630]" />
-      <div className="absolute -top-40 left-1/2 h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-[#2D6BFF]/25 blur-3xl" />
-      <div className="absolute -bottom-56 right-[-140px] h-[520px] w-[520px] rounded-full bg-[#2BE7C6]/15 blur-3xl" />
-      <div className="absolute inset-0 opacity-[0.10] modly-hero-noise" />
-
-      <div className="relative max-w-7xl mx-auto z-10">
-        <div className="grid lg:grid-cols-2 gap-10 items-center">
-          <div>
-            <div className="inline-flex items-center gap-3 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-text-secondary">
-              <span className="inline-block h-2 w-2 rounded-full bg-[#2BE7C6] modly-hero-pulse" />
-              Built for furniture retailers
+    <section className="relative overflow-hidden px-6 pb-16 pt-12 md:pb-24 md:pt-20">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_12%,rgba(202,157,103,0.16),transparent_30%),radial-gradient(circle_at_82%_22%,rgba(156,181,204,0.14),transparent_28%),linear-gradient(180deg,#fffbf4_0%,#f7efe4_100%)]" />
+      <div className="absolute inset-0 opacity-[0.34] [background-image:linear-gradient(rgba(126,100,72,0.06)_1px,transparent_1px),linear-gradient(90deg,rgba(126,100,72,0.05)_1px,transparent_1px)] [background-size:56px_56px]" />
+      <div className="relative z-10 mx-auto max-w-[86rem]">
+        <div className="grid items-center gap-9 lg:grid-cols-[minmax(0,0.9fr)_minmax(540px,1.08fr)] xl:gap-10">
+          <div className="max-w-[680px]">
+            <div className="inline-flex items-center rounded-full border border-[#dfd3c4] bg-white/70 px-4 py-2 text-sm font-medium text-[#695d51] shadow-sm">
+              AI room matching for furniture retailers
             </div>
 
-            <h1 className="mt-6 text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.08] text-text-primary">
-              <span className={prefersReducedMotion ? "" : "modly-hero-headline-fade"} key={headlineIdx}>
-                {HEADLINES[headlineIdx]}
-              </span>
-              <span className="block mt-3 text-gradient-b2b">
-                Reduce returns with AI room matching
-              </span>
+            <h1 className="mt-7 max-w-3xl text-5xl font-semibold leading-[1.03] tracking-normal text-[#171411] md:text-6xl">
+              Help shoppers know what fits before they buy.
             </h1>
 
-            <p className="mt-4 text-lg md:text-xl text-[rgba(226,232,240,0.86)] max-w-xl leading-relaxed">
-              Your shoppers upload a room photo, ModlyAI confirms fit against your product dimensions, and they buy with confidence.
-              You save shipping/restocking costs while increasing conversion.
+            <p className="mt-6 max-w-2xl text-lg leading-8 text-[#5f554b] md:text-xl">
+              ModlyAI adds an AI room-matching widget to furniture stores, helping shoppers compare products, check fit,
+              and request customizations from your existing catalog.
             </p>
 
-            <div className="mt-6 flex flex-wrap gap-3 text-sm text-[rgba(226,232,240,0.82)]">
-              {[
-                "Stops ‘doesn’t fit’ returns",
-                "Lifts add-to-cart rate",
-                "Works with your existing catalog",
-              ].map((t) => (
-                <div key={t} className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-[#2BE7C6]" />
-                  {t}
-                </div>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <TrackedLink
+                href="/auth/signup"
+                ctaId="hero-get-started-free"
+                ctaText="Get Started Free"
+                className="inline-flex items-center justify-center rounded-lg bg-[#244f85] px-6 py-3.5 text-sm font-semibold text-white shadow-[0_12px_28px_rgba(36,79,133,0.24)] transition hover:bg-[#1b416f]"
+              >
+                Get Started Free
+              </TrackedLink>
+              <TrackedLink
+                href="/contact"
+                ctaId="hero-book-demo"
+                ctaText="Book a Demo"
+                className="inline-flex items-center justify-center rounded-lg border border-[#cfc3b4] bg-white/80 px-6 py-3.5 text-sm font-semibold text-[#2b2621] shadow-sm transition hover:bg-white"
+              >
+                Book a Demo
+              </TrackedLink>
+            </div>
+
+            <div className="mt-5 flex flex-wrap gap-2.5">
+              {proofBadges.map((badge) => (
+                <span
+                  key={badge}
+                  className="rounded-full border border-[#e0d4c5] bg-[#fffdf9]/85 px-3.5 py-1.5 text-xs font-semibold text-[#675c51] shadow-[0_8px_20px_rgba(75,61,47,0.05)]"
+                >
+                  {badge}
+                </span>
               ))}
             </div>
 
-            <div className="mt-8 flex flex-col sm:flex-row gap-3 sm:items-center">
-              <TrackedLink
-                href="/contact"
-                ctaId="hero-book-15-min-demo"
-                ctaText="Book a 15-Min Demo"
-                className="inline-flex items-center justify-center px-7 py-4 rounded-lg font-semibold text-[15px] bg-gradient-to-r from-[#0B3B6F] via-[#2D6BFF] to-[#2BE7C6] text-white glow-b2b-hover transition-all modly-hero-cta-primary"
-              >
-                Book a 15‑Min Demo
-              </TrackedLink>
-
-              <button
-                type="button"
-                onClick={() => setDemoOpen(true)}
-                className="inline-flex items-center justify-center px-7 py-4 rounded-lg font-semibold text-[15px] border border-white/15 bg-white/5 hover:bg-white/8 transition-colors modly-hero-cta-secondary"
-              >
-                Watch 2‑Min Demo Video
-              </button>
-            </div>
-
-            <div className="mt-3 text-xs text-[rgba(226,232,240,0.72)]">
-              Join <span className="text-text-primary font-semibold">12 furniture stores</span> using AI to reduce returns.{" "}
-              <span className="text-text-primary font-semibold">14‑day free trial</span>. No credit card required.
-            </div>
-
-            <div className="mt-8 grid sm:grid-cols-3 gap-3">
-              <div className="rounded-lg border border-white/10 bg-white/4 px-4 py-3">
-                <div className="text-sm font-semibold text-text-primary">Fast setup</div>
-                <div className="text-xs text-[rgba(226,232,240,0.78)] mt-1">5 minutes to launch</div>
-              </div>
-              <div className="rounded-lg border border-white/10 bg-white/4 px-4 py-3">
-                <div className="text-sm font-semibold text-text-primary">No heavy lift</div>
-                <div className="text-xs text-[rgba(226,232,240,0.78)] mt-1">Works with existing PDPs</div>
-              </div>
-              <div className="rounded-lg border border-white/10 bg-white/4 px-4 py-3">
-                <div className="text-sm font-semibold text-text-primary">Measurable ROI</div>
-                <div className="text-xs text-[rgba(226,232,240,0.78)] mt-1">Return-rate + funnel analytics</div>
-              </div>
+            <div className="mt-6 text-sm font-medium text-[#70665b]">
+              Works with Shopify, CSV catalogs, and custom storefronts.
             </div>
           </div>
 
-          <VisualProof />
+          <ProductDemo />
         </div>
       </div>
-
-      <DemoModal open={demoOpen} onClose={() => setDemoOpen(false)} />
     </section>
   );
 }

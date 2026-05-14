@@ -2,6 +2,7 @@ import React from 'react';
 import { ConversationMessage, Recommendation, FurnitureItem } from '../types';
 import { getRealProductUrl } from '../utils/productUrl';
 import { getReadableTextColor } from '../utils/config';
+import { trackWidgetEvent } from '../utils/analytics';
 
 interface MessageBubbleProps {
   message: ConversationMessage;
@@ -14,9 +15,14 @@ interface MessageBubbleProps {
     requestQuote: boolean;
   };
   primaryColor?: string;
+  analyticsContext?: {
+    apiBaseUrl?: string;
+    storeId?: string;
+    widgetId?: string;
+  };
 }
 
-export function MessageBubble({ message, onCustomizeItem, onAddToRoomPlanner, onViewInCatalog, enabledActions, primaryColor }: MessageBubbleProps) {
+export function MessageBubble({ message, onCustomizeItem, onAddToRoomPlanner, onViewInCatalog, enabledActions, primaryColor, analyticsContext }: MessageBubbleProps) {
   const isUser = message.role === 'user';
   const isThinking = message.type === 'thinking';
   const actions = enabledActions ?? { viewInCatalog: true, customize: true, requestQuote: true };
@@ -56,6 +62,7 @@ export function MessageBubble({ message, onCustomizeItem, onAddToRoomPlanner, on
                     onViewInCatalog={onViewInCatalog}
                     enabledActions={actions}
                     primaryColor={primaryColor}
+                    analyticsContext={analyticsContext}
                   />
                 ))}
               </div>
@@ -88,6 +95,7 @@ function RecommendationCard({
   onViewInCatalog,
   enabledActions,
   primaryColor,
+  analyticsContext,
 }: { 
   recommendation: Recommendation; 
   onCustomize?: (item: any) => void; 
@@ -99,10 +107,38 @@ function RecommendationCard({
     requestQuote: boolean;
   };
   primaryColor?: string;
+  analyticsContext?: {
+    apiBaseUrl?: string;
+    storeId?: string;
+    widgetId?: string;
+  };
 }) {
   const item = recommendation.item;
   const catalogUrl = getProductCatalogUrl(item);
   const primaryTextColor = primaryColor ? getReadableTextColor(primaryColor) : undefined;
+  const handleViewInCatalogClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (!catalogUrl || typeof window === 'undefined') return;
+
+    if (onViewInCatalog) {
+      onViewInCatalog(item);
+      return;
+    }
+
+    trackWidgetEvent({
+      ...analyticsContext,
+      type: 'view_in_catalog_clicked',
+      productId: item.id,
+      productName: item.name,
+      metadata: {
+        category: item.category,
+        productUrl: catalogUrl,
+      },
+    });
+    window.open(catalogUrl, '_blank', 'noopener,noreferrer');
+  };
 
   return (
     <div className="bg-white rounded-lg border border-gray-200 p-3 shadow-sm">
@@ -132,10 +168,9 @@ function RecommendationCard({
 
       <div className="mt-3 flex gap-2">
         {enabledActions.viewInCatalog && catalogUrl ? (
-          <a
-            href={catalogUrl}
-            target="_blank"
-            rel="noopener noreferrer"
+          <button
+            type="button"
+            onClick={handleViewInCatalogClick}
             className="flex-1 py-1.5 px-3 bg-gray-100 text-gray-700 text-xs rounded hover:bg-gray-200 transition-colors flex items-center justify-center gap-1 border border-gray-300"
           >
             <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -143,7 +178,7 @@ function RecommendationCard({
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
             </svg>
             View in Catalog
-          </a>
+          </button>
         ) : enabledActions.viewInCatalog ? (
           <button
             type="button"
@@ -155,6 +190,7 @@ function RecommendationCard({
         ) : null}
         {enabledActions.customize && onCustomize && (
           <button
+            type="button"
             onClick={() => onCustomize(item)}
             className="flex-1 py-1.5 px-3 bg-blue-500 text-white text-xs rounded hover:bg-blue-600 transition-colors flex items-center justify-center gap-1"
             style={primaryColor ? { backgroundColor: primaryColor, color: primaryTextColor } : undefined}

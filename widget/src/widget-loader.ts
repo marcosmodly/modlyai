@@ -1,10 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { FurnitureAIWidgetButton } from './components/FurnitureAIWidgetButton';
-import { WidgetConfig, fetchRemoteConfig, getWidgetTitle, mergeConfig } from './utils/config';
+import { WidgetConfig, fetchRemoteConfig, getApiBaseUrlFromConfigUrl, getWidgetTitle, mergeConfig } from './utils/config';
+import widgetStyles from './styles/widget.css';
 
 let widgetRoot: ReactDOM.Root | null = null;
 let container: HTMLDivElement | null = null;
+let mountNode: HTMLDivElement | null = null;
+
+function injectWidgetStyles(root: ShadowRoot) {
+  const styleElement = document.createElement('style');
+  styleElement.setAttribute('data-modly-widget-styles', '');
+  styleElement.textContent = widgetStyles;
+  root.appendChild(styleElement);
+}
 
 async function initWidget(userConfig?: Partial<WidgetConfig>) {
   // Destroy existing widget if any
@@ -16,15 +25,22 @@ async function initWidget(userConfig?: Partial<WidgetConfig>) {
     container.remove();
     container = null;
   }
+  mountNode = null;
 
   // Create container
   container = document.createElement('div');
   container.id = 'modly-widget-container';
   document.body.appendChild(container);
+  const shadowRoot = container.attachShadow({ mode: 'open' });
+  injectWidgetStyles(shadowRoot);
+  mountNode = document.createElement('div');
+  mountNode.className = 'modly-widget-root';
+  shadowRoot.appendChild(mountNode);
 
   // Fetch remote config if configUrl is provided
   let remoteConfig: WidgetConfig = {};
   const configUrl = userConfig?.configUrl || ((userConfig?.widgetId || userConfig?.storeId) ? '/api/widget/config' : undefined);
+  const apiBaseUrl = userConfig?.apiBaseUrl || getApiBaseUrlFromConfigUrl(configUrl);
   if (configUrl) {
     remoteConfig = await fetchRemoteConfig(configUrl, userConfig?.widgetId, userConfig?.storeId);
   }
@@ -32,11 +48,12 @@ async function initWidget(userConfig?: Partial<WidgetConfig>) {
   // Merge configs (remote > user > defaults)
   const finalConfig = mergeConfig({
     ...userConfig,
+    ...(apiBaseUrl ? { apiBaseUrl } : {}),
     ...remoteConfig,
   });
 
   // Render widget
-  widgetRoot = ReactDOM.createRoot(container);
+  widgetRoot = ReactDOM.createRoot(mountNode);
   widgetRoot.render(
     React.createElement(FurnitureAIWidgetButton, {
       config: finalConfig,
@@ -55,6 +72,7 @@ function destroyWidget() {
     container.remove();
     container = null;
   }
+  mountNode = null;
 }
 
 // Expose global API

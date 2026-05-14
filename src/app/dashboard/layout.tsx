@@ -3,6 +3,7 @@
 import { SessionProvider } from 'next-auth/react'
 import Sidebar from '@/components/dashboard/Sidebar'
 import Header from '@/components/dashboard/Header'
+import TrialExpiredBanner from '@/components/dashboard/TrialExpiredBanner'
 
 export default function DashboardLayout({
   children,
@@ -16,7 +17,10 @@ export default function DashboardLayout({
         <div className="lg:pl-72">
           <Header />
           <main className="py-8 sm:py-10">
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">{children}</div>
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+              <TrialExpiredBanner />
+              {children}
+            </div>
           </main>
         </div>
       </div>

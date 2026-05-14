@@ -7,16 +7,18 @@ export function createWidgetInstallSnippet({
   storeId,
   widgetId,
 }: WidgetInstallSnippetOptions) {
-  if (!storeId) {
+  const normalizedStoreId = String(storeId ?? '').trim()
+  const normalizedWidgetId = String(widgetId ?? '').trim()
+
+  if (!normalizedStoreId || !normalizedWidgetId) {
     return null
   }
 
   return `<script
-  type="module"
   src="https://modlyai.tech/widget.js"
   data-modly-widget
-  data-store-id="${storeId}"
-  data-widget-id="${widgetId || storeId}"
+  data-store-id="${normalizedStoreId}"
+  data-widget-id="${normalizedWidgetId}"
   data-config-url="https://modlyai.tech/api/widget/config"
 ></script>`
 }

@@ -10,19 +10,30 @@ import {
   Sparkles,
   Undo2,
 } from 'lucide-react';
-import { getMaterialDescription, Product } from '../data/products';
+import {
+  getMaterialDescription,
+  getOptionName,
+  getOptionPrice,
+  normalizeCustomizationOptionValues,
+  Product,
+} from '../data/products';
 import { RoomAnalysisResponse } from '../types';
 
 export type CustomizerDraft = {
   productId: string;
   fabricColor: string; // hex
+  selectedColor?: string;
   materialId: string;
+  selectedMaterial?: string;
   widthIn: number;
   depthIn: number;
+  heightIn?: number;
   addons: {
     throwPillows: boolean;
     ottoman: boolean;
   };
+  selectedAddOns?: string[];
+  customerRequestText?: string;
   rotationDeg: number;
   zoom: number; // retained for upstream state compatibility
   roomContext?: {
@@ -35,6 +46,8 @@ export type DraftPriceBreakdown = {
   base: number;
   customizations: number;
   total: number;
+  quoteRequired?: boolean;
+  dimensionAdjustments?: Record<DimensionKey, number> & { total?: number };
   lineItems: Array<{ label: string; amount: number }>;
 };
 
@@ -53,6 +66,7 @@ interface FurnitureCustomizerPanelProps {
   onSaveConfig: () => void;
   onShareLink: () => void;
   onExportPdf: () => void;
+  onViewFullRoomAnalysis?: () => void;
 }
 
 interface PersistedRoomPlannerState {
@@ -61,6 +75,200 @@ interface PersistedRoomPlannerState {
 }
 
 const ROOM_PLANNER_STORAGE_KEY = 'modly-room-planner-state';
+const CUSTOMIZER_SUGGESTION_LIMIT = 3;
+const SHORT_REASON_MAX_LENGTH = 120;
+
+type DimensionKey = 'width' | 'length' | 'height';
+type DimensionOption = { min?: number; max?: number; default?: number; unit?: string; pricePerExtraUnit?: number };
+type DisplayOption = { name: string; price?: number };
+type CompactAiRecommendation = { type?: string; suggestion?: string; reason?: string };
+type CustomizerAiSuggestions = {
+  fitScore?: number;
+  fitReason?: string;
+  roomStyle?: string;
+  dominantColors?: string[];
+  recommendations?: CompactAiRecommendation[];
+  warning?: string;
+};
+
+const isDemoProduct = (product?: Product) => Boolean(product && !product.source);
+
+const normalizeOptionNames = (value: unknown): string[] => {
+  const entries = Array.isArray(value)
+    ? value
+    : typeof value === 'string'
+      ? value.split(/[|,]/)
+      : [];
+
+  return Array.from(
+    new Set(entries.map((entry) => String(entry ?? '').trim()).filter(Boolean))
+  );
+};
+
+const normalizeDisplayOptions = (value: unknown): DisplayOption[] =>
+  normalizeCustomizationOptionValues(value).map((option) => ({
+    name: getOptionName(option),
+    price: getOptionPrice(option),
+  }));
+
+const formatModifierLabel = (price: number | undefined, includedLabel = 'Included') => {
+  if (typeof price !== 'number') return null;
+  if (price <= 0) return includedLabel;
+  return `+$${price.toLocaleString()}`;
+};
+
+const getShortReason = (reason?: string) => {
+  const normalized = (reason || 'Recommended by Room Planner.').replace(/\s+/g, ' ').trim();
+  const firstSentence = normalized.match(/^.*?[.!?](?:\s|$)/)?.[0]?.trim() || normalized;
+
+  return firstSentence.length > SHORT_REASON_MAX_LENGTH
+    ? `${firstSentence.slice(0, SHORT_REASON_MAX_LENGTH - 3).trim()}...`
+    : firstSentence;
+};
+
+const hasDimensionRange = (dimension?: DimensionOption) =>
+  dimension?.min !== undefined || dimension?.max !== undefined;
+
+const readFlatDimension = (value: unknown): number | undefined => {
+  if (typeof value === 'number' && Number.isFinite(value) && value > 0) return value;
+  if (typeof value === 'string' && value.trim()) {
+    const parsed = Number(value);
+    if (Number.isFinite(parsed) && parsed > 0) return parsed;
+  }
+  return undefined;
+};
+
+const toDimensionRange = (
+  dimension: DimensionOption | undefined,
+  fallbackDefault: number,
+  fallbackRange?: [number, number],
+  allowFallback = false
+): (DimensionOption & { min: number; max: number; default: number; unit: string }) | null => {
+  const min = dimension?.min ?? (allowFallback ? fallbackRange?.[0] : undefined);
+  const max = dimension?.max ?? (allowFallback ? fallbackRange?.[1] : undefined);
+  const defaultValue = dimension?.default ?? (allowFallback ? fallbackDefault : undefined);
+
+  if (min === undefined && max === undefined && defaultValue === undefined) return null;
+
+  const resolvedDefault = defaultValue ?? min ?? max ?? fallbackDefault;
+  return {
+    min: min ?? resolvedDefault,
+    max: max ?? resolvedDefault,
+    default: resolvedDefault,
+    unit: dimension?.unit ?? 'in',
+  };
+};
+
+const getProductCustomization = (product?: Product) => {
+  if (!product) {
+    return {
+      colors: [] as Product['colors'],
+      materials: [] as Product['customizer']['materialOptions'],
+      dimensions: {} as Record<DimensionKey, ReturnType<typeof toDimensionRange>>,
+      dimensionSummary: {} as Partial<Record<DimensionKey, { value: number; unit: string }>>,
+      addOns: [] as Array<{ name: string; price?: number }>,
+      optionLabels: [] as Array<{ name: string; values: DisplayOption[] }>,
+      hasOptions: false,
+    };
+  }
+
+  const explicit = product.customizationOptions;
+  const allowDemoFallback = isDemoProduct(product);
+  const explicitColorOptions = normalizeDisplayOptions(explicit?.colors);
+  const explicitMaterialOptions = normalizeDisplayOptions(explicit?.materials);
+  const explicitColorNames = explicitColorOptions.map((option) => option.name);
+  const explicitMaterialNames = explicitMaterialOptions.map((option) => option.name);
+  const productColorNames = product.colors
+    .map((color) => color.name)
+    .filter((name) => allowDemoFallback || name.toLowerCase() !== 'custom');
+  const productMaterialNames = product.materials
+    .filter((name) => allowDemoFallback || name.toLowerCase() !== 'custom');
+  const colorNames = explicitColorNames.length > 0 ? explicitColorNames : productColorNames;
+  const materialNames = explicitMaterialNames.length > 0 ? explicitMaterialNames : productMaterialNames;
+  const colors = colorNames
+    .map((name, index) => {
+      const existing = product.colors.find((color) => color.name.toLowerCase() === name.toLowerCase());
+      const pricedOption = explicitColorOptions.find((option) => option.name.toLowerCase() === name.toLowerCase());
+      return {
+        ...(existing ?? { name, hex: product.colors[index]?.hex ?? '#E5E7EB', available: true }),
+        price: pricedOption?.price,
+      };
+    })
+    .filter((color) => color.available);
+  const materials = materialNames.map((name, index) => {
+    const existing = product.customizer.materialOptions.find(
+      (option) => option.name.toLowerCase() === name.toLowerCase()
+    );
+    const pricedOption = explicitMaterialOptions.find((option) => option.name.toLowerCase() === name.toLowerCase());
+    return existing
+      ? { ...existing, priceDelta: explicitMaterialOptions.length > 0 ? pricedOption?.price : existing.priceDelta }
+      : {
+      id: name.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '') || `material_${index}`,
+      name,
+      priceDelta: pricedOption?.price ?? 0,
+      description: getMaterialDescription(name),
+    };
+  });
+  const dimensions = {
+    width: toDimensionRange(
+      hasDimensionRange(explicit?.dimensions?.width) ? explicit?.dimensions?.width : undefined,
+      product.customizer.defaultWidthIn,
+      product.customizer.widthRangeIn,
+      allowDemoFallback
+    ),
+    length: toDimensionRange(
+      hasDimensionRange(explicit?.dimensions?.length) ? explicit?.dimensions?.length : undefined,
+      product.customizer.defaultDepthIn,
+      product.customizer.depthRangeIn,
+      allowDemoFallback
+    ),
+    height: toDimensionRange(
+      hasDimensionRange(explicit?.dimensions?.height) ? explicit?.dimensions?.height : undefined,
+      product.dimensions.height,
+      undefined,
+      false
+    ),
+  };
+  const dimensionSummary = {
+    width: !dimensions.width && readFlatDimension(product.width)
+      ? { value: readFlatDimension(product.width)!, unit: 'in' }
+      : undefined,
+    length: !dimensions.length && readFlatDimension(product.length)
+      ? { value: readFlatDimension(product.length)!, unit: 'in' }
+      : undefined,
+    height: !dimensions.height && readFlatDimension(product.height)
+      ? { value: readFlatDimension(product.height)!, unit: 'in' }
+      : undefined,
+  };
+  const addOns =
+    explicit?.addOns ??
+    (allowDemoFallback
+      ? [
+          { name: 'Throw Pillows (2)', price: 60 },
+          { name: 'Ottoman', price: 350 },
+        ]
+      : []);
+  const optionLabels = (explicit?.shopifyOptions ?? explicit?.optionLabels ?? []).map((option) => ({
+    name: option.name,
+    values: normalizeDisplayOptions(option.values),
+  }));
+
+  return {
+    colors,
+    materials,
+    dimensions,
+    dimensionSummary,
+    addOns,
+    optionLabels,
+    hasOptions:
+      colors.length > 0 ||
+      materials.length > 0 ||
+      Boolean(dimensions.width || dimensions.length || dimensions.height) ||
+      Boolean(dimensionSummary.width || dimensionSummary.length || dimensionSummary.height) ||
+      addOns.length > 0 ||
+      optionLabels.length > 0,
+  };
+};
 
 export default function FurnitureCustomizerPanel({
   products,
@@ -77,37 +285,54 @@ export default function FurnitureCustomizerPanel({
   onSaveConfig,
   onShareLink,
   onExportPdf,
+  onViewFullRoomAnalysis,
 }: FurnitureCustomizerPanelProps) {
   const selectedProduct = useMemo(
     () => products.find((p) => p.id === draft.productId) ?? products[0],
     [draft.productId, products]
   );
 
-  const materialOptions = useMemo(
-    () => selectedProduct?.customizer.materialOptions ?? [],
+  const customization = useMemo(
+    () => getProductCustomization(selectedProduct),
     [selectedProduct]
   );
 
-  const colorSwatches = useMemo(
-    () => selectedProduct?.colors.filter((color) => color.available) ?? [],
-    [selectedProduct]
-  );
+  useEffect(() => {
+    if (process.env.NODE_ENV !== 'development' || !selectedProduct) {
+      return;
+    }
+
+    console.debug('[Modly customizer] selected product customization fields', {
+      name: selectedProduct.name,
+      colors: selectedProduct.colors,
+      materials: selectedProduct.materials,
+      length: selectedProduct.length,
+      width: selectedProduct.width,
+      height: selectedProduct.height,
+      customization,
+    });
+  }, [customization, selectedProduct]);
+
+  const materialOptions = customization.materials;
+  const colorSwatches = customization.colors;
 
   const baseDimensions = {
-    width: selectedProduct?.customizer.defaultWidthIn || 36,
-    length: selectedProduct?.customizer.defaultDepthIn || 60,
-    height: selectedProduct?.dimensions.height || 30,
+    width: customization.dimensions.width?.default ?? selectedProduct?.customizer.defaultWidthIn ?? 36,
+    length: customization.dimensions.length?.default ?? selectedProduct?.customizer.defaultDepthIn ?? 60,
+    height: customization.dimensions.height?.default ?? selectedProduct?.dimensions.height ?? 30,
   };
-  const widthMin = Math.round(baseDimensions.width * 0.8);
-  const widthMax = Math.round(baseDimensions.width * 1.2);
-  const lengthMin = Math.round(baseDimensions.length * 0.8);
-  const lengthMax = Math.round(baseDimensions.length * 1.2);
+  const widthMin = customization.dimensions.width?.min ?? baseDimensions.width;
+  const widthMax = customization.dimensions.width?.max ?? baseDimensions.width;
+  const lengthMin = customization.dimensions.length?.min ?? baseDimensions.length;
+  const lengthMax = customization.dimensions.length?.max ?? baseDimensions.length;
+  const heightMin = customization.dimensions.height?.min ?? baseDimensions.height;
+  const heightMax = customization.dimensions.height?.max ?? baseDimensions.height;
   const [additionalDetails, setAdditionalDetails] = useState('');
   const [charCount, setCharCount] = useState(0);
   const [roomPlannerPhoto, setRoomPlannerPhoto] = useState<string | null>(null);
   const [roomPlannerRecommendations, setRoomPlannerRecommendations] =
     useState<RoomAnalysisResponse | null>(null);
-  const [aiSuggestions, setAiSuggestions] = useState<any>(null);
+  const [aiSuggestions, setAiSuggestions] = useState<CustomizerAiSuggestions | null>(null);
   const [analyzing, setAnalyzing] = useState(false);
 
   const roomPlannerSuggestions = useMemo(() => {
@@ -123,7 +348,7 @@ export default function FurnitureCustomizerPanel({
         'Room Planner analysis is ready for this space.',
       roomStyle: roomPlannerRecommendations.roomAnalysis?.detectedStyle || 'Unknown',
       dominantColors: roomPlannerRecommendations.roomAnalysis?.dominantColors || [],
-      recommendations: roomPlannerRecommendations.recommendations?.slice(0, 4).map((rec) => ({
+      recommendations: roomPlannerRecommendations.recommendations?.map((rec) => ({
         type: rec.item.category || 'recommendation',
         suggestion: rec.item.name,
         reason: rec.reasoning || rec.placement?.reasoning || 'Recommended by Room Planner.',
@@ -210,11 +435,29 @@ export default function FurnitureCustomizerPanel({
     analyzeRoom(payload.imageBase64, payload.imageType);
   };
 
+  const compactSuggestions = useMemo(
+    () => (aiSuggestions?.recommendations ?? []).slice(0, CUSTOMIZER_SUGGESTION_LIMIT),
+    [aiSuggestions]
+  );
+  const hasMoreSuggestions =
+    (aiSuggestions?.recommendations?.length ?? 0) > CUSTOMIZER_SUGGESTION_LIMIT;
+
+  const handleViewFullRoomAnalysis = () => {
+    if (onViewFullRoomAnalysis) {
+      onViewFullRoomAnalysis();
+      return;
+    }
+
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('modly:navigate-to-room-planner'));
+    }
+  };
+
   return (
-    <section className="py-12 bg-gray-50 min-h-screen">
+    <section className="py-12 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4">
-        <div className="grid lg:grid-cols-12 gap-6">
-          <div className="lg:col-span-3">
+        <div className="grid items-start gap-6 lg:grid-cols-12">
+          <div className="self-start lg:col-span-3">
             <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-lg sticky top-6">
               <div className="flex items-start justify-between gap-4 mb-4">
                 <div>
@@ -256,11 +499,19 @@ export default function FurnitureCustomizerPanel({
                   setDraft({
                     ...draft,
                     productId: nextProduct.id,
-                    fabricColor: nextProduct.colors[0]?.hex ?? draft.fabricColor,
+                    fabricColor: getProductCustomization(nextProduct).colors[0]?.hex ?? draft.fabricColor,
+                    selectedColor: getProductCustomization(nextProduct).colors[0]?.name,
                     materialId:
-                      nextProduct.customizer.materialOptions[0]?.id ?? draft.materialId,
-                    widthIn: nextProduct.customizer.defaultWidthIn,
-                    depthIn: nextProduct.customizer.defaultDepthIn,
+                      getProductCustomization(nextProduct).materials[0]?.id ?? draft.materialId,
+                    selectedMaterial: getProductCustomization(nextProduct).materials[0]?.name,
+                    widthIn:
+                      getProductCustomization(nextProduct).dimensions.width?.default ??
+                      nextProduct.customizer.defaultWidthIn,
+                    depthIn:
+                      getProductCustomization(nextProduct).dimensions.length?.default ??
+                      nextProduct.customizer.defaultDepthIn,
+                    heightIn: getProductCustomization(nextProduct).dimensions.height?.default,
+                    selectedAddOns: [],
                   });
                 }}
                 disabled={isApplying}
@@ -284,7 +535,9 @@ export default function FurnitureCustomizerPanel({
               <div className="space-y-3 text-sm border-t border-gray-200 pt-4">
                 <div className="flex justify-between text-gray-600">
                   <span>Base Price:</span>
-                  <span className="font-medium text-gray-900">${price.base.toLocaleString()}</span>
+                  <span className="font-medium text-gray-900">
+                    {price.base > 0 ? `$${price.base.toLocaleString()}` : 'Quote required'}
+                  </span>
                 </div>
                 <div className="flex justify-between text-gray-600">
                   <span>Base Size:</span>
@@ -308,7 +561,7 @@ export default function FurnitureCustomizerPanel({
                 <div className="border-t border-gray-200 pt-3 flex justify-between">
                   <span className="font-bold text-gray-900">Total:</span>
                   <span className="font-bold text-lg text-gray-900">
-                    ${price.total.toLocaleString()}
+                    {price.quoteRequired ? 'Quote required' : `$${price.total.toLocaleString()}`}
                   </span>
                 </div>
               </div>
@@ -344,7 +597,7 @@ export default function FurnitureCustomizerPanel({
             </div>
           </div>
 
-          <div className="lg:col-span-4">
+          <div className="self-start lg:col-span-4">
             <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-lg">
               <h3 className="text-lg font-bold text-gray-900 mb-6 flex items-center gap-2">
                 <Palette className="w-5 h-5 text-purple-600" />
@@ -353,7 +606,7 @@ export default function FurnitureCustomizerPanel({
 
               <div className="mb-6">
                 <label className="block text-sm font-medium text-gray-900 mb-3">
-                  Fabric Color
+                  Color
                 </label>
                 {colorSwatches.length > 0 ? (
                   <div className="flex flex-wrap gap-2">
@@ -363,7 +616,9 @@ export default function FurnitureCustomizerPanel({
                         <button
                           key={color.name}
                           type="button"
-                          onClick={() => setDraft({ ...draft, fabricColor: color.hex })}
+                          onClick={() =>
+                            setDraft({ ...draft, fabricColor: color.hex, selectedColor: color.name })
+                          }
                           disabled={isApplying}
                           className={[
                             'flex items-center gap-2 px-3 py-2 rounded-xl border-2 text-sm transition-all',
@@ -379,7 +634,12 @@ export default function FurnitureCustomizerPanel({
                             className="w-4 h-4 rounded-full border border-gray-200"
                             style={{ backgroundColor: color.hex }}
                           />
-                          {color.name}
+                          <span>{color.name}</span>
+                          {formatModifierLabel(color.price) && (
+                            <span className="text-xs font-semibold text-gray-500">
+                              {formatModifierLabel(color.price)}
+                            </span>
+                          )}
                         </button>
                       );
                     })}
@@ -401,7 +661,9 @@ export default function FurnitureCustomizerPanel({
                       <button
                         key={m.id}
                         type="button"
-                        onClick={() => setDraft({ ...draft, materialId: m.id })}
+                        onClick={() =>
+                          setDraft({ ...draft, materialId: m.id, selectedMaterial: m.name })
+                        }
                         disabled={isApplying}
                         className={[
                           'w-full flex items-center justify-between px-4 py-3 rounded-xl border-2 text-sm transition-all text-left',
@@ -413,13 +675,20 @@ export default function FurnitureCustomizerPanel({
                       >
                         <div>
                           <p className="font-medium text-gray-900">
-                            {m.name} ({m.priceDelta === 0 ? '+$0' : `+$${m.priceDelta}`})
+                            {m.name}
                           </p>
                           <p className="text-xs text-gray-500">
                             {m.description || getMaterialDescription(m.name)}
                           </p>
                         </div>
-                        {isSelected && <Check className="w-4 h-4 text-purple-500" />}
+                        <div className="flex items-center gap-2">
+                          {formatModifierLabel(m.priceDelta) && (
+                            <span className="text-xs font-semibold text-gray-500">
+                              {formatModifierLabel(m.priceDelta)}
+                            </span>
+                          )}
+                          {isSelected && <Check className="w-4 h-4 text-purple-500" />}
+                        </div>
                       </button>
                     );
                   })}
@@ -431,16 +700,20 @@ export default function FurnitureCustomizerPanel({
                 )}
               </div>
 
+              {(customization.dimensions.width || customization.dimensions.length || customization.dimensions.height) && (
               <div className="mb-6">
                 <label className="block text-sm font-medium text-gray-900 mb-3 flex items-center gap-2">
                   <Maximize2 className="w-4 h-4 text-purple-600" />
                   Dimensions
                 </label>
                 <div className="space-y-4">
+                  {customization.dimensions.width && (
                   <div>
                     <div className="flex justify-between text-sm mb-2">
                       <span className="text-gray-600">Width</span>
-                      <span className="font-medium text-gray-900">{draft.widthIn} inches</span>
+                      <span className="font-medium text-gray-900">
+                        {draft.widthIn} {customization.dimensions.width.unit}
+                      </span>
                     </div>
                     <input
                       type="range"
@@ -452,14 +725,23 @@ export default function FurnitureCustomizerPanel({
                       className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-600"
                     />
                     <div className="flex justify-between text-xs text-gray-500 mt-1">
-                      <span>{widthMin}&quot;</span>
-                      <span>{widthMax}&quot;</span>
+                      <span>{widthMin}{customization.dimensions.width.unit}</span>
+                      <span>{widthMax}{customization.dimensions.width.unit}</span>
                     </div>
+                    {typeof customization.dimensions.width.pricePerExtraUnit === 'number' && (
+                      <p className="mt-1 text-xs text-gray-500">
+                        +${customization.dimensions.width.pricePerExtraUnit.toLocaleString()} per extra {customization.dimensions.width.unit}
+                      </p>
+                    )}
                   </div>
+                  )}
+                  {customization.dimensions.length && (
                   <div>
                     <div className="flex justify-between text-sm mb-2">
                       <span className="text-gray-600">Length</span>
-                      <span className="font-medium text-gray-900">{draft.depthIn} inches</span>
+                      <span className="font-medium text-gray-900">
+                        {draft.depthIn} {customization.dimensions.length.unit}
+                      </span>
                     </div>
                     <input
                       type="range"
@@ -471,10 +753,44 @@ export default function FurnitureCustomizerPanel({
                       className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-600"
                     />
                     <div className="flex justify-between text-xs text-gray-500 mt-1">
-                      <span>{lengthMin}&quot;</span>
-                      <span>{lengthMax}&quot;</span>
+                      <span>{lengthMin}{customization.dimensions.length.unit}</span>
+                      <span>{lengthMax}{customization.dimensions.length.unit}</span>
                     </div>
+                    {typeof customization.dimensions.length.pricePerExtraUnit === 'number' && (
+                      <p className="mt-1 text-xs text-gray-500">
+                        +${customization.dimensions.length.pricePerExtraUnit.toLocaleString()} per extra {customization.dimensions.length.unit}
+                      </p>
+                    )}
                   </div>
+                  )}
+                  {customization.dimensions.height && (
+                  <div>
+                    <div className="flex justify-between text-sm mb-2">
+                      <span className="text-gray-600">Height</span>
+                      <span className="font-medium text-gray-900">
+                        {draft.heightIn ?? baseDimensions.height} {customization.dimensions.height.unit}
+                      </span>
+                    </div>
+                    <input
+                      type="range"
+                      min={heightMin}
+                      max={heightMax}
+                      value={draft.heightIn ?? baseDimensions.height}
+                      onChange={(e) => setDraft({ ...draft, heightIn: Number(e.target.value) })}
+                      disabled={isApplying}
+                      className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-600"
+                    />
+                    <div className="flex justify-between text-xs text-gray-500 mt-1">
+                      <span>{heightMin}{customization.dimensions.height.unit}</span>
+                      <span>{heightMax}{customization.dimensions.height.unit}</span>
+                    </div>
+                    {typeof customization.dimensions.height.pricePerExtraUnit === 'number' && (
+                      <p className="mt-1 text-xs text-gray-500">
+                        +${customization.dimensions.height.pricePerExtraUnit.toLocaleString()} per extra {customization.dimensions.height.unit}
+                      </p>
+                    )}
+                  </div>
+                  )}
                 </div>
                 {validationErrors && validationErrors.length > 0 && (
                   <div className="mt-4 bg-red-50 border border-red-200 text-red-700 rounded-lg p-3 text-sm">
@@ -487,47 +803,114 @@ export default function FurnitureCustomizerPanel({
                   </div>
                 )}
               </div>
+              )}
 
+              {!(customization.dimensions.width || customization.dimensions.length || customization.dimensions.height) &&
+                (customization.dimensionSummary.width ||
+                  customization.dimensionSummary.length ||
+                  customization.dimensionSummary.height) && (
+                <div className="mb-6">
+                  <label className="block text-sm font-medium text-gray-900 mb-3 flex items-center gap-2">
+                    <Maximize2 className="w-4 h-4 text-purple-600" />
+                    Dimensions
+                  </label>
+                  <div className="space-y-2 rounded-xl border border-gray-200 bg-gray-50 p-4 text-sm">
+                    {customization.dimensionSummary.width && (
+                      <div className="flex justify-between gap-4">
+                        <span className="text-gray-600">Width</span>
+                        <span className="font-medium text-gray-900">
+                          {customization.dimensionSummary.width.value} {customization.dimensionSummary.width.unit}
+                        </span>
+                      </div>
+                    )}
+                    {customization.dimensionSummary.length && (
+                      <div className="flex justify-between gap-4">
+                        <span className="text-gray-600">Length</span>
+                        <span className="font-medium text-gray-900">
+                          {customization.dimensionSummary.length.value} {customization.dimensionSummary.length.unit}
+                        </span>
+                      </div>
+                    )}
+                    {customization.dimensionSummary.height && (
+                      <div className="flex justify-between gap-4">
+                        <span className="text-gray-600">Height</span>
+                        <span className="font-medium text-gray-900">
+                          {customization.dimensionSummary.height.value} {customization.dimensionSummary.height.unit}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {customization.optionLabels.length > 0 && (
+                <div className="mb-6 space-y-3">
+                  {customization.optionLabels.map((option) => (
+                    <div key={option.name}>
+                      <label className="block text-sm font-medium text-gray-900 mb-2">{option.name}</label>
+                      <div className="flex flex-wrap gap-2">
+                        {option.values.map((value) => (
+                          <span
+                            key={value.name}
+                            className="px-3 py-1.5 rounded-full border border-gray-200 bg-gray-50 text-sm text-gray-700"
+                          >
+                            {value.name}
+                            {formatModifierLabel(value.price, '') && (
+                              <span className="ml-1 text-xs font-semibold text-gray-500">
+                                {formatModifierLabel(value.price, '')}
+                              </span>
+                            )}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {customization.addOns.length > 0 && (
               <div className="mb-6">
                 <label className="block text-sm font-medium text-gray-900 mb-3 flex items-center gap-2">
                   <Layers className="w-4 h-4 text-purple-600" />
                   Add-ons
                 </label>
                 <div className="space-y-2">
-                  <label className="flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition">
-                    <input
-                      type="checkbox"
-                      checked={draft.addons.throwPillows}
-                      onChange={(e) =>
-                        setDraft({
-                          ...draft,
-                          addons: { ...draft.addons, throwPillows: e.target.checked },
-                        })
-                      }
-                      disabled={isApplying}
-                      className="w-4 h-4 text-purple-600 rounded accent-purple-600"
-                    />
-                    <span className="flex-1 text-sm text-gray-900">Throw Pillows (2)</span>
-                    <span className="text-sm font-medium text-gray-900">+$60</span>
-                  </label>
-                  <label className="flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition">
-                    <input
-                      type="checkbox"
-                      checked={draft.addons.ottoman}
-                      onChange={(e) =>
-                        setDraft({
-                          ...draft,
-                          addons: { ...draft.addons, ottoman: e.target.checked },
-                        })
-                      }
-                      disabled={isApplying}
-                      className="w-4 h-4 text-purple-600 rounded accent-purple-600"
-                    />
-                    <span className="flex-1 text-sm text-gray-900">Ottoman</span>
-                    <span className="text-sm font-medium text-gray-900">+$350</span>
-                  </label>
+                  {customization.addOns.map((addOn) => {
+                    const selectedAddOns = draft.selectedAddOns ?? [];
+                    const isChecked = selectedAddOns.includes(addOn.name);
+                    return (
+                      <label
+                        key={addOn.name}
+                        className="flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition"
+                      >
+                        <input
+                          type="checkbox"
+                          checked={isChecked}
+                          onChange={(e) => {
+                            const nextSelectedAddOns = e.target.checked
+                              ? [...selectedAddOns, addOn.name]
+                              : selectedAddOns.filter((name) => name !== addOn.name);
+                            setDraft({ ...draft, selectedAddOns: nextSelectedAddOns });
+                          }}
+                          disabled={isApplying}
+                          className="w-4 h-4 text-purple-600 rounded accent-purple-600"
+                        />
+                        <span className="flex-1 text-sm text-gray-900">{addOn.name}</span>
+                        <span className="text-sm font-medium text-gray-900">
+                          {typeof addOn.price === 'number' ? `+$${addOn.price.toLocaleString()}` : 'Quote'}
+                        </span>
+                      </label>
+                    );
+                  })}
                 </div>
               </div>
+              )}
+
+              {!customization.hasOptions && (
+                <div className="mb-6 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
+                  This product does not have predefined customization options. Tell us what you want and we&apos;ll send it as a quote request.
+                </div>
+              )}
 
               <button
                 type="button"
@@ -541,7 +924,7 @@ export default function FurnitureCustomizerPanel({
             </div>
           </div>
 
-          <div className="lg:col-span-5">
+          <div className="self-start lg:col-span-5">
             <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-lg sticky top-6">
               {/* Additional Details */}
               <div className="bg-white rounded-xl border border-gray-200 p-5 mb-4">
@@ -557,6 +940,7 @@ export default function FurnitureCustomizerPanel({
                   onChange={(e) => {
                     setAdditionalDetails(e.target.value);
                     setCharCount(e.target.value.length);
+                    setDraft({ ...draft, customerRequestText: e.target.value });
                   }}
                   maxLength={500}
                   rows={5}
@@ -575,7 +959,11 @@ export default function FurnitureCustomizerPanel({
                   </span>
                   {additionalDetails && (
                     <button
-                      onClick={() => { setAdditionalDetails(''); setCharCount(0); }}
+                      onClick={() => {
+                        setAdditionalDetails('');
+                        setCharCount(0);
+                        setDraft({ ...draft, customerRequestText: '' });
+                      }}
                       className="text-xs text-gray-400 hover:text-gray-600"
                     >
                       Clear
@@ -605,6 +993,7 @@ export default function FurnitureCustomizerPanel({
                             : chip;
                           setAdditionalDetails(newText);
                           setCharCount(newText.length);
+                          setDraft({ ...draft, customerRequestText: newText });
                         }}
                         className="text-xs bg-gray-100 hover:bg-blue-50 hover:text-blue-600 text-gray-600 px-3 py-1 rounded-full transition-colors"
                       >
@@ -634,8 +1023,8 @@ export default function FurnitureCustomizerPanel({
               )}
 
               {/* AI Results */}
-              <div className="bg-white rounded-xl border border-gray-200 p-5">
-                <h3 className="font-semibold text-gray-900 mb-4">
+              <div className="bg-white rounded-xl border border-gray-200 p-4 max-h-[380px] overflow-y-auto">
+                <h3 className="font-semibold text-gray-900 mb-3">
                   AI Suggestions
                 </h3>
 
@@ -661,10 +1050,10 @@ export default function FurnitureCustomizerPanel({
 
                 {/* Results */}
                 {aiSuggestions && !analyzing && (
-                  <div className="space-y-4">
+                  <div className="space-y-3">
 
                     {/* Fit Score */}
-                    <div className="bg-blue-50 rounded-xl p-4">
+                    <div className="bg-blue-50 rounded-lg p-3">
                       <div className="flex items-center justify-between mb-1">
                         <span className="text-sm font-medium text-blue-900">
                           Room Fit Score
@@ -680,12 +1069,12 @@ export default function FurnitureCustomizerPanel({
                         />
                       </div>
                       <p className="text-xs text-blue-700 mt-2">
-                        {aiSuggestions.fitReason}
+                        {getShortReason(aiSuggestions.fitReason)}
                       </p>
                     </div>
 
                     {/* Room Style */}
-                    <div className="flex items-center gap-2">
+                    <div className="flex flex-wrap items-center gap-2">
                       <span className="text-xs text-gray-500">
                         Room style detected:
                       </span>
@@ -696,8 +1085,8 @@ export default function FurnitureCustomizerPanel({
 
                     {/* Colors detected */}
                     <div>
-                      <p className="text-xs text-gray-500 mb-2">Room colors:</p>
-                      <div className="flex flex-wrap gap-2">
+                      <p className="text-xs text-gray-500 mb-1.5">Room colors:</p>
+                      <div className="flex flex-wrap gap-1.5">
                         {aiSuggestions.dominantColors?.map(
                           (color: string, i: number) => (
                             <span key={i}
@@ -710,11 +1099,11 @@ export default function FurnitureCustomizerPanel({
                     </div>
 
                     {/* Recommendations */}
-                    <div className="space-y-3">
-                      {aiSuggestions.recommendations?.map(
-                        (rec: any, i: number) => (
+                    <div className="space-y-2">
+                      {compactSuggestions.map(
+                        (rec, i) => (
                           <div key={i}
-                            className="border border-gray-100 rounded-xl p-3">
+                            className="border border-gray-100 rounded-lg p-2.5">
                             <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${
                               rec.type === 'color'
                                 ? 'bg-purple-100 text-purple-700'
@@ -726,20 +1115,30 @@ export default function FurnitureCustomizerPanel({
                             }`}>
                               {rec.type}
                             </span>
-                            <p className="text-sm font-medium text-gray-900 mt-2">
+                            <p className="text-sm font-medium text-gray-900 mt-1.5">
                               {rec.suggestion}
                             </p>
                             <p className="text-xs text-gray-500 mt-0.5">
-                              {rec.reason}
+                              {getShortReason(rec.reason)}
                             </p>
                           </div>
                         )
                       )}
                     </div>
 
+                    {hasMoreSuggestions && (
+                      <button
+                        type="button"
+                        onClick={handleViewFullRoomAnalysis}
+                        className="w-full rounded-lg border border-blue-200 bg-blue-50 px-3 py-2 text-sm font-medium text-blue-700 transition hover:bg-blue-100"
+                      >
+                        View full room analysis
+                      </button>
+                    )}
+
                     {/* Warning */}
                     {aiSuggestions.warning && (
-                      <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-3">
+                      <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-2.5">
                         <p className="text-xs text-yellow-800">
                           ⚠️ {aiSuggestions.warning}
                         </p>

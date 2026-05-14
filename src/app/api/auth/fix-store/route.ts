@@ -1,9 +1,14 @@
 import { NextResponse } from 'next/server'
 import { adminDb, id } from '@/lib/instant-admin'
+import { generatePublicApiKey, resolveWidgetId } from '@/lib/store-public-identity'
 
 function getLinkedStore(user: any) {
   const store = Array.isArray(user?.store) ? user.store[0] : user?.store
   return store?.id ? store : null
+}
+
+function isTemporaryRepairEndpointBlocked() {
+  return process.env.NODE_ENV === 'production' && process.env.ENABLE_TEST_BILLING_RESET !== 'true'
 }
 
 async function findExistingStore(userId: string) {
@@ -17,10 +22,16 @@ async function findExistingStore(userId: string) {
 }
 
 export async function POST(req: Request) {
+  if (isTemporaryRepairEndpointBlocked()) {
+    return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+  }
+
   try {
     const { email, storeName } = await req.json()
+    const normalizedEmail = String(email || '').trim().toLowerCase()
+    const trimmedStoreName = String(storeName || '').trim()
 
-    if (!email || !storeName) {
+    if (!normalizedEmail || !trimmedStoreName) {
       return NextResponse.json(
         { error: 'email and storeName are required' },
         { status: 400 }
@@ -29,7 +40,7 @@ export async function POST(req: Request) {
 
     const result = await adminDb.query({
       users: {
-        $: { where: { email } },
+        $: { where: { email: normalizedEmail } },
         store: {},
       },
     })
@@ -56,20 +67,31 @@ export async function POST(req: Request) {
 
       if (!store) {
         const storeId = id()
-        const apiKey = 'pk_live_' + crypto.randomUUID().replace(/-/g, '')
+        const apiKey = generatePublicApiKey()
+        const widgetId = resolveWidgetId(storeId)
 
         transactions.push(
           adminDb.tx.stores[storeId].update({
-            name: storeName,
+            name: trimmedStoreName,
             apiKey,
+            widgetId,
             userId: user.id,
-            subscriptionPlan: 'free_trial',
+            ownerEmail: normalizedEmail,
+            storeUrl: '',
+            supportEmail: normalizedEmail,
+            widgetTitle: 'ModlyAI Assistant',
+            primaryColor: '#2563eb',
+            welcomeMessage: 'Hi! I can help you find the right furniture.',
+            enableViewInCatalog: true,
+            enableCustomize: true,
+            enableRequestQuote: true,
+            quoteEmail: normalizedEmail,
+            subscriptionPlan: 'free',
             subscriptionStatus: 'trialing',
             trialStartedAt: now,
             trialEndsAt,
             aiChatsUsed: 0,
             roomPlannerAnalysesUsed: 0,
-            setupComplete: false,
             createdAt: now,
             updatedAt: now,
           }),

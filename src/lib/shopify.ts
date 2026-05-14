@@ -1,3 +1,5 @@
+import type { ProductCustomizationOptions } from '@/lib/product-customization'
+
 const SHOPIFY_API_VERSION = process.env.SHOPIFY_ADMIN_API_VERSION || '2026-01'
 
 type ShopifyGraphQLError = {
@@ -22,9 +24,17 @@ type ShopifyProductNode = {
       node?: {
         price?: string | null
         sku?: string | null
+        selectedOptions?: Array<{
+          name?: string | null
+          value?: string | null
+        }> | null
       } | null
     }>
   } | null
+  options?: Array<{
+    name?: string | null
+    values?: string[] | null
+  }> | null
 }
 
 type ShopifyProductsResponse = {
@@ -46,6 +56,7 @@ export type ShopifyCatalogProduct = {
   category: string
   status: string
   source: 'shopify'
+  customizationOptions?: ProductCustomizationOptions
 }
 
 type ShopifyCredentialInput = {
@@ -97,6 +108,146 @@ export function stripHtml(value: unknown) {
 function toPrice(value: unknown) {
   const parsed = Number(value)
   return Number.isFinite(parsed) ? parsed : 0
+}
+
+function uniq(values: string[]) {
+  return Array.from(new Set(values.map((value) => value.trim()).filter(Boolean)))
+}
+
+type ShopifyVariantOption = {
+  price: number
+  selectedOptions: Record<string, string>
+}
+
+function selectedOptionsMap(
+  selectedOptions?: Array<{ name?: string | null; value?: string | null }> | null
+) {
+  return Object.fromEntries(
+    (selectedOptions ?? [])
+      .map((option: { name?: string | null; value?: string | null }) => [
+        String(option?.name || '').trim(),
+        String(option?.value || '').trim(),
+      ])
+      .filter(([name, value]) => name && value)
+  )
+}
+
+function getVariantOptions(product: ShopifyProductNode): ShopifyVariantOption[] {
+  return (product.variants?.edges ?? [])
+    .map((edge) => edge.node)
+    .filter(Boolean)
+    .map((variant) => ({
+      price: toPrice(variant?.price),
+      selectedOptions: selectedOptionsMap(variant?.selectedOptions),
+    }))
+}
+
+function getSafeOptionPriceMap(
+  product: ShopifyProductNode,
+  optionName: string,
+  values: string[],
+  basePrice: number
+): Map<string, number> {
+  const variants = getVariantOptions(product)
+  const baseVariant = variants[0]
+  const prices = new Map<string, number>()
+
+  if (!baseVariant) return prices
+
+  for (const value of values) {
+    const matchingVariants = variants.filter((variant) => {
+      if (variant.selectedOptions[optionName] !== value) return false
+
+      return Object.entries(baseVariant.selectedOptions).every(([name, baseValue]) => {
+        return name === optionName || variant.selectedOptions[name] === baseValue
+      })
+    })
+
+    const matchingPrices = uniq(matchingVariants.map((variant) => String(variant.price)))
+    if (matchingPrices.length !== 1) continue
+
+    const price = Number(matchingPrices[0])
+    if (!Number.isFinite(price)) continue
+
+    prices.set(value.toLowerCase(), Number((price - basePrice).toFixed(2)))
+  }
+
+  return prices
+}
+
+function applySafeOptionPrices(
+  product: ShopifyProductNode,
+  optionName: string,
+  values: string[],
+  basePrice: number
+) {
+  const priceMap = getSafeOptionPriceMap(product, optionName, values, basePrice)
+
+  return values.map((value) => {
+    const price = priceMap.get(value.toLowerCase())
+    return price === undefined ? value : { name: value, price }
+  })
+}
+
+function parseShopifyDimensionValues(values: string[]): ProductCustomizationOptions['dimensions'] | undefined {
+  const numbers = values.flatMap((value) => {
+    const matches = value.match(/\d+(?:\.\d+)?/g)
+    return matches ? matches.map(Number).filter(Number.isFinite) : []
+  })
+
+  if (numbers.length === 0) return undefined
+
+  const first = numbers[0]
+  return {
+    width: { default: first, unit: 'in' },
+  }
+}
+
+function mapShopifyCustomizationOptions(product: ShopifyProductNode): ProductCustomizationOptions | undefined {
+  const options: ProductCustomizationOptions = {}
+  const optionLabels: NonNullable<ProductCustomizationOptions['optionLabels']> = []
+  const shopifyOptions: NonNullable<ProductCustomizationOptions['shopifyOptions']> = []
+  const basePrice = toPrice(product.variants?.edges?.[0]?.node?.price)
+
+  for (const option of product.options ?? []) {
+    const name = String(option.name || '').trim()
+    const values = uniq((option.values ?? []).map(String))
+    if (!name || values.length === 0) continue
+
+    const normalizedName = name.toLowerCase()
+    const pricedValues = applySafeOptionPrices(product, name, values, basePrice)
+    if (['color', 'colour', 'fabric color'].includes(normalizedName)) {
+      options.colors = pricedValues
+      continue
+    }
+
+    if (['material', 'fabric', 'finish'].includes(normalizedName)) {
+      options.materials = pricedValues
+      continue
+    }
+
+    if (['size', 'dimensions'].includes(normalizedName)) {
+      const dimensions = parseShopifyDimensionValues(values)
+      if (dimensions) {
+        options.dimensions = { ...options.dimensions, ...dimensions }
+      }
+      optionLabels.push({ name, values: pricedValues })
+      shopifyOptions.push({ name, values: pricedValues })
+      continue
+    }
+
+    optionLabels.push({ name, values: pricedValues })
+    shopifyOptions.push({ name, values: pricedValues })
+  }
+
+  if (optionLabels.length > 0) {
+    options.optionLabels = optionLabels
+  }
+  if (shopifyOptions.length > 0) {
+    options.shopifyOptions = shopifyOptions
+  }
+
+  return Object.keys(options).length > 0 ? options : undefined
 }
 
 function shopifyRequestError(status: number, body: unknown) {
@@ -182,6 +333,7 @@ function mapShopifyProduct(domain: string, product: ShopifyProductNode): Shopify
   if (String(product.status || '').toUpperCase() !== 'ACTIVE') return null
 
   const firstVariant = product.variants?.edges?.[0]?.node
+  const customizationOptions = mapShopifyCustomizationOptions(product)
 
   return {
     externalId: product.id,
@@ -195,6 +347,7 @@ function mapShopifyProduct(domain: string, product: ShopifyProductNode): Shopify
     category: product.productType || '',
     status: 'active',
     source: 'shopify',
+    ...(customizationOptions ? { customizationOptions } : {}),
   }
 }
 
@@ -249,13 +402,21 @@ export async function fetchShopifyProducts(input: {
               featuredImage {
                 url
               }
-              variants(first: 1) {
+              variants(first: 100) {
                 edges {
                   node {
                     price
                     sku
+                    selectedOptions {
+                      name
+                      value
+                    }
                   }
                 }
+              }
+              options {
+                name
+                values
               }
             }
           }

@@ -8,7 +8,7 @@ export default function Navbar() {
   const pathname = usePathname();
   const { data: session } = useSession();
 
-  if (pathname?.startsWith("/dashboard") || pathname?.startsWith("/onboarding")) {
+  if (pathname?.startsWith("/dashboard")) {
     return null;
   }
   

@@ -184,7 +184,7 @@ export default function RoomUploadForm({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (photos.length === 0) {
-      alert('Please upload at least one room photo');
+      alert('Please upload a room photo first.');
       return;
     }
     

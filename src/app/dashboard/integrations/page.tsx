@@ -4,11 +4,26 @@ import { redirect } from 'next/navigation'
 import IntegrationsClient from '@/components/dashboard/IntegrationsClient'
 import NoStoreState from '@/components/dashboard/NoStoreState'
 import { authOptions } from '@/lib/auth-options'
+import { getCurrentStoreForUser, normalizeStorePublicIdentity } from '@/lib/current-store'
 import { adminDb } from '@/lib/instant-admin'
 import { createWidgetInstallSnippet } from '@/lib/widget-install-snippet'
 
 function readCredentials(value: unknown): Record<string, any> {
   return value && typeof value === 'object' && !Array.isArray(value) ? (value as Record<string, any>) : {}
+}
+
+async function findStoreFromSessionStoreId(storeId?: string | null) {
+  const normalizedStoreId = String(storeId ?? '').trim()
+  if (!normalizedStoreId) return null
+
+  const result = await adminDb.query({
+    stores: {
+      $: { where: { id: normalizedStoreId } },
+    },
+  })
+
+  const store = result.stores?.[0] as any
+  return store?.id ? normalizeStorePublicIdentity(store) : null
 }
 
 export default async function IntegrationsPage({
@@ -22,15 +37,30 @@ export default async function IntegrationsPage({
     redirect('/auth/signin')
   }
 
-  if (!session.user.storeId) {
+  let currentStore = await getCurrentStoreForUser(session.user)
+  if (!currentStore) {
+    currentStore = await findStoreFromSessionStoreId(session.user.storeId)
+  }
+
+  const storeId = currentStore?.id ? String(currentStore.id) : ''
+  const widgetId = currentStore?.widgetId ? String(currentStore.widgetId).trim() : ''
+
+  if (process.env.NODE_ENV === 'development') {
+    console.warn('[Integrations page store check]', {
+      userEmail: session?.user?.email,
+      userId: session?.user?.id,
+      sessionStoreId: session?.user?.storeId,
+      resolvedStoreId: currentStore?.id,
+      widgetId: currentStore?.widgetId,
+      apiKey: currentStore?.apiKey,
+    })
+  }
+
+  if (!currentStore || !storeId) {
     return <NoStoreState title="Integrations" />
   }
 
-  const storeId = session.user.storeId
   const result = await adminDb.query({
-    stores: {
-      $: { where: { id: storeId } },
-    },
     products: {
       $: { where: { storeId } },
     },
@@ -38,11 +68,7 @@ export default async function IntegrationsPage({
       $: { where: { storeId } },
     },
   })
-  const store = result.stores[0]
-
-  if (!store) {
-    return <NoStoreState title="Integrations" />
-  }
+  const store = currentStore as any
 
   const productCount = result.products?.length ?? 0
   const credentials = readCredentials(store.credentials)
@@ -56,10 +82,10 @@ export default async function IntegrationsPage({
   const hasShopifyAccessToken = Boolean(shopifyCredentials.accessToken)
   const syncCount =
     result.events?.filter((event: any) => event.type === 'catalog_sync' || event.type === 'csv_upload').length ?? 0
-  const installSnippet = createWidgetInstallSnippet({
-    storeId,
-    widgetId: storeId,
-  })
+  const installSnippet = createWidgetInstallSnippet({ storeId, widgetId })
+  const installSnippetError = !widgetId
+    ? 'Your ModlyAI store was found, but the widget ID could not be generated.'
+    : undefined
 
   return (
     <div className="space-y-8">
@@ -67,9 +93,9 @@ export default async function IntegrationsPage({
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.24em] text-stone-500">Integrations</p>
-            <h1 className="mt-3 text-4xl font-bold tracking-tight text-stone-950">Connect Your Store</h1>
+            <h1 className="mt-3 text-4xl font-bold tracking-tight text-stone-950">Connect Your Catalog Sources</h1>
             <p className="mt-3 max-w-2xl text-sm leading-6 text-stone-600">
-              Integration details here are tied to `{session.user.storeName || session.user.email}` only.
+              Integration details here are tied to the ModlyAI merchant account for `{session.user.storeName || session.user.email}`.
             </p>
           </div>
           <Link
@@ -83,9 +109,9 @@ export default async function IntegrationsPage({
 
       <IntegrationsClient
         store={{
-          id: storeId,
-          apiKey: session.user.apiKey,
-          url: store.url ? String(store.url) : '',
+          id: store.id,
+          apiKey: store.apiKey ? String(store.apiKey) : session.user.apiKey,
+          url: store.storeUrl ? String(store.storeUrl) : store.url ? String(store.url) : '',
           shopifyStoreDomain,
           shopifyConnectedAt,
           shopifyLastSyncedAt,
@@ -94,6 +120,7 @@ export default async function IntegrationsPage({
         productCount={productCount}
         syncCount={syncCount}
         installSnippet={installSnippet || ''}
+        installSnippetError={installSnippetError}
         initialShopifyStatus={searchParams?.shopify}
         initialMessage={searchParams?.message ?? undefined}
       />

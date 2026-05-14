@@ -44,7 +44,7 @@ export default function WidgetConfigPage() {
   useEffect(() => {
     if (!storeId) return
 
-    fetch(`/api/widget/config?widgetId=${storeId}`)
+    fetch(`/api/widget/config?storeId=${encodeURIComponent(storeId)}`)
       .then(async (res) => {
         const data = await res.json()
 
@@ -65,13 +65,13 @@ export default function WidgetConfigPage() {
     if (!config) return null
 
     return createWidgetInstallSnippet({
-      storeId,
-      widgetId: config.widgetId || config.storeId || config.store.id,
+      storeId: config.storeId || config.store.id || storeId,
+      widgetId: config.widgetId,
     })
   }, [config, storeId])
 
   const missingStoreIdWarning = !storeId
-    ? 'Missing storeId on the current session. The widget install snippet cannot be generated until this account is linked to a store.'
+    ? "We couldn't find a ModlyAI store for this account. Refresh the page or contact support."
     : null
 
   const handleCopySnippet = async () => {
@@ -190,12 +190,15 @@ export default function WidgetConfigPage() {
                 )}
               </button>
             </div>
+            <p className="mb-2 text-sm leading-6 text-stone-500">
+              Copy this full snippet into your storefront. You do not need to paste the widget key separately.
+            </p>
 
             {installSnippet ? (
               <pre className="overflow-x-auto rounded-xl bg-gray-900 p-6 font-mono text-sm text-green-400">{installSnippet}</pre>
             ) : (
               <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-800">
-                Missing storeId on the current session. The widget install snippet cannot be generated until this account is linked to a store.
+                We couldn't find a ModlyAI store for this account. Refresh the page or contact support.
               </div>
             )}
           </div>

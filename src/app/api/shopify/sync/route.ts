@@ -155,6 +155,7 @@ export async function POST(request: NextRequest) {
         sku: product.sku || '',
         category: product.category || '',
         status: product.status || '',
+        customizationOptions: product.customizationOptions ?? null,
         createdAt: existingProduct?.createdAt ? String(existingProduct.createdAt) : now,
         ...(isUpdate ? { updatedAt: now } : {}),
       }
@@ -205,6 +206,7 @@ export async function POST(request: NextRequest) {
       sku: '',
       category: '',
       status: '',
+      customizationOptions: {},
       createdAt: '',
     }
     for (let i = 0; i < catalogTransactionItems.length; i += BATCH_SIZE) {

@@ -33,6 +33,7 @@ export function ProductDetailsModal({
         <div className="sticky top-0 bg-[#2A2D28] border-b border-white/10 px-6 py-4 flex items-center justify-between">
           <h2 className="text-2xl font-bold text-white">Product Details</h2>
           <button
+            type="button"
             onClick={onClose}
             className="text-white/60 hover:text-white transition-colors"
           >
@@ -189,6 +190,7 @@ export function ProductDetailsModal({
         <div className="sticky bottom-0 bg-[#2A2D28] border-t border-white/10 px-6 py-4 space-y-3">
           {/* Primary Action */}
           <button
+            type="button"
             onClick={onCustomize}
             className="w-full px-6 py-3 rounded-lg font-semibold text-white transition-colors shadow-lg flex items-center justify-center gap-2"
             style={{
@@ -203,6 +205,7 @@ export function ProductDetailsModal({
 
           {/* Secondary Action */}
           <button
+            type="button"
             onClick={onFinalize}
             className="w-full px-6 py-3 bg-emerald-600 text-white rounded-lg font-semibold hover:bg-emerald-700 transition-colors shadow-lg flex items-center justify-center gap-2"
           >
@@ -214,6 +217,7 @@ export function ProductDetailsModal({
 
           {/* Tertiary Action */}
           <button
+            type="button"
             onClick={onClose}
             className="w-full text-center text-white/60 hover:text-white transition-colors text-sm py-2"
           >

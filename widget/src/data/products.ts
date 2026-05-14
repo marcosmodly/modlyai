@@ -4,26 +4,60 @@ export interface ProductColor {
   name: string;
   hex: string;
   available: boolean;
+  price?: number;
 }
 
 export interface ProductMaterialOption {
   id: string;
   name: string;
-  priceDelta: number;
+  priceDelta?: number;
   description: string;
 }
+
+export type PricedOption = {
+  name: string;
+  price?: number;
+};
+
+export type CustomizationOptionValue = string | PricedOption;
+
+export type DimensionOption = {
+  min?: number;
+  max?: number;
+  default?: number;
+  unit?: string;
+  pricePerExtraUnit?: number;
+};
 
 export interface Product {
   id: string;
   name: string;
   category: string;
   basePrice: number;
+  length?: number;
+  width?: number;
+  height?: number;
   source?: string;
   productUrl?: string;
+  imageUrl?: string;
+  image?: string;
+  thumbnail?: string;
   externalId?: string;
   shopifyProductId?: string;
   storeId?: string;
   status?: string;
+  customizationOptions?: {
+    colors?: CustomizationOptionValue[] | string;
+    materials?: CustomizationOptionValue[] | string;
+    dimensions?: {
+      width?: DimensionOption;
+      length?: DimensionOption;
+      height?: DimensionOption;
+    };
+    addOns?: Array<{ name: string; price?: number }>;
+    shopifyOptions?: Array<{ name: string; values: CustomizationOptionValue[] }>;
+    optionLabels?: Array<{ name: string; values: CustomizationOptionValue[] }>;
+  };
   dimensions: {
     length: number;
     width: number;
@@ -152,7 +186,7 @@ const productMaterialOptions = (materials: string[]): ProductMaterialOption[] =>
       .replace(/[^a-z0-9]+/g, '_')
       .replace(/^_+|_+$/g, ''),
     name: material,
-    priceDelta: index === 0 ? 0 : index * 75,
+    priceDelta: 0,
     description: getMaterialDescription(material),
   }));
 };
@@ -189,6 +223,81 @@ const normalizeProductType = (category: string): string => {
   }
   return value;
 };
+
+const normalizeStringList = (value: unknown): string[] => {
+  const entries = Array.isArray(value)
+    ? value
+    : typeof value === 'string'
+      ? value.split(/[|,]/)
+      : [];
+
+  return Array.from(
+    new Set(
+      entries
+        .map((entry) => String(entry ?? '').trim())
+        .filter(Boolean)
+    )
+  );
+};
+
+export const getOptionName = (value: CustomizationOptionValue): string =>
+  typeof value === 'string' ? value : value.name;
+
+export const getOptionPrice = (value: CustomizationOptionValue): number | undefined =>
+  typeof value === 'string' ? undefined : value.price;
+
+export const normalizeCustomizationOptionValues = (value: unknown): CustomizationOptionValue[] => {
+  if (Array.isArray(value)) {
+    const options = value
+      .map((entry) => {
+        if (typeof entry === 'string') return entry.trim();
+        if (!entry || typeof entry !== 'object') return null;
+        const option = entry as Record<string, unknown>;
+        const name = String(option.name ?? '').trim();
+        if (!name) return null;
+        const price = typeof option.price === 'number' && Number.isFinite(option.price)
+          ? option.price
+          : typeof option.price === 'string' && option.price.trim() && Number.isFinite(Number(option.price))
+            ? Number(option.price)
+            : undefined;
+        return price === undefined ? { name } : { name, price };
+      })
+      .filter(Boolean) as CustomizationOptionValue[];
+
+    const seen = new Set<string>();
+    return options.filter((option) => {
+      const name = getOptionName(option).toLowerCase();
+      if (seen.has(name)) return false;
+      seen.add(name);
+      return true;
+    });
+  }
+
+  return normalizeStringList(value);
+};
+
+const normalizeCustomizationOptions = (value: unknown): Product['customizationOptions'] | undefined => {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) {
+    return undefined;
+  }
+
+  const options = value as NonNullable<Product['customizationOptions']>;
+  const colors = normalizeCustomizationOptionValues(options.colors);
+  const materials = normalizeCustomizationOptionValues(options.materials);
+
+  return {
+    ...options,
+    ...(colors.length > 0 ? { colors } : {}),
+    ...(materials.length > 0 ? { materials } : {}),
+  };
+};
+
+const dimensionsFromInches = (lengthIn: number, widthIn: number, heightIn: number) => ({
+  length: inchesToMeters(lengthIn),
+  width: inchesToMeters(widthIn),
+  height: inchesToMeters(heightIn),
+  unit: 'm' as const,
+});
 
 export const products: Product[] = [
   {
@@ -388,6 +497,7 @@ export function productToFurnitureItem(product: Product): FurnitureItem {
     shopifyProductId: product.shopifyProductId,
     storeId: product.storeId,
     status: product.status,
+    customizationOptions: product.customizationOptions,
     stockStatus: product.source === 'shopify' ? 'custom_order' : undefined,
   };
 }
@@ -398,19 +508,53 @@ export function productFromFurnitureItem(item: FurnitureItem): Product {
     return existing;
   }
 
+  const rawItem = item as FurnitureItem & {
+    length?: number;
+    width?: number;
+    height?: number;
+    colors?: FurnitureItem['colors'] | string[] | string;
+    materials?: FurnitureItem['materials'] | string[] | string;
+  };
+  const customizationOptions = normalizeCustomizationOptions(item.customizationOptions);
+  const explicitMaterials = normalizeCustomizationOptionValues(customizationOptions?.materials).map(getOptionName);
+  const explicitColors = normalizeCustomizationOptionValues(customizationOptions?.colors).map(getOptionName);
+  const rawMaterials = Array.isArray(rawItem.materials) || typeof rawItem.materials === 'string'
+    ? normalizeStringList(rawItem.materials)
+    : [];
+  const rawColors = Array.isArray(rawItem.colors) || typeof rawItem.colors === 'string'
+    ? normalizeStringList(rawItem.colors)
+    : [];
   const baseMaterials = Array.from(
     new Set(
       [
-        item.materials.primary,
-        item.materials.secondary,
-        item.materials.upholstery,
-        item.materials.legs,
+        ...explicitMaterials,
+        ...rawMaterials,
+        ...(
+          !Array.isArray(rawItem.materials) && typeof rawItem.materials !== 'string'
+            ? [
+                rawItem.materials.primary,
+                rawItem.materials.secondary,
+                rawItem.materials.upholstery,
+                rawItem.materials.legs,
+              ]
+            : []
+        ),
       ].filter((value): value is string => Boolean(value))
     )
   );
 
   const baseColors = Array.from(
-    new Set([item.colors.main, item.colors.accent].filter((value): value is string => Boolean(value)))
+    new Set(
+      [
+        ...explicitColors,
+        ...rawColors,
+        ...(
+          !Array.isArray(rawItem.colors) && typeof rawItem.colors !== 'string'
+            ? [rawItem.colors.main, rawItem.colors.accent]
+            : []
+        ),
+      ].filter((value): value is string => Boolean(value))
+    )
   );
 
   const widthIn = Math.max(18, Math.round(metersToInches(item.dimensions.width || 0.9)));
@@ -424,12 +568,19 @@ export function productFromFurnitureItem(item: FurnitureItem): Product {
     name: item.name,
     category: item.category,
     basePrice: item.priceRange?.min ?? 0,
+    length: rawItem.length ?? metersToInches(item.dimensions.length || item.dimensions.depth || 0),
+    width: rawItem.width ?? metersToInches(item.dimensions.width || 0),
+    height: rawItem.height ?? metersToInches(item.dimensions.height || 0),
     source: item.source,
     productUrl: item.productUrl || item.url,
+    imageUrl: item.images[0],
+    image: item.images[0],
+    thumbnail: item.images[0],
     externalId: item.externalId,
     shopifyProductId: item.shopifyProductId,
     storeId: item.storeId,
     status: item.status,
+    customizationOptions,
     dimensions: {
       length: item.dimensions.length || item.dimensions.depth || 0,
       width: item.dimensions.width || 0,
@@ -460,6 +611,69 @@ export function productFromFurnitureItem(item: FurnitureItem): Product {
       widthRangeIn: twentyPercentRange(widthIn, 18),
       depthRangeIn: twentyPercentRange(depthIn, 18),
       materialOptions: productMaterialOptions(baseMaterials),
+    },
+  };
+}
+
+export function productFromCatalogProduct(product: any, index = 0): Product {
+  const existing = product?.id ? getProductById(String(product.id)) : undefined;
+  if (existing) {
+    return existing;
+  }
+
+  const name = String(product?.title ?? product?.name ?? `Product ${index + 1}`);
+  const materials = normalizeStringList(product?.materials);
+  const colorNames = normalizeStringList(product?.colors);
+  const lengthIn = Number(product?.length) || 0;
+  const widthIn = Number(product?.width) || 0;
+  const heightIn = Number(product?.height) || 0;
+  const image = String(product?.imageUrl ?? product?.image ?? product?.images?.[0] ?? '');
+  const price = Number(product?.price ?? product?.priceRange?.min ?? 0) || 0;
+  const customizationOptions = normalizeCustomizationOptions(product?.customizationOptions);
+
+  return {
+    id: String(product?.id ?? `catalog-product-${index + 1}`),
+    name,
+    category: String(product?.category ?? 'Furniture'),
+    basePrice: price,
+    length: lengthIn,
+    width: widthIn,
+    height: heightIn,
+    source: product?.source ? String(product.source) : undefined,
+    productUrl: product?.productUrl ? String(product.productUrl) : product?.url ? String(product.url) : undefined,
+    imageUrl: image,
+    image,
+    thumbnail: String(product?.thumbnail ?? image),
+    externalId: product?.externalId ? String(product.externalId) : undefined,
+    shopifyProductId: product?.shopifyProductId ? String(product.shopifyProductId) : undefined,
+    storeId: product?.storeId ? String(product.storeId) : undefined,
+    status: product?.status ? String(product.status) : undefined,
+    customizationOptions,
+    dimensions: dimensionsFromInches(lengthIn, widthIn, heightIn),
+    materials: materials.length > 0 ? materials : ['Custom'],
+    colors:
+      colorNames.length > 0
+        ? colorNames.map((color, colorIndex) => ({
+            name: color,
+            hex: resolveColorHex(color, colorIndex),
+            available: true,
+          }))
+        : [{ name: 'Custom', hex: FALLBACK_COLOR_HEX[0]!, available: true }],
+    images: {
+      front: image,
+      side: image,
+      angle: image,
+      thumbnail: image,
+    },
+    tags: Array.isArray(product?.tags) ? product.tags : [],
+    customizer: {
+      type: normalizeProductType(String(product?.category ?? 'Furniture')),
+      thumbnailLabel: String(product?.category ?? 'Furniture'),
+      defaultWidthIn: Math.max(18, Math.round(widthIn || 36)),
+      defaultDepthIn: Math.max(18, Math.round(lengthIn || 36)),
+      widthRangeIn: twentyPercentRange(Math.max(18, Math.round(widthIn || 36)), 18),
+      depthRangeIn: twentyPercentRange(Math.max(18, Math.round(lengthIn || 36)), 18),
+      materialOptions: productMaterialOptions(materials),
     },
   };
 }

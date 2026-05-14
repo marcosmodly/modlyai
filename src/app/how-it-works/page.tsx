@@ -1,242 +1,309 @@
+import Link from "next/link";
 import {
-  Code,
-  Smartphone,
-  BarChart3,
-  CheckCircle,
-  PlayCircle,
   ArrowRight,
+  BarChart3,
+  CheckCircle2,
+  FileSpreadsheet,
+  PackageCheck,
+  ShoppingBag,
+  Sparkles,
 } from "lucide-react";
-import WidgetOpenCta from "@/components/WidgetOpenCta";
+import type { LucideIcon } from "lucide-react";
+
+const steps = [
+  {
+    number: "01",
+    title: "Connect your catalog",
+    copy: "Sync products from Shopify or upload a CSV catalog. ModlyAI uses your real products, prices, images, and product links.",
+    bullets: ["Shopify OAuth sync", "CSV catalog upload", "No fake product recommendations"],
+  },
+  {
+    number: "02",
+    title: "Add the widget to product pages",
+    copy: "Place ModlyAI on product pages so shoppers can ask fit, style, and customization questions while they are deciding.",
+    bullets: ["One script install", "Works on product pages", "Mobile-friendly shopper experience"],
+  },
+  {
+    number: "03",
+    title: "Turn shopper intent into action",
+    copy: "See what customers ask for, which products they consider, and where quote or customization intent appears.",
+    bullets: ["Product interest insights", "Quote and customization requests", "Usage and catalog activity"],
+  },
+] as const;
+
+const platforms = [
+  ["Shopify", "OAuth catalog sync for active products."],
+  ["WooCommerce", "Connect product catalogs through supported store data."],
+  ["BigCommerce", "Built for expanding catalog integrations."],
+  ["Custom", "Works through CSV or JavaScript install."],
+] as const;
+
+const catalogSources: Array<{ label: string; status: string; Icon: LucideIcon }> = [
+  { label: "Shopify Sync", status: "Connected", Icon: ShoppingBag },
+  { label: "CSV Upload", status: "Ready", Icon: FileSpreadsheet },
+  { label: "Products imported", status: "428 active SKUs", Icon: PackageCheck },
+];
+
+function StepText({ step }: { step: (typeof steps)[number] }) {
+  return (
+    <div>
+      <div className="inline-flex items-center rounded-full border border-[#ded2c1] bg-[#fffaf2] px-3 py-1 text-xs font-semibold text-[#856a47] shadow-sm">
+        Step {step.number}
+      </div>
+      <h2 className="mt-5 text-3xl font-semibold leading-tight text-[#171411] md:text-4xl">
+        {step.title}
+      </h2>
+      <p className="mt-4 max-w-xl text-base leading-7 text-[#665c52] md:text-lg">
+        {step.copy}
+      </p>
+      <div className="mt-7 space-y-3">
+        {step.bullets.map((bullet) => (
+          <div key={bullet} className="flex items-start gap-3 text-sm font-medium text-[#51483f]">
+            <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-[#9a7445]" />
+            <span>{bullet}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function CatalogVisual() {
+  return (
+    <div className="relative overflow-hidden rounded-3xl border border-[#ded1c2] bg-[#fffdf8] p-5 shadow-[0_24px_70px_rgba(75,61,47,0.12)]">
+      <div className="absolute right-0 top-0 h-40 w-40 rounded-full bg-[#d9c29b]/30 blur-3xl" />
+      <div className="relative">
+        <div className="flex items-center justify-between border-b border-[#eadfce] pb-4">
+          <div>
+            <div className="text-xs font-semibold uppercase text-[#8a714f]">Catalog sources</div>
+            <div className="mt-1 text-lg font-semibold text-[#211d19]">Import real products</div>
+          </div>
+          <PackageCheck className="h-7 w-7 text-[#244f85]" />
+        </div>
+
+        <div className="mt-5 grid gap-3">
+          {catalogSources.map(({ label, status, Icon }) => (
+            <div key={label} className="rounded-2xl border border-[#e4d8ca] bg-white/85 p-4">
+              <div className="flex items-center justify-between gap-4">
+                <div className="flex items-center gap-3">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[#f1e7d9] text-[#8a6238]">
+                    <Icon className="h-5 w-5" />
+                  </span>
+                  <div>
+                    <div className="text-sm font-semibold text-[#211d19]">{label}</div>
+                    <div className="mt-1 text-xs text-[#756a5f]">Catalog-grounded recommendations</div>
+                  </div>
+                </div>
+                <span className="rounded-full bg-[#eaf0f7] px-3 py-1 text-xs font-semibold text-[#315f9b]">
+                  {status}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function WidgetVisual() {
+  return (
+    <div className="relative overflow-hidden rounded-3xl border border-[#ded1c2] bg-white p-4 shadow-[0_24px_70px_rgba(75,61,47,0.12)]">
+      <div className="absolute -right-10 -top-10 h-48 w-48 rounded-full bg-[#d9e5f2]/70 blur-3xl" />
+      <div className="relative grid gap-4 md:grid-cols-[0.82fr_1fr]">
+        <div className="rounded-2xl border border-[#e3d8c9] bg-[#fbf6ee] p-4">
+          <div className="aspect-[4/5] overflow-hidden rounded-2xl bg-[#efe3d2]">
+            <img
+              src="/images/living-room-hero.png"
+              alt="Styled furniture product preview"
+              className="h-full w-full object-cover"
+            />
+          </div>
+          <div className="mt-4 text-xs font-semibold uppercase text-[#8a714f]">Product page</div>
+          <div className="mt-1 text-lg font-semibold text-[#1f1b17]">Linden Modular Sofa</div>
+          <div className="mt-1 text-sm text-[#71675d]">84 in, performance linen, warm ivory</div>
+        </div>
+
+        <div className="rounded-2xl border border-[#e0d5c8] bg-[#fffdf9] p-4">
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <div className="text-sm font-semibold text-[#171411]">ModlyAI room match</div>
+              <div className="mt-1 text-xs leading-5 text-[#756a5f]">Fit and customization help on the product page.</div>
+            </div>
+            <span className="rounded-full bg-[#f1eadf] px-3 py-1 text-[11px] font-semibold text-[#765f42]">Live</span>
+          </div>
+          <div className="mt-4 rounded-xl border border-dashed border-[#cfc2b3] bg-[#fbf7f0] p-3 text-sm font-semibold text-[#2a241f]">
+            Will this fit an 11 ft living room?
+          </div>
+          <div className="mt-4 space-y-2">
+            {["Compare scale", "Check fabric color", "Ask for custom size"].map((item) => (
+              <div key={item} className="rounded-xl border border-[#e5dbcf] bg-white px-3 py-2 text-sm font-medium text-[#52483f]">
+                {item}
+              </div>
+            ))}
+          </div>
+          <div className="mt-4 grid grid-cols-2 gap-2">
+            <div className="rounded-lg bg-[#244f85] px-3 py-2.5 text-center text-xs font-semibold text-white">
+              View in catalog
+            </div>
+            <div className="rounded-lg border border-[#cfc3b4] bg-white px-3 py-2.5 text-center text-xs font-semibold text-[#2d2721]">
+              Request quote
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function DashboardVisual() {
+  return (
+    <div className="relative overflow-hidden rounded-3xl border border-[#ded1c2] bg-[#fffdf9] p-5 shadow-[0_24px_70px_rgba(75,61,47,0.12)]">
+      <div className="absolute -left-10 top-12 h-48 w-48 rounded-full bg-[#d8b781]/25 blur-3xl" />
+      <div className="relative">
+        <div className="flex items-center justify-between gap-4">
+          <div>
+            <div className="text-xs font-semibold uppercase text-[#8a714f]">Store insights</div>
+            <div className="mt-1 text-xl font-semibold text-[#211d19]">Shopper intent dashboard</div>
+          </div>
+          <BarChart3 className="h-7 w-7 text-[#244f85]" />
+        </div>
+
+        <div className="mt-5 grid gap-3 sm:grid-cols-3">
+          {[
+            ["AI sessions", "1,284"],
+            ["Quote requests", "86"],
+            ["Product interest", "312"],
+          ].map(([label, value]) => (
+            <div key={label} className="rounded-2xl border border-[#e5dbcf] bg-white p-4">
+              <div className="text-2xl font-semibold text-[#171411]">{value}</div>
+              <div className="mt-1 text-xs font-medium text-[#756a5f]">{label}</div>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-4 grid gap-4 md:grid-cols-[1.1fr_0.9fr]">
+          <div className="rounded-2xl border border-[#e5dbcf] bg-white p-4">
+            <div className="text-sm font-semibold text-[#211d19]">Top shopper questions</div>
+            <div className="mt-3 space-y-3">
+              {["Will this sofa fit my apartment?", "Can I get this table in oak?", "What pairs with a narrow sideboard?"].map((question) => (
+                <div key={question} className="rounded-xl bg-[#f8f1e7] px-3 py-2 text-sm text-[#5c5248]">
+                  {question}
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="rounded-2xl border border-[#e5dbcf] bg-white p-4">
+            <div className="text-sm font-semibold text-[#211d19]">Product interest</div>
+            <div className="mt-4 space-y-3">
+              {[
+                ["Modular sofas", "78%"],
+                ["Dining sets", "54%"],
+                ["Custom pieces", "39%"],
+              ].map(([label, value]) => (
+                <div key={label}>
+                  <div className="flex justify-between text-xs font-medium text-[#675d53]">
+                    <span>{label}</span>
+                    <span>{value}</span>
+                  </div>
+                  <div className="mt-1 h-2 overflow-hidden rounded-full bg-[#efe5d8]">
+                    <div className="h-full rounded-full bg-[#b08a55]" style={{ width: value }} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function HowItWorksPage() {
   return (
-    <main className="bg-white text-gray-900">
-      <section className="py-20 bg-gradient-to-b from-blue-50 to-white">
-        <div className="max-w-4xl mx-auto px-4 text-center">
-          <h1 className="text-5xl font-bold text-gray-900 mb-6">
-            How ModlyAI Works
+    <main className="bg-[#fffaf2] text-[#171411]">
+      <section className="relative overflow-hidden px-6 py-16 md:py-20">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(209,178,132,0.22),transparent_34%),linear-gradient(180deg,#fffaf2_0%,#f8efe3_100%)]" />
+        <div className="relative mx-auto max-w-4xl text-center">
+          <div className="inline-flex items-center gap-2 rounded-full border border-[#dfd3c4] bg-white/70 px-4 py-2 text-sm font-medium text-[#695d51] shadow-sm">
+            <Sparkles className="h-4 w-4 text-[#9a7445]" />
+            Furniture retail walkthrough
+          </div>
+          <h1 className="mt-6 text-4xl font-semibold leading-tight text-[#171411] md:text-6xl">
+            How ModlyAI works
           </h1>
-          <p className="text-xl text-gray-600 mb-8">
-            From installation to increased sales in 3 simple steps
+          <p className="mx-auto mt-5 max-w-2xl text-lg leading-8 text-[#665c52]">
+            Connect your catalog, add the widget, and let shoppers get catalog-grounded furniture guidance before they buy.
           </p>
         </div>
       </section>
 
-      <section className="py-16 border-b border-gray-200">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="order-2 md:order-1">
-              <div className="bg-gray-900 rounded-2xl shadow-xl border border-gray-800 p-6 font-mono text-sm">
-                <div className="text-green-400 mb-2">{'// Add to your website'}</div>
-                <div className="text-gray-300">
-                  {'<script src="modlyai.tech/widget.js"></script>'}
-                </div>
-              </div>
-            </div>
+      <section className="px-6 pb-16 md:pb-24">
+        <div className="mx-auto max-w-7xl space-y-8">
+          <div className="grid items-center gap-8 rounded-3xl border border-[#e1d7ca] bg-[#fbf6ee] p-5 shadow-[0_24px_70px_rgba(75,61,47,0.08)] md:p-8 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10">
+            <CatalogVisual />
+            <StepText step={steps[0]} />
+          </div>
 
-            <div className="order-1 md:order-2">
-              <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-100 text-blue-700 text-sm font-semibold rounded-full mb-4">
-                <Code className="w-4 h-4" />
-                Step 1
-              </div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                Install in 5 Minutes
-              </h2>
-              <p className="text-lg text-gray-600 mb-6">
-                Add one line of code to your website. Works with Shopify,
-                WooCommerce, or any platform.
-              </p>
-              <ul className="space-y-3">
-                <li className="flex items-start gap-3">
-                  <CheckCircle className="w-5 h-5 text-green-600 mt-1 flex-shrink-0" />
-                  <span className="text-gray-700">No coding required</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <CheckCircle className="w-5 h-5 text-green-600 mt-1 flex-shrink-0" />
-                  <span className="text-gray-700">Automatic catalog sync</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <CheckCircle className="w-5 h-5 text-green-600 mt-1 flex-shrink-0" />
-                  <span className="text-gray-700">Customizable branding</span>
-                </li>
-              </ul>
-            </div>
+          <div className="grid items-center gap-8 rounded-3xl border border-[#e1d7ca] bg-[#fffdf9] p-5 shadow-[0_24px_70px_rgba(75,61,47,0.08)] md:p-8 lg:grid-cols-[0.95fr_1.05fr] lg:gap-10">
+            <StepText step={steps[1]} />
+            <WidgetVisual />
+          </div>
+
+          <div className="grid items-center gap-8 rounded-3xl border border-[#e1d7ca] bg-[#fbf6ee] p-5 shadow-[0_24px_70px_rgba(75,61,47,0.08)] md:p-8 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10">
+            <DashboardVisual />
+            <StepText step={steps[2]} />
           </div>
         </div>
       </section>
 
-      <section className="py-16 border-b border-gray-200">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="order-1">
-              <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-100 text-blue-700 text-sm font-semibold rounded-full mb-4">
-                <Smartphone className="w-4 h-4" />
-                Step 2
-              </div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                Your Customers Get AI Help
-              </h2>
-              <p className="text-lg text-gray-600 mb-6">
-                Shoppers upload room photos and get instant recommendations for
-                furniture that actually fits.
-              </p>
-              <ul className="space-y-3">
-                <li className="flex items-start gap-3">
-                  <CheckCircle className="w-5 h-5 text-green-600 mt-1 flex-shrink-0" />
-                  <span className="text-gray-700">Mobile-optimized interface</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <CheckCircle className="w-5 h-5 text-green-600 mt-1 flex-shrink-0" />
-                  <span className="text-gray-700">
-                    Room photo upload with user-provided room details
-                  </span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <CheckCircle className="w-5 h-5 text-green-600 mt-1 flex-shrink-0" />
-                  <span className="text-gray-700">Style matching algorithm</span>
-                </li>
-              </ul>
-            </div>
-
-            <div className="order-2">
-              <div className="bg-white rounded-2xl shadow-xl border border-gray-200 p-6">
-                <div className="aspect-[16/10] overflow-hidden rounded-2xl">
-                  <img
-                    src="/images/2nd_day_photo.png"
-                    alt="Customer visualizing furniture in their room"
-                    className="w-full h-full object-cover rounded-2xl shadow-lg"
-                  />
+      <section className="border-y border-[#e7ddd1] bg-[#f8f1e7] px-6 py-16 md:py-20">
+        <div className="mx-auto max-w-7xl">
+          <div className="text-center">
+            <h2 className="text-3xl font-semibold text-[#171411] md:text-4xl">Works With Your Platform</h2>
+            <p className="mx-auto mt-3 max-w-2xl text-base leading-7 text-[#665c52]">
+              Start with the catalog source you already use, then expand as your storefront grows.
+            </p>
+          </div>
+          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {platforms.map(([platform, copy]) => (
+              <div key={platform} className="rounded-3xl border border-[#e0d5c8] bg-[#fffdf9] p-6 shadow-[0_18px_45px_rgba(75,61,47,0.07)]">
+                <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#f1e7d9] text-sm font-semibold text-[#8a6238]">
+                  {platform.charAt(0)}
                 </div>
+                <h3 className="mt-5 text-lg font-semibold text-[#1e1a16]">{platform}</h3>
+                <p className="mt-2 text-sm leading-6 text-[#665c52]">{copy}</p>
               </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
-      <section className="py-16">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="order-2 md:order-1">
-              <div className="bg-white rounded-2xl shadow-xl border border-gray-200 p-6">
-                <div className="aspect-video overflow-hidden rounded-xl">
-                  <img
-                    src="/images/step3-analytics.png"
-                    alt="ModlyAI Analytics Dashboard"
-                    className="w-full h-full object-cover object-top rounded-xl"
-                  />
-                </div>
-                <div className="grid grid-cols-3 gap-4 mt-6">
-                  <div className="text-center p-3 bg-green-50 rounded-lg">
-                    <div className="text-2xl font-bold text-green-600">-40%</div>
-                    <div className="text-xs text-gray-600">Returns</div>
-                  </div>
-                  <div className="text-center p-3 bg-blue-50 rounded-lg">
-                    <div className="text-2xl font-bold text-blue-600">+25%</div>
-                    <div className="text-xs text-gray-600">Conversion</div>
-                  </div>
-                  <div className="text-center p-3 bg-purple-50 rounded-lg">
-                    <div className="text-2xl font-bold text-purple-600">$12K</div>
-                    <div className="text-xs text-gray-600">Saved/mo</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="order-1 md:order-2">
-              <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-100 text-blue-700 text-sm font-semibold rounded-full mb-4">
-                <BarChart3 className="w-4 h-4" />
-                Step 3
-              </div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                Track Your ROI
-              </h2>
-              <p className="text-lg text-gray-600 mb-6">
-                See exactly how ModlyAI impacts your bottom line with detailed
-                analytics.
-              </p>
-              <ul className="space-y-3">
-                <li className="flex items-start gap-3">
-                  <CheckCircle className="w-5 h-5 text-green-600 mt-1 flex-shrink-0" />
-                  <span className="text-gray-700">
-                    Real-time conversion tracking
-                  </span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <CheckCircle className="w-5 h-5 text-green-600 mt-1 flex-shrink-0" />
-                  <span className="text-gray-700">Return rate monitoring</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <CheckCircle className="w-5 h-5 text-green-600 mt-1 flex-shrink-0" />
-                  <span className="text-gray-700">Customer behavior insights</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-4xl mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">See It In Action</h2>
-          <p className="text-lg text-gray-600 mb-8">
-            Watch a 2-minute walkthrough of the complete experience
+      <section className="px-6 py-16 md:py-24">
+        <div className="mx-auto max-w-7xl overflow-hidden rounded-3xl border border-[#ded1c2] bg-[radial-gradient(circle_at_20%_0%,rgba(216,183,129,0.22),transparent_34%),linear-gradient(135deg,#171411_0%,#24374c_100%)] px-6 py-14 text-center shadow-[0_28px_80px_rgba(75,61,47,0.18)] md:px-10 md:py-16">
+          <h2 className="mx-auto max-w-3xl text-3xl font-semibold text-[#fffaf2] md:text-4xl">
+            Ready to help shoppers buy with confidence?
+          </h2>
+          <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-[#d8cfc4]">
+            Start with a free trial or book a walkthrough tailored to your furniture store.
           </p>
-
-          <div className="aspect-video bg-white rounded-2xl shadow-2xl border border-gray-200 flex items-center justify-center">
-            <button className="flex items-center gap-3 px-6 py-3 bg-blue-600 text-white rounded-full font-semibold hover:bg-blue-700 transition">
-              <PlayCircle className="w-6 h-6" />
-              Play Demo Video
-            </button>
-          </div>
-        </div>
-      </section>
-
-      <section className="py-16">
-        <div className="max-w-5xl mx-auto px-4">
-          <h3 className="text-2xl font-bold text-center text-gray-900 mb-8">
-            Works With Your Platform
-          </h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {["Shopify", "WooCommerce", "BigCommerce", "Custom"].map(
-              (platform) => (
-                <div
-                  key={platform}
-                  className="bg-white rounded-lg border border-gray-200 p-6 flex items-center justify-center hover:shadow-lg transition"
-                >
-                  <span className="font-semibold text-gray-700">{platform}</span>
-                </div>
-              ),
-            )}
-          </div>
-        </div>
-      </section>
-
-      <section className="py-20 bg-gradient-to-br from-blue-600 to-blue-800 text-white">
-        <div className="max-w-4xl mx-auto px-4 text-center">
-          <h2 className="text-4xl font-bold mb-4">Ready to Reduce Returns?</h2>
-          <p className="text-xl text-blue-100 mb-8">
-            Join furniture retailers saving thousands monthly with ModlyAI
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a
+          <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+            <Link
+              href="/auth/signup"
+              className="inline-flex items-center justify-center rounded-lg bg-[#fffaf2] px-6 py-3.5 text-sm font-semibold text-[#171411] transition hover:bg-white"
+            >
+              Get Started Free
+            </Link>
+            <Link
               href="/contact"
-              className="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition inline-flex items-center justify-center gap-2"
+              className="inline-flex items-center justify-center gap-2 rounded-lg border border-white/20 bg-white/5 px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-white/10"
             >
               Book a Demo
-              <ArrowRight className="w-5 h-5" />
-            </a>
-            <WidgetOpenCta
-              ctaId="how-it-works-try-demo-widget"
-              ctaText="Try Demo Widget"
-              location="how-it-works"
-              className="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white/10 transition"
-            >
-              Try Demo Widget
-            </WidgetOpenCta>
+              <ArrowRight className="h-4 w-4" />
+            </Link>
           </div>
         </div>
       </section>
     </main>
   );
 }
-

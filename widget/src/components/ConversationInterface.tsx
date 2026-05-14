@@ -3,6 +3,7 @@ import { AIService } from '../utils/aiService';
 import { ConversationMessage, FurnitureItem } from '../types';
 import { MessageBubble } from './MessageBubble';
 import { getReadableTextColor } from '../utils/config';
+import { trackWidgetEvent } from '../utils/analytics';
 
 interface ConversationInterfaceProps {
   aiService: AIService;
@@ -18,6 +19,11 @@ interface ConversationInterfaceProps {
     requestQuote: boolean;
   };
   primaryColor?: string;
+  analyticsContext?: {
+    apiBaseUrl?: string;
+    storeId?: string;
+    widgetId?: string;
+  };
 }
 
 export function ConversationInterface({
@@ -30,13 +36,14 @@ export function ConversationInterface({
   onViewInCatalog,
   enabledActions,
   primaryColor,
+  analyticsContext,
 }: ConversationInterfaceProps) {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [messages, setMessages] = useState<ConversationMessage[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
-  const fallbackMessage = 'Sorry, I could not generate a response right now. Please try again.';
+  const fallbackMessage = "Sorry, I couldn't reach ModlyAI right now. Please try again.";
   const primaryTextColor = primaryColor ? getReadableTextColor(primaryColor) : undefined;
 
   // Load messages from AI service
@@ -53,8 +60,23 @@ export function ConversationInterface({
     if (!input.trim() || isLoading) return;
 
     const userMessage = input.trim();
+    const hasExistingUserMessage = messages.some((message) => message.role === 'user');
     setInput('');
     setIsLoading(true);
+
+    if (!hasExistingUserMessage) {
+      trackWidgetEvent({
+        ...analyticsContext,
+        type: 'chat_started',
+      });
+    }
+    trackWidgetEvent({
+      ...analyticsContext,
+      type: 'message_sent',
+      metadata: {
+        messageLength: userMessage.length,
+      },
+    });
 
     // Add user message immediately
     const userMsg: ConversationMessage = {
@@ -83,6 +105,20 @@ export function ConversationInterface({
       setMessages((prev) => {
         const withoutThinking = prev.filter((m) => m.type !== 'thinking');
         return [...withoutThinking, response.message];
+      });
+
+      response.message.metadata?.recommendations?.forEach((rec) => {
+        trackWidgetEvent({
+          ...analyticsContext,
+          type: 'product_recommended',
+          productId: rec.item.id,
+          productName: rec.item.name,
+          metadata: {
+            category: rec.item.category,
+            price: rec.item.priceRange?.min ?? rec.item.price,
+            recommendationSource: 'chat',
+          },
+        });
       });
 
       // Handle actions
@@ -148,6 +184,7 @@ export function ConversationInterface({
               onViewInCatalog={onViewInCatalog}
               enabledActions={enabledActions}
               primaryColor={primaryColor}
+              analyticsContext={analyticsContext}
             />
           ))
         )}
@@ -169,6 +206,7 @@ export function ConversationInterface({
             disabled={isLoading}
           />
           <button
+            type="button"
             onClick={handleSend}
             disabled={!input.trim() || isLoading}
             className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"

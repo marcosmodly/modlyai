@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { MessageCircle } from 'lucide-react';
 import { DEFAULT_WIDGET_TITLE, getPrimaryColor, getReadableTextColor, isDarkColor, WidgetConfig } from '../utils/config';
 import { FurnitureAIWidget } from './FurnitureAIWidget';
+import { trackWidgetEvent } from '../utils/analytics';
 
 interface FurnitureAIWidgetButtonProps {
   config?: WidgetConfig;
@@ -26,12 +27,26 @@ export function FurnitureAIWidgetButton({
     config.theme?.buttonText ||
     buttonText ||
     DEFAULT_WIDGET_TITLE;
+  const trackOpen = () => {
+    trackWidgetEvent({
+      apiBaseUrl: config.apiBaseUrl,
+      storeId: config.storeId || config.widgetId,
+      widgetId: config.widgetId,
+      type: 'widget_opened',
+      metadata: {
+        source: 'widget_button',
+      },
+    });
+  };
 
   useEffect(() => {
-    const onOpen = () => setIsOpen(true);
+    const onOpen = () => {
+      setIsOpen(true);
+      trackOpen();
+    };
     window.addEventListener('modly:open-widget', onOpen as EventListener);
     return () => window.removeEventListener('modly:open-widget', onOpen as EventListener);
-  }, []);
+  }, [config.apiBaseUrl, config.storeId, config.widgetId]);
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -85,7 +100,10 @@ export function FurnitureAIWidgetButton({
   return (
     <>
       <button
-        onClick={() => setIsOpen(true)}
+        onClick={() => {
+          setIsOpen(true);
+          trackOpen();
+        }}
         style={finalButtonStyle}
         className={`modly-widget-button fixed ${positionClasses[buttonPosition]} z-50 cursor-pointer rounded-full inline-flex items-center justify-center gap-2 transition-all duration-200 ease-out ${className}`}
         onMouseEnter={(e) => {
@@ -127,17 +145,17 @@ export function FurnitureAIWidgetButton({
 
       {isOpen && (
         <div 
-          className="fixed inset-0 z-[100] bg-black bg-opacity-50 flex items-center justify-center p-4"
+          className="modly-widget-modal-backdrop fixed inset-0 z-[100] bg-black bg-opacity-50 flex items-center justify-center p-4"
           onClick={(e) => {
             if (e.target === e.currentTarget) {
               setIsOpen(false);
             }
           }}
         >
-          <div className="bg-white rounded-lg shadow-2xl w-full max-w-6xl h-[90vh] overflow-hidden flex flex-col relative">
+          <div className="modly-widget-modal-panel bg-white rounded-lg shadow-2xl w-full max-w-6xl h-[90vh] overflow-hidden flex flex-col relative">
             <button
               onClick={() => setIsOpen(false)}
-              className="absolute top-4 right-4 z-10 bg-gray-100 hover:bg-gray-200 rounded-full p-2 transition-colors"
+              className="modly-widget-modal-close absolute top-4 right-4 z-10 bg-gray-100 hover:bg-gray-200 rounded-full p-2 transition-colors"
               aria-label="Close modal"
             >
               <svg 

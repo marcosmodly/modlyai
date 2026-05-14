@@ -3,15 +3,38 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { signOut, useSession } from 'next-auth/react';
-import { ArrowLeftIcon, BarChart3, Home, Package, Puzzle, Settings, LogOut } from 'lucide-react';
+import { ArrowLeftIcon, BarChart3, CreditCard, Home, Package, Puzzle, Settings, LogOut } from 'lucide-react';
+import { db } from '@/lib/instantdb';
 
 const navigation = [
   { name: 'Overview', href: '/dashboard', icon: Home },
   { name: 'Products', href: '/dashboard/products', icon: Package },
   { name: 'Analytics', href: '/dashboard/analytics', icon: BarChart3 },
   { name: 'Integrations', href: '/dashboard/integrations', icon: Puzzle },
+  { name: 'Billing', href: '/dashboard/billing', icon: CreditCard },
   { name: 'Settings', href: '/dashboard/settings', icon: Settings },
 ];
+
+const widgetActivityTypes = new Set([
+  'widget_opened',
+  'chat_started',
+  'message_sent',
+  'room_analyzed',
+  'quote_requested',
+]);
+
+function isRecentWidgetActivity(event: Record<string, unknown>) {
+  if (typeof event.type !== 'string' || !widgetActivityTypes.has(event.type)) {
+    return false;
+  }
+
+  const timestamp = new Date(String(event.createdAt ?? 0)).getTime();
+  if (!Number.isFinite(timestamp)) {
+    return false;
+  }
+
+  return Date.now() - timestamp <= 7 * 24 * 60 * 60 * 1000;
+}
 
 export default function Sidebar() {
   const pathname = usePathname();
@@ -19,6 +42,51 @@ export default function Sidebar() {
   const storeName = session?.user?.storeName || 'My Store';
   const userEmail = session?.user?.email || 'store@example.com';
   const storeInitial = storeName[0]?.toUpperCase() || 'M';
+  const storeId = session?.user?.storeId;
+  const { data, isLoading } = db.useQuery(
+    storeId
+      ? {
+          products: {
+            $: { where: { storeId } },
+          },
+          events: {
+            $: { where: { storeId } },
+          },
+        }
+      : null
+  );
+  const hasApiKey = Boolean(session?.user?.apiKey);
+  const productCount = data?.products?.length ?? 0;
+  const hasRecentWidgetEvents = Boolean(data?.events?.some(isRecentWidgetActivity));
+  const storeStatus = !storeId || isLoading
+    ? {
+        label: 'Checking',
+        helper: 'Loading store setup status.',
+        className: 'text-stone-900',
+      }
+    : !hasApiKey
+      ? {
+          label: 'Setup needed',
+          helper: 'Generate your widget key to continue.',
+          className: 'text-amber-700',
+        }
+      : productCount === 0
+      ? {
+          label: 'Setup needed',
+          helper: 'Widget setup is ready. Connect products next.',
+          className: 'text-amber-700',
+        }
+        : hasRecentWidgetEvents
+          ? {
+              label: 'Active',
+              helper: 'Recent widget activity detected.',
+              className: 'text-emerald-700',
+            }
+          : {
+              label: 'Ready',
+              helper: 'Widget is ready for storefront testing.',
+              className: 'text-emerald-700',
+            };
 
   return (
     <aside className="hidden lg:fixed lg:inset-y-0 lg:z-40 lg:flex lg:w-72 lg:flex-col">
@@ -39,9 +107,9 @@ export default function Sidebar() {
         </div>
 
         <div className="relative mt-8 rounded-3xl border border-stone-200/80 bg-white/80 p-4 shadow-sm backdrop-blur">
-          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-stone-500">Store Health</p>
-          <p className="mt-3 text-3xl font-bold text-stone-900">98.4%</p>
-          <p className="mt-2 text-sm text-stone-600">Widget uptime across product pages this month.</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-stone-500">Store status</p>
+          <p className={`mt-3 text-3xl font-bold ${storeStatus.className}`}>{storeStatus.label}</p>
+          <p className="mt-2 text-sm text-stone-600">{storeStatus.helper}</p>
         </div>
 
         <nav className="relative mt-8 flex flex-1 flex-col">

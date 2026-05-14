@@ -4,6 +4,7 @@ import { generateSpecSheet, SpecSheet } from '../utils/specSheetGenerator';
 import { validateConfiguration, ValidationResult } from '../utils/configValidation';
 import { SpecSheetPreview } from './SpecSheetPreview';
 import { ApiClient } from '../utils/apiClient';
+import { trackWidgetEvent } from '../utils/analytics';
 
 interface SubmitFlowModalProps {
   config: CustomizationConfig;
@@ -66,6 +67,19 @@ export function SubmitFlowModal({
     if (flowType === 'cart') {
       handleAddToCart();
     } else {
+      const widgetConfig = apiClient['config'];
+      trackWidgetEvent({
+        apiBaseUrl: widgetConfig.apiBaseUrl,
+        storeId: widgetConfig.storeId || widgetConfig.widgetId || config.storeId || product?.storeId,
+        widgetId: widgetConfig.widgetId,
+        type: 'quote_started',
+        productId: product?.id || config.baseItemId,
+        productName: product?.name || config.baseItemName,
+        metadata: {
+          source: 'customizer_submit_flow',
+          quoteType: 'customized_furniture',
+        },
+      });
       setStep('form');
     }
   };
@@ -216,12 +230,14 @@ export function SubmitFlowModal({
 
           <div className="border-t border-gray-200 p-4 flex gap-3">
             <button
+              type="button"
               onClick={onClose}
               className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
             >
               Cancel
             </button>
             <button
+              type="button"
               onClick={handleContinue}
               className="flex-1 py-2 px-4 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 transition-colors"
             >
@@ -302,12 +318,14 @@ export function SubmitFlowModal({
 
           <div className="flex gap-3">
             <button
+              type="button"
               onClick={() => setStep('preview')}
               className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
             >
               Back
             </button>
             <button
+              type="button"
               onClick={handleSubmitQuote}
               className="flex-1 py-2 px-4 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 transition-colors"
             >
@@ -347,7 +365,7 @@ export function SubmitFlowModal({
           <p className="text-gray-600">
             {flowType === 'cart'
               ? 'Your customized product has been added to your cart.'
-              : "We'll review your request and get back to you soon."}
+              : 'Quote request sent. The store will follow up with pricing and next steps.'}
           </p>
         </div>
       </div>

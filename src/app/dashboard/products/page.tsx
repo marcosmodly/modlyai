@@ -4,7 +4,9 @@ import { ImageOff, PackagePlus } from 'lucide-react'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import NoStoreState from '@/components/dashboard/NoStoreState'
+import { getBillingAccess } from '@/lib/billing/access'
 import { formatCatalogCountLabel } from '@/lib/catalog-source'
+import { formatLimit, getPlanLimits } from '@/lib/plans'
 import { useCatalogProducts } from '@/lib/use-catalog-products'
 
 export default function ProductsPage() {
@@ -16,6 +18,9 @@ export default function ProductsPage() {
   const products = [...(catalog.products ?? [])].sort((a: any, b: any) => {
     return String(a.title ?? '').localeCompare(String(b.title ?? ''))
   })
+  const access = getBillingAccess(catalog.store)
+  const productLimit = getPlanLimits(access.hasActiveAccess ? access.plan : 'free_trial').productLimit
+  const productLimitReached = productLimit !== null && products.length >= productLimit
 
   if (status === 'loading' || catalog.isLoading) {
     return (
@@ -50,6 +55,12 @@ export default function ProductsPage() {
           </Link>
         </div>
       </section>
+
+      {productLimitReached ? (
+        <section className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-900">
+          Your plan allows {formatLimit(productLimit)} products. Upgrade to import more.
+        </section>
+      ) : null}
 
       {products.length === 0 ? (
         <section className="rounded-[32px] border border-stone-200 bg-white p-12 text-center shadow-sm">

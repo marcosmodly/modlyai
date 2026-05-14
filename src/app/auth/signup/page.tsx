@@ -16,6 +16,30 @@ export default function SignUpPage() {
     storeName: '',
   })
 
+  const getErrorMessage = (data: unknown) => {
+    if (!data || typeof data !== 'object') {
+      return 'Could not create account. Please check your details and try again.'
+    }
+
+    const response = data as { error?: unknown; message?: unknown }
+    const message = typeof response.message === 'string' ? response.message : ''
+    const error = typeof response.error === 'string' ? response.error : ''
+
+    if (error === 'An account with this email already exists') {
+      return 'An account with this email already exists.'
+    }
+
+    if (message && error !== 'signup_failed') {
+      return message
+    }
+
+    if (error && error !== 'signup_failed') {
+      return error
+    }
+
+    return 'Could not create account. Please check your details and try again.'
+  }
+
   const handleSubmit = async () => {
     setError('')
     setIsSubmitting(true)
@@ -26,7 +50,14 @@ export default function SignUpPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
       })
-      const data = await res.json()
+      const responseText = await res.text()
+      let data: unknown = {}
+
+      try {
+        data = responseText ? JSON.parse(responseText) : {}
+      } catch {
+        data = responseText
+      }
 
       if (res.ok) {
         const signInResult = await signIn('credentials', {
@@ -36,17 +67,20 @@ export default function SignUpPage() {
         })
 
         if (signInResult?.ok) {
-          router.push('/onboarding')
+          router.push('/dashboard')
         } else {
           router.push('/auth/signin')
         }
       } else {
-        alert('❌ ' + (data.error || 'Failed to create account'))
+        if (process.env.NODE_ENV === 'development') {
+          console.warn('[Signup failed]', res.status, data)
+        }
+        setError(getErrorMessage(data))
         setIsSubmitting(false)
       }
     } catch (submitError) {
       console.error('Signup failed:', submitError)
-      setError('Something went wrong')
+      setError('Could not create account. Please check your details and try again.')
       setIsSubmitting(false)
     }
   }

@@ -9,7 +9,7 @@ export class AIService {
   private stateManager: ConversationStateManager;
   private pageContext: PageContext;
   private contextUnwatch?: () => void;
-  private readonly fallbackMessage = 'Sorry, I could not generate a response right now. Please try again.';
+  private readonly fallbackMessage = "Sorry, I couldn't reach ModlyAI right now. Please try again.";
   private readonly config: WidgetConfig;
 
   constructor(apiClient: ApiClient, config: WidgetConfig) {

@@ -1,6 +1,6 @@
 'use client'
 
-import { CheckCircle2, Circle, FileSpreadsheet, Link as LinkIcon, UploadCloud } from 'lucide-react'
+import { CheckCircle2, Circle, Link as LinkIcon, UploadCloud } from 'lucide-react'
 import type React from 'react'
 import { useRef, useState } from 'react'
 import CopyButton from '@/components/dashboard/CopyButton'
@@ -10,6 +10,7 @@ type UploadResult = {
   success?: boolean
   count?: number
   error?: string
+  message?: string
 }
 
 type StoreSummary = {
@@ -25,11 +26,30 @@ type StoreSummary = {
 const inputClass =
   'w-full rounded-2xl border border-stone-300 bg-stone-50 px-4 py-3 text-sm text-stone-900 outline-none transition placeholder:text-stone-400 focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-100'
 
+const platformInstructions = [
+  {
+    platform: 'Shopify',
+    instructions:
+      'Online Store -> Themes -> Edit code -> theme.liquid. Paste before the closing </body> tag, then save.',
+  },
+  {
+    platform: 'WooCommerce / WordPress',
+    instructions:
+      'Use a header/footer script plugin or your theme footer file. Paste before the closing </body> tag.',
+  },
+  {
+    platform: 'Custom website',
+    instructions:
+      'Paste before the closing </body> tag on product pages or across your whole site.',
+  },
+]
+
 export default function IntegrationsClient({
   store,
   productCount,
   syncCount,
   installSnippet,
+  installSnippetError,
   initialShopifyStatus,
   initialMessage,
 }: {
@@ -37,6 +57,7 @@ export default function IntegrationsClient({
   productCount: number
   syncCount: number
   installSnippet: string
+  installSnippetError?: string
   initialShopifyStatus?: string
   initialMessage?: string
 }) {
@@ -60,11 +81,11 @@ export default function IntegrationsClient({
 
   const integrations = [
     {
-      name: 'Store API Key',
-      status: store.apiKey ? 'Connected' : 'Missing key',
-      description: 'This key uniquely identifies your store when syncing products or loading widget configuration.',
-      action: store.apiKey || '',
-      connected: Boolean(store.apiKey),
+      name: 'Widget key',
+      status: 'Active',
+      description: 'Used by ModlyAI to identify this store. No action needed.',
+      action: 'No action needed.',
+      connected: true,
     },
     {
       name: 'Catalog Import',
@@ -160,9 +181,66 @@ export default function IntegrationsClient({
       <section className="rounded-[32px] border border-stone-200 bg-white p-6 shadow-sm">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
+            <h2 className="text-2xl font-bold tracking-tight text-stone-950">Install ModlyAI widget</h2>
+            <p className="mt-1 max-w-2xl text-sm leading-6 text-stone-500">
+              Copy this full snippet into your storefront. It already includes the store and widget identifiers needed to load ModlyAI.
+            </p>
+          </div>
+          {installSnippet ? (
+            <CopyButton
+              value={installSnippet}
+              label="Copy code"
+              copiedLabel="Copied"
+            />
+          ) : null}
+        </div>
+
+        <div className="mt-6">
+          <p className="text-sm font-medium text-stone-700">Install snippet</p>
+          <p className="mt-1 text-sm leading-6 text-stone-500">
+            Copy this full snippet into your storefront. It already includes the store and widget identifiers needed to load ModlyAI.
+          </p>
+          {installSnippet ? (
+            <pre className="mt-2 overflow-x-auto rounded-2xl bg-gray-900 p-4 font-mono text-sm leading-6 text-green-400">{installSnippet}</pre>
+          ) : (
+            <div className="mt-2 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-800">
+              {installSnippetError || "We couldn't find a ModlyAI store for this account. Refresh the page or contact support."}
+            </div>
+          )}
+        </div>
+
+        <div className="mt-6">
+          <StoreUrlInput initialUrl={store.url || ''} />
+        </div>
+
+        <div className="mt-6">
+          <h3 className="text-lg font-semibold tracking-tight text-stone-950">Where to paste this code</h3>
+          <div className="mt-3 grid gap-3 md:grid-cols-3">
+            {platformInstructions.map((item) => (
+              <article key={item.platform} className="rounded-2xl border border-stone-200 bg-stone-50 p-4">
+                <h4 className="text-sm font-semibold text-stone-950">{item.platform}</h4>
+                <p className="mt-2 text-sm leading-6 text-stone-600">{item.instructions}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+
+        <div className="mt-5 space-y-2 text-sm leading-6">
+          <p className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-emerald-800">
+            Install once. Branding, welcome message, catalog actions, and quote settings update from this dashboard.
+          </p>
+          <p className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-amber-800">
+            If the widget does not appear, check that this full snippet is installed and that your website allows external scripts.
+          </p>
+        </div>
+      </section>
+
+      <section className="rounded-[32px] border border-stone-200 bg-white p-6 shadow-sm">
+        <div className="flex flex-wrap items-start justify-between gap-4">
+          <div>
             <h2 className="text-2xl font-bold tracking-tight text-stone-950">Shopify</h2>
             <p className="mt-1 text-sm text-stone-500">
-              Install the ModlyAI Shopify app with OAuth, then sync active products into your ModlyAI catalog.
+              Optional: connect Shopify to sync your catalog automatically.
             </p>
           </div>
           <div className={`rounded-full px-3 py-1 text-xs font-semibold ${shopifyConnected ? 'bg-emerald-50 text-emerald-700' : 'bg-stone-100 text-stone-600'}`}>
@@ -220,7 +298,9 @@ export default function IntegrationsClient({
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
             <h2 className="text-2xl font-bold tracking-tight text-stone-950">CSV Catalog Upload</h2>
-            <p className="mt-1 text-sm text-stone-500">Upload your product catalog as a CSV file.</p>
+            <p className="mt-1 text-sm text-stone-500">
+              CSV upload works without Shopify. Upload your products manually and ModlyAI will use them in the widget.
+            </p>
           </div>
           <span className="rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-blue-700">
             Recommended
@@ -229,12 +309,33 @@ export default function IntegrationsClient({
 
         <div className="mt-5 rounded-2xl border border-stone-200 bg-stone-50 p-4">
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-stone-500">CSV columns</p>
+          <p className="mt-2 text-sm text-stone-600">
+            Required basic columns: name, price, description, image_url, category.
+          </p>
           <code className="mt-2 block break-words text-xs text-stone-700">
-            name, price, description, image_url, category, length, width, height, sku, colors, materials
+            Optional customization columns: colors, materials, addons, widthMin, widthMax, widthDefault,
+            lengthMin, lengthMax, lengthDefault, heightMin, heightMax, heightDefault, colorPricing,
+            materialPricing, dimensionPricePerInch
           </code>
-          <a href="/sample-catalog.csv" download className="mt-2 inline-block text-xs font-medium text-blue-700 hover:underline">
-            Download sample CSV template
-          </a>
+          <div className="mt-4 flex flex-wrap items-center gap-3">
+            <a
+              href="/sample-customization-catalog.csv"
+              download
+              className="inline-flex items-center gap-2 rounded-full bg-blue-700 px-4 py-2 text-xs font-semibold text-white transition hover:bg-blue-800"
+            >
+              Download customization-ready sample CSV
+              <span className="rounded-full bg-white/20 px-2 py-0.5 text-[10px] uppercase tracking-[0.14em]">
+                Recommended
+              </span>
+            </a>
+            <a href="/sample-catalog.csv" download className="text-xs font-medium text-blue-700 hover:underline">
+              Download basic sample CSV template
+            </a>
+          </div>
+          <p className="mt-3 max-w-2xl text-xs text-stone-500">
+            Use this template if you want product-driven customization options, priced add-ons,
+            color/material choices, and dimension ranges.
+          </p>
         </div>
 
         <div
@@ -277,7 +378,7 @@ export default function IntegrationsClient({
                 </a>
               </p>
             ) : (
-              <p className="text-sm text-red-700">{uploadResult.error}</p>
+              <p className="text-sm text-red-700">{uploadResult.message || uploadResult.error}</p>
             )}
           </div>
         ) : null}
@@ -307,28 +408,6 @@ export default function IntegrationsClient({
         ))}
       </section>
 
-      {store.apiKey ? (
-        <section className="rounded-[32px] border border-stone-200 bg-white p-6 shadow-sm">
-          <div className="mb-5 flex items-center gap-3">
-            <FileSpreadsheet className="h-6 w-6 text-blue-700" />
-            <h2 className="text-2xl font-bold tracking-tight text-stone-950">Install Snippet</h2>
-          </div>
-          <StoreUrlInput initialUrl={store.url || ''} />
-          {installSnippet ? (
-            <>
-              <pre className="mt-4 overflow-x-auto rounded-lg bg-gray-900 p-4 text-sm text-green-400">{installSnippet}</pre>
-              <CopyButton
-                value={installSnippet}
-                className="mt-3 flex items-center gap-2 border-0 bg-transparent px-0 py-0 text-sm text-gray-600 hover:bg-transparent hover:text-gray-900"
-              />
-            </>
-          ) : (
-            <div className="mt-4 rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm text-amber-800">
-              Missing storeId on the current session. The widget install snippet cannot be generated until this account is linked to a store.
-            </div>
-          )}
-        </section>
-      ) : null}
     </>
   )
 }
