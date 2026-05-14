@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { getCatalogSnapshot } from '@/lib/catalog-source'
-import { normalizeStorePublicIdentity } from '@/lib/current-store'
+import { normalizeStorePublicIdentity, type CurrentStore } from '@/lib/current-store'
 import { adminDb } from '@/lib/instant-admin'
 import { publicWidgetOptionsResponse, withPublicWidgetCors } from '@/lib/public-widget-cors'
 
@@ -16,8 +16,31 @@ const DEFAULT_ENABLED_ACTIONS = {
   requestQuote: true,
 }
 
-function getEnabledActions(store: any) {
-  if (!store || typeof store !== 'object') return DEFAULT_ENABLED_ACTIONS
+type WidgetStore = CurrentStore & {
+  storeUrl?: unknown
+  url?: unknown
+  supportEmail?: unknown
+  widgetTitle?: unknown
+  primaryColor?: unknown
+  welcomeMessage?: unknown
+  enabledActions?: unknown
+  enableViewInCatalog?: unknown
+  enableCustomize?: unknown
+  enableRequestQuote?: unknown
+  quoteEmail?: unknown
+  domain?: unknown
+  catalogSource?: unknown
+  platform?: unknown
+}
+
+type WidgetProduct = Record<string, unknown>
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return Boolean(value) && typeof value === 'object'
+}
+
+function getEnabledActions(store: WidgetStore | null) {
+  if (!store) return DEFAULT_ENABLED_ACTIONS
 
   if (
     typeof store.enableViewInCatalog === 'boolean' ||
@@ -32,7 +55,7 @@ function getEnabledActions(store: any) {
   }
 
   const value = store.enabledActions
-  if (!value || typeof value !== 'object') return DEFAULT_ENABLED_ACTIONS
+  if (!isRecord(value)) return DEFAULT_ENABLED_ACTIONS
 
   return {
     viewInCatalog: typeof value.viewInCatalog === 'boolean' ? value.viewInCatalog : DEFAULT_ENABLED_ACTIONS.viewInCatalog,
@@ -63,67 +86,34 @@ async function handleGET(req: Request) {
       )
     }
 
-    let store: any = null
-    let products: any[] = []
+    let store: WidgetStore | null = null
+    let products: WidgetProduct[] = []
 
-    if (widgetId) {
-      const storeResult = await adminDb.query({
-        stores: {
-          $: {
-            where: {
-              widgetId,
-            },
-          },
-        },
+    if (storeId || widgetId) {
+      const storesResult = await adminDb.query({
+        stores: {},
       })
 
-      store = storeResult.stores[0]
+      const stores = storesResult.stores ?? []
+      const storeById = storeId
+        ? stores.find((candidate) => readText(candidate.id) === storeId)
+        : undefined
+      const storeByWidgetId = widgetId
+        ? stores.find((candidate) => readText(candidate.widgetId) === widgetId || readText(candidate.id) === widgetId)
+        : undefined
 
-      if (store?.id) {
+      store = storeById ?? storeByWidgetId ?? null
+
+      const resolvedStoreId = readText(store?.id)
+      if (resolvedStoreId) {
         const productResult = await adminDb.query({
           products: {
-            $: { where: { storeId: store.id } },
+            $: { where: { storeId: resolvedStoreId } },
           },
         })
 
         products = productResult.products ?? []
       }
-    }
-
-    if (!store && storeId) {
-      const result = await adminDb.query({
-        stores: {
-          $: {
-            where: {
-              id: storeId,
-            },
-          },
-        },
-        products: {
-          $: { where: { storeId } },
-        },
-      })
-
-      store = result.stores[0]
-      products = result.products ?? []
-    }
-
-    if (!store && widgetId) {
-      const result = await adminDb.query({
-        stores: {
-          $: {
-            where: {
-              id: widgetId,
-            },
-          },
-        },
-        products: {
-          $: { where: { storeId: widgetId } },
-        },
-      })
-
-      store = result.stores[0]
-      products = result.products ?? []
     }
 
     if (!store) {
@@ -133,7 +123,10 @@ async function handleGET(req: Request) {
       )
     }
 
-    store = await normalizeStorePublicIdentity(store)
+    store = {
+      ...store,
+      ...(await normalizeStorePublicIdentity(store)),
+    }
 
     const catalog = getCatalogSnapshot(products, store)
     const storeName = readText(store.name)
@@ -166,21 +159,21 @@ async function handleGET(req: Request) {
       apiBaseUrl: apiOrigin,
       storeId: store.id,
       widgetId: readText(store.widgetId),
-      publicApiKey: store.apiKey,
-      apiKey: store.apiKey,
+      publicApiKey: readText(store.apiKey),
+      apiKey: readText(store.apiKey),
       storeDomain: storeUrl || null,
       store: {
         id: store.id,
         name: storeName,
-        apiKey: store.apiKey,
+        apiKey: readText(store.apiKey),
         productCount: catalog.count,
         catalogSource: catalog.source,
       },
     })
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Widget config error:', error)
     return NextResponse.json(
-      { error: error.message },
+      { error: error instanceof Error ? error.message : 'Widget config error' },
       { status: 500 }
     )
   }
