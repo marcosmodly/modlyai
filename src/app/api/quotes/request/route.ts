@@ -297,11 +297,10 @@ async function getStoreEmailDestination({
     const { adminDb } = await getInstantAdmin();
     const result = await adminDb.query({
       stores: {
-        $: { where: { id: storeId } },
         user: {},
       },
     });
-    store = result.stores?.[0] ?? null;
+    store = result.stores?.find((candidate) => readText(candidate?.id) === storeId) ?? null;
   }
 
   const owner = Array.isArray(store?.user) ? store.user[0] : store?.user;

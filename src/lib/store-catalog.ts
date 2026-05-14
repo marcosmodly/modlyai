@@ -76,6 +76,12 @@ function normalizeDomain(value?: string) {
     .replace(/\/.*$/, '')
 }
 
+function readField(entity: unknown, key: string): string | undefined {
+  if (!entity || typeof entity !== 'object') return undefined
+  const value = (entity as Record<string, unknown>)[key]
+  return typeof value === 'string' && value.trim().length > 0 ? value.trim() : undefined
+}
+
 function ensureNumber(value: unknown): number {
   if (typeof value === 'number' && Number.isFinite(value)) return value
   if (typeof value === 'string') {
@@ -248,12 +254,14 @@ function normalizeCustomProducts(products: Array<Record<string, unknown>>) {
 
 export async function createStore(input: { name: string; userId: string }): Promise<Store> {
   const existing = await adminDb.query({
-    stores: {
-      $: { where: { userId: input.userId } },
-    },
+    stores: {},
   })
 
-  if (existing.stores[0]) {
+  const existingStore = existing.stores?.find((candidate) => {
+    return readField(candidate, 'userId') === input.userId
+  })
+
+  if (existingStore) {
     throw new Error('This user already has a store')
   }
 
@@ -306,7 +314,7 @@ export async function listStores(userId?: string): Promise<Store[]> {
   })
 
   return (result.stores ?? [])
-    .filter((store: any) => !userId || store.userId === userId)
+    .filter((store) => !userId || readField(store, 'userId') === userId)
     .map(mapStore)
 }
 
@@ -314,12 +322,14 @@ export async function findStoreByApiKey(apiKey: string): Promise<Store | null> {
   if (!apiKey) return null
 
   const result = await adminDb.query({
-    stores: {
-      $: { where: { apiKey } },
-    },
+    stores: {},
   })
 
-  return result.stores?.[0] ? mapStore(result.stores[0]) : null
+  const store = result.stores?.find((candidate) => {
+    return readField(candidate, 'apiKey') === apiKey
+  })
+
+  return store ? mapStore(store) : null
 }
 
 export async function findStoreByDomain(domain: string): Promise<Store | null> {
@@ -327,24 +337,28 @@ export async function findStoreByDomain(domain: string): Promise<Store | null> {
   if (!normalized) return null
 
   const result = await adminDb.query({
-    stores: {
-      $: { where: { domain: normalized } },
-    },
+    stores: {},
   })
 
-  return result.stores?.[0] ? mapStore(result.stores[0]) : null
+  const store = result.stores?.find((candidate) => {
+    return readField(candidate, 'domain') === normalized
+  })
+
+  return store ? mapStore(store) : null
 }
 
 export async function findStoreById(idValue: string): Promise<Store | null> {
   if (!idValue) return null
 
   const result = await adminDb.query({
-    stores: {
-      $: { where: { id: idValue } },
-    },
+    stores: {},
   })
 
-  return result.stores?.[0] ? mapStore(result.stores[0]) : null
+  const store = result.stores?.find((candidate) => {
+    return readField(candidate, 'id') === idValue
+  })
+
+  return store ? mapStore(store) : null
 }
 
 export async function findStoreByWidgetId(widgetId: string): Promise<Store | null> {
@@ -352,12 +366,14 @@ export async function findStoreByWidgetId(widgetId: string): Promise<Store | nul
   if (!normalizedWidgetId) return null
 
   const result = await adminDb.query({
-    stores: {
-      $: { where: { widgetId: normalizedWidgetId } },
-    },
+    stores: {},
   })
 
-  return result.stores?.[0] ? mapStore(result.stores[0]) : null
+  const store = result.stores?.find((candidate) => {
+    return readField(candidate, 'widgetId') === normalizedWidgetId
+  })
+
+  return store ? mapStore(store) : null
 }
 
 export async function updateStore(
@@ -423,12 +439,13 @@ export async function replaceStoreProducts(
 ): Promise<void> {
   const result = await adminDb.query({
     stores: {
-      $: { where: { id: storeId } },
       products: {},
     },
   })
 
-  const store = result.stores[0]
+  const store = result.stores.find((candidate) => {
+    return readField(candidate, 'id') === storeId
+  })
   const now = new Date().toISOString()
   const eventId = id()
 
@@ -477,16 +494,18 @@ export async function getStoreProducts(storeId: string): Promise<FurnitureItem[]
 
 export async function getActiveCatalogForStore(storeId: string): Promise<CatalogSnapshot<NormalizedCatalogProduct>> {
   const result = await adminDb.query({
-    stores: {
-      $: { where: { id: storeId } },
-    },
-    products: {
-      $: { where: { storeId } },
-    },
+    stores: {},
+    products: {},
   })
 
-  const store = result.stores[0] ?? null
-  return getCatalogSnapshot(result.products ?? [], store)
+  const store = result.stores.find((candidate) => {
+    return readField(candidate, 'id') === storeId
+  }) ?? null
+  const products = result.products?.filter((candidate) => {
+    return readField(candidate, 'storeId') === storeId
+  })
+
+  return getCatalogSnapshot(products ?? [], store)
 }
 
 export async function getStoreProductsByApiKey(apiKey: string): Promise<FurnitureItem[]> {
@@ -581,13 +600,14 @@ export async function getStoreAnalytics(storeId: string): Promise<{
 }> {
   const result = await adminDb.query({
     stores: {
-      $: { where: { id: storeId } },
       products: {},
       events: {},
     },
   })
 
-  const store = result.stores[0]
+  const store = result.stores.find((candidate) => {
+    return readField(candidate, 'id') === storeId
+  })
 
   return {
     productCount: store?.products?.length ?? 0,
