@@ -6,15 +6,39 @@ interface CustomizedFurnitureListProps {
   items: CustomizedFurnitureItem[];
   onItemRemoved?: () => void;
   onNavigateToCustomizer?: () => void;
+  onRequestQuote?: (item: CustomizedFurnitureItem) => void;
 }
+
+const formatCurrency = (value: number | undefined, prefix = '') =>
+  typeof value === 'number' && Number.isFinite(value)
+    ? `${prefix}$${value.toLocaleString()}`
+    : undefined;
+
+const formatChoiceName = (value: string | { name: string } | undefined): string | undefined =>
+  typeof value === 'string' ? value : value?.name;
+
+const formatDimension = (value: number | undefined) =>
+  typeof value === 'number' && Number.isFinite(value) ? `${value.toFixed(2)} m` : undefined;
+
+const uniqueByName = <T extends { name: string }>(values: T[]) => {
+  const seen = new Set<string>();
+  return values.filter((value) => {
+    const key = value.name.trim().toLowerCase();
+    if (!key || seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+};
 
 export default function CustomizedFurnitureList({
   items,
   onItemRemoved,
   onNavigateToCustomizer,
+  onRequestQuote,
 }: CustomizedFurnitureListProps) {
   const { storage } = useWidgetContext();
   const [removingId, setRemovingId] = useState<string | null>(null);
+  const [imageErrors, setImageErrors] = useState<Set<string>>(() => new Set());
 
   const handleRemove = async (id: string) => {
     if (!confirm('Are you sure you want to remove this customized furniture item?')) {
@@ -65,118 +89,206 @@ export default function CustomizedFurnitureList({
   }
 
   return (
-    <div className="space-y-6">
-      <h2 className="text-3xl font-bold text-text-heading mb-6">My Customized Furniture</h2>
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="space-y-5">
+      <div>
+        <h2 className="text-2xl font-bold text-gray-950">My Customized Furniture</h2>
+        <p className="mt-1 text-sm text-gray-500">{items.length} saved custom design{items.length === 1 ? '' : 's'}</p>
+      </div>
+
+      <div className={['grid grid-cols-1 gap-5', items.length === 1 ? 'mx-auto max-w-md' : 'sm:grid-cols-2 xl:grid-cols-3'].join(' ')}>
         {items.map((item) => {
-          const displayName = item.name;
-          const displayCategory = item.baseItemType;
-          const displayMaterials = item.materials;
+          const imageUrl = item.imageUrl?.trim();
+          const canShowImage = Boolean(imageUrl && !imageErrors.has(item.id));
+          const productName = item.productName || item.name;
+          const category = item.category || item.baseItemType;
+          const selectedColor = formatChoiceName(item.selectedColor) || item.colorScheme.primary;
+          const selectedMaterial = formatChoiceName(item.selectedMaterial) || item.materials.primary;
+          const addOns = uniqueByName(
+            item.selectedAddOns ??
+              item.ornamentDetails?.map((name) => ({ name })) ??
+              []
+          );
+          const shopifyOptions = (item.selectedShopifyOptions ?? []).filter(
+            (option) => option.name.trim() && option.value.trim()
+          );
+          const dimensionRows = [
+            ['Length', formatDimension(item.dimensions.length)],
+            ['Width', formatDimension(item.dimensions.width)],
+            ['Height', formatDimension(item.dimensions.height)],
+          ].filter((row): row is [string, string] => Boolean(row[1]));
+          const basePrice = formatCurrency(item.basePrice ?? item.price);
+          const customizationPrice = formatCurrency(item.customizationPrice, '+');
+          const estimatedTotal = formatCurrency(item.estimatedTotal);
 
           return (
-            <div
+            <article
               key={item.id}
-              className="bg-earth-card rounded-xl shadow-soft border border-earth-border overflow-hidden hover:shadow-lg transition-shadow relative"
+              className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-[0_18px_45px_rgba(15,23,42,0.08)] transition-shadow hover:shadow-[0_22px_55px_rgba(15,23,42,0.12)]"
             >
-              <div className="absolute top-4 right-4 z-10">
-                <span className="px-3 py-1 bg-earth-sage text-text-primary rounded-lg text-xs font-semibold">
+              <div className="relative p-3 pb-0">
+                <div className="aspect-[4/3] overflow-hidden rounded-xl border border-gray-100 bg-gray-50">
+                  {canShowImage ? (
+                    <img
+                      src={imageUrl}
+                      alt={productName}
+                      className="h-full w-full object-cover"
+                      onError={() =>
+                        setImageErrors((prev) => {
+                          const next = new Set(prev);
+                          next.add(item.id);
+                          return next;
+                        })
+                      }
+                    />
+                  ) : (
+                    <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-gray-50 to-stone-100 text-gray-300">
+                      <svg className="h-12 w-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                    </div>
+                  )}
+                </div>
+                <span className="absolute right-5 top-5 rounded-full bg-white/95 px-3 py-1 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-gray-200">
                   Custom
                 </span>
               </div>
 
-              <div className="w-full h-48 bg-earth-input flex items-center justify-center">
-                <svg className="w-16 h-16 text-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg>
-              </div>
-
-              <div className="p-6">
-                <div className="mb-4">
-                  <h3 className="text-xl font-semibold text-text-heading mb-1">{displayName}</h3>
-                  <p className="text-sm text-text-muted capitalize">{displayCategory}</p>
-                  <p className="text-xs text-text-muted mt-1">
-                    Saved {new Date(item.savedAt).toLocaleDateString()}
-                  </p>
-                </div>
-
-                <div className="mb-4 p-3 bg-earth-input rounded-xl border border-earth-border">
-                  <h4 className="text-sm font-semibold text-text-heading mb-2">Dimensions:</h4>
-                  <div className="text-sm text-text-primary space-y-1">
-                    <div>
-                      Length: <strong>{item.dimensions.length.toFixed(2)}m</strong>
-                    </div>
-                    <div>
-                      Width: <strong>{item.dimensions.width.toFixed(2)}m</strong>
-                    </div>
-                    <div>
-                      Height: <strong>{item.dimensions.height.toFixed(2)}m</strong>
-                    </div>
+              <div className="space-y-4 p-5">
+                <div>
+                  <h3 className="text-lg font-semibold leading-tight text-gray-950">{productName}</h3>
+                  <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-gray-500">
+                    {category && <span className="capitalize">{category}</span>}
+                    {category && <span aria-hidden="true">/</span>}
+                    <span>Saved {new Date(item.savedAt).toLocaleDateString()}</span>
                   </div>
                 </div>
 
-                <div className="mb-4">
-                  <h4 className="text-sm font-semibold text-text-heading mb-2">Colors:</h4>
-                  <div className="flex flex-wrap gap-2">
-                    <span className="px-3 py-1 bg-earth-input border border-earth-border rounded-lg text-sm text-text-primary">
-                      {item.colorScheme.primary}
-                    </span>
-                    {item.colorScheme.secondary && (
-                      <span className="px-3 py-1 bg-earth-input border border-earth-border rounded-lg text-sm text-text-primary">
-                        {item.colorScheme.secondary}
-                      </span>
-                    )}
-                    {item.colorScheme.accent && (
-                      <span className="px-3 py-1 bg-earth-input border border-earth-border rounded-lg text-sm text-text-primary">
-                        {item.colorScheme.accent}
-                      </span>
-                    )}
-                  </div>
-                </div>
-
-                {(displayMaterials.primary || displayMaterials.legs || displayMaterials.upholstery) && (
-                  <div className="mb-4">
-                    <h4 className="text-sm font-semibold text-text-heading mb-1">Materials:</h4>
-                    <p className="text-sm text-text-primary">
-                      {displayMaterials.primary}
-                      {displayMaterials.legs && ` | Legs: ${displayMaterials.legs}`}
-                      {displayMaterials.upholstery && ` | Upholstery: ${displayMaterials.upholstery}`}
-                    </p>
-                  </div>
-                )}
-
-                {item.ornamentDetails && item.ornamentDetails.length > 0 && (
-                  <div className="mb-4">
-                    <h4 className="text-sm font-semibold text-text-heading mb-2">Details:</h4>
-                    <div className="flex flex-wrap gap-2">
-                      {item.ornamentDetails.map((detail, index) => (
-                        <span
-                          key={index}
-                          className="text-xs bg-earth-sage/20 text-text-primary px-2 py-1 rounded"
-                        >
-                          {detail}
-                        </span>
+                {dimensionRows.length > 0 && (
+                  <div className="rounded-xl border border-gray-200 bg-gray-50 p-3">
+                    <p className="mb-2 text-xs font-semibold uppercase text-gray-500">Dimensions</p>
+                    <div className="grid grid-cols-3 gap-2">
+                      {dimensionRows.map(([label, value]) => (
+                        <div key={label}>
+                          <p className="text-[11px] text-gray-500">{label}</p>
+                          <p className="text-sm font-semibold text-gray-950">{value}</p>
+                        </div>
                       ))}
                     </div>
                   </div>
                 )}
 
-                {item.aiNotes && (
-                  <div className="mb-4 pt-4 border-t border-earth-border">
-                    <p className="text-xs text-text-muted line-clamp-2">{item.aiNotes}</p>
+                {(selectedColor || selectedMaterial || addOns.length > 0) && (
+                  <div className="space-y-3">
+                    {selectedColor && (
+                      <div>
+                        <p className="mb-2 text-xs font-semibold uppercase text-gray-500">Color</p>
+                        <span className="inline-flex rounded-full border border-emerald-100 bg-emerald-50 px-3 py-1 text-sm font-medium text-emerald-900">
+                          {selectedColor}
+                        </span>
+                      </div>
+                    )}
+
+                    {selectedMaterial && (
+                      <div>
+                        <p className="mb-2 text-xs font-semibold uppercase text-gray-500">Material</p>
+                        <span className="inline-flex rounded-full border border-stone-200 bg-stone-50 px-3 py-1 text-sm font-medium text-stone-900">
+                          {selectedMaterial}
+                        </span>
+                      </div>
+                    )}
+
+                    {addOns.length > 0 && (
+                      <div>
+                        <p className="mb-2 text-xs font-semibold uppercase text-gray-500">Add-ons</p>
+                        <div className="flex flex-wrap gap-2">
+                          {addOns.map((addOn) => (
+                            <span key={addOn.name} className="rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-900">
+                              {addOn.name}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                   </div>
                 )}
 
-                <div className="flex gap-2 pt-4 border-t border-earth-border">
-                  <button
-                    onClick={() => handleRemove(item.id)}
-                    disabled={removingId === item.id}
-                    className="flex-1 px-4 py-2 bg-red-500/10 border border-red-500/30 text-red-400 rounded-xl font-medium hover:bg-red-500/20 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
-                  >
-                    {removingId === item.id ? 'Removing...' : 'Remove'}
-                  </button>
+                {shopifyOptions.length > 0 && (
+                  <div>
+                    <p className="mb-2 text-xs font-semibold uppercase text-gray-500">Options</p>
+                    <div className="space-y-2 rounded-xl border border-gray-200 p-3">
+                      {shopifyOptions.map((option) => (
+                        <div key={`${option.name}-${option.value}`} className="flex items-center justify-between gap-3 text-sm">
+                          <span className="text-gray-500">{option.name}</span>
+                          <span className="text-right font-semibold text-gray-950">{option.value}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {(basePrice || customizationPrice || estimatedTotal || item.pricingMode === 'quote_required') && (
+                  <div className="space-y-2 rounded-xl border border-gray-200 bg-gray-50 p-3 text-sm">
+                    {basePrice && (
+                      <div className="flex items-center justify-between gap-3">
+                        <span className="text-gray-500">Base price</span>
+                        <span className="font-semibold text-gray-950">{basePrice}</span>
+                      </div>
+                    )}
+                    {customizationPrice && (
+                      <div className="flex items-center justify-between gap-3">
+                        <span className="text-gray-500">Customizations</span>
+                        <span className="font-semibold text-gray-950">{customizationPrice}</span>
+                      </div>
+                    )}
+                    <div className="flex items-center justify-between gap-3 border-t border-gray-200 pt-2">
+                      <span className="font-semibold text-gray-700">Estimated total</span>
+                      <span className="font-bold text-gray-950">
+                        {item.pricingMode === 'quote_required' ? 'Quote required' : estimatedTotal ?? 'Quote required'}
+                      </span>
+                    </div>
+                  </div>
+                )}
+
+                {item.customerRequestText?.trim() && (
+                  <div className="rounded-xl border border-amber-200 bg-amber-50 p-3">
+                    <p className="mb-1 text-xs font-semibold uppercase text-amber-800">Request</p>
+                    <p className="line-clamp-3 text-sm text-amber-950">{item.customerRequestText}</p>
+                  </div>
+                )}
+
+                <div className="space-y-2 border-t border-gray-100 pt-4">
+                  {onRequestQuote && (
+                    <button
+                      type="button"
+                      onClick={() => onRequestQuote(item)}
+                      className="w-full rounded-xl bg-gray-950 px-4 py-3 text-sm font-semibold text-white transition hover:bg-gray-800"
+                    >
+                      Request Quote
+                    </button>
+                  )}
+                  <div className="flex gap-2">
+                    {item.productUrl && (
+                      <a
+                        href={item.productUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="flex-1 rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-center text-sm font-semibold text-gray-700 transition hover:bg-gray-50"
+                      >
+                        View in Catalog
+                      </a>
+                    )}
+                    <button
+                      type="button"
+                      onClick={() => handleRemove(item.id)}
+                      disabled={removingId === item.id}
+                      className="flex-1 rounded-xl border border-red-200 bg-white px-4 py-2.5 text-sm font-semibold text-red-600 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                      {removingId === item.id ? 'Removing...' : 'Remove'}
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
+            </article>
           );
         })}
       </div>
