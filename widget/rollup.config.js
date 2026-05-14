@@ -45,10 +45,6 @@ export default [
       format: 'umd',
       name: 'ModlyWidget',
       sourcemap: true,
-      globals: {
-        react: 'React',
-        'react-dom': 'ReactDOM',
-      },
     },
     plugins: [
       resolve({
@@ -61,7 +57,6 @@ export default [
         minimize: true,
       }),
     ],
-    external: ['react', 'react-dom'],
   },
   // Type definitions
   {
