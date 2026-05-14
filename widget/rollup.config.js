@@ -74,8 +74,9 @@ export default [
       commonjs(),
       typescript({ tsconfig: './tsconfig.json' }),
       postcss({
-        extract: true,
-        minimize: true,
+        extract: false,
+        inject: false,
+        minimize: false,
       }),
     ],
   },
