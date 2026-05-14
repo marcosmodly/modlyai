@@ -37,6 +37,12 @@ function normalizeEmail(value?: string | null) {
   return String(value ?? '').trim().toLowerCase()
 }
 
+function readField(entity: unknown, key: string): string | undefined {
+  if (!entity || typeof entity !== 'object') return undefined
+  const value = (entity as Record<string, unknown>)[key]
+  return typeof value === 'string' && value.trim().length > 0 ? value.trim() : undefined
+}
+
 function newestFirst<T extends { createdAt?: unknown; updatedAt?: unknown }>(stores: T[]) {
   return [...stores].sort((a, b) => {
     const aDate = new Date(String(a.updatedAt ?? a.createdAt ?? 0)).getTime()
@@ -54,12 +60,14 @@ async function findStoreById(storeId: string) {
   if (!storeId) return null
 
   const result = await adminDb.query({
-    stores: {
-      $: { where: { id: storeId } },
-    },
+    stores: {},
   })
 
-  return (result.stores?.[0] as CurrentStore | undefined) ?? null
+  const store = result.stores?.find((candidate) => {
+    return readField(candidate, 'id') === storeId
+  })
+
+  return (store as CurrentStore | undefined) ?? null
 }
 
 async function repairStoreWidgetId(store: CurrentStore): Promise<CurrentStore> {
@@ -109,12 +117,14 @@ async function findStoreByUserId(userId: string) {
   if (!userId) return null
 
   const result = await adminDb.query({
-    stores: {
-      $: { where: { userId } },
-    },
+    stores: {},
   })
 
-  return newestFirst((result.stores ?? []) as CurrentStore[])[0] ?? null
+  const stores = result.stores?.filter((candidate) => {
+    return readField(candidate, 'userId') === userId
+  })
+
+  return newestFirst((stores ?? []) as CurrentStore[])[0] ?? null
 }
 
 async function findLinkedStoreByUserId(userId: string) {
@@ -134,12 +144,14 @@ async function findStoreByOwnerEmail(email: string) {
   if (!email) return null
 
   const result = await adminDb.query({
-    stores: {
-      $: { where: { ownerEmail: email } },
-    },
+    stores: {},
   })
 
-  return newestFirst((result.stores ?? []) as CurrentStore[])[0] ?? null
+  const stores = result.stores?.filter((candidate) => {
+    return readField(candidate, 'ownerEmail') === email
+  })
+
+  return newestFirst((stores ?? []) as CurrentStore[])[0] ?? null
 }
 
 async function findLinkedStoreByUserEmail(email: string, expectedUserId: string) {
