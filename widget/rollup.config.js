@@ -7,6 +7,26 @@ import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
 const packageJson = require('./package.json');
+const productionEnvReplacement = JSON.stringify('production');
+
+function replaceBrowserProductionEnv() {
+  const replaceNodeEnv = (code) =>
+    code.includes('process.env.NODE_ENV')
+      ? code.split('process.env.NODE_ENV').join(productionEnvReplacement)
+      : null;
+
+  return {
+    name: 'replace-browser-production-env',
+    transform(code) {
+      const updatedCode = replaceNodeEnv(code);
+      return updatedCode ? { code: updatedCode, map: null } : null;
+    },
+    renderChunk(code) {
+      const updatedCode = replaceNodeEnv(code);
+      return updatedCode ? { code: updatedCode, map: null } : null;
+    },
+  };
+}
 
 export default [
   // Library builds (existing)
@@ -47,6 +67,7 @@ export default [
       sourcemap: true,
     },
     plugins: [
+      replaceBrowserProductionEnv(),
       resolve({
         browser: true,
       }),
