@@ -72,6 +72,13 @@ function readText(value: unknown, fallback = '') {
   return typeof value === 'string' && value.trim() ? value.trim() : fallback
 }
 
+function readField(entity: unknown, key: string) {
+  if (!isRecord(entity)) return undefined
+
+  const value = entity[key]
+  return typeof value === 'string' && value.trim().length > 0 ? value.trim() : undefined
+}
+
 async function handleGET(req: Request) {
   try {
     const { searchParams } = new URL(req.url)
@@ -96,10 +103,13 @@ async function handleGET(req: Request) {
 
       const stores = storesResult.stores ?? []
       const storeById = storeId
-        ? stores.find((candidate) => readText(candidate.id) === storeId)
+        ? stores.find((candidate) => readField(candidate, 'id') === storeId)
         : undefined
       const storeByWidgetId = widgetId
-        ? stores.find((candidate) => readText(candidate.widgetId) === widgetId || readText(candidate.id) === widgetId)
+        ? stores.find((candidate) =>
+            readField(candidate, 'widgetId') === widgetId ||
+            readField(candidate, 'id') === widgetId
+          )
         : undefined
 
       store = storeById ?? storeByWidgetId ?? null
