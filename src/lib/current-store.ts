@@ -14,8 +14,8 @@ export type CurrentStore = {
   widgetId?: string | null
   userId?: string | null
   ownerEmail?: string | null
-  stripeCustomerId?: string | null
-  stripeSubscriptionId?: string | null
+  paddleCustomerId?: string | null
+  paddleSubscriptionId?: string | null
   subscriptionStatus?: string | null
   subscriptionPlan?: string | null
   currentPeriodEnd?: string | null

@@ -5,35 +5,31 @@ import { useEffect, useMemo, useState } from 'react'
 
 type BillingCheckoutStatusProps = {
   checkoutCompleted: boolean
-  checkoutSessionId?: string
   subscriptionPlan?: string
   subscriptionStatus?: string
-  syncFailed?: boolean
 }
 
-function hasActivePaidSubscription(plan?: string, status?: string) {
+function hasConfirmedSubscription(plan?: string, status?: string) {
   const normalizedPlan = String(plan || '').toLowerCase()
   const normalizedStatus = String(status || '').toLowerCase()
-  return (normalizedPlan === 'starter' || normalizedPlan === 'growth') && normalizedStatus === 'active'
+  return (
+    (normalizedPlan === 'starter' || normalizedPlan === 'growth') &&
+    (normalizedStatus === 'active' || normalizedStatus === 'trialing')
+  )
 }
 
 export default function BillingCheckoutStatus({
   checkoutCompleted,
-  checkoutSessionId,
   subscriptionPlan,
   subscriptionStatus,
-  syncFailed,
 }: BillingCheckoutStatusProps) {
   const router = useRouter()
   const [timedOut, setTimedOut] = useState(false)
-  const activePaidSubscription = hasActivePaidSubscription(subscriptionPlan, subscriptionStatus)
-  const storageKey = useMemo(
-    () => `modly-billing-checkout-start:${checkoutSessionId || 'latest'}`,
-    [checkoutSessionId]
-  )
+  const confirmedSubscription = hasConfirmedSubscription(subscriptionPlan, subscriptionStatus)
+  const storageKey = useMemo(() => 'modly-billing-checkout-start:latest', [])
 
   useEffect(() => {
-    if (!checkoutCompleted || activePaidSubscription || syncFailed) return
+    if (!checkoutCompleted || confirmedSubscription) return
 
     const existingStart = Number(window.sessionStorage.getItem(storageKey))
     const startTime = Number.isFinite(existingStart) && existingStart > 0 ? existingStart : Date.now()
@@ -55,27 +51,19 @@ export default function BillingCheckoutStatus({
       window.clearTimeout(timeoutId)
       window.clearInterval(intervalId)
     }
-  }, [activePaidSubscription, checkoutCompleted, router, storageKey, syncFailed])
+  }, [confirmedSubscription, checkoutCompleted, router, storageKey])
 
   useEffect(() => {
-    if (!checkoutCompleted || !activePaidSubscription) return
+    if (!checkoutCompleted || !confirmedSubscription) return
     window.sessionStorage.removeItem(storageKey)
-  }, [activePaidSubscription, checkoutCompleted, storageKey])
+  }, [confirmedSubscription, checkoutCompleted, storageKey])
 
   if (!checkoutCompleted) return null
 
-  if (activePaidSubscription) {
+  if (confirmedSubscription) {
     return (
       <section className="rounded-2xl border border-emerald-200 bg-emerald-50 p-5 text-sm font-medium text-emerald-900">
         Payment completed. Billing status updated.
-      </section>
-    )
-  }
-
-  if (syncFailed) {
-    return (
-      <section className="rounded-2xl border border-amber-200 bg-amber-50 p-5 text-sm font-medium text-amber-900">
-        Payment completed, but billing status has not updated yet. Check webhook logs.
       </section>
     )
   }

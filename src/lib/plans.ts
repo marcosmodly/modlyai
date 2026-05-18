@@ -13,7 +13,7 @@ export const plans = {
   starter: {
     label: 'Starter',
     priceMonthly: 299,
-    stripePriceEnv: 'STRIPE_PRICE_STARTER',
+    paddlePriceEnv: 'PADDLE_PRICE_STARTER',
     aiChatLimit: 1000,
     roomPlannerLimit: 150,
     storeLimit: 1,
@@ -26,7 +26,7 @@ export const plans = {
   growth: {
     label: 'Growth',
     priceMonthly: 599,
-    stripePriceEnv: 'STRIPE_PRICE_GROWTH',
+    paddlePriceEnv: 'PADDLE_PRICE_GROWTH',
     aiChatLimit: 5000,
     roomPlannerLimit: 750,
     storeLimit: 3,
@@ -66,6 +66,11 @@ type BillingAccessStoreLike = {
 
 export function isCheckoutPlan(plan: unknown): plan is CheckoutPlanId {
   return plan === 'starter' || plan === 'growth'
+}
+
+export function getPaddlePriceId(plan: CheckoutPlanId) {
+  const priceEnvName = plans[plan].paddlePriceEnv
+  return process.env[priceEnvName] || ''
 }
 
 function periodEndTime(currentPeriodEnd?: string | Date | null) {

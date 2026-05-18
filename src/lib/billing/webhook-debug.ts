@@ -1,4 +1,4 @@
-type StripeWebhookTargetStore = {
+type PaddleWebhookTargetStore = {
   eventType: string
   storeId?: string
   plan?: string
@@ -7,19 +7,19 @@ type StripeWebhookTargetStore = {
   createdAt: string
 }
 
-const globalKey = '__modlyStripeWebhookTargetStoreIds'
+const globalKey = '__modlyPaddleWebhookTargetStoreIds'
 
-type GlobalWithStripeWebhookDebug = typeof globalThis & {
-  [globalKey]?: StripeWebhookTargetStore[]
+type GlobalWithPaddleWebhookDebug = typeof globalThis & {
+  [globalKey]?: PaddleWebhookTargetStore[]
 }
 
 function targetStoreLog() {
-  const globalObject = globalThis as GlobalWithStripeWebhookDebug
+  const globalObject = globalThis as GlobalWithPaddleWebhookDebug
   globalObject[globalKey] ??= []
   return globalObject[globalKey]
 }
 
-export function rememberStripeWebhookTargetStore(entry: Omit<StripeWebhookTargetStore, 'createdAt'>) {
+export function rememberPaddleWebhookTargetStore(entry: Omit<PaddleWebhookTargetStore, 'createdAt'>) {
   if (process.env.NODE_ENV === 'production') return
 
   const log = targetStoreLog()
@@ -30,6 +30,6 @@ export function rememberStripeWebhookTargetStore(entry: Omit<StripeWebhookTarget
   log.splice(20)
 }
 
-export function recentStripeWebhookTargetStoreIds() {
+export function recentPaddleWebhookTargetStoreIds() {
   return targetStoreLog()
 }

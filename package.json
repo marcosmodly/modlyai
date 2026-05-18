@@ -12,6 +12,8 @@
     "@instantdb/admin": "^1.0.12",
     "@instantdb/core": "^1.0.12",
     "@instantdb/react": "^1.0.13",
+    "@paddle/paddle-js": "^1.6.4",
+    "@paddle/paddle-node-sdk": "^3.8.0",
     "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20.14.12",
     "@types/react": "^18.3.3",
@@ -25,7 +27,6 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "resend": "^6.8.0",
-    "stripe": "^22.1.1",
     "typescript": "^5.5.4"
   },
   "devDependencies": {

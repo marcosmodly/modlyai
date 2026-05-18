@@ -5,7 +5,6 @@ import BillingCard from '@/components/dashboard/BillingCard'
 import BillingCheckoutStatus from '@/components/dashboard/BillingCheckoutStatus'
 import NoStoreState from '@/components/dashboard/NoStoreState'
 import { authOptions } from '@/lib/auth-options'
-import { syncCheckoutSessionToCurrentStore } from '@/lib/billing/post-checkout-sync'
 import { syncMissingCurrentPeriodEndForBillingStore } from '@/lib/billing/sync-current-period-end'
 import { getCurrentStoreForUser } from '@/lib/current-store'
 import { adminDb } from '@/lib/instant-admin'
@@ -16,7 +15,7 @@ export const revalidate = 0
 export default async function BillingPage({
   searchParams,
 }: {
-  searchParams?: { session_id?: string; billing?: string; portal_return?: string }
+  searchParams?: { billing?: string }
 }) {
   noStore()
 
@@ -26,7 +25,7 @@ export default async function BillingPage({
     redirect('/auth/signin')
   }
 
-  const checkoutCompleted = searchParams?.billing === 'success' || Boolean(searchParams?.session_id)
+  const checkoutCompleted = searchParams?.billing === 'success'
   const currentStore = await getCurrentStoreForUser(session.user)
   const storeId = currentStore?.id ? String(currentStore.id) : ''
 
@@ -34,21 +33,7 @@ export default async function BillingPage({
     return <NoStoreState title="Billing" />
   }
 
-  const portalReturn = searchParams?.portal_return === 'true'
-  let checkoutSyncFailed = false
   let store = currentStore
-
-  if (checkoutCompleted && searchParams?.session_id) {
-    const checkoutSync = await syncCheckoutSessionToCurrentStore({
-      sessionId: searchParams.session_id,
-      currentStore,
-    })
-    checkoutSyncFailed = checkoutSync.failed
-
-    if (checkoutSync.readBack) {
-      store = { ...store, ...checkoutSync.readBack }
-    }
-  }
 
   const result = await adminDb.query({
     products: {
@@ -57,7 +42,7 @@ export default async function BillingPage({
   })
 
   store = await syncMissingCurrentPeriodEndForBillingStore(store, storeId, {
-    force: portalReturn,
+    force: checkoutCompleted,
   })
 
   if (process.env.NODE_ENV !== 'production') {
@@ -65,10 +50,10 @@ export default async function BillingPage({
       storeId: store.id,
       subscriptionPlan: store.subscriptionPlan,
       subscriptionStatus: store.subscriptionStatus,
-      stripeSubscriptionId: store.stripeSubscriptionId,
+      paddleSubscriptionId: store.paddleSubscriptionId,
       currentPeriodEnd: store.currentPeriodEnd,
       cancelAtPeriodEnd: store.cancelAtPeriodEnd,
-      portalReturn,
+      checkoutCompleted,
     })
   }
 
@@ -76,16 +61,15 @@ export default async function BillingPage({
     <div className="space-y-6">
       <BillingCheckoutStatus
         checkoutCompleted={checkoutCompleted}
-        checkoutSessionId={searchParams?.session_id}
         subscriptionPlan={store.subscriptionPlan ?? undefined}
         subscriptionStatus={store.subscriptionStatus ?? undefined}
-        syncFailed={checkoutSyncFailed}
       />
       <BillingCard
+        userEmail={session.user.email}
         store={{
           id: store.id,
-          stripeCustomerId: store.stripeCustomerId ?? undefined,
-          stripeSubscriptionId: store.stripeSubscriptionId ?? undefined,
+          paddleCustomerId: store.paddleCustomerId ?? undefined,
+          paddleSubscriptionId: store.paddleSubscriptionId ?? undefined,
           subscriptionStatus: store.subscriptionStatus ?? undefined,
           subscriptionPlan: store.subscriptionPlan ?? undefined,
           currentPeriodEnd: store.currentPeriodEnd ?? undefined,

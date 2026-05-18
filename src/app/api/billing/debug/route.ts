@@ -1,15 +1,15 @@
 import { getServerSession } from 'next-auth'
 import { NextResponse } from 'next/server'
 import { authOptions } from '@/lib/auth-options'
-import { recentStripeWebhookTargetStoreIds } from '@/lib/billing/webhook-debug'
+import { recentPaddleWebhookTargetStoreIds } from '@/lib/billing/webhook-debug'
 import { getCurrentStoreForUser } from '@/lib/current-store'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
 export async function GET() {
-  if (process.env.NODE_ENV === "production") {
-    return NextResponse.json({ error: "Not found" }, { status: 404 })
+  if (process.env.NODE_ENV === 'production') {
+    return NextResponse.json({ error: 'Not found' }, { status: 404 })
   }
 
   const session = await getServerSession(authOptions)
@@ -27,8 +27,8 @@ export async function GET() {
         userId: store.userId,
         subscriptionPlan: store.subscriptionPlan,
         subscriptionStatus: store.subscriptionStatus,
-        stripeCustomerId: store.stripeCustomerId,
-        stripeSubscriptionId: store.stripeSubscriptionId,
+        paddleCustomerId: store.paddleCustomerId,
+        paddleSubscriptionId: store.paddleSubscriptionId,
         currentPeriodEnd: store.currentPeriodEnd,
         cancelAtPeriodEnd: store.cancelAtPeriodEnd,
         trialEndsAt: store.trialEndsAt,
@@ -41,6 +41,6 @@ export async function GET() {
     currentUserId: session.user.id ?? null,
     currentStoreId: store?.id ?? null,
     currentStoreBillingFields,
-    recentStripeWebhookTargetStoreIds: recentStripeWebhookTargetStoreIds(),
+    recentPaddleWebhookTargetStoreIds: recentPaddleWebhookTargetStoreIds(),
   })
 }

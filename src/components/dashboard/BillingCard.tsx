@@ -3,6 +3,7 @@
 import { Check, ExternalLink } from 'lucide-react'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
+import { openPaddleCheckout, openPaddleCustomerPortal } from '@/lib/billing/paddle-checkout'
 import { getBillingAccess } from '@/lib/billing/access'
 import {
   formatLimit,
@@ -16,8 +17,8 @@ import {
 
 type BillingStore = {
   id?: string
-  stripeCustomerId?: string
-  stripeSubscriptionId?: string
+  paddleCustomerId?: string
+  paddleSubscriptionId?: string
   subscriptionStatus?: string
   subscriptionPlan?: string
   currentPeriodEnd?: string
@@ -122,7 +123,13 @@ function hasDatePassed(value?: string) {
   return Number.isFinite(time) && time <= Date.now()
 }
 
-export default function BillingCard({ store }: { store: BillingStore }) {
+export default function BillingCard({
+  store,
+  userEmail,
+}: {
+  store: BillingStore
+  userEmail?: string | null
+}) {
   const [loadingPlan, setLoadingPlan] = useState<CheckoutPlanId | null>(null)
   const [portalLoading, setPortalLoading] = useState(false)
   const [error, setError] = useState('')
@@ -131,8 +138,8 @@ export default function BillingCard({ store }: { store: BillingStore }) {
   const paidPlan = isCheckoutPlan(store.subscriptionPlan)
   const billingPlan = normalizePlan(store.subscriptionPlan)
   const hasPaidSubscription = access.isPaid && access.hasActiveAccess
-  const hasStripeCustomer = Boolean(store.stripeCustomerId)
-  const canManageBilling = hasStripeCustomer || hasPaidSubscription
+  const hasPaddleCustomer = Boolean(store.paddleCustomerId)
+  const canManageBilling = hasPaddleCustomer || hasPaidSubscription
   const cancelingAtPeriodEnd = isCancelAtPeriodEnd(store.cancelAtPeriodEnd)
   const periodEnded = hasDatePassed(store.currentPeriodEnd)
   const subscriptionCanceled = store.subscriptionStatus === 'canceled'
@@ -173,8 +180,8 @@ export default function BillingCard({ store }: { store: BillingStore }) {
       storeId: store.id,
       subscriptionPlan: store.subscriptionPlan,
       subscriptionStatus: store.subscriptionStatus,
-      stripeCustomerId: store.stripeCustomerId,
-      stripeSubscriptionId: store.stripeSubscriptionId,
+      paddleCustomerId: store.paddleCustomerId,
+      paddleSubscriptionId: store.paddleSubscriptionId,
       currentPeriodEnd: store.currentPeriodEnd,
       cancelAtPeriodEnd: store.cancelAtPeriodEnd,
     })
@@ -182,8 +189,8 @@ export default function BillingCard({ store }: { store: BillingStore }) {
     store.id,
     store.subscriptionPlan,
     store.subscriptionStatus,
-    store.stripeCustomerId,
-    store.stripeSubscriptionId,
+    store.paddleCustomerId,
+    store.paddleSubscriptionId,
     store.currentPeriodEnd,
     store.cancelAtPeriodEnd,
   ])
@@ -208,45 +215,42 @@ export default function BillingCard({ store }: { store: BillingStore }) {
   const warning = usageMessage(usageRows)
 
   const startCheckout = async (plan: CheckoutPlanId) => {
+    if (!store.id) {
+      setError('Missing store for checkout.')
+      return
+    }
+
     setLoadingPlan(plan)
     setError('')
 
     try {
-      const response = await fetch('/api/billing/checkout', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ plan }),
+      await openPaddleCheckout({
+        plan,
+        storeId: store.id,
+        email: userEmail,
+        paddleCustomerId: store.paddleCustomerId,
       })
-      const result = await response.json()
-
-      if (!response.ok || !result?.url) {
-        throw new Error(result?.error || 'Unable to start checkout')
-      }
-
-      window.location.href = result.url
     } catch (checkoutError) {
       setError(checkoutError instanceof Error ? checkoutError.message : 'Unable to start checkout')
+    } finally {
       setLoadingPlan(null)
     }
   }
 
   const openBillingPortal = async () => {
+    if (!store.paddleCustomerId) {
+      setError('No Paddle customer found for this account.')
+      return
+    }
+
     setPortalLoading(true)
     setError('')
 
     try {
-      const response = await fetch('/api/billing/portal', {
-        method: 'POST',
-      })
-      const result = await response.json()
-
-      if (!response.ok || !result?.url) {
-        throw new Error(result?.error || 'Unable to open billing portal')
-      }
-
-      window.location.href = result.url
+      await openPaddleCustomerPortal(store.paddleCustomerId)
     } catch (portalError) {
       setError(portalError instanceof Error ? portalError.message : 'Unable to open billing portal')
+    } finally {
       setPortalLoading(false)
     }
   }
@@ -288,7 +292,7 @@ export default function BillingCard({ store }: { store: BillingStore }) {
               {cancelingAtPeriodEnd && periodDate
                 ? `Your plan will cancel on ${periodDate}. You can continue using paid features until then.`
                 : isPaymentIssue
-                  ? 'There is a billing issue on this subscription. Update billing in Stripe to keep paid features available.'
+                  ? 'There is a billing issue on this subscription. Update billing in Paddle to keep paid features available.'
                   : hasPaidSubscription
                 ? 'Your current monthly plan allowance.'
                 : trialExpired
@@ -328,7 +332,7 @@ export default function BillingCard({ store }: { store: BillingStore }) {
           <div className="max-w-2xl">
             <h3 className="text-lg font-bold text-stone-950">Manage billing</h3>
             <p className="mt-1 text-sm leading-6 text-stone-600">
-              Update payment methods, view invoices, change your plan, or cancel your subscription through Stripe.
+              Update payment methods, view invoices, change your plan, or cancel your subscription through Paddle.
             </p>
             <div className="mt-4 grid gap-3 sm:grid-cols-3">
               <div className="rounded-xl bg-white px-4 py-3">
@@ -434,7 +438,7 @@ export default function BillingCard({ store }: { store: BillingStore }) {
                     disabled={loadingPlan !== null}
                     className="mt-5 inline-flex w-full items-center justify-center rounded-xl bg-stone-950 px-4 py-3 text-sm font-semibold text-white transition hover:bg-stone-800 disabled:cursor-not-allowed disabled:opacity-60"
                   >
-                    {loadingPlan === checkoutPlan ? 'Redirecting...' : 'Subscribe'}
+                    {loadingPlan === checkoutPlan ? 'Opening checkout...' : 'Start 14-day free trial'}
                   </button>
                 )
               })()

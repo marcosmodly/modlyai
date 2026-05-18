@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import AuthSessionProvider from "@/components/AuthSessionProvider";
+import PaddleProvider from "@/components/PaddleProvider";
 import Navbar from "@/components/Navbar";
 import ConditionalWidgetButton from "@/components/ConditionalWidgetButton";
 import SiteFooter from "@/components/SiteFooter";
@@ -24,6 +25,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.className} flex min-h-screen flex-col`}>
         <AuthSessionProvider>
+          <PaddleProvider>
           <Script
             type="module"
             src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.3.0/model-viewer.min.js"
@@ -33,6 +35,7 @@ export default function RootLayout({
           <div className="flex-1">{children}</div>
           <SiteFooter showDemoDisclaimer={isDemoMode} />
           <ConditionalWidgetButton />
+          </PaddleProvider>
         </AuthSessionProvider>
       </body>
     </html>

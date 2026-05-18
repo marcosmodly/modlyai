@@ -7,8 +7,8 @@ import { getCurrentStoreForUser } from '@/lib/current-store'
 export const runtime = 'nodejs'
 
 export async function POST() {
-  if (process.env.NODE_ENV === "production") {
-    return NextResponse.json({ error: "Not found" }, { status: 404 })
+  if (process.env.NODE_ENV === 'production') {
+    return NextResponse.json({ error: 'Not found' }, { status: 404 })
   }
 
   try {
@@ -25,8 +25,8 @@ export async function POST() {
       return NextResponse.json({ error: 'No current store found.' }, { status: 404 })
     }
 
-    if (!store.stripeSubscriptionId) {
-      return NextResponse.json({ error: 'No Stripe subscription found for current store.' }, { status: 400 })
+    if (!store.paddleSubscriptionId) {
+      return NextResponse.json({ error: 'No Paddle subscription found for current store.' }, { status: 400 })
     }
 
     const updatedStore = await syncMissingCurrentPeriodEndForBillingStore(store, storeId, {
@@ -35,7 +35,7 @@ export async function POST() {
 
     return NextResponse.json({
       storeId: updatedStore.id,
-      stripeSubscriptionId: updatedStore.stripeSubscriptionId,
+      paddleSubscriptionId: updatedStore.paddleSubscriptionId,
       subscriptionStatus: updatedStore.subscriptionStatus,
       currentPeriodEnd: updatedStore.currentPeriodEnd,
       cancelAtPeriodEnd: updatedStore.cancelAtPeriodEnd,

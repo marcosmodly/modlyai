@@ -126,7 +126,7 @@ export function getBillingAccess(store?: BillingAccessStore | null, nowInput: Da
         isPaid: true,
         isTrialExpired: false,
         hasActiveAccess: true,
-        reason: 'stripe_trialing',
+        reason: 'paddle_trialing',
         trialDaysLeft: 0,
         currentPeriodEnd,
         cancelAtPeriodEnd,
