@@ -4,8 +4,8 @@ import Script from "next/script";
 import "./globals.css";
 import AuthSessionProvider from "@/components/AuthSessionProvider";
 import Navbar from "@/components/Navbar";
-import DemoDisclaimer from "@/components/DemoDisclaimer";
 import ConditionalWidgetButton from "@/components/ConditionalWidgetButton";
+import SiteFooter from "@/components/SiteFooter";
 
 const inter = Inter({ subsets: ["latin"] });
 const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === 'true';
@@ -22,7 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${inter.className} flex min-h-screen flex-col`}>
         <AuthSessionProvider>
           <Script
             type="module"
@@ -30,12 +30,8 @@ export default function RootLayout({
             strategy="lazyOnload"
           />
           <Navbar />
-          {children}
-          {isDemoMode && (
-            <footer className="mt-12 border-t border-subtle bg-dark-base px-6 py-4 text-center text-sm text-text-secondary">
-              <DemoDisclaimer />
-            </footer>
-          )}
+          <div className="flex-1">{children}</div>
+          <SiteFooter showDemoDisclaimer={isDemoMode} />
           <ConditionalWidgetButton />
         </AuthSessionProvider>
       </body>

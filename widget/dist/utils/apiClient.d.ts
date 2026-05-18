@@ -3,6 +3,7 @@ import { WidgetConfig } from './config';
 export declare class ApiClient {
     private config;
     constructor(config: WidgetConfig);
+    private isAbsoluteUrl;
     private getBaseUrl;
     private getEndpoint;
     private withStoreQuery;
@@ -10,6 +11,9 @@ export declare class ApiClient {
     private normalizeCatalogProductForChat;
     private getCatalogForChat;
     private normalizeChatResponse;
+    private createTextChatResponse;
+    private readErrorResponse;
+    private getFriendlyApiError;
     analyzeRoom(photos: File[], dimensions: RoomDimensions, preferences?: RoomPreferences): Promise<RoomAnalysisResponse>;
     customizeFurniture(config: CustomizationConfig): Promise<any>;
     chat(request: ChatRequest): Promise<ChatResponse>;

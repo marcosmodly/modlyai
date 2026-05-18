@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { FormEvent, useMemo, useState } from 'react';
 import { Calendar, Clock, CheckCircle, TrendingDown, TrendingUp, Users } from 'lucide-react';
 
@@ -234,7 +235,15 @@ export default function ContactPage() {
                 </button>
 
                 <p className="text-xs text-gray-500 text-center">
-                  By submitting, you agree to our Terms of Service and Privacy Policy
+                  By submitting, you agree to our{' '}
+                  <Link href="/terms" className="text-gray-600 underline-offset-2 hover:underline">
+                    Terms of Service
+                  </Link>{' '}
+                  and{' '}
+                  <Link href="/privacy" className="text-gray-600 underline-offset-2 hover:underline">
+                    Privacy Policy
+                  </Link>
+                  .
                 </p>
               </form>
             </div>

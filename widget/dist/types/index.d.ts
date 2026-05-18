@@ -51,6 +51,13 @@ export interface FurnitureItem {
     productUrl?: string;
     url?: string;
     handle?: string;
+    source?: string;
+    price?: number;
+    externalId?: string;
+    shopifyProductId?: string;
+    storeId?: string;
+    status?: string;
+    customizationOptions?: unknown;
 }
 export interface Recommendation {
     item: FurnitureItem;
@@ -77,6 +84,12 @@ export interface CustomizationConfig {
     baseItemId?: string;
     baseItemType?: string;
     baseItemName?: string;
+    source?: string;
+    productUrl?: string;
+    price?: number;
+    externalId?: string;
+    shopifyProductId?: string;
+    storeId?: string;
     colorScheme: {
         primary: string;
         secondary?: string;
@@ -110,10 +123,29 @@ export interface RoomAnalysisResponse {
         };
     };
 }
+export interface SelectedPricedCustomization {
+    name: string;
+    price?: number;
+}
+export interface SelectedShopifyOption {
+    name: string;
+    value: string;
+    price?: number;
+}
 export interface CustomizedFurnitureItem {
     id: string;
     savedAt: string;
     productId?: string;
+    productName?: string;
+    category?: string;
+    imageUrl?: string;
+    source?: string;
+    productUrl?: string;
+    price?: number;
+    externalId?: string;
+    shopifyProductId?: string;
+    storeId?: string;
+    widgetId?: string;
     name: string;
     baseItemType: string;
     dimensions: {
@@ -139,6 +171,32 @@ export interface CustomizedFurnitureItem {
         width?: number;
         height?: number;
     };
+    selectedColor?: string | SelectedPricedCustomization;
+    selectedColorPrice?: number;
+    selectedMaterial?: string | SelectedPricedCustomization;
+    selectedMaterialPrice?: number;
+    selectedShopifyOptions?: SelectedShopifyOption[];
+    selectedDimensions?: {
+        length?: number;
+        width?: number;
+        height?: number;
+        unit?: string;
+    };
+    dimensionPriceAdjustments?: {
+        width?: number;
+        length?: number;
+        height?: number;
+        total?: number;
+    };
+    selectedAddOns?: Array<{
+        name: string;
+        price?: number;
+    }>;
+    customerRequestText?: string;
+    customizationPrice?: number;
+    estimatedTotal?: number;
+    basePrice?: number;
+    pricingMode?: 'estimated' | 'quote_required';
 }
 export type MessageRole = 'user' | 'assistant' | 'system';
 export type MessageType = 'text' | 'recommendations' | 'question' | 'action' | 'thinking';
@@ -200,6 +258,11 @@ export interface ChatCatalogProduct {
     productUrl?: string;
     url?: string;
     handle?: string;
+    externalId?: string;
+    shopifyProductId?: string;
+    storeId?: string;
+    status?: string;
+    customizationOptions?: unknown;
 }
 export interface ChatCatalogPayload {
     source?: 'instantdb' | 'csv' | 'shopify' | 'manual' | 'woocommerce' | 'bigcommerce' | 'none' | string;
@@ -232,12 +295,27 @@ export interface ChatResponse {
     };
 }
 export interface QuoteRequest {
-    name: string;
-    email: string;
+    customer: {
+        name: string;
+        email: string;
+        phone?: string;
+        message?: string;
+    };
+    name?: string;
+    email?: string;
     phone?: string;
     notes?: string;
     quoteEmail?: string;
+    supportEmail?: string;
+    storeId?: string;
+    widgetId?: string;
+    source?: string;
     item: {
+        productId?: string;
+        productName?: string;
+        category?: string;
+        imageUrl?: string;
+        savedAt?: string;
         name: string;
         dimensions: {
             length: number;
@@ -252,7 +330,40 @@ export interface QuoteRequest {
             secondary?: string;
             accent?: string;
         };
+        productUrl?: string;
+        price?: number;
+        externalId?: string;
+        shopifyProductId?: string;
+        storeId?: string;
+        widgetId?: string;
+        source?: string;
         aiNotes?: string;
+        basePrice?: number;
+        selectedColor?: string | SelectedPricedCustomization;
+        selectedColorPrice?: number;
+        selectedMaterial?: string | SelectedPricedCustomization;
+        selectedMaterialPrice?: number;
+        selectedShopifyOptions?: SelectedShopifyOption[];
+        selectedDimensions?: {
+            length?: number;
+            width?: number;
+            height?: number;
+            unit?: string;
+        };
+        dimensionPriceAdjustments?: {
+            width?: number;
+            length?: number;
+            height?: number;
+            total?: number;
+        };
+        selectedAddOns?: Array<{
+            name: string;
+            price?: number;
+        }>;
+        customerRequestText?: string;
+        customizationPrice?: number;
+        estimatedTotal?: number;
+        pricingMode?: 'estimated' | 'quote_required';
         placement?: {
             wall?: string;
             position?: string;
@@ -262,11 +373,50 @@ export interface QuoteRequest {
             };
             reasoning?: string;
         };
+        fitScore?: number;
+        placementNote?: string;
+        roomAnalysis?: {
+            roomType?: RoomDimensions['roomType'];
+            detectedStyle?: string;
+            dominantColors?: string[];
+            freeSpaceDescription?: string;
+            whyItFits?: string;
+        };
+        roomDetails?: RoomDimensions;
+    };
+    customization?: {
+        selectedColor?: string | SelectedPricedCustomization;
+        selectedMaterial?: string | SelectedPricedCustomization;
+        selectedShopifyOptions?: SelectedShopifyOption[];
+        selectedDimensions?: {
+            length?: number;
+            width?: number;
+            height?: number;
+            unit?: string;
+        };
+        dimensionPriceAdjustments?: {
+            width?: number;
+            length?: number;
+            height?: number;
+            total?: number;
+        };
+        selectedAddOns?: Array<{
+            name: string;
+            price?: number;
+        }>;
+        customizationPrice?: number;
+        estimatedTotal?: number;
+        pricingMode?: 'estimated' | 'quote_required';
+        customerRequestText?: string;
     };
 }
 export interface QuoteRequestResponse {
     success: boolean;
     quoteId?: string;
     message: string;
+    delivery?: string[];
+    warnings?: string[];
+    emailWarning?: string;
+    emailSkipped?: boolean;
 }
 //# sourceMappingURL=index.d.ts.map

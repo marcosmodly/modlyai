@@ -9,7 +9,12 @@ interface RecommendationsListProps {
         requestQuote: boolean;
     };
     primaryColor?: string;
+    analyticsContext?: {
+        apiBaseUrl?: string;
+        storeId?: string;
+        widgetId?: string;
+    };
 }
-export default function RecommendationsList({ recommendations, onCustomize, onFinalize, enabledActions, primaryColor }: RecommendationsListProps): import("react/jsx-runtime").JSX.Element;
+export default function RecommendationsList({ recommendations, onCustomize, onFinalize, enabledActions, primaryColor, analyticsContext }: RecommendationsListProps): import("react/jsx-runtime").JSX.Element;
 export {};
 //# sourceMappingURL=RecommendationsList.d.ts.map

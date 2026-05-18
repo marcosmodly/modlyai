@@ -14,7 +14,12 @@ interface ConversationInterfaceProps {
         requestQuote: boolean;
     };
     primaryColor?: string;
+    analyticsContext?: {
+        apiBaseUrl?: string;
+        storeId?: string;
+        widgetId?: string;
+    };
 }
-export declare function ConversationInterface({ aiService, onCustomizeItem, onAddToRoomPlanner, onOpenRoomPlanner, onOpenCustomizer, onShowCatalog, onViewInCatalog, enabledActions, primaryColor, }: ConversationInterfaceProps): import("react/jsx-runtime").JSX.Element;
+export declare function ConversationInterface({ aiService, onCustomizeItem, onAddToRoomPlanner, onOpenRoomPlanner, onOpenCustomizer, onShowCatalog, onViewInCatalog, enabledActions, primaryColor, analyticsContext, }: ConversationInterfaceProps): import("react/jsx-runtime").JSX.Element;
 export {};
 //# sourceMappingURL=ConversationInterface.d.ts.map

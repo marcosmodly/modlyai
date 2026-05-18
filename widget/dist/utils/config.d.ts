@@ -62,5 +62,6 @@ export declare function getEnabledActions(config?: WidgetConfig): {
     customize: boolean;
     requestQuote: boolean;
 };
+export declare function getApiBaseUrlFromConfigUrl(configUrl?: string): string | undefined;
 export declare function fetchRemoteConfig(configUrl: string, widgetId?: string, storeId?: string): Promise<WidgetConfig>;
 //# sourceMappingURL=config.d.ts.map
