@@ -3,13 +3,13 @@ import { i } from '@instantdb/core'
 const schema = i.schema({
   entities: {
     users: i.entity({
-      name: i.any(),
-      email: i.any(),
-      password: i.any(),
-      emailVerified: i.any(),
-      verificationCode: i.any(),
-      verificationCodeExpiry: i.any(),
-      createdAt: i.any(),
+      createdAt: i.any().optional(),
+      email: i.any().optional(),
+      name: i.any().optional(),
+      password: i.any().optional(),
+      emailVerified: i.boolean().optional(),
+      verificationCode: i.string().optional(),
+      verificationCodeExpiry: i.number().optional(),
     }),
     stores: i.entity({
       name: i.any(),
@@ -95,9 +95,9 @@ const schema = i.schema({
     }),
   },
   links: {
-    storeUser: {
-      forward: { on: 'stores', has: 'one', label: 'user' },
-      reverse: { on: 'users', has: 'one', label: 'store' },
+    usersStore: {
+      forward: { on: 'users', has: 'one', label: 'store' },
+      reverse: { on: 'stores', has: 'one', label: 'user' },
     },
     storesProducts: {
       forward: { on: 'stores', has: 'many', label: 'products' },
