@@ -439,7 +439,7 @@ export default function BillingCard({
                     disabled={loadingPlan !== null}
                     className="mt-5 inline-flex w-full items-center justify-center rounded-xl bg-stone-950 px-4 py-3 text-sm font-semibold text-white transition hover:bg-stone-800 disabled:cursor-not-allowed disabled:opacity-60"
                   >
-                    {loadingPlan === checkoutPlan ? 'Opening checkout...' : 'Start 14-day free trial'}
+                    {loadingPlan === checkoutPlan ? 'Opening checkout...' : 'Subscribe'}
                   </button>
                 )
               })()
