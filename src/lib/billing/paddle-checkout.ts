@@ -47,13 +47,11 @@ export async function openPaddleCheckout({
     throw new Error('Missing storeId for checkout.')
   }
 
-  const checkoutPayload = {
+  const checkoutPayload: CheckoutOpenOptions = {
     items: [{ priceId, quantity: 1 }],
     customData: { storeId: normalizedStoreId, plan },
   }
   console.log('[Paddle Checkout Payload]', JSON.stringify(checkoutPayload))
-  console.log('[Paddle Price ID]', priceId)
-  console.log('[Paddle Store ID]', normalizedStoreId)
 
   paddle.Checkout.open(checkoutPayload)
 }
