@@ -57,20 +57,21 @@ export async function openPaddleCheckout({
 }
 
 export async function openPaddleCustomerPortal(paddleCustomerId: string) {
-  const paddle = await getPaddleClient()
-  if (!paddle) {
-    throw new Error('Paddle billing portal is not available.')
-  }
-
   const customerId = String(paddleCustomerId || '').trim()
   if (!customerId) {
     throw new Error('No Paddle customer found for this account.')
   }
 
-  paddle.Checkout.open({
-    customer: { id: customerId },
-    settings: {
-      displayMode: 'overlay',
-    },
-  } as CheckoutOpenOptions)
+  const response = await fetch('/api/billing/portal', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ paddleCustomerId: customerId }),
+  })
+  const result = (await response.json()) as { url?: string; error?: string }
+
+  if (!response.ok || !result.url) {
+    throw new Error(result.error || 'Unable to open billing portal')
+  }
+
+  window.location.assign(result.url)
 }

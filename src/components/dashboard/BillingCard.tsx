@@ -138,8 +138,9 @@ export default function BillingCard({
   const paidPlan = isCheckoutPlan(store.subscriptionPlan)
   const billingPlan = normalizePlan(store.subscriptionPlan)
   const hasPaidSubscription = access.isPaid && access.hasActiveAccess
-  const hasPaddleCustomer = Boolean(store.paddleCustomerId)
-  const canManageBilling = hasPaddleCustomer || hasPaidSubscription
+  const paddleCustomerId = String(store.paddleCustomerId ?? '').trim()
+  const hasPaddleCustomer = paddleCustomerId.length > 0
+  const canManageBilling = hasPaddleCustomer
   const cancelingAtPeriodEnd = isCancelAtPeriodEnd(store.cancelAtPeriodEnd)
   const periodEnded = hasDatePassed(store.currentPeriodEnd)
   const subscriptionCanceled = store.subscriptionStatus === 'canceled'
@@ -238,7 +239,7 @@ export default function BillingCard({
   }
 
   const openBillingPortal = async () => {
-    if (!store.paddleCustomerId) {
+    if (!paddleCustomerId) {
       setError('No Paddle customer found for this account.')
       return
     }
@@ -247,7 +248,7 @@ export default function BillingCard({
     setError('')
 
     try {
-      await openPaddleCustomerPortal(store.paddleCustomerId)
+      await openPaddleCustomerPortal(paddleCustomerId)
     } catch (portalError) {
       setError(portalError instanceof Error ? portalError.message : 'Unable to open billing portal')
     } finally {
