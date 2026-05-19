@@ -4,9 +4,9 @@ const securityHeaders = [
     key: 'Content-Security-Policy',
     value: [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://cdn.paddle.com https://sandbox-cdn.paddle.com",
+      "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://cdn.paddle.com https://sandbox-cdn.paddle.com https://public.profitwell.com https://ajax.googleapis.com",
       "frame-src 'self' https://sandbox-buy.paddle.com https://buy.paddle.com",
-      "connect-src 'self' https://sandbox-checkout-service.paddle.com https://checkout-service.paddle.com https://sandbox-buy.paddle.com https://buy.paddle.com",
+      "connect-src 'self' https://sandbox-checkout-service.paddle.com https://checkout-service.paddle.com https://sandbox-buy.paddle.com https://buy.paddle.com https://cdn.paddle.com wss://api.instantdb.com https://api.instantdb.com",
       "img-src 'self' data: https://*.paddle.com",
       "style-src 'self' 'unsafe-inline' https://cdn.paddle.com https://sandbox-cdn.paddle.com",
     ].join('; '),
