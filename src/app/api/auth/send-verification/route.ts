@@ -59,7 +59,7 @@ export async function POST(req: Request) {
 
     const resend = new Resend(process.env.RESEND_API_KEY)
     const { error } = await resend.emails.send({
-      from: 'ModlyAI <onboarding@resend.dev>',
+      from: 'ModlyAI <hello@modlyai.tech>',
       to: normalizedEmail,
       subject: 'Verify your ModlyAI account',
       text: `Your verification code is: ${verificationCode}. Expires in 10 minutes.`,
