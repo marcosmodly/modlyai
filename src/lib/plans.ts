@@ -70,7 +70,7 @@ export function isCheckoutPlan(plan: unknown): plan is CheckoutPlanId {
 
 export function getPaddlePriceId(plan: CheckoutPlanId) {
   const priceEnvName = plans[plan].paddlePriceEnv
-  return process.env[priceEnvName] || ''
+  return String(process.env[priceEnvName] || '').trim()
 }
 
 function periodEndTime(currentPeriodEnd?: string | Date | null) {

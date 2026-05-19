@@ -31,14 +31,18 @@ export async function openPaddleCheckout({
   paddleCustomerId,
 }: OpenPaddleCheckoutInput) {
   const paddle = await getPaddleClient()
-  if (!paddle) {
-    throw new Error('Paddle checkout is not available.')
+  if (!paddle?.Checkout?.open) {
+    throw new Error(
+      'Paddle checkout is not available. Verify NEXT_PUBLIC_PADDLE_CLIENT_TOKEN and NEXT_PUBLIC_PADDLE_ENV=production are set for this deployment.',
+    )
   }
 
   const priceId = String(priceIdInput || '').trim() || (await fetchCheckoutPriceId(plan))
   if (!priceId) {
-    throw new Error(`Paddle price is not configured for the ${plan} plan.`)
+    throw new Error(`Paddle price is not configured for the ${plan} plan. Set PADDLE_PRICE_${plan.toUpperCase()} in production.`)
   }
+
+  console.log('[Paddle] Opening checkout', { plan, priceId, storeId })
 
   const normalizedStoreId = String(storeId || '').trim()
   if (!normalizedStoreId) {
