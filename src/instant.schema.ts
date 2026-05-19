@@ -6,6 +6,9 @@ const schema = i.schema({
       name: i.any(),
       email: i.any(),
       password: i.any(),
+      emailVerified: i.any(),
+      verificationCode: i.any(),
+      verificationCodeExpiry: i.any(),
       createdAt: i.any(),
     }),
     stores: i.entity({

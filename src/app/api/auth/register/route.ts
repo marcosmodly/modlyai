@@ -97,6 +97,9 @@ export async function POST(req: Request) {
       name: trimmedName,
       email: normalizedEmail,
       password: hashedPassword,
+      emailVerified: false,
+      verificationCode: null,
+      verificationCodeExpiry: null,
       createdAt: now,
     }
     storePayload = createDefaultStorePayload({

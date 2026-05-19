@@ -70,6 +70,11 @@ export default async function DashboardPage() {
     redirect('/auth/signin')
   }
 
+  if (session.user.emailVerified !== true) {
+    const email = session.user.email ?? ''
+    redirect(`/auth/verify-email?email=${encodeURIComponent(email)}`)
+  }
+
   const isDeveloper = false
 
   if (!session.user.storeId) {

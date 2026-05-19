@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { plans } from '@/lib/plans'
 
@@ -15,6 +14,10 @@ export default function SignUpPage() {
     password: '',
     storeName: '',
   })
+
+  const getSignupPasswordKey = (email: string) => {
+    return `modlyai:signup-password:${email.trim().toLowerCase()}`
+  }
 
   const getErrorMessage = (data: unknown) => {
     if (!data || typeof data !== 'object') {
@@ -60,17 +63,26 @@ export default function SignUpPage() {
       }
 
       if (res.ok) {
-        const signInResult = await signIn('credentials', {
-          email: form.email,
-          password: form.password,
-          redirect: false,
+        const email = form.email.trim().toLowerCase()
+        const code = String(Math.floor(100000 + Math.random() * 900000))
+        const expiry = Date.now() + 10 * 60 * 1000
+
+        window.sessionStorage.setItem(getSignupPasswordKey(email), form.password)
+
+        const verificationRes = await fetch('/api/auth/send-verification', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, code, expiry }),
         })
 
-        if (signInResult?.ok) {
-          router.push('/dashboard')
-        } else {
-          router.push('/auth/signin')
+        if (!verificationRes.ok) {
+          window.sessionStorage.removeItem(getSignupPasswordKey(email))
+          setError('Account created, but we could not send the verification email. Please try again.')
+          setIsSubmitting(false)
+          return
         }
+
+        router.push(`/auth/verify-email?email=${encodeURIComponent(email)}`)
       } else {
         if (process.env.NODE_ENV === 'development') {
           console.warn('[Signup failed]', res.status, data)

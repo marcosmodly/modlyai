@@ -42,6 +42,7 @@ export const authOptions: NextAuthOptions = {
               id: user.id,
               email: user.email,
               name: user.name,
+              emailVerified: user.emailVerified === true,
               storeId: store?.id,
               storeName: store?.name ?? undefined,
               apiKey: store?.apiKey ?? undefined,
@@ -64,6 +65,7 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.id = user.id
         token.email = user.email
+        token.emailVerified = user.emailVerified
         token.storeId = user.storeId
         token.storeName = user.storeName
         token.apiKey = user.apiKey
@@ -72,6 +74,7 @@ export const authOptions: NextAuthOptions = {
     },
     async session({ session, token }: any) {
       session.user.id = token.id
+      session.user.emailVerified = token.emailVerified === true
       const store = token.id
         ? await getCurrentStoreForUser({
             id: String(token.id),
