@@ -86,6 +86,9 @@ export function initializePaddleClient() {
       const paddle = await initializePaddle({
         token,
         environment,
+        eventCallback: (data) => {
+          console.log('[Paddle Event]', JSON.stringify(data))
+        },
         checkout: {
           settings: {
             displayMode: 'overlay',
