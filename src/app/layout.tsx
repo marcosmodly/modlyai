@@ -7,6 +7,7 @@ import PaddleProvider from "@/components/PaddleProvider";
 import Navbar from "@/components/Navbar";
 import ConditionalWidgetButton from "@/components/ConditionalWidgetButton";
 import SiteFooter from "@/components/SiteFooter";
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 const inter = Inter({ subsets: ["latin"] });
 const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === 'true';
