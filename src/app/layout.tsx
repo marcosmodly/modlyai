@@ -16,6 +16,14 @@ const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === 'true';
 export const metadata: Metadata = {
   title: "ModlyAI - Intelligent Customization & Data-Driven Recommendations",
   description: "Premium AI platform for intelligent customization, data analysis, and personalized recommendations. Built for B2B and professional users.",
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
+    other: [
+      { rel: "icon", type: "image/png", sizes: "32x32", url: "/favicon-32x32.png" },
+      { rel: "icon", type: "image/png", sizes: "16x16", url: "/favicon-16x16.png" },
+    ],
+  },
 };
 
 export default function RootLayout({
