@@ -7,7 +7,8 @@ import PaddleProvider from "@/components/PaddleProvider";
 import Navbar from "@/components/Navbar";
 import ConditionalWidgetButton from "@/components/ConditionalWidgetButton";
 import SiteFooter from "@/components/SiteFooter";
-import { SpeedInsights } from "@vercel/speed-insights/next"
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/next";
 
 const inter = Inter({ subsets: ["latin"] });
 const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === 'true';
@@ -27,17 +28,19 @@ export default function RootLayout({
       <body className={`${inter.className} flex min-h-screen flex-col`}>
         <AuthSessionProvider>
           <PaddleProvider>
-          <Script
-            type="module"
-            src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.3.0/model-viewer.min.js"
-            strategy="lazyOnload"
-          />
-          <Navbar />
-          <div className="flex-1">{children}</div>
-          <SiteFooter showDemoDisclaimer={isDemoMode} />
-          <ConditionalWidgetButton />
+            <Script
+              type="module"
+              src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.3.0/model-viewer.min.js"
+              strategy="lazyOnload"
+            />
+            <Navbar />
+            <div className="flex-1">{children}</div>
+            <SiteFooter showDemoDisclaimer={isDemoMode} />
+            <ConditionalWidgetButton />
           </PaddleProvider>
         </AuthSessionProvider>
+        <SpeedInsights />
+        <Analytics />
       </body>
     </html>
   );
