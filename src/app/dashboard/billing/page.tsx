@@ -9,9 +9,6 @@ import { syncMissingCurrentPeriodEndForBillingStore } from '@/lib/billing/sync-c
 import { getCurrentStoreForUser } from '@/lib/current-store'
 import { adminDb } from '@/lib/instant-admin'
 
-export const dynamic = 'force-dynamic'
-export const revalidate = 0
-
 export default async function BillingPage({
   searchParams,
 }: {
