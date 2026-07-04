@@ -105,6 +105,30 @@ const faqs = [
     q: "Is there a contract?",
     a: "Plans are month-to-month unless you choose a custom Scale agreement.",
   },
+  {
+    q: "Will the widget recommend products I do not actually sell?",
+    a: "No. Every recommendation is grounded in your connected catalog. ModlyAI does not invent products, prices, or availability that are not in your store data.",
+  },
+  {
+    q: "Can I match the widget to my store's branding?",
+    a: "Yes. You can set the widget title, accent color, and text colors from your dashboard so it fits your storefront's look.",
+  },
+  {
+    q: "What happens if a product goes out of stock?",
+    a: "Recommendations reflect the catalog data you sync. Once a product is marked unavailable or removed in your source catalog, the widget stops recommending it on the next sync.",
+  },
+  {
+    q: "Can I use ModlyAI on more than one store?",
+    a: "Yes, depending on your plan. Starter includes 1 store, Growth includes up to 3, and Scale supports multi-store setups with custom onboarding.",
+  },
+  {
+    q: "What happens to my data if I cancel?",
+    a: "Your catalog and shopper interaction data stays scoped to your store. If you cancel, the widget stops serving on your storefront and is not shared with other retailers.",
+  },
+  {
+    q: "Does this replace my existing search or filtering?",
+    a: "No. ModlyAI sits alongside your existing product pages and search. It adds a guided, conversational layer for shoppers who want fit and style guidance before buying.",
+  },
 ];
 
 function CheckItem({ children }: { children: ReactNode }) {

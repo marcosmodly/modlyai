@@ -110,8 +110,8 @@ export default function PricingPlans() {
         />
         <PricingCard
           name={plans.starter.label}
-          price={`$${plans.starter.priceMonthly}/mo`}
-          note="14-day free trial included"
+          price={`${plans.starter.priceMonthly}/mo`}
+          note="Billed monthly, cancel anytime"
           features={[
             '1,000 AI chats/month',
             '150 room planner analyses/month',
@@ -129,14 +129,14 @@ export default function PricingPlans() {
               disabled={loadingPlan !== null}
               onClick={() => startCheckout('starter')}
             >
-              {loadingPlan === 'starter' ? 'Opening checkout...' : 'Start 14-day free trial'}
+              {loadingPlan === 'starter' ? 'Opening checkout...' : 'Subscribe'}
             </button>
           }
         />
         <PricingCard
           name={plans.growth.label}
-          price={`$${plans.growth.priceMonthly}/mo`}
-          note="14-day free trial included"
+          price={`${plans.growth.priceMonthly}/mo`}
+          note="Billed monthly, cancel anytime"
           popular
           features={[
             '5,000 AI chats/month',
@@ -155,7 +155,7 @@ export default function PricingPlans() {
               disabled={loadingPlan !== null}
               onClick={() => startCheckout('growth')}
             >
-              {loadingPlan === 'growth' ? 'Opening checkout...' : 'Start 14-day free trial'}
+              {loadingPlan === 'growth' ? 'Opening checkout...' : 'Subscribe'}
             </button>
           }
         />
