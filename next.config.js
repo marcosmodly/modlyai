@@ -21,6 +21,16 @@ const nextConfig = {
       '@instantdb/react',
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: '/:path*',
+        has: [{ type: 'host', value: 'www.modlyai.tech' }],
+        destination: 'https://modlyai.tech/:path*',
+        permanent: true,
+      },
+    ]
+  },
   async headers() {
     return [
       {

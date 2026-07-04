@@ -16,6 +16,10 @@ const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === 'true';
 export const metadata: Metadata = {
   title: "ModlyAI - Intelligent Customization & Data-Driven Recommendations",
   description: "Premium AI platform for intelligent customization, data analysis, and personalized recommendations. Built for B2B and professional users.",
+  metadataBase: new URL("https://modlyai.tech"),
+  alternates: {
+    canonical: "/",
+  },
   manifest: "/site.webmanifest",
   icons: {
     icon: "/favicon.ico",
