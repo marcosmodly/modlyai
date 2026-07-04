@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import Reveal from "@/components/ui/Reveal";
+import PinnedRetailerGrid from "@/components/ui/PinnedRetailerGrid";
 import DemoPreviewButton from "@/components/b2b/DemoPreviewButton";
 import HeroB2B from "@/components/b2b/HeroB2B";
 import RoiCalculator from "@/components/b2b/RoiCalculator";
@@ -183,6 +185,90 @@ function ProductDemoSection() {
   );
 }
 
+function BigStatement() {
+  return (
+    <section className="px-6 py-20 md:py-28">
+      <Reveal className="mx-auto max-w-5xl text-center">
+        <p className="text-3xl font-semibold leading-tight tracking-[-0.01em] text-[#171411] md:text-5xl md:leading-[1.15]">
+          Furniture shoppers do not abandon carts because they dislike a product.
+          <span className="text-[#8a6238]"> They abandon because they cannot tell if it fits.</span>
+        </p>
+        <p className="mx-auto mt-6 max-w-2xl text-base leading-7 text-[#665c52]">
+          ModlyAI closes that gap directly on the product page, using your real catalog, so shoppers can answer their own
+          fit questions before they leave.
+        </p>
+      </Reveal>
+    </section>
+  );
+}
+
+const resultStats = [
+  { value: "-40%", label: "Return rate", tone: "text-[#3c6b3f]" },
+  { value: "+25%", label: "Conversion", tone: "text-[#244f85]" },
+  { value: "$12K", label: "Saved / month", tone: "text-[#7a4fb0]" },
+  { value: "5 min", label: "Setup time", tone: "text-[#b3611f]" },
+] as const;
+
+function ResultStats() {
+  return (
+    <section className="border-y border-[#e7ddd1] bg-[#171411] px-6 py-16 md:py-20">
+      <div className="mx-auto max-w-7xl">
+        <div className="max-w-2xl">
+          <div className="text-sm font-semibold uppercase tracking-[0.18em] text-[#c9a984]">Modeled results</div>
+          <h2 className="mt-3 text-3xl font-semibold tracking-[-0.01em] text-[#fffaf2] md:text-4xl">
+            What a catalog-grounded widget can move.
+          </h2>
+          <p className="mt-4 text-base leading-7 text-[#c9bfb2]">
+            Estimates based on the ROI calculator below and typical fit-related return patterns. Your results depend on
+            catalog size, traffic, and category mix.
+          </p>
+        </div>
+        <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {resultStats.map((stat, idx) => (
+            <Reveal key={stat.label} delayMs={idx * 90} className="rounded-2xl border border-white/10 bg-white/[0.03] p-6">
+              <div className={`text-4xl font-semibold tracking-[-0.02em] ${stat.tone}`}>{stat.value}</div>
+              <div className="mt-2 text-sm font-medium text-[#c9bfb2]">{stat.label}</div>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+const trustChecklist = [
+  ["Catalog-grounded only", "Every recommendation traces back to a real SKU in your catalog. No invented products, ever."],
+  ["Your data stays yours", "Catalog and shopper interaction data is scoped to your store and not shared across retailers."],
+  ["Transparent pricing", "Usage limits and plan tiers are visible up front, with no hidden overage surprises."],
+  ["Cancel anytime", "Month-to-month plans with no long-term lock-in unless you choose a custom Scale agreement."],
+] as const;
+
+function TrustChecklist() {
+  return (
+    <section className="px-6 py-16 md:py-24">
+      <div className="mx-auto max-w-7xl">
+        <div className="max-w-2xl">
+          <div className={sectionLabel}>Built to be trusted</div>
+          <h2 className={sectionTitle}>Guardrails that protect your merchandising, not just your uptime.</h2>
+        </div>
+        <div className="mt-10 grid gap-4 sm:grid-cols-2">
+          {trustChecklist.map(([title, body], idx) => (
+            <Reveal key={title} delayMs={idx * 80} className="flex gap-4 rounded-2xl border border-[#e1d7ca] bg-[#fffdf9] p-6">
+              <span className="mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#e8eef8] text-xs font-bold text-[#244f85]">
+                ✓
+              </span>
+              <div>
+                <h3 className="text-base font-semibold text-[#1e1a16]">{title}</h3>
+                <p className="mt-2 text-sm leading-6 text-[#665c52]">{body}</p>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export default function Home() {
   const schema = {
     "@context": "https://schema.org",
@@ -205,6 +291,7 @@ export default function Home() {
 
       <ValuePropStrip />
       <HeroB2B />
+      <BigStatement />
 
       <ProductDemoSection />
 
@@ -217,72 +304,23 @@ export default function Home() {
 
           <div className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             {howItWorks.map((step, idx) => (
-              <div key={step.title} className={cardClass}>
+              <Reveal key={step.title} delayMs={idx * 90} className={cardClass}>
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#f1e6d6] text-sm font-semibold text-[#8a6238]">
                   {idx + 1}
                 </div>
                 <h3 className="mt-5 text-lg font-semibold text-[#1e1a16]">{step.title}</h3>
                 <p className="mt-3 text-sm leading-6 text-[#665c52]">{step.body}</p>
-              </div>
+              </Reveal>
             ))}
           </div>
         </div>
       </section>
 
-      <section id="retailers" className="px-6 py-16 md:py-24">
-        <div className="mx-auto max-w-7xl">
-          <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
-            <div>
-              <div className={sectionLabel}>Built for furniture retailers</div>
-              <h2 className={sectionTitle}>Merchandise your catalog with room-aware guidance.</h2>
-            </div>
-            <p className="max-w-xl text-base leading-7 text-[#665c52]">
-              ModlyAI is designed around the categories where size, proportion, style, and customization matter before checkout.
-            </p>
-          </div>
+      <PinnedRetailerGrid id="retailers" items={retailerCategories} />
 
-          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {retailerCategories.map((category) => (
-              <div key={category.title} className="rounded-2xl border border-[#e1d7ca] bg-[#fffdf9] p-6 shadow-sm transition hover:-translate-y-0.5 hover:shadow-[0_18px_45px_rgba(75,61,47,0.09)]">
-                <div className="aspect-[16/9] overflow-hidden rounded-xl border border-[#e7ddd1] bg-[#f7eee2]">
-                  <img src={category.image} alt={category.alt} className="h-full w-full object-cover" />
-                </div>
-                <h3 className="mt-5 text-xl font-semibold text-[#1e1a16]">{category.title}</h3>
-                <p className="mt-2 text-sm leading-6 text-[#665c52]">{category.body}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <ResultStats />
 
-      <section id="room-planner" className="border-y border-[#e7ddd1] bg-white px-6 py-16 md:py-24">
-        <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
-          <div>
-            <div className={sectionLabel}>Room Planner and catalog AI</div>
-            <h2 className={sectionTitle}>Room guidance that stays connected to what you actually sell.</h2>
-            <p className={sectionCopy}>
-              ModlyAI focuses shopper conversations on your catalog, not invented SKUs. It helps customers move from room
-              uncertainty to product comparison, customization, and quote requests.
-            </p>
-          </div>
-
-          <div className="grid gap-4 sm:grid-cols-2">
-            {[
-              ["Catalog-grounded recommendations", "Match room questions to real products, dimensions, finishes, and availability."],
-              ["No fake products", "Keep shoppers inside your merchandising strategy and avoid hallucinated alternatives."],
-              ["View in catalog", "Route shoppers back to product pages when a recommended item is ready to buy."],
-              ["Customize this", "Capture finish, fabric, dimension, and configuration requests before they leave."],
-              ["Request quote", "Turn complex purchases and custom pieces into structured sales opportunities."],
-              ["Estimate return savings", "Model potential impact with a clearly labeled estimate based on your inputs."],
-            ].map(([title, body]) => (
-              <div key={title} className="rounded-2xl border border-[#e1d7ca] bg-[#fbf7f0] p-5">
-                <h3 className="text-base font-semibold text-[#1e1a16]">{title}</h3>
-                <p className="mt-2 text-sm leading-6 text-[#665c52]">{body}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <TrustChecklist />
 
       <section id="roi-calculator" className="px-6 py-16 md:py-24">
         <div className="mx-auto max-w-7xl">

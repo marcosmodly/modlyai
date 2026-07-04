@@ -53,6 +53,8 @@ export async function PATCH(request: NextRequest, { params }: Params) {
     if (typeof body.supportEmail === 'string') updatePayload.supportEmail = body.supportEmail.trim()
     if (typeof body.widgetTitle === 'string') updatePayload.widgetTitle = body.widgetTitle.trim()
     if (typeof body.primaryColor === 'string') updatePayload.primaryColor = body.primaryColor.trim()
+    if (typeof body.titleColor === 'string') updatePayload.titleColor = body.titleColor.trim()
+    if (typeof body.messageTextColor === 'string') updatePayload.messageTextColor = body.messageTextColor.trim()
     if (typeof body.welcomeMessage === 'string') updatePayload.welcomeMessage = body.welcomeMessage.trim()
     if (typeof body.quoteEmail === 'string') updatePayload.quoteEmail = body.quoteEmail.trim()
     if (typeof body.enableViewInCatalog === 'boolean') {

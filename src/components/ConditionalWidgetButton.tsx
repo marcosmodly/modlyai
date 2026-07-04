@@ -59,6 +59,14 @@ export default function ConditionalWidgetButton() {
     return null;
   }
 
+  if (pathname === '/') {
+    return null;
+  }
+
+  if (!session?.user) {
+    return null;
+  }
+
   if (storeId && !configLoaded) {
     return null;
   }

@@ -98,8 +98,8 @@ const schema = i.schema({
   },
   links: {
     usersStore: {
-      forward: { on: 'users', has: 'many', label: 'store' },
-      reverse: { on: 'stores', has: 'many', label: 'users' },
+      forward: { on: 'users', has: 'one', label: 'store' },
+      reverse: { on: 'stores', has: 'one', label: 'user' },
     },
     storesProducts: {
       forward: { on: 'stores', has: 'many', label: 'products' },

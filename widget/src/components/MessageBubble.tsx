@@ -15,6 +15,7 @@ interface MessageBubbleProps {
     requestQuote: boolean;
   };
   primaryColor?: string;
+  messageTextColor?: string;
   analyticsContext?: {
     apiBaseUrl?: string;
     storeId?: string;
@@ -22,10 +23,11 @@ interface MessageBubbleProps {
   };
 }
 
-export function MessageBubble({ message, onCustomizeItem, onAddToRoomPlanner, onViewInCatalog, enabledActions, primaryColor, analyticsContext }: MessageBubbleProps) {
+export function MessageBubble({ message, onCustomizeItem, onAddToRoomPlanner, onViewInCatalog, enabledActions, primaryColor, messageTextColor, analyticsContext }: MessageBubbleProps) {
   const isUser = message.role === 'user';
   const isThinking = message.type === 'thinking';
   const actions = enabledActions ?? { viewInCatalog: true, customize: true, requestQuote: true };
+  const assistantTextStyle = !isUser && !isThinking && messageTextColor ? { color: messageTextColor } : undefined;
 
   return (
     <div className={`flex ${isUser ? 'justify-end' : 'justify-start'} mb-4`}>
@@ -37,6 +39,7 @@ export function MessageBubble({ message, onCustomizeItem, onAddToRoomPlanner, on
             ? 'bg-gray-100 text-gray-600'
             : 'bg-gray-50 text-gray-900 border border-gray-200'
         }`}
+        style={assistantTextStyle}
       >
         {isThinking ? (
           <div className="flex items-center gap-2">

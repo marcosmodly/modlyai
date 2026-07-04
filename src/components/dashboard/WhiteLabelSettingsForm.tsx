@@ -7,6 +7,8 @@ import { useState } from 'react'
 
 const DEFAULT_WIDGET_TITLE = 'ModlyAI'
 const DEFAULT_PRIMARY_COLOR = '#3B82F6'
+const DEFAULT_TITLE_COLOR = '#FFFFFF'
+const DEFAULT_MESSAGE_TEXT_COLOR = '#1F2937'
 const DEFAULT_WELCOME_MESSAGE =
   "Hello! I'm your furniture assistant. I can help you choose the right products, plan your room, or customize items from this store's catalog."
 
@@ -24,6 +26,8 @@ type SettingsStore = {
   supportEmail?: string
   widgetTitle?: string
   primaryColor?: string
+  titleColor?: string
+  messageTextColor?: string
   welcomeMessage?: string
   enableViewInCatalog?: boolean
   enableCustomize?: boolean
@@ -38,6 +42,8 @@ type FormState = {
   supportEmail: string
   widgetTitle: string
   primaryColor: string
+  titleColor: string
+  messageTextColor: string
   welcomeMessage: string
   enabledActions: EnabledActions
   quoteEmail: string
@@ -50,6 +56,8 @@ function buildInitialState(store: SettingsStore, fallbackStoreName?: string): Fo
     supportEmail: store.supportEmail || '',
     widgetTitle: store.widgetTitle || DEFAULT_WIDGET_TITLE,
     primaryColor: isHexColor(store.primaryColor) ? store.primaryColor : DEFAULT_PRIMARY_COLOR,
+    titleColor: isHexColor(store.titleColor) ? store.titleColor : DEFAULT_TITLE_COLOR,
+    messageTextColor: isHexColor(store.messageTextColor) ? store.messageTextColor : DEFAULT_MESSAGE_TEXT_COLOR,
     welcomeMessage: store.welcomeMessage || DEFAULT_WELCOME_MESSAGE,
     enabledActions: {
       viewInCatalog: store.enableViewInCatalog ?? store.enabledActions?.viewInCatalog ?? true,
@@ -114,7 +122,10 @@ export default function WhiteLabelSettingsForm({
   const [form, setForm] = useState<FormState>(() => buildInitialState(store, fallbackStoreName))
   const [status, setStatus] = useState<'idle' | 'saving' | 'success' | 'error'>('idle')
   const [message, setMessage] = useState('')
+  const [selectedTextTarget, setSelectedTextTarget] = useState<'title' | 'message'>('title')
   const colorSwatchValue = isHexColor(form.primaryColor) ? form.primaryColor : DEFAULT_PRIMARY_COLOR
+  const titleColorValue = isHexColor(form.titleColor) ? form.titleColor : DEFAULT_TITLE_COLOR
+  const messageTextColorValue = isHexColor(form.messageTextColor) ? form.messageTextColor : DEFAULT_MESSAGE_TEXT_COLOR
 
   const updateField = <Key extends keyof FormState>(key: Key, value: FormState[Key]) => {
     setForm((current) => ({ ...current, [key]: value }))
@@ -144,6 +155,8 @@ export default function WhiteLabelSettingsForm({
         supportEmail: form.supportEmail,
         widgetTitle: form.widgetTitle,
         primaryColor: form.primaryColor,
+        titleColor: form.titleColor,
+        messageTextColor: form.messageTextColor,
         welcomeMessage: form.welcomeMessage,
         quoteEmail: form.quoteEmail,
         enableViewInCatalog: form.enabledActions.viewInCatalog,
@@ -167,6 +180,8 @@ export default function WhiteLabelSettingsForm({
         !savedStore ||
         savedStore.widgetTitle !== payload.widgetTitle.trim() ||
         savedStore.primaryColor !== payload.primaryColor.trim() ||
+        savedStore.titleColor !== payload.titleColor.trim() ||
+        savedStore.messageTextColor !== payload.messageTextColor.trim() ||
         savedStore.welcomeMessage !== payload.welcomeMessage.trim()
       ) {
         throw new Error('Settings save did not persist the widget branding fields')
@@ -225,34 +240,73 @@ export default function WhiteLabelSettingsForm({
 
       <section className="rounded-[32px] border border-stone-200 bg-white p-6 shadow-sm">
         <h2 className="text-2xl font-bold tracking-tight text-stone-950">Widget Branding</h2>
-        <div className="mt-6 grid gap-5 md:grid-cols-2">
-          <Field label="Widget title">
-            <input
-              type="text"
-              value={form.widgetTitle}
-              onChange={(event) => updateField('widgetTitle', event.target.value)}
-              className={inputClass}
-            />
-          </Field>
-          <Field label="Primary color">
-            <div className="flex gap-3">
-              <input
-                type="color"
-                value={colorSwatchValue}
-                onChange={(event) => updateField('primaryColor', event.target.value)}
-                className="h-12 w-14 rounded-2xl border border-stone-300 bg-stone-50 p-1"
-                aria-label="Primary color swatch"
-              />
+        <p className="mt-2 text-sm text-stone-600">
+          Click the title or message text in the preview to choose which one the font color below applies to.
+        </p>
+
+        <div className="mt-6 grid gap-6 lg:grid-cols-[1fr_1.1fr]">
+          <div className="space-y-5">
+            <Field label="Widget title">
               <input
                 type="text"
-                value={form.primaryColor}
-                onChange={(event) => updateField('primaryColor', event.target.value)}
+                value={form.widgetTitle}
+                onChange={(event) => updateField('widgetTitle', event.target.value)}
                 className={inputClass}
-                placeholder="#3B82F6"
               />
-            </div>
-          </Field>
-          <div className="md:col-span-2">
+            </Field>
+            <Field label="Primary color (background / accent)">
+              <div className="flex gap-3">
+                <input
+                  type="color"
+                  value={colorSwatchValue}
+                  onChange={(event) => updateField('primaryColor', event.target.value)}
+                  className="h-12 w-14 rounded-2xl border border-stone-300 bg-stone-50 p-1"
+                  aria-label="Primary color swatch"
+                />
+                <input
+                  type="text"
+                  value={form.primaryColor}
+                  onChange={(event) => updateField('primaryColor', event.target.value)}
+                  className={inputClass}
+                  placeholder="#3B82F6"
+                />
+              </div>
+            </Field>
+
+            <Field
+              label={`Font color \u2014 editing: ${selectedTextTarget === 'title' ? 'Widget Title text' : 'Message text'}`}
+            >
+              <div className="flex gap-3">
+                <input
+                  type="color"
+                  value={selectedTextTarget === 'title' ? titleColorValue : messageTextColorValue}
+                  onChange={(event) =>
+                    updateField(
+                      selectedTextTarget === 'title' ? 'titleColor' : 'messageTextColor',
+                      event.target.value
+                    )
+                  }
+                  className="h-12 w-14 rounded-2xl border border-stone-300 bg-stone-50 p-1"
+                  aria-label="Font color swatch"
+                />
+                <input
+                  type="text"
+                  value={selectedTextTarget === 'title' ? form.titleColor : form.messageTextColor}
+                  onChange={(event) =>
+                    updateField(
+                      selectedTextTarget === 'title' ? 'titleColor' : 'messageTextColor',
+                      event.target.value
+                    )
+                  }
+                  className={inputClass}
+                  placeholder="#FFFFFF"
+                />
+              </div>
+              <p className="mt-2 text-xs text-stone-500">
+                Highlighted in the preview on the right. Click the other text to switch what you're editing.
+              </p>
+            </Field>
+
             <Field label="Welcome message">
               <textarea
                 value={form.welcomeMessage}
@@ -260,6 +314,62 @@ export default function WhiteLabelSettingsForm({
                 className={`${inputClass} min-h-32 resize-y leading-6`}
               />
             </Field>
+          </div>
+
+          <div>
+            <div className="overflow-hidden rounded-3xl border border-stone-200 shadow-sm">
+              <button
+                type="button"
+                onClick={() => setSelectedTextTarget('title')}
+                className={`flex w-full items-center justify-between gap-3 px-4 py-3.5 text-left transition ${
+                  selectedTextTarget === 'title' ? 'ring-2 ring-inset ring-blue-500' : ''
+                }`}
+                style={{ backgroundColor: colorSwatchValue }}
+                aria-label="Select widget title text to edit its color"
+              >
+                <span
+                  className="text-sm font-semibold"
+                  style={{ color: titleColorValue }}
+                >
+                  {form.widgetTitle || DEFAULT_WIDGET_TITLE}
+                </span>
+                <span
+                  className="rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide"
+                  style={{
+                    color: titleColorValue,
+                    backgroundColor: 'rgba(255,255,255,0.18)',
+                  }}
+                >
+                  {selectedTextTarget === 'title' ? 'Editing' : 'Click to edit'}
+                </span>
+              </button>
+
+              <div className="space-y-3 bg-stone-50 p-4">
+                <button
+                  type="button"
+                  onClick={() => setSelectedTextTarget('message')}
+                  className={`block w-full rounded-2xl bg-white px-4 py-3 text-left shadow-sm transition ${
+                    selectedTextTarget === 'message' ? 'ring-2 ring-blue-500' : 'ring-1 ring-stone-200'
+                  }`}
+                  aria-label="Select message text to edit its color"
+                >
+                  <span className="text-sm leading-6" style={{ color: messageTextColorValue }}>
+                    {form.welcomeMessage || DEFAULT_WELCOME_MESSAGE}
+                  </span>
+                </button>
+                <div className="flex justify-end">
+                  <span
+                    className="rounded-lg px-3 py-2 text-xs font-semibold text-white"
+                    style={{ backgroundColor: colorSwatchValue }}
+                  >
+                    Sample shopper reply
+                  </span>
+                </div>
+              </div>
+            </div>
+            <p className="mt-3 text-xs text-stone-500">
+              Live preview. This reflects how the widget header and welcome message will look on your storefront.
+            </p>
           </div>
         </div>
       </section>

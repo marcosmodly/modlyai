@@ -8,6 +8,8 @@ export interface WidgetConfig {
   supportEmail?: string;
   widgetTitle?: string;
   primaryColor?: string;
+  titleColor?: string;
+  messageTextColor?: string;
   welcomeMessage?: string;
   enabledActions?: {
     viewInCatalog?: boolean;
@@ -31,6 +33,8 @@ export interface WidgetConfig {
   };
   theme?: {
     primaryColor?: string;
+    titleColor?: string;
+    messageTextColor?: string;
     buttonText?: string; // NEW
     buttonPosition?: 'bottom-right' | 'bottom-left' | 'top-right' | 'top-left'; // NEW
   };
@@ -42,10 +46,16 @@ export interface WidgetConfig {
   onRoomAnalyzed?: (data: RoomAnalysisResponse) => void;
   onFurnitureCustomized?: (data: any) => void;
   storageKey?: string;
+  access?: {
+    active: boolean;
+    reason?: string;
+  };
 }
 
 export const DEFAULT_WIDGET_TITLE = 'ModlyAI';
 export const DEFAULT_PRIMARY_COLOR = '#3B82F6';
+export const DEFAULT_TITLE_COLOR = '#FFFFFF';
+export const DEFAULT_MESSAGE_TEXT_COLOR = '#1F2937';
 export const DEFAULT_WELCOME_MESSAGE =
   "Hello! I'm your furniture assistant. I can help you choose the right products, plan your room, or customize items from this store's catalog.";
 export const DEFAULT_ENABLED_ACTIONS = {
@@ -64,6 +74,8 @@ export const defaultConfig: Required<Omit<WidgetConfig, 'apiBaseUrl' | 'storeId'
   supportEmail: '',
   widgetTitle: DEFAULT_WIDGET_TITLE,
   primaryColor: DEFAULT_PRIMARY_COLOR,
+  titleColor: DEFAULT_TITLE_COLOR,
+  messageTextColor: DEFAULT_MESSAGE_TEXT_COLOR,
   welcomeMessage: DEFAULT_WELCOME_MESSAGE,
   enabledActions: DEFAULT_ENABLED_ACTIONS,
   quoteEmail: '',
@@ -81,6 +93,9 @@ export const defaultConfig: Required<Omit<WidgetConfig, 'apiBaseUrl' | 'storeId'
     customizer: true,
   },
   storageKey: 'modly-customized-furniture',
+  access: {
+    active: true,
+  },
 };
 
 export function mergeConfig(userConfig: WidgetConfig = {}): WidgetConfig {
@@ -94,6 +109,16 @@ export function mergeConfig(userConfig: WidgetConfig = {}): WidgetConfig {
     : hasText(userConfig.theme?.primaryColor)
       ? userConfig.theme.primaryColor.trim()
       : DEFAULT_PRIMARY_COLOR;
+  const titleColor = hasText(userConfig.titleColor)
+    ? userConfig.titleColor.trim()
+    : hasText(userConfig.theme?.titleColor)
+      ? userConfig.theme.titleColor.trim()
+      : DEFAULT_TITLE_COLOR;
+  const messageTextColor = hasText(userConfig.messageTextColor)
+    ? userConfig.messageTextColor.trim()
+    : hasText(userConfig.theme?.messageTextColor)
+      ? userConfig.theme.messageTextColor.trim()
+      : DEFAULT_MESSAGE_TEXT_COLOR;
   const welcomeMessage = hasText(userConfig.welcomeMessage)
     ? userConfig.welcomeMessage.trim()
     : DEFAULT_WELCOME_MESSAGE;
@@ -104,6 +129,8 @@ export function mergeConfig(userConfig: WidgetConfig = {}): WidgetConfig {
     storeId: userConfig.storeId,
     widgetTitle,
     primaryColor,
+    titleColor,
+    messageTextColor,
     welcomeMessage,
     enabledActions: {
       ...DEFAULT_ENABLED_ACTIONS,
@@ -116,6 +143,8 @@ export function mergeConfig(userConfig: WidgetConfig = {}): WidgetConfig {
     theme: {
       ...userConfig.theme,
       primaryColor,
+      titleColor,
+      messageTextColor,
       buttonText: widgetTitle,
     },
     features: {

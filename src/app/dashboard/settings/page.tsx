@@ -19,7 +19,7 @@ export default async function SettingsPage() {
   const result = await adminDb.query({
     stores: {
       $: { where: { id: session.user.storeId } },
-      user: {},
+      users: {},
     },
   })
 
@@ -40,6 +40,8 @@ export default async function SettingsPage() {
           supportEmail: store.supportEmail,
           widgetTitle: store.widgetTitle,
           primaryColor: store.primaryColor,
+          titleColor: store.titleColor,
+          messageTextColor: store.messageTextColor,
           welcomeMessage: store.welcomeMessage,
           enableViewInCatalog: store.enableViewInCatalog,
           enableCustomize: store.enableCustomize,

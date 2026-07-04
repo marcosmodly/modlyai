@@ -10,12 +10,13 @@ interface MessageBubbleProps {
         requestQuote: boolean;
     };
     primaryColor?: string;
+    messageTextColor?: string;
     analyticsContext?: {
         apiBaseUrl?: string;
         storeId?: string;
         widgetId?: string;
     };
 }
-export declare function MessageBubble({ message, onCustomizeItem, onAddToRoomPlanner, onViewInCatalog, enabledActions, primaryColor, analyticsContext }: MessageBubbleProps): import("react/jsx-runtime").JSX.Element;
+export declare function MessageBubble({ message, onCustomizeItem, onAddToRoomPlanner, onViewInCatalog, enabledActions, primaryColor, messageTextColor, analyticsContext }: MessageBubbleProps): import("react/jsx-runtime").JSX.Element;
 export {};
 //# sourceMappingURL=MessageBubble.d.ts.map

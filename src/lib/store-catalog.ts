@@ -16,6 +16,8 @@ const STORE_SETTINGS_UPDATE_FIELDS = [
   'supportEmail',
   'widgetTitle',
   'primaryColor',
+  'titleColor',
+  'messageTextColor',
   'welcomeMessage',
   'enableViewInCatalog',
   'enableCustomize',
@@ -35,6 +37,8 @@ export interface Store {
   supportEmail?: string
   widgetTitle?: string
   primaryColor?: string
+  titleColor?: string
+  messageTextColor?: string
   welcomeMessage?: string
   enableViewInCatalog?: boolean
   enableCustomize?: boolean
@@ -133,6 +137,8 @@ function mapStore(store: any): Store {
     supportEmail: store.supportEmail ? String(store.supportEmail) : undefined,
     widgetTitle: store.widgetTitle ? String(store.widgetTitle) : undefined,
     primaryColor: store.primaryColor ? String(store.primaryColor) : undefined,
+    titleColor: store.titleColor ? String(store.titleColor) : undefined,
+    messageTextColor: store.messageTextColor ? String(store.messageTextColor) : undefined,
     welcomeMessage: store.welcomeMessage ? String(store.welcomeMessage) : undefined,
     enableViewInCatalog: typeof store.enableViewInCatalog === 'boolean' ? store.enableViewInCatalog : undefined,
     enableCustomize: typeof store.enableCustomize === 'boolean' ? store.enableCustomize : undefined,
@@ -385,6 +391,8 @@ export async function updateStore(
     supportEmail?: string
     widgetTitle?: string
     primaryColor?: string
+    titleColor?: string
+    messageTextColor?: string
     welcomeMessage?: string
     enableViewInCatalog?: boolean
     enableCustomize?: boolean
@@ -410,6 +418,8 @@ export async function updateStore(
     ...(typeof updates.supportEmail === 'string' ? { supportEmail: updates.supportEmail.trim() } : {}),
     ...(typeof updates.widgetTitle === 'string' ? { widgetTitle: updates.widgetTitle.trim() } : {}),
     ...(typeof updates.primaryColor === 'string' ? { primaryColor: updates.primaryColor.trim() } : {}),
+    ...(typeof updates.titleColor === 'string' ? { titleColor: updates.titleColor.trim() } : {}),
+    ...(typeof updates.messageTextColor === 'string' ? { messageTextColor: updates.messageTextColor.trim() } : {}),
     ...(typeof updates.welcomeMessage === 'string' ? { welcomeMessage: updates.welcomeMessage.trim() } : {}),
     ...(typeof updates.enableViewInCatalog === 'boolean' ? { enableViewInCatalog: updates.enableViewInCatalog } : {}),
     ...(typeof updates.enableCustomize === 'boolean' ? { enableCustomize: updates.enableCustomize } : {}),

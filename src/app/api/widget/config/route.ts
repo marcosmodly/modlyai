@@ -3,6 +3,7 @@ import { getCatalogSnapshot } from '@/lib/catalog-source'
 import { normalizeStorePublicIdentity, type CurrentStore } from '@/lib/current-store'
 import { adminDb } from '@/lib/instant-admin'
 import { publicWidgetOptionsResponse, withPublicWidgetCors } from '@/lib/public-widget-cors'
+import { getBillingAccess } from '@/lib/billing/access'
 
 export const dynamic = 'force-dynamic'
 
@@ -66,6 +67,10 @@ function getEnabledActions(store: WidgetStore | null) {
 
 function getPrimaryColor(value: unknown) {
   return typeof value === 'string' && /^#[0-9a-f]{6}$/i.test(value) ? value : DEFAULT_PRIMARY_COLOR
+}
+
+function getOptionalColor(value: unknown) {
+  return typeof value === 'string' && /^#[0-9a-f]{6}$/i.test(value) ? value : undefined
 }
 
 function readText(value: unknown, fallback = '') {
@@ -144,13 +149,18 @@ async function handleGET(req: Request) {
     const supportEmail = readText(store.supportEmail)
     const widgetTitle = readText(store.widgetTitle, DEFAULT_WIDGET_TITLE)
     const primaryColor = getPrimaryColor(store.primaryColor)
+    const titleColor = getOptionalColor((store as any).titleColor)
+    const messageTextColor = getOptionalColor((store as any).messageTextColor)
     const welcomeMessage = readText(store.welcomeMessage, DEFAULT_WELCOME_MESSAGE)
     const enabledActions = getEnabledActions(store)
     const quoteEmail = store.quoteEmail || supportEmail
+    const access = getBillingAccess(store as any)
 
     return NextResponse.json({
       theme: {
         primaryColor,
+        titleColor,
+        messageTextColor,
         buttonText: widgetTitle,
         buttonPosition: 'bottom-right',
       },
@@ -158,11 +168,17 @@ async function handleGET(req: Request) {
         roomPlanner: true,
         customizer: true,
       },
+      access: {
+        active: access.hasActiveAccess,
+        reason: access.reason,
+      },
       storeName,
       storeUrl,
       supportEmail,
       widgetTitle,
       primaryColor,
+      titleColor,
+      messageTextColor,
       welcomeMessage,
       enabledActions,
       quoteEmail,

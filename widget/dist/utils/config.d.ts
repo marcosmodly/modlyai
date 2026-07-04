@@ -7,6 +7,8 @@ export interface WidgetConfig {
     supportEmail?: string;
     widgetTitle?: string;
     primaryColor?: string;
+    titleColor?: string;
+    messageTextColor?: string;
     welcomeMessage?: string;
     enabledActions?: {
         viewInCatalog?: boolean;
@@ -30,6 +32,8 @@ export interface WidgetConfig {
     };
     theme?: {
         primaryColor?: string;
+        titleColor?: string;
+        messageTextColor?: string;
         buttonText?: string;
         buttonPosition?: 'bottom-right' | 'bottom-left' | 'top-right' | 'top-left';
     };
@@ -41,9 +45,15 @@ export interface WidgetConfig {
     onRoomAnalyzed?: (data: RoomAnalysisResponse) => void;
     onFurnitureCustomized?: (data: any) => void;
     storageKey?: string;
+    access?: {
+        active: boolean;
+        reason?: string;
+    };
 }
 export declare const DEFAULT_WIDGET_TITLE = "ModlyAI";
 export declare const DEFAULT_PRIMARY_COLOR = "#3B82F6";
+export declare const DEFAULT_TITLE_COLOR = "#FFFFFF";
+export declare const DEFAULT_MESSAGE_TEXT_COLOR = "#1F2937";
 export declare const DEFAULT_WELCOME_MESSAGE = "Hello! I'm your furniture assistant. I can help you choose the right products, plan your room, or customize items from this store's catalog.";
 export declare const DEFAULT_ENABLED_ACTIONS: {
     viewInCatalog: boolean;

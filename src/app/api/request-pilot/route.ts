@@ -46,8 +46,7 @@ export async function POST(request: NextRequest) {
 
     // Send email using Resend
     const { error } = await resend.emails.send({
-      from: 'ModlyAI <onboarding@resend.dev>',
-      replyTo: 'hello@modlyai.tech',
+      from: 'ModlyAI <hello@modlyai.tech>',
       to: pilotToEmail,
       subject: 'New ModlyAI Pilot Request',
       html: `

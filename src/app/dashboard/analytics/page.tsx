@@ -97,6 +97,14 @@ export default async function AnalyticsPage() {
 
   const conversionRate = guidedSessions > 0 ? ((conversions / guidedSessions) * 100).toFixed(1) : '0.0'
 
+  const quoteEvents = recentEvents.filter((event) => event.type === 'quote_requested')
+  const quotesByProduct = new Map<string, number>()
+  quoteEvents.forEach((event) => {
+    const name = getProductName(event) || 'Unspecified product'
+    quotesByProduct.set(name, (quotesByProduct.get(name) ?? 0) + 1)
+  })
+  const topQuotedProducts = [...quotesByProduct.entries()].sort((a, b) => b[1] - a[1]).slice(0, 8)
+
   const metricCards = [
     { label: 'Guided sessions', value: String(guidedSessions), delta: `${conversionRate}% conv.`, icon: MousePointerClick },
     { label: 'Assisted conversions', value: String(conversions), delta: `${conversions} total`, icon: Target },
@@ -145,7 +153,7 @@ export default async function AnalyticsPage() {
       <section className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
         <div className="rounded-[32px] border border-stone-200 bg-white p-6 shadow-sm">
           <h2 className="text-2xl font-bold tracking-tight text-stone-950">Recent Event Timeline</h2>
-          <div className="mt-6 space-y-3">
+          <div className="mt-6 max-h-[520px] space-y-3 overflow-y-auto pr-1">
             {recentEvents.length === 0 ? (
               <div className="rounded-2xl border border-dashed border-stone-300 bg-stone-50 px-5 py-6 text-sm text-stone-600">
                 <p className="font-semibold text-stone-900">
@@ -210,6 +218,61 @@ export default async function AnalyticsPage() {
                   ? `${getEventLabel(recentConversion.type)}${getProductName(recentConversion) ? ` - ${getProductName(recentConversion)}` : ''} - ${formatEventTime(recentConversion.createdAt)}`
                   : 'No assisted action yet'}
               </p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section className="rounded-[32px] border border-stone-200 bg-white p-6 shadow-sm">
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <h2 className="text-2xl font-bold tracking-tight text-stone-950">Quote Requests by Product</h2>
+          <span className="rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-blue-700">
+            {quoteEvents.length} total {quoteEvents.length === 1 ? 'quote' : 'quotes'}
+          </span>
+        </div>
+        <p className="mt-2 max-w-2xl text-sm leading-6 text-stone-600">
+          Which products are driving buying intent. This is a proxy for revenue impact until order data is connected
+          for full dollar-value attribution.
+        </p>
+
+        <div className="mt-6 grid gap-6 lg:grid-cols-2">
+          <div>
+            <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-stone-500">Top quoted products</h3>
+            <div className="mt-3 max-h-[360px] space-y-2 overflow-y-auto pr-1">
+              {topQuotedProducts.length === 0 ? (
+                <div className="rounded-2xl border border-dashed border-stone-300 bg-stone-50 px-4 py-6 text-sm text-stone-500">
+                  No quote requests yet.
+                </div>
+              ) : (
+                topQuotedProducts.map(([name, count]) => (
+                  <div
+                    key={name}
+                    className="flex items-center justify-between rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3"
+                  >
+                    <span className="text-sm font-semibold text-stone-900">{name}</span>
+                    <span className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-stone-600">
+                      {count} {count === 1 ? 'quote' : 'quotes'}
+                    </span>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+
+          <div>
+            <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-stone-500">Recent quote requests</h3>
+            <div className="mt-3 max-h-[360px] space-y-2 overflow-y-auto pr-1">
+              {quoteEvents.length === 0 ? (
+                <div className="rounded-2xl border border-dashed border-stone-300 bg-stone-50 px-4 py-6 text-sm text-stone-500">
+                  No quote requests yet.
+                </div>
+              ) : (
+                quoteEvents.slice(0, 20).map((event) => (
+                  <div key={event.id} className="rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3">
+                    <p className="text-sm font-semibold text-stone-900">{getProductName(event) || 'Unspecified product'}</p>
+                    <p className="mt-1 text-xs text-stone-500">{formatEventTime(event.createdAt)}</p>
+                  </div>
+                ))
+              )}
             </div>
           </div>
         </div>

@@ -103,6 +103,45 @@ body {
   .modly-hero-step-2 { animation: modlyStepGlow 5200ms ease-in-out infinite 1300ms; }
   .modly-hero-step-3 { animation: modlyStepGlow 5200ms ease-in-out infinite 2600ms; }
   .modly-hero-step-4 { animation: modlyStepGlow 5200ms ease-in-out infinite 3900ms; }
+
+  /* Continuous logo/platform marquee */
+  .modly-marquee-mask {
+    mask-image: linear-gradient(90deg, transparent, black 12%, black 88%, transparent);
+    -webkit-mask-image: linear-gradient(90deg, transparent, black 12%, black 88%, transparent);
+  }
+
+  .modly-marquee-track {
+    animation: modlyMarquee 26s linear infinite;
+  }
+
+  .modly-marquee-track:hover {
+    animation-play-state: paused;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .modly-marquee-track {
+      animation: none;
+    }
+  }
+
+  /* Try-the-widget hint bubble (how-it-works page) */
+  .modly-hint-in {
+    animation: modlyHintIn 480ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+
+  .modly-hint-ring {
+    animation: modlyHintPulse 1900ms ease-out infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .modly-hint-in {
+      animation: none;
+    }
+    .modly-hint-ring {
+      animation: none;
+      display: none;
+    }
+  }
   
   /* Subtle border utility */
   .border-subtle {
@@ -139,6 +178,21 @@ body {
 @keyframes modlyStepGlow {
   0%, 72%, 100% { opacity: 0; }
   8%, 24% { opacity: 1; }
+}
+
+@keyframes modlyMarquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@keyframes modlyHintIn {
+  0% { opacity: 0; transform: translateY(10px) scale(0.92); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes modlyHintPulse {
+  0% { transform: scale(1); opacity: 0.55; }
+  100% { transform: scale(1.9); opacity: 0; }
 }
 
 /* Ensure dark text on white/light input backgrounds */

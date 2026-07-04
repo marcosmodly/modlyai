@@ -21,16 +21,21 @@ export default function TrialExpiredBanner() {
   const store = data?.stores?.[0]
   const access = getBillingAccess(store)
 
-  if (!store || !access.isTrialExpired) return null
+  if (!store || access.hasActiveAccess) return null
+
+  const message =
+    access.reason === 'trial_expired'
+      ? 'Your free trial has ended. Upgrade to reactivate your widget.'
+      : access.reason === 'subscription_inactive' || access.reason === 'subscription_missing_status'
+        ? 'Your subscription has ended. Choose a plan to reactivate your widget.'
+        : 'Your ModlyAI access has ended. Choose a plan to reactivate your widget.'
 
   return (
     <div className="mb-6 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-amber-950">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-3">
           <AlertTriangle className="h-5 w-5 text-amber-700" />
-          <p className="text-sm font-semibold">
-            Your free trial has ended. Upgrade to reactivate your widget.
-          </p>
+          <p className="text-sm font-semibold">{message}</p>
         </div>
         <Link
           href="/dashboard/billing"

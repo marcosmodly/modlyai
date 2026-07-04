@@ -36,12 +36,15 @@ export function FurnitureAIWidget({ config = {}, defaultTab, widgetTitle }: Furn
     [mergedConfig.apiBaseUrl, mergedConfig.storeId, mergedConfig.widgetId]
   );
   const primaryColor = getPrimaryColor(mergedConfig);
+  const primaryTextColor = getReadableTextColor(primaryColor);
+  const titleColor = mergedConfig.titleColor || mergedConfig.theme?.titleColor || primaryTextColor;
+  const messageTextColor = mergedConfig.messageTextColor || mergedConfig.theme?.messageTextColor;
   const displayTitle =
     widgetTitle ||
     config.widgetTitle ||
     config.theme?.buttonText ||
     DEFAULT_WIDGET_TITLE;
-  const primaryTextColor = getReadableTextColor(primaryColor);
+  const isAccessActive = mergedConfig.access ? mergedConfig.access.active !== false : true;
 
   const [viewMode, setViewMode] = useState<ViewMode>('conversation');
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
@@ -236,13 +239,16 @@ export function FurnitureAIWidget({ config = {}, defaultTab, widgetTitle }: Furn
   return (
     <div className="furniture-widget-ai h-full flex flex-col">
       {/* Header */}
-      <div className="bg-gray-50 border-b border-gray-200 px-6 py-4 pr-16 flex items-center justify-between">
+      <div
+        className="border-b border-transparent px-6 py-4 pr-16 flex items-center justify-between"
+        style={{ backgroundColor: primaryColor }}
+      >
         <div className="flex items-center gap-4">
-          <h1 className="text-2xl font-bold text-gray-900">
+          <h1 className="text-2xl font-bold" style={{ color: titleColor }}>
             {displayTitle === DEFAULT_WIDGET_TITLE ? (
               <>
                 <span>Modly</span>
-                <span style={{ color: primaryColor }}>AI</span>
+                <span>AI</span>
               </>
             ) : (
               <span>{displayTitle}</span>
@@ -253,7 +259,8 @@ export function FurnitureAIWidget({ config = {}, defaultTab, widgetTitle }: Furn
               <button
                 type="button"
                 onClick={handleOpenRoomPlanner}
-                className="text-sm px-3 py-1.5 text-gray-700 hover:bg-gray-100 rounded transition-colors"
+                className="text-sm px-3 py-1.5 rounded transition-colors hover:bg-white/15"
+                style={{ color: titleColor }}
               >
                 Room Planner
               </button>
@@ -261,7 +268,8 @@ export function FurnitureAIWidget({ config = {}, defaultTab, widgetTitle }: Furn
                 <button
                   type="button"
                   onClick={handleOpenCustomizer}
-                  className="text-sm px-3 py-1.5 text-gray-700 hover:bg-gray-100 rounded transition-colors"
+                  className="text-sm px-3 py-1.5 rounded transition-colors hover:bg-white/15"
+                  style={{ color: titleColor }}
                 >
                   Customizer
                 </button>
@@ -270,9 +278,10 @@ export function FurnitureAIWidget({ config = {}, defaultTab, widgetTitle }: Furn
           )}
           {viewMode !== 'conversation' && (
             <button
-              type="button"
-              onClick={handleBackToConversation}
-              className="text-sm text-gray-600 hover:text-gray-900 flex items-center gap-1"
+            type="button"
+            onClick={handleBackToConversation}
+              className="text-sm flex items-center gap-1"
+              style={{ color: titleColor }}
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -288,6 +297,20 @@ export function FurnitureAIWidget({ config = {}, defaultTab, widgetTitle }: Furn
 
       {/* Content Area */}
       <div className="flex-1 overflow-hidden">
+        {!isAccessActive ? (
+          <div className="h-full flex flex-col items-center justify-center gap-3 px-8 text-center">
+            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-amber-100 text-amber-700">
+              <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v3.75m0 3.75h.007M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <h2 className="text-lg font-semibold text-gray-900">This assistant is temporarily unavailable</h2>
+            <p className="max-w-sm text-sm text-gray-600">
+              This store's ModlyAI plan has ended. Please check back soon, or contact the store directly for help.
+            </p>
+          </div>
+        ) : (
+        <>
         {viewMode === 'conversation' && (
           <div className="h-full flex flex-col">
             {saveNotification && (
@@ -306,6 +329,7 @@ export function FurnitureAIWidget({ config = {}, defaultTab, widgetTitle }: Furn
                 onViewInCatalog={handleViewInCatalog}
                 enabledActions={enabledActions}
                 primaryColor={primaryColor}
+                messageTextColor={messageTextColor}
                 analyticsContext={analyticsContext}
               />
             </div>
@@ -331,6 +355,8 @@ export function FurnitureAIWidget({ config = {}, defaultTab, widgetTitle }: Furn
               />
             )}
           </div>
+        )}
+        </>
         )}
       </div>
 

@@ -14,6 +14,13 @@ const securityHeaders = [
 ]
 
 const nextConfig = {
+  experimental: {
+    serverComponentsExternalPackages: [
+      '@instantdb/admin',
+      '@instantdb/core',
+      '@instantdb/react',
+    ],
+  },
   async headers() {
     return [
       {

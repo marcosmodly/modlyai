@@ -431,6 +431,8 @@ interface WidgetConfig {
     supportEmail?: string;
     widgetTitle?: string;
     primaryColor?: string;
+    titleColor?: string;
+    messageTextColor?: string;
     welcomeMessage?: string;
     enabledActions?: {
         viewInCatalog?: boolean;
@@ -454,6 +456,8 @@ interface WidgetConfig {
     };
     theme?: {
         primaryColor?: string;
+        titleColor?: string;
+        messageTextColor?: string;
         buttonText?: string;
         buttonPosition?: 'bottom-right' | 'bottom-left' | 'top-right' | 'top-left';
     };
@@ -465,6 +469,10 @@ interface WidgetConfig {
     onRoomAnalyzed?: (data: RoomAnalysisResponse) => void;
     onFurnitureCustomized?: (data: any) => void;
     storageKey?: string;
+    access?: {
+        active: boolean;
+        reason?: string;
+    };
 }
 
 interface FurnitureRoomPlannerWidgetProps {

@@ -19,6 +19,7 @@ interface ConversationInterfaceProps {
     requestQuote: boolean;
   };
   primaryColor?: string;
+  messageTextColor?: string;
   analyticsContext?: {
     apiBaseUrl?: string;
     storeId?: string;
@@ -36,6 +37,7 @@ export function ConversationInterface({
   onViewInCatalog,
   enabledActions,
   primaryColor,
+  messageTextColor,
   analyticsContext,
 }: ConversationInterfaceProps) {
   const [input, setInput] = useState('');
@@ -184,6 +186,7 @@ export function ConversationInterface({
               onViewInCatalog={onViewInCatalog}
               enabledActions={enabledActions}
               primaryColor={primaryColor}
+              messageTextColor={messageTextColor}
               analyticsContext={analyticsContext}
             />
           ))

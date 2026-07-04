@@ -1,12 +1,17 @@
 import Link from "next/link";
+import TryWidgetHint from "@/components/TryWidgetHint";
 import {
   ArrowRight,
   BarChart3,
   CheckCircle2,
   FileSpreadsheet,
+  MessageCircle,
   PackageCheck,
+  Ruler,
   ShoppingBag,
+  Sliders,
   Sparkles,
+  Tag,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -37,6 +42,39 @@ const platforms = [
   ["BigCommerce", "Built for expanding catalog integrations."],
   ["Custom", "Works through CSV or JavaScript install."],
 ] as const;
+
+const widgetCapabilities: Array<{ title: string; body: string; Icon: LucideIcon }> = [
+  {
+    title: "Catalog-grounded chat",
+    body: "Shoppers ask fit, style, and material questions and get answers pulled only from your real product catalog, never invented items.",
+    Icon: MessageCircle,
+  },
+  {
+    title: "Room and fit guidance",
+    body: "Shoppers describe a space or share dimensions and the widget checks which catalog products realistically fit.",
+    Icon: Ruler,
+  },
+  {
+    title: "Product recommendations",
+    body: "Suggests exact catalog products with real names, prices, dimensions, and SKUs based on what the shopper is looking for.",
+    Icon: Tag,
+  },
+  {
+    title: "Customization requests",
+    body: "Guides shoppers through factory-approved materials, finishes, and sizes only, never invented configurations.",
+    Icon: Sliders,
+  },
+  {
+    title: "View in catalog",
+    body: "Sends high-intent shoppers straight to the real product page to complete their purchase.",
+    Icon: ShoppingBag,
+  },
+  {
+    title: "Request a quote",
+    body: "Captures complex or custom purchase requests as structured leads instead of losing the shopper.",
+    Icon: PackageCheck,
+  },
+];
 
 const catalogSources: Array<{ label: string; status: string; Icon: LucideIcon }> = [
   { label: "Shopify Sync", status: "Connected", Icon: ShoppingBag },
@@ -219,9 +257,51 @@ function DashboardVisual() {
   );
 }
 
+function WidgetButtonLocationVisual() {
+  return (
+    <div className="relative overflow-hidden rounded-3xl border border-[#ded1c2] bg-white shadow-[0_24px_70px_rgba(75,61,47,0.12)]">
+      <div className="flex items-center gap-2 border-b border-[#e7ddd1] bg-[#f8f1e7] px-4 py-3">
+        <span className="h-2.5 w-2.5 rounded-full bg-[#d9cdbd]" />
+        <span className="h-2.5 w-2.5 rounded-full bg-[#d9cdbd]" />
+        <span className="h-2.5 w-2.5 rounded-full bg-[#d9cdbd]" />
+        <span className="mx-auto text-xs font-medium text-[#8a7e70]">modlyai.tech/how-it-works</span>
+      </div>
+
+      <div className="relative min-h-[360px] px-6 py-8">
+        <div className="mx-auto max-w-md text-center">
+          <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#a0937f]">How ModlyAI works</div>
+          <div className="mt-3 text-base font-semibold text-[#211d19]">
+            Connect your catalog, add the widget, and let shoppers get guidance before they buy.
+          </div>
+        </div>
+
+        <div className="mt-7 grid grid-cols-3 gap-3">
+          <div className="h-16 rounded-xl bg-[#f4ede1]" />
+          <div className="h-16 rounded-xl bg-[#f4ede1]" />
+          <div className="h-16 rounded-xl bg-[#f4ede1]" />
+        </div>
+        <div className="mt-3 h-24 rounded-xl bg-[#f4ede1]" />
+
+        <div className="absolute bottom-6 right-6 flex flex-col items-end gap-2">
+          <span className="rounded-full bg-[#faece7] px-3 py-1 text-xs font-semibold text-[#993c1d]">
+            Widget button appears here
+          </span>
+          <div className="flex h-11 min-w-[120px] items-center justify-center gap-2 rounded-full bg-[#244f85] px-5 text-sm font-semibold text-white shadow-[0_10px_24px_rgba(15,23,42,0.25)]">
+            <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.86 9.86 0 01-4-.8L3 20l1.3-3.9A7.93 7.93 0 013 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+            </svg>
+            ModlyAI
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function HowItWorksPage() {
   return (
     <main className="bg-[#fffaf2] text-[#171411]">
+      <TryWidgetHint />
       <section className="relative overflow-hidden px-6 py-16 md:py-20">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(209,178,132,0.22),transparent_34%),linear-gradient(180deg,#fffaf2_0%,#f8efe3_100%)]" />
         <div className="relative mx-auto max-w-4xl text-center">
@@ -253,6 +333,50 @@ export default function HowItWorksPage() {
           <div className="grid items-center gap-8 rounded-3xl border border-[#e1d7ca] bg-[#fbf6ee] p-5 shadow-[0_24px_70px_rgba(75,61,47,0.08)] md:p-8 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10">
             <DashboardVisual />
             <StepText step={steps[2]} />
+          </div>
+        </div>
+      </section>
+
+      <section className="px-6 pb-16 md:pb-20">
+        <div className="mx-auto max-w-7xl">
+          <div className="max-w-2xl">
+            <div className="inline-flex items-center gap-2 rounded-full border border-[#dfd3c4] bg-white/70 px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-[#856a47] shadow-sm">
+              Where to find it
+            </div>
+            <h2 className="mt-5 text-3xl font-semibold leading-tight text-[#171411] md:text-4xl">
+              The widget button lives in the bottom-right corner of this page.
+            </h2>
+            <p className="mt-4 max-w-xl text-base leading-7 text-[#665c52]">
+              It only appears here, on the how it works page, and only when you are signed in. It will not appear on
+              the homepage.
+            </p>
+          </div>
+          <div className="mt-8 max-w-3xl">
+            <WidgetButtonLocationVisual />
+          </div>
+        </div>
+      </section>
+
+      <section className="px-6 pb-16 md:pb-20">
+        <div className="mx-auto max-w-7xl">
+          <div className="max-w-2xl">
+            <div className="inline-flex items-center gap-2 rounded-full border border-[#dfd3c4] bg-white/70 px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-[#856a47] shadow-sm">
+              What the widget can do
+            </div>
+            <h2 className="mt-5 text-3xl font-semibold leading-tight text-[#171411] md:text-4xl">
+              Everything shoppers need to buy with confidence, in one panel.
+            </h2>
+          </div>
+          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {widgetCapabilities.map(({ title, body, Icon }) => (
+              <div key={title} className="rounded-3xl border border-[#e1d7ca] bg-[#fffdf9] p-6 shadow-[0_18px_45px_rgba(75,61,47,0.07)]">
+                <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#f1e7d9] text-[#8a6238]">
+                  <Icon className="h-5 w-5" />
+                </div>
+                <h3 className="mt-5 text-lg font-semibold text-[#1e1a16]">{title}</h3>
+                <p className="mt-2 text-sm leading-6 text-[#665c52]">{body}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>

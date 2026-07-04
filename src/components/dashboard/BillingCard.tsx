@@ -361,20 +361,39 @@ export default function BillingCard({
               </p>
             ) : null}
           </div>
-          {canManageBilling ? (
-            <button
-              type="button"
-              onClick={openBillingPortal}
-              disabled={portalLoading || loadingPlan !== null}
-              className="inline-flex items-center justify-center rounded-xl bg-stone-950 px-4 py-3 text-sm font-semibold text-white transition hover:bg-stone-800 disabled:cursor-not-allowed disabled:opacity-60"
-            >
-              {portalLoading ? 'Opening billing portal...' : 'Manage billing'}
-            </button>
-          ) : (
-            <p className="max-w-sm text-sm font-medium text-stone-600">
-              Billing portal becomes available after you start a paid plan.
-            </p>
-          )}
+          <div className="flex flex-col items-stretch gap-2 sm:items-end">
+            {!access.hasActiveAccess ? (
+              <a
+                href="#plans"
+                className="inline-flex items-center justify-center rounded-xl bg-stone-950 px-4 py-3 text-sm font-semibold text-white transition hover:bg-stone-800"
+              >
+                View plans
+              </a>
+            ) : canManageBilling ? (
+              <button
+                type="button"
+                onClick={openBillingPortal}
+                disabled={portalLoading || loadingPlan !== null}
+                className="inline-flex items-center justify-center rounded-xl bg-stone-950 px-4 py-3 text-sm font-semibold text-white transition hover:bg-stone-800 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {portalLoading ? 'Opening billing portal...' : 'Manage billing'}
+              </button>
+            ) : (
+              <p className="max-w-sm text-sm font-medium text-stone-600">
+                Billing portal becomes available after you start a paid plan.
+              </p>
+            )}
+            {!access.hasActiveAccess && canManageBilling ? (
+              <button
+                type="button"
+                onClick={openBillingPortal}
+                disabled={portalLoading || loadingPlan !== null}
+                className="inline-flex items-center justify-center rounded-xl border border-stone-300 bg-white px-4 py-3 text-sm font-semibold text-stone-700 transition hover:bg-stone-100 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {portalLoading ? 'Opening billing portal...' : 'Manage billing / invoices'}
+              </button>
+            ) : null}
+          </div>
         </div>
       </div>
 
@@ -402,7 +421,7 @@ export default function BillingCard({
         </div>
       </div>
 
-      <div className="mt-6 grid gap-4 lg:grid-cols-3">
+      <div id="plans" className="mt-6 grid gap-4 lg:grid-cols-3">
         {paidPlans.map((plan) => (
           <div key={plan.id} className="rounded-2xl border border-stone-200 bg-stone-50 p-5">
             <div className="flex items-start justify-between gap-4">
