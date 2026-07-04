@@ -302,16 +302,70 @@ export default function Home() {
     operatingSystem: "Web",
     description: "AI room matching for furniture retailers, using existing catalog products and storefront workflows.",
     offers: {
-      "@type": "Offer",
-      price: "299",
+      "@type": "AggregateOffer",
       priceCurrency: "USD",
-      availability: "https://schema.org/InStock",
+      lowPrice: "299",
+      highPrice: "599",
+      offerCount: "3",
+      offers: [
+        {
+          "@type": "Offer",
+          name: "Starter",
+          price: "299",
+          priceCurrency: "USD",
+          availability: "https://schema.org/InStock",
+        },
+        {
+          "@type": "Offer",
+          name: "Growth",
+          price: "599",
+          priceCurrency: "USD",
+          availability: "https://schema.org/InStock",
+        },
+        {
+          "@type": "Offer",
+          name: "Scale",
+          priceSpecification: {
+            "@type": "PriceSpecification",
+            price: "0",
+            priceCurrency: "USD",
+            valueAddedTaxIncluded: false,
+          },
+          availability: "https://schema.org/InStock",
+        },
+      ],
     },
+  };
+
+  const organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "ModlyAI",
+    url: "https://modlyai.tech",
+    logo: "https://modlyai.tech/favicon.ico",
+    description:
+      "ModlyAI helps furniture retailers add catalog-grounded room matching, product recommendations, and customization requests to their storefront.",
+    sameAs: [],
+  };
+
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((item) => ({
+      "@type": "Question",
+      name: item.q,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.a,
+      },
+    })),
   };
 
   return (
     <main className="min-h-screen bg-[#fffaf2] text-[#171411]">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
       <ValuePropStrip />
       <HeroB2B />
