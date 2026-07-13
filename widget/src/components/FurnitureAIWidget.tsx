@@ -46,7 +46,7 @@ export function FurnitureAIWidget({ config = {}, defaultTab, widgetTitle }: Furn
     DEFAULT_WIDGET_TITLE;
   const isAccessActive = mergedConfig.access ? mergedConfig.access.active !== false : true;
 
-  const [viewMode, setViewMode] = useState<ViewMode>('conversation');
+  const [viewMode, setViewMode] = useState<ViewMode>(defaultTab || 'conversation');
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [saveNotification, setSaveNotification] = useState<string | null>(null);
   const [selectedCatalogItem, setSelectedCatalogItem] = useState<FurnitureItem | null>(null);
@@ -237,61 +237,69 @@ export function FurnitureAIWidget({ config = {}, defaultTab, widgetTitle }: Furn
   };
 
   return (
-    <div className="furniture-widget-ai h-full flex flex-col">
+    <div className="furniture-widget-ai h-full flex flex-col" style={{ ['--modly-panel-accent' as any]: primaryColor }}>
       {/* Header */}
       <div
-        className="border-b border-transparent px-6 py-4 pr-16 flex items-center justify-between"
+        className="border-b border-transparent px-5 py-3.5 pr-16 flex items-center gap-4"
         style={{ backgroundColor: primaryColor }}
       >
-        <div className="flex items-center gap-4">
-          <h1 className="text-2xl font-bold" style={{ color: titleColor }}>
-            {displayTitle === DEFAULT_WIDGET_TITLE ? (
-              <>
-                <span>Modly</span>
-                <span>AI</span>
-              </>
-            ) : (
-              <span>{displayTitle}</span>
-            )}
-          </h1>
-          {viewMode === 'conversation' && (
+        <h1 className="text-base font-semibold shrink-0" style={{ color: titleColor }}>
+          {displayTitle === DEFAULT_WIDGET_TITLE ? (
             <>
-              <button
-                type="button"
-                onClick={handleOpenRoomPlanner}
-                className="text-sm px-3 py-1.5 rounded transition-colors hover:bg-white/15"
-                style={{ color: titleColor }}
-              >
-                Room Planner
-              </button>
-              {enabledActions.customize && (
-                <button
-                  type="button"
-                  onClick={handleOpenCustomizer}
-                  className="text-sm px-3 py-1.5 rounded transition-colors hover:bg-white/15"
-                  style={{ color: titleColor }}
-                >
-                  Customizer
-                </button>
-              )}
+              <span>Modly</span>
+              <span>AI</span>
             </>
+          ) : (
+            <span>{displayTitle}</span>
           )}
-          {viewMode !== 'conversation' && (
-            <button
+        </h1>
+
+        {/* Persistent pill tab switcher, visible in every mode */}
+        <div className="flex items-center gap-1 rounded-full p-1" style={{ backgroundColor: 'rgba(255,255,255,0.14)' }} role="tablist">
+          <button
             type="button"
+            role="tab"
+            aria-selected={viewMode === 'conversation'}
             onClick={handleBackToConversation}
-              className="text-sm flex items-center gap-1"
-              style={{ color: titleColor }}
+            className="rounded-full px-3.5 py-1.5 text-xs font-semibold transition-colors"
+            style={
+              viewMode === 'conversation'
+                ? { backgroundColor: 'rgba(255,255,255,0.92)', color: primaryColor }
+                : { color: titleColor, opacity: 0.85 }
+            }
+          >
+            Chat
+          </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={viewMode === 'room-planner'}
+            onClick={handleOpenRoomPlanner}
+            className="rounded-full px-3.5 py-1.5 text-xs font-semibold transition-colors"
+            style={
+              viewMode === 'room-planner'
+                ? { backgroundColor: 'rgba(255,255,255,0.92)', color: primaryColor }
+                : { color: titleColor, opacity: 0.85 }
+            }
+          >
+            Room planner
+          </button>
+          {enabledActions.customize && (
+            <button
+              type="button"
+              role="tab"
+              aria-selected={viewMode === 'customizer'}
+              onClick={handleOpenCustomizer}
+              className="rounded-full px-3.5 py-1.5 text-xs font-semibold transition-colors"
+              style={
+                viewMode === 'customizer'
+                  ? { backgroundColor: 'rgba(255,255,255,0.92)', color: primaryColor }
+                  : { color: titleColor, opacity: 0.85 }
+              }
             >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-              </svg>
-              Back to Chat
+              Customize
             </button>
           )}
-        </div>
-        <div className="flex gap-2">
-          {/* Empty div to maintain spacing for X button */}
         </div>
       </div>
 
@@ -312,7 +320,7 @@ export function FurnitureAIWidget({ config = {}, defaultTab, widgetTitle }: Furn
         ) : (
         <>
         {viewMode === 'conversation' && (
-          <div className="h-full flex flex-col">
+          <div key="conversation" className="modly-panel-fade h-full flex flex-col">
             {saveNotification && (
               <div className="bg-green-500 text-white px-4 py-2 text-sm text-center flex-shrink-0">
                 {saveNotification}
@@ -336,7 +344,7 @@ export function FurnitureAIWidget({ config = {}, defaultTab, widgetTitle }: Furn
           </div>
         )}
         {viewMode === 'room-planner' && (
-          <div className="h-full overflow-y-auto">
+          <div key="room-planner" className="modly-panel-fade h-full overflow-y-auto">
             <FurnitureRoomPlannerWidget 
               config={mergedConfig} 
               onCustomizeItem={enabledActions.customize ? handleCustomizeItem : undefined}
@@ -345,7 +353,7 @@ export function FurnitureAIWidget({ config = {}, defaultTab, widgetTitle }: Furn
           </div>
         )}
         {viewMode === 'customizer' && (
-          <div className="h-full overflow-y-auto">
+          <div key="customizer" className="modly-panel-fade h-full overflow-y-auto">
             {enabledActions.customize && (
               <FurnitureCustomizerWidget 
                 config={mergedConfig} 

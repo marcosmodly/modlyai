@@ -142,6 +142,18 @@ body {
       display: none;
     }
   }
+
+  /* Signup-to-try button glow, shown while the How It Works page is open */
+  .modly-signup-glow {
+    animation: modlySignupGlow 2200ms ease-in-out infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .modly-signup-glow {
+      animation: none;
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.22), 0 10px 24px rgba(15, 23, 42, 0.22);
+    }
+  }
   
   /* Subtle border utility */
   .border-subtle {
@@ -193,6 +205,15 @@ body {
 @keyframes modlyHintPulse {
   0% { transform: scale(1); opacity: 0.55; }
   100% { transform: scale(1.9); opacity: 0; }
+}
+
+@keyframes modlySignupGlow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.55), 0 10px 24px rgba(15, 23, 42, 0.22);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(59, 130, 246, 0), 0 10px 28px rgba(15, 23, 42, 0.28);
+  }
 }
 
 /* Ensure dark text on white/light input backgrounds */

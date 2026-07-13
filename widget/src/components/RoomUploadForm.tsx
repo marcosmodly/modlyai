@@ -231,7 +231,7 @@ export default function RoomUploadForm({
   return (
     <form ref={formElementRef} onSubmit={handleSubmit} className="space-y-6">
       {/* Photo Upload */}
-      <div className="bg-white border border-gray-200 rounded-xl p-6">
+      <div className="bg-white border border-gray-200 rounded-2xl p-6">
         <label className="block text-base font-bold text-gray-900 mb-3">
           Upload Room Photos
         </label>
@@ -239,7 +239,7 @@ export default function RoomUploadForm({
           onClick={() => fileInputRef.current?.click()}
           onDragOver={handleDragOver}
           onDrop={handleDrop}
-          className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center cursor-pointer hover:border-blue-500 hover:bg-blue-50/50 transition-colors bg-white relative min-h-[200px] flex flex-col items-center justify-center"
+          className="border-2 border-dashed border-gray-300 rounded-2xl p-8 text-center cursor-pointer hover:border-blue-500 hover:bg-blue-50/50 transition-colors bg-white relative min-h-[200px] flex flex-col items-center justify-center"
         >
           <input
             ref={fileInputRef}
@@ -253,7 +253,9 @@ export default function RoomUploadForm({
           {photos.length === 0 ? (
             <>
               <div className="w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center mb-4">
-                <span className="text-2xl">📸</span>
+                <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14M4 8h16M4 8a2 2 0 00-2 2v8a2 2 0 002 2h16a2 2 0 002-2v-8a2 2 0 00-2-2M4 8V6a2 2 0 012-2h4" />
+                </svg>
               </div>
               <p className="text-gray-900 font-semibold mb-1">Click to upload or drag and drop</p>
               <p className="text-sm text-gray-600">Multiple photos recommended for better analysis</p>
@@ -264,7 +266,7 @@ export default function RoomUploadForm({
                     e.stopPropagation();
                     fileInputRef.current?.click();
                   }}
-                  className="px-5 py-2.5 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition"
+                  className="px-5 py-2.5 bg-blue-600 text-white rounded-full font-semibold hover:bg-blue-700 transition"
                 >
                   Choose Files
                 </button>

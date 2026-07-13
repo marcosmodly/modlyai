@@ -621,7 +621,7 @@ export default function FurnitureCustomizerPanel({
                           }
                           disabled={isApplying}
                           className={[
-                            'flex items-center gap-2 px-3 py-2 rounded-xl border-2 text-sm transition-all',
+                            'flex items-center gap-2 px-3 py-2 rounded-full border-2 text-sm transition-all',
                             isSelected
                               ? 'border-blue-500 bg-blue-50'
                               : 'border-gray-200 hover:border-gray-300',
@@ -631,7 +631,7 @@ export default function FurnitureCustomizerPanel({
                           title={color.name}
                         >
                           <div
-                            className="w-4 h-4 rounded-full border border-gray-200"
+                            className="w-5 h-5 rounded-full border border-gray-200"
                             style={{ backgroundColor: color.hex }}
                           />
                           <span>{color.name}</span>
@@ -916,7 +916,7 @@ export default function FurnitureCustomizerPanel({
                 type="button"
                 onClick={onApply}
                 disabled={isApplying || (validationErrors?.length ?? 0) > 0}
-                className="w-full py-4 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-700 transition shadow-lg shadow-purple-600/30 flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
+                className="w-full py-4 bg-purple-600 text-white rounded-full font-semibold hover:bg-purple-700 transition shadow-lg shadow-purple-600/30 flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
               >
                 <Sparkles className="w-5 h-5" />
                 {isApplying ? 'Applying...' : 'Apply Customizations'}
@@ -1009,7 +1009,7 @@ export default function FurnitureCustomizerPanel({
                 <button
                   onClick={handleAnalyzeWithRoomPlannerPhoto}
                   disabled={analyzing}
-                  className="w-full bg-blue-600 text-white py-3 rounded-xl font-medium hover:bg-blue-700 disabled:opacity-50 flex items-center justify-center gap-2 mb-4"
+                  className="w-full bg-blue-600 text-white py-3 rounded-full font-medium hover:bg-blue-700 disabled:opacity-50 flex items-center justify-center gap-2 mb-4"
                 >
                   {analyzing ? (
                     <>
@@ -1017,7 +1017,10 @@ export default function FurnitureCustomizerPanel({
                       Analyzing your room...
                     </>
                   ) : (
-                    '✨ Get AI Suggestions'
+                    <>
+                      <Sparkles className="w-4 h-4" />
+                      Get AI Suggestions
+                    </>
                   )}
                 </button>
               )}
@@ -1031,7 +1034,11 @@ export default function FurnitureCustomizerPanel({
                 {/* No room planner photo */}
                 {!roomPlannerPhoto && !analyzing && (
                   <div className="text-center py-8">
-                    <p className="text-3xl mb-2">🏠</p>
+                    <div className="w-10 h-10 mx-auto mb-2 rounded-full bg-gray-100 flex items-center justify-center">
+                      <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 12l2-2m0 0l7-7 7 7m-9-9v9m9 9v-9m0 9H5" />
+                      </svg>
+                    </div>
                     <p className="text-sm text-gray-500">
                       Use Room Planner first to upload a room photo and get personalized suggestions
                     </p>

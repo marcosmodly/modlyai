@@ -71,7 +71,7 @@
   text-rendering: optimizeLegibility;
 }
 
-.modly-widget-root :where(.modly-widget-button, .modly-widget-modal-backdrop, .fixed) {
+.modly-widget-root :where(.modly-widget-button, .modly-widget-menu-item, .modly-widget-modal-backdrop, .fixed) {
   pointer-events: auto;
 }
 
@@ -120,6 +120,12 @@
   color: inherit;
 }
 
+.modly-widget-root .modly-widget-menu-item {
+  appearance: none;
+  isolation: isolate;
+  z-index: 2147483001 !important;
+}
+
 .modly-widget-root .modly-widget-modal-backdrop {
   position: fixed !important;
   inset: 0 !important;
@@ -166,18 +172,17 @@
   text-shadow: none;
 }
 
+/*
+ * Room Planner and Customizer sub-panel headers now inherit the store's
+ * actual primaryColor (passed through as --modly-panel-accent by each
+ * component) instead of a hardcoded blue/purple gradient, so all three
+ * panels share one consistent theme color.
+ */
 .modly-widget-root .furniture-widget-room-planner > section:first-of-type,
 .modly-widget-root .furniture-widget-customizer > section:first-of-type {
   color: #ffffff !important;
   border-bottom: 1px solid rgba(255, 255, 255, 0.14);
-}
-
-.modly-widget-root .furniture-widget-room-planner > section:first-of-type {
-  background: linear-gradient(135deg, #1d4ed8 0%, #1e3a8a 100%) !important;
-}
-
-.modly-widget-root .furniture-widget-customizer > section:first-of-type {
-  background: linear-gradient(135deg, #6d28d9 0%, #4c1d95 100%) !important;
+  background: var(--modly-panel-accent, #2563eb) !important;
 }
 
 .modly-widget-root .furniture-widget-room-planner > section:first-of-type :where(h1, h2, h3, p, span, div),
@@ -243,6 +248,27 @@
 
 .modly-widget-root :where([class~="shadow-sm"], [class~="shadow-lg"], [class~="shadow-xl"]) {
   box-shadow: var(--modly-shadow-card) !important;
+}
+
+@keyframes modlyPanelFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modly-widget-root .modly-panel-fade {
+  animation: modlyPanelFadeIn 220ms ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .modly-widget-root .modly-panel-fade {
+    animation: none;
+  }
 }
 
 @media (max-width: 640px) {

@@ -3,6 +3,8 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { usePathname } from 'next/navigation';
+import Link from 'next/link';
+import { Sparkles } from 'lucide-react';
 import WidgetButton from '../../widget/src/components/WidgetButton';
 import type { WidgetConfig } from '../../widget/src/utils/config';
 
@@ -63,8 +65,23 @@ export default function ConditionalWidgetButton() {
     return null;
   }
 
-  if (!session?.user) {
+  if (pathname?.startsWith('/auth')) {
     return null;
+  }
+
+  if (!session?.user) {
+    const isHowItWorksPage = pathname === '/how-it-works';
+    return (
+      <Link
+        href="/auth/signup"
+        className={`fixed bottom-6 right-6 z-50 inline-flex h-11 items-center gap-2 rounded-full bg-[#171411] px-5 text-sm font-semibold text-white shadow-[0_10px_24px_rgba(15,23,42,0.22)] transition hover:-translate-y-0.5 hover:bg-black ${
+          isHowItWorksPage ? 'modly-signup-glow' : ''
+        }`}
+      >
+        <Sparkles className="h-4 w-4" strokeWidth={2} />
+        Sign up to try the widget
+      </Link>
+    );
   }
 
   if (storeId && !configLoaded) {
