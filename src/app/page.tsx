@@ -1,14 +1,13 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import Link from "next/link";
 import Reveal from "@/components/ui/Reveal";
 import PinnedRetailerGrid from "@/components/ui/PinnedRetailerGrid";
 import DemoPreviewButton from "@/components/b2b/DemoPreviewButton";
-import HeroB2B from "@/components/b2b/HeroB2B";
+import HeroB2B, { HeroTrustStrip } from "@/components/b2b/HeroB2B";
 import RoiCalculator from "@/components/b2b/RoiCalculator";
 import TrackedLink from "@/components/b2b/TrackedLink";
 import ValuePropStrip from "@/components/b2b/ValuePropStrip";
-import PricingPlans from "@/components/billing/PricingPlans";
-import { plans } from "@/lib/plans";
 
 export const metadata: Metadata = {
   title: "ModlyAI - AI Room Matching for Furniture Retailers",
@@ -17,7 +16,7 @@ export const metadata: Metadata = {
 };
 
 const sectionLabel = "text-sm font-semibold uppercase tracking-[0.18em] text-[#8a714f]";
-const sectionTitle = "mt-3 text-3xl font-semibold tracking-[-0.01em] text-[#171411] md:text-4xl";
+const sectionTitle = "font-heading mt-3 text-3xl font-semibold tracking-[-0.01em] text-[#171411] md:text-4xl";
 const sectionCopy = "mt-4 max-w-2xl text-base leading-7 text-[#665c52]";
 const cardClass = "rounded-2xl border border-[#e1d7ca] bg-white p-6 shadow-[0_18px_45px_rgba(75,61,47,0.07)]";
 
@@ -84,52 +83,6 @@ const productDemoRecommendations = [
   { name: "Narrow Sideboard", detail: "Better wall clearance", action: "Request quote" },
 ] as const;
 
-const faqs = [
-  {
-    q: "How long does implementation take?",
-    a: "Most stores can start with a widget snippet and catalog connection. Setup time depends on your storefront and catalog format.",
-  },
-  {
-    q: "Do I need to upload my furniture catalog?",
-    a: "You can connect products through Shopify, CSV catalogs, or a custom storefront source. ModlyAI is designed to recommend from your existing catalog.",
-  },
-  {
-    q: "What if my customers do not upload room photos?",
-    a: "They can also ask questions or provide room dimensions manually. The experience adapts to the information the shopper is willing to share.",
-  },
-  {
-    q: "How do you calculate ROI?",
-    a: "The savings calculator is an estimate based on your inputs and adjustable assumptions. It is meant to help model potential fit-related return savings.",
-  },
-  {
-    q: "Is there a contract?",
-    a: "Plans are month-to-month unless you choose a custom Scale agreement.",
-  },
-  {
-    q: "Will the widget recommend products I do not actually sell?",
-    a: "No. Every recommendation is grounded in your connected catalog. ModlyAI does not invent products, prices, or availability that are not in your store data.",
-  },
-  {
-    q: "Can I match the widget to my store's branding?",
-    a: "Yes. You can set the widget title, accent color, and text colors from your dashboard so it fits your storefront's look.",
-  },
-  {
-    q: "What happens if a product goes out of stock?",
-    a: "Recommendations reflect the catalog data you sync. Once a product is marked unavailable or removed in your source catalog, the widget stops recommending it on the next sync.",
-  },
-  {
-    q: "Can I use ModlyAI on more than one store?",
-    a: "Yes, depending on your plan. Starter includes 1 store, Growth includes up to 3, and Scale supports multi-store setups with custom onboarding.",
-  },
-  {
-    q: "What happens to my data if I cancel?",
-    a: "Your catalog and shopper interaction data stays scoped to your store. If you cancel, the widget stops serving on your storefront and is not shared with other retailers.",
-  },
-  {
-    q: "Does this replace my existing search or filtering?",
-    a: "No. ModlyAI sits alongside your existing product pages and search. It adds a guided, conversational layer for shoppers who want fit and style guidance before buying.",
-  },
-];
 
 function CheckItem({ children }: { children: ReactNode }) {
   return (
@@ -213,7 +166,7 @@ function BigStatement() {
   return (
     <section className="px-6 py-20 md:py-28">
       <Reveal className="mx-auto max-w-5xl text-center">
-        <p className="text-3xl font-semibold leading-tight tracking-[-0.01em] text-[#171411] md:text-5xl md:leading-[1.15]">
+        <p className="font-heading text-3xl font-semibold leading-tight tracking-[-0.01em] text-[#171411] md:text-5xl md:leading-[1.15]">
           Furniture shoppers do not abandon carts because they dislike a product.
           <span className="text-[#8a6238]"> They abandon because they cannot tell if it fits.</span>
         </p>
@@ -222,6 +175,96 @@ function BigStatement() {
           fit questions before they leave.
         </p>
       </Reveal>
+    </section>
+  );
+}
+
+const originStats = [
+  {
+    value: "#1",
+    label: "reason for returns",
+    body: "Wrong size is the single most common reason shoppers return furniture bought online.",
+    source: "DHL 2025 Ecommerce Trends Report",
+  },
+  {
+    value: "~58%",
+    label: "of furniture returns",
+    body: "Tied directly to size and space mismatch: the piece did not fit the room or the doorway.",
+    source: "Industry furniture-return analysis, 2025",
+  },
+  {
+    value: "~44%",
+    label: "cite color or material",
+    body: "A screen rarely renders fabric, wood tone, or finish accurately, so what arrives looks different than expected.",
+    source: "YouGov consumer retail survey, 2025",
+  },
+] as const;
+
+function OriginSection() {
+  return (
+    <section className="relative overflow-hidden border-y border-[#e7ddd1] px-6 py-16 md:py-24">
+      <div
+        className="absolute inset-0"
+        style={{
+          backgroundImage: "url('/images/origin-room.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      />
+      <div className="absolute inset-0 bg-[#f8f1e7]/88" />
+
+      <div className="relative mx-auto max-w-6xl">
+        <div className="max-w-2xl">
+          <div className={sectionLabel}>Why we built this</div>
+          <h2 className={sectionTitle}>The problem is well documented. We saw it firsthand.</h2>
+        </div>
+
+        <div className="mt-10 grid gap-4 sm:grid-cols-3">
+          {originStats.map((stat, idx) => (
+            <Reveal key={stat.label} delayMs={idx * 90} className="rounded-2xl border border-[#e1d7ca] bg-white p-6">
+              <div className="text-3xl font-semibold tracking-[-0.02em] text-[#8a6238]">{stat.value}</div>
+              <div className="mt-1 text-sm font-semibold text-[#1e1a16]">{stat.label}</div>
+              <p className="mt-3 text-sm leading-6 text-[#665c52]">{stat.body}</p>
+              <p className="mt-3 text-xs text-[#a0937f]">{stat.source}</p>
+            </Reveal>
+          ))}
+        </div>
+
+        <div className="mt-12 grid gap-8 lg:grid-cols-2">
+          <Reveal className="rounded-2xl border border-[#ded1c2] bg-white p-7">
+            <div className="text-xs font-semibold uppercase tracking-[0.18em] text-[#8a714f]">The shopper problem</div>
+            <p className="mt-4 text-base leading-7 text-[#3c342b]">
+              This pattern first became clear while studying architecture. Clients could rarely tell, from a listing photo
+              alone, whether a piece of furniture would actually fit their space, or suit the style already established in
+              their home. Even when a color looked right on screen, it often felt wrong once the piece was in the room.
+              That gap between what a photo shows and what a space actually needs is the problem ModlyAI is built to close,
+              directly on the product page, before a shopper ever has to guess.
+            </p>
+          </Reveal>
+
+          <Reveal delayMs={90} className="rounded-2xl border border-[#ded1c2] bg-white p-7">
+            <div className="text-xs font-semibold uppercase tracking-[0.18em] text-[#8a714f]">The retailer problem</div>
+            <p className="mt-4 text-base leading-7 text-[#3c342b]">
+              The same gap costs retailers more than it costs shoppers, especially on custom and made-to-order pieces, where
+              a return is far more expensive to absorb than a standard restock. ModlyAI&apos;s Request Quote flow only
+              surfaces after a shopper has already confirmed size and style fit with the AI, so quote requests arrive
+              pre-qualified, not just captured, protecting margin on exactly the returns that hurt most.
+            </p>
+          </Reveal>
+        </div>
+
+        <p className="mt-8 text-right text-[11px] text-[#a0937f]">
+          Room photo via{" "}
+          <a
+            href="https://www.vecteezy.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline hover:text-[#8a714f]"
+          >
+            Vecteezy
+          </a>
+        </p>
+      </div>
     </section>
   );
 }
@@ -239,7 +282,7 @@ function ResultStats() {
       <div className="mx-auto max-w-7xl">
         <div className="max-w-2xl">
           <div className="text-sm font-semibold uppercase tracking-[0.18em] text-[#c9a984]">Modeled results</div>
-          <h2 className="mt-3 text-3xl font-semibold tracking-[-0.01em] text-[#fffaf2] md:text-4xl">
+          <h2 className="font-heading mt-3 text-3xl font-semibold tracking-[-0.01em] text-[#fffaf2] md:text-4xl">
             What a catalog-grounded widget can move.
           </h2>
           <p className="mt-4 text-base leading-7 text-[#c9bfb2]">
@@ -348,28 +391,17 @@ export default function Home() {
     sameAs: [],
   };
 
-  const faqSchema = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: faqs.map((item) => ({
-      "@type": "Question",
-      name: item.q,
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: item.a,
-      },
-    })),
-  };
-
   return (
     <main className="min-h-screen bg-[#fffaf2] text-[#171411]">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
       <ValuePropStrip />
       <HeroB2B />
+      <HeroTrustStrip />
       <BigStatement />
+
+      <OriginSection />
 
       <ProductDemoSection />
 
@@ -406,46 +438,26 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="pricing" className="border-y border-[#e7ddd1] bg-[#f8f1e7] px-6 py-16 md:py-24">
-        <div className="mx-auto max-w-7xl">
-          <div className="text-center">
-            <div className={sectionLabel}>Pricing</div>
-            <h2 className={sectionTitle}>Plans that scale with your furniture catalog.</h2>
-            <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-[#665c52]">
-              Start with a no-card trial, then choose the plan that matches your storefront volume.
-            </p>
-          </div>
-
-          <PricingPlans />
-        </div>
-      </section>
-
-      <section id="faq" className="px-6 py-16 md:py-24">
-        <div className="mx-auto max-w-4xl">
-          <div className="text-center">
-            <div className={sectionLabel}>FAQ</div>
-            <h2 className={sectionTitle}>Questions furniture teams usually ask first.</h2>
-          </div>
-
-          <div className="mt-10 space-y-3">
-            {faqs.map((item) => (
-              <details key={item.q} className="group rounded-2xl border border-[#e1d7ca] bg-white px-6 py-5 shadow-sm">
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-5">
-                  <span className="font-semibold text-[#211d19]">{item.q}</span>
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[#d7cab9] text-[#755f43] transition group-open:rotate-45">
-                    +
-                  </span>
-                </summary>
-                <p className="mt-4 text-sm leading-6 text-[#665c52]">{item.a}</p>
-              </details>
-            ))}
-          </div>
+      <section id="pricing" className="border-y border-[#e7ddd1] bg-[#f8f1e7] px-6 py-16 md:py-20">
+        <div className="mx-auto max-w-4xl text-center">
+          <div className={sectionLabel}>Pricing</div>
+          <h2 className={sectionTitle}>Plans that scale with your furniture catalog.</h2>
+          <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-[#665c52]">
+            Starter, Growth, and custom Scale plans, month-to-month, with a no-card trial to start.
+          </p>
+          <Link
+            href="/pricing"
+            className="mt-7 inline-flex items-center gap-2 text-sm font-semibold text-[#8a6238] transition hover:gap-3"
+          >
+            See full pricing
+            <span aria-hidden="true">&rarr;</span>
+          </Link>
         </div>
       </section>
 
       <section className="px-6 pb-20 md:pb-28">
         <div className="mx-auto max-w-7xl overflow-hidden rounded-[1.75rem] border border-[#ded1c2] bg-[#171411] px-6 py-14 text-center shadow-[0_28px_80px_rgba(75,61,47,0.16)] md:px-10 md:py-16">
-          <h2 className="mx-auto max-w-3xl text-3xl font-semibold tracking-[-0.01em] text-[#fffaf2] md:text-4xl">
+          <h2 className="font-heading mx-auto max-w-3xl text-3xl font-semibold tracking-[-0.01em] text-[#fffaf2] md:text-4xl">
             Ready to help shoppers buy with confidence?
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-[#d8cfc4]">

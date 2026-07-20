@@ -1,6 +1,14 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { MessageCircle, Sofa, Ruler, Sliders, X } from 'lucide-react';
-import { DEFAULT_WIDGET_TITLE, getPrimaryColor, getReadableTextColor, isDarkColor, WidgetConfig } from '../utils/config';
+import {
+  DEFAULT_WIDGET_TITLE,
+  getButtonLogoUrl,
+  getButtonStyle,
+  getPrimaryColor,
+  getReadableTextColor,
+  isDarkColor,
+  WidgetConfig,
+} from '../utils/config';
 import { FurnitureAIWidget } from './FurnitureAIWidget';
 import { trackWidgetEvent } from '../utils/analytics';
 
@@ -34,7 +42,16 @@ export function FurnitureAIWidgetButton({
   const [entryTab, setEntryTab] = useState<EntryTab>('conversation');
   const [isTouchDevice, setIsTouchDevice] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const [logoFailed, setLogoFailed] = useState(false);
   const closeTimerRef = useRef<number | null>(null);
+
+  const wantsLogo = getButtonStyle(config) === 'logo';
+  const logoUrl = getButtonLogoUrl(config);
+  const showLogo = wantsLogo && Boolean(logoUrl) && !logoFailed;
+
+  useEffect(() => {
+    setLogoFailed(false);
+  }, [logoUrl]);
 
   const displayTitle =
     config.widgetTitle ||
@@ -142,22 +159,34 @@ export function FurnitureAIWidgetButton({
   const isDarkPrimary = isDarkColor(primaryColor);
 
   const finalButtonStyle: React.CSSProperties = useMemo(() => {
-    const baseStyle: React.CSSProperties = {
-      height: '44px',
-      minWidth: '112px',
-      padding: '0 18px',
-      background: isDarkPrimary
-        ? `linear-gradient(180deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.04) 48%, rgba(0,0,0,0.10) 100%), ${primaryColor}`
-        : `linear-gradient(180deg, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.10) 45%, rgba(17,24,39,0.06) 100%), ${primaryColor}`,
-      border: isDarkPrimary
-        ? '1px solid rgba(255, 255, 255, 0.20)'
-        : '1px solid rgba(17, 24, 39, 0.14)',
-      color: textColor,
-      boxShadow: '0 10px 24px rgba(15, 23, 42, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.20)',
-      ...buttonStyle
-    };
+    const baseStyle: React.CSSProperties = showLogo
+      ? {
+          height: '52px',
+          width: '52px',
+          padding: '2px',
+          background: '#ffffff',
+          border: isDarkPrimary
+            ? '1px solid rgba(255, 255, 255, 0.20)'
+            : '1px solid rgba(17, 24, 39, 0.10)',
+          boxShadow: '0 10px 24px rgba(15, 23, 42, 0.18)',
+          ...buttonStyle,
+        }
+      : {
+          height: '44px',
+          minWidth: '112px',
+          padding: '0 18px',
+          background: isDarkPrimary
+            ? `linear-gradient(180deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.04) 48%, rgba(0,0,0,0.10) 100%), ${primaryColor}`
+            : `linear-gradient(180deg, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.10) 45%, rgba(17,24,39,0.06) 100%), ${primaryColor}`,
+          border: isDarkPrimary
+            ? '1px solid rgba(255, 255, 255, 0.20)'
+            : '1px solid rgba(17, 24, 39, 0.14)',
+          color: textColor,
+          boxShadow: '0 10px 24px rgba(15, 23, 42, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.20)',
+          ...buttonStyle,
+        };
     return baseStyle;
-  }, [primaryColor, textColor, isDarkPrimary, buttonStyle]);
+  }, [primaryColor, textColor, isDarkPrimary, buttonStyle, showLogo]);
 
   const transitionClass = prefersReducedMotion ? '' : 'transition-all duration-200 ease-out';
 
@@ -218,22 +247,33 @@ export function FurnitureAIWidgetButton({
           aria-label={menuOpen ? `Close ${displayTitle} menu` : `Open ${displayTitle} widget`}
           aria-expanded={menuOpen}
         >
-          {menuOpen && isTouchDevice ? (
-            <X aria-hidden="true" className="h-4 w-4 shrink-0" strokeWidth={2} />
+          {showLogo ? (
+            <img
+              src={logoUrl}
+              alt={displayTitle}
+              className="h-full w-full rounded-full object-contain"
+              onError={() => setLogoFailed(true)}
+            />
           ) : (
-            <MessageCircle aria-hidden="true" className="h-4 w-4 shrink-0" strokeWidth={2} />
+            <>
+              {menuOpen && isTouchDevice ? (
+                <X aria-hidden="true" className="h-4 w-4 shrink-0" strokeWidth={2} />
+              ) : (
+                <MessageCircle aria-hidden="true" className="h-4 w-4 shrink-0" strokeWidth={2} />
+              )}
+              <span
+                className="text-[14.5px] font-semibold"
+                style={{
+                  letterSpacing: '0',
+                  lineHeight: 1,
+                  fontWeight: 600,
+                  whiteSpace: 'nowrap'
+                }}
+              >
+                {displayTitle}
+              </span>
+            </>
           )}
-          <span
-            className="text-[14.5px] font-semibold"
-            style={{
-              letterSpacing: '0',
-              lineHeight: 1,
-              fontWeight: 600,
-              whiteSpace: 'nowrap'
-            }}
-          >
-            {displayTitle}
-          </span>
         </button>
       </div>
 

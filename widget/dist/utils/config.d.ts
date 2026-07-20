@@ -36,6 +36,8 @@ export interface WidgetConfig {
         messageTextColor?: string;
         buttonText?: string;
         buttonPosition?: 'bottom-right' | 'bottom-left' | 'top-right' | 'top-left';
+        buttonStyle?: 'text' | 'logo';
+        logoUrl?: string;
     };
     features?: {
         roomPlanner?: boolean;
@@ -64,6 +66,8 @@ export declare const defaultConfig: Required<Omit<WidgetConfig, 'apiBaseUrl' | '
 export declare function mergeConfig(userConfig?: WidgetConfig): WidgetConfig;
 export declare function getWidgetTitle(config?: WidgetConfig): string;
 export declare function getPrimaryColor(config?: WidgetConfig): string;
+export declare function getButtonStyle(config?: WidgetConfig): 'text' | 'logo';
+export declare function getButtonLogoUrl(config?: WidgetConfig): string | undefined;
 export declare function isDarkColor(color: string): boolean;
 export declare function getReadableTextColor(backgroundColor: string): string;
 export declare function getWelcomeMessage(config?: WidgetConfig): string;

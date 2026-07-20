@@ -151,6 +151,8 @@ async function handleGET(req: Request) {
     const primaryColor = getPrimaryColor(store.primaryColor)
     const titleColor = getOptionalColor((store as any).titleColor)
     const messageTextColor = getOptionalColor((store as any).messageTextColor)
+    const buttonStyle = (store as any).widgetButtonStyle === 'logo' ? 'logo' : 'text'
+    const logoUrl = readField(store, 'widgetLogoUrl')
     const welcomeMessage = readText(store.welcomeMessage, DEFAULT_WELCOME_MESSAGE)
     const enabledActions = getEnabledActions(store)
     const quoteEmail = store.quoteEmail || supportEmail
@@ -163,6 +165,8 @@ async function handleGET(req: Request) {
         messageTextColor,
         buttonText: widgetTitle,
         buttonPosition: 'bottom-right',
+        buttonStyle,
+        logoUrl,
       },
       features: {
         roomPlanner: true,

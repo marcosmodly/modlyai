@@ -1504,11 +1504,42 @@ const createLucideIcon = (iconName, iconNode) => {
  */
 
 
-const __iconNode$n = [
+const __iconNode$p = [
   ["path", { d: "M5 12h14", key: "1ays0h" }],
   ["path", { d: "m12 5 7 7-7 7", key: "xquz4c" }]
 ];
-const ArrowRight = createLucideIcon("arrow-right", __iconNode$n);
+const ArrowRight = createLucideIcon("arrow-right", __iconNode$p);
+
+/**
+ * @license lucide-react v1.8.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+
+
+const __iconNode$o = [
+  [
+    "path",
+    {
+      d: "M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z",
+      key: "18u6gg"
+    }
+  ],
+  ["circle", { cx: "12", cy: "13", r: "3", key: "1vg3eu" }]
+];
+const Camera = createLucideIcon("camera", __iconNode$o);
+
+/**
+ * @license lucide-react v1.8.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+
+
+const __iconNode$n = [["path", { d: "M20 6 9 17l-5-5", key: "1gmf2c" }]];
+const Check = createLucideIcon("check", __iconNode$n);
 
 /**
  * @license lucide-react v1.8.0 - ISC
@@ -1519,42 +1550,11 @@ const ArrowRight = createLucideIcon("arrow-right", __iconNode$n);
 
 
 const __iconNode$m = [
-  [
-    "path",
-    {
-      d: "M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z",
-      key: "18u6gg"
-    }
-  ],
-  ["circle", { cx: "12", cy: "13", r: "3", key: "1vg3eu" }]
-];
-const Camera = createLucideIcon("camera", __iconNode$m);
-
-/**
- * @license lucide-react v1.8.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-
-
-const __iconNode$l = [["path", { d: "M20 6 9 17l-5-5", key: "1gmf2c" }]];
-const Check = createLucideIcon("check", __iconNode$l);
-
-/**
- * @license lucide-react v1.8.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-
-
-const __iconNode$k = [
   ["path", { d: "M15 3h6v6", key: "1q9fwt" }],
   ["path", { d: "M10 14 21 3", key: "gplh6r" }],
   ["path", { d: "M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6", key: "a6xqqp" }]
 ];
-const ExternalLink = createLucideIcon("external-link", __iconNode$k);
+const ExternalLink = createLucideIcon("external-link", __iconNode$m);
 
 /**
  * @license lucide-react v1.8.0 - ISC
@@ -1564,7 +1564,7 @@ const ExternalLink = createLucideIcon("external-link", __iconNode$k);
  */
 
 
-const __iconNode$j = [
+const __iconNode$l = [
   [
     "path",
     {
@@ -1576,7 +1576,7 @@ const __iconNode$j = [
   ["path", { d: "M12 18v-6", key: "17g6i2" }],
   ["path", { d: "m9 15 3 3 3-3", key: "1npd3o" }]
 ];
-const FileDown = createLucideIcon("file-down", __iconNode$j);
+const FileDown = createLucideIcon("file-down", __iconNode$l);
 
 /**
  * @license lucide-react v1.8.0 - ISC
@@ -1586,7 +1586,7 @@ const FileDown = createLucideIcon("file-down", __iconNode$j);
  */
 
 
-const __iconNode$i = [
+const __iconNode$k = [
   [
     "path",
     {
@@ -1599,7 +1599,37 @@ const __iconNode$i = [
   ["path", { d: "M12 22c4.2 0 7-1.667 7-5-4.2 0-7 1.667-7 5Z", key: "9hd38g" }],
   ["path", { d: "M12 22c-4.2 0-7-1.667-7-5 4.2 0 7 1.667 7 5Z", key: "ufn41s" }]
 ];
-const Flower2 = createLucideIcon("flower-2", __iconNode$i);
+const Flower2 = createLucideIcon("flower-2", __iconNode$k);
+
+/**
+ * @license lucide-react v1.8.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+
+
+const __iconNode$j = [
+  ["rect", { width: "18", height: "18", x: "3", y: "3", rx: "2", ry: "2", key: "1m3agn" }],
+  ["circle", { cx: "9", cy: "9", r: "2", key: "af1f0g" }],
+  ["path", { d: "m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21", key: "1xmnt7" }]
+];
+const Image = createLucideIcon("image", __iconNode$j);
+
+/**
+ * @license lucide-react v1.8.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+
+
+const __iconNode$i = [
+  ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
+  ["path", { d: "M12 16v-4", key: "1dtifu" }],
+  ["path", { d: "M12 8h.01", key: "e9boi3" }]
+];
+const Info = createLucideIcon("info", __iconNode$i);
 
 /**
  * @license lucide-react v1.8.0 - ISC
@@ -1610,36 +1640,6 @@ const Flower2 = createLucideIcon("flower-2", __iconNode$i);
 
 
 const __iconNode$h = [
-  ["rect", { width: "18", height: "18", x: "3", y: "3", rx: "2", ry: "2", key: "1m3agn" }],
-  ["circle", { cx: "9", cy: "9", r: "2", key: "af1f0g" }],
-  ["path", { d: "m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21", key: "1xmnt7" }]
-];
-const Image = createLucideIcon("image", __iconNode$h);
-
-/**
- * @license lucide-react v1.8.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-
-
-const __iconNode$g = [
-  ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
-  ["path", { d: "M12 16v-4", key: "1dtifu" }],
-  ["path", { d: "M12 8h.01", key: "e9boi3" }]
-];
-const Info = createLucideIcon("info", __iconNode$g);
-
-/**
- * @license lucide-react v1.8.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-
-
-const __iconNode$f = [
   ["path", { d: "M12 12v6", key: "3ahymv" }],
   [
     "path",
@@ -1653,7 +1653,7 @@ const __iconNode$f = [
     { d: "M8 20a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1z", key: "1mmzpi" }
   ]
 ];
-const Lamp = createLucideIcon("lamp", __iconNode$f);
+const Lamp = createLucideIcon("lamp", __iconNode$h);
 
 /**
  * @license lucide-react v1.8.0 - ISC
@@ -1663,7 +1663,7 @@ const Lamp = createLucideIcon("lamp", __iconNode$f);
  */
 
 
-const __iconNode$e = [
+const __iconNode$g = [
   [
     "path",
     {
@@ -1686,7 +1686,38 @@ const __iconNode$e = [
     }
   ]
 ];
-const Layers = createLucideIcon("layers", __iconNode$e);
+const Layers = createLucideIcon("layers", __iconNode$g);
+
+/**
+ * @license lucide-react v1.8.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+
+
+const __iconNode$f = [
+  ["path", { d: "M9 17H7A5 5 0 0 1 7 7h2", key: "8i5ue5" }],
+  ["path", { d: "M15 7h2a5 5 0 1 1 0 10h-2", key: "1b9ql8" }],
+  ["line", { x1: "8", x2: "16", y1: "12", y2: "12", key: "1jonct" }]
+];
+const Link2 = createLucideIcon("link-2", __iconNode$f);
+
+/**
+ * @license lucide-react v1.8.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+
+
+const __iconNode$e = [
+  ["path", { d: "M15 3h6v6", key: "1q9fwt" }],
+  ["path", { d: "m21 3-7 7", key: "1l2asr" }],
+  ["path", { d: "m3 21 7-7", key: "tjx5ai" }],
+  ["path", { d: "M9 21H3v-6", key: "wtvkvv" }]
+];
+const Maximize2 = createLucideIcon("maximize-2", __iconNode$e);
 
 /**
  * @license lucide-react v1.8.0 - ISC
@@ -1697,11 +1728,15 @@ const Layers = createLucideIcon("layers", __iconNode$e);
 
 
 const __iconNode$d = [
-  ["path", { d: "M9 17H7A5 5 0 0 1 7 7h2", key: "8i5ue5" }],
-  ["path", { d: "M15 7h2a5 5 0 1 1 0 10h-2", key: "1b9ql8" }],
-  ["line", { x1: "8", x2: "16", y1: "12", y2: "12", key: "1jonct" }]
+  [
+    "path",
+    {
+      d: "M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719",
+      key: "1sd12s"
+    }
+  ]
 ];
-const Link2 = createLucideIcon("link-2", __iconNode$d);
+const MessageCircle = createLucideIcon("message-circle", __iconNode$d);
 
 /**
  * @license lucide-react v1.8.0 - ISC
@@ -1712,12 +1747,17 @@ const Link2 = createLucideIcon("link-2", __iconNode$d);
 
 
 const __iconNode$c = [
-  ["path", { d: "M15 3h6v6", key: "1q9fwt" }],
-  ["path", { d: "m21 3-7 7", key: "1l2asr" }],
-  ["path", { d: "m3 21 7-7", key: "tjx5ai" }],
-  ["path", { d: "M9 21H3v-6", key: "wtvkvv" }]
+  ["path", { d: "M14 14a2 2 0 0 0 2-2V8h-2", key: "1r06pg" }],
+  [
+    "path",
+    {
+      d: "M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z",
+      key: "18887p"
+    }
+  ],
+  ["path", { d: "M8 14a2 2 0 0 0 2-2V8H8", key: "1jzu5j" }]
 ];
-const Maximize2 = createLucideIcon("maximize-2", __iconNode$c);
+const MessageSquareQuote = createLucideIcon("message-square-quote", __iconNode$c);
 
 /**
  * @license lucide-react v1.8.0 - ISC
@@ -1731,12 +1771,16 @@ const __iconNode$b = [
   [
     "path",
     {
-      d: "M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719",
-      key: "1sd12s"
+      d: "M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z",
+      key: "e79jfc"
     }
-  ]
+  ],
+  ["circle", { cx: "13.5", cy: "6.5", r: ".5", fill: "currentColor", key: "1okk4w" }],
+  ["circle", { cx: "17.5", cy: "10.5", r: ".5", fill: "currentColor", key: "f64h9f" }],
+  ["circle", { cx: "6.5", cy: "12.5", r: ".5", fill: "currentColor", key: "qy21gx" }],
+  ["circle", { cx: "8.5", cy: "7.5", r: ".5", fill: "currentColor", key: "fotxhn" }]
 ];
-const MessageCircle = createLucideIcon("message-circle", __iconNode$b);
+const Palette = createLucideIcon("palette", __iconNode$b);
 
 /**
  * @license lucide-react v1.8.0 - ISC
@@ -1747,17 +1791,16 @@ const MessageCircle = createLucideIcon("message-circle", __iconNode$b);
 
 
 const __iconNode$a = [
-  ["path", { d: "M14 14a2 2 0 0 0 2-2V8h-2", key: "1r06pg" }],
   [
     "path",
     {
-      d: "M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z",
-      key: "18887p"
+      d: "M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z",
+      key: "1a8usu"
     }
   ],
-  ["path", { d: "M8 14a2 2 0 0 0 2-2V8H8", key: "1jzu5j" }]
+  ["path", { d: "m15 5 4 4", key: "1mk7zo" }]
 ];
-const MessageSquareQuote = createLucideIcon("message-square-quote", __iconNode$a);
+const Pencil = createLucideIcon("pencil", __iconNode$a);
 
 /**
  * @license lucide-react v1.8.0 - ISC
@@ -1768,19 +1811,10 @@ const MessageSquareQuote = createLucideIcon("message-square-quote", __iconNode$a
 
 
 const __iconNode$9 = [
-  [
-    "path",
-    {
-      d: "M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z",
-      key: "e79jfc"
-    }
-  ],
-  ["circle", { cx: "13.5", cy: "6.5", r: ".5", fill: "currentColor", key: "1okk4w" }],
-  ["circle", { cx: "17.5", cy: "10.5", r: ".5", fill: "currentColor", key: "f64h9f" }],
-  ["circle", { cx: "6.5", cy: "12.5", r: ".5", fill: "currentColor", key: "qy21gx" }],
-  ["circle", { cx: "8.5", cy: "7.5", r: ".5", fill: "currentColor", key: "fotxhn" }]
+  ["path", { d: "m15 14 5-5-5-5", key: "12vg1m" }],
+  ["path", { d: "M20 9H9.5A5.5 5.5 0 0 0 4 14.5A5.5 5.5 0 0 0 9.5 20H13", key: "6uklza" }]
 ];
-const Palette = createLucideIcon("palette", __iconNode$9);
+const Redo2 = createLucideIcon("redo-2", __iconNode$9);
 
 /**
  * @license lucide-react v1.8.0 - ISC
@@ -1794,13 +1828,16 @@ const __iconNode$8 = [
   [
     "path",
     {
-      d: "M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z",
-      key: "1a8usu"
+      d: "M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0Z",
+      key: "icamh8"
     }
   ],
-  ["path", { d: "m15 5 4 4", key: "1mk7zo" }]
+  ["path", { d: "m14.5 12.5 2-2", key: "inckbg" }],
+  ["path", { d: "m11.5 9.5 2-2", key: "fmmyf7" }],
+  ["path", { d: "m8.5 6.5 2-2", key: "vc6u1g" }],
+  ["path", { d: "m17.5 15.5 2-2", key: "wo5hmg" }]
 ];
-const Pencil = createLucideIcon("pencil", __iconNode$8);
+const Ruler = createLucideIcon("ruler", __iconNode$8);
 
 /**
  * @license lucide-react v1.8.0 - ISC
@@ -1811,43 +1848,6 @@ const Pencil = createLucideIcon("pencil", __iconNode$8);
 
 
 const __iconNode$7 = [
-  ["path", { d: "m15 14 5-5-5-5", key: "12vg1m" }],
-  ["path", { d: "M20 9H9.5A5.5 5.5 0 0 0 4 14.5A5.5 5.5 0 0 0 9.5 20H13", key: "6uklza" }]
-];
-const Redo2 = createLucideIcon("redo-2", __iconNode$7);
-
-/**
- * @license lucide-react v1.8.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-
-
-const __iconNode$6 = [
-  [
-    "path",
-    {
-      d: "M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0Z",
-      key: "icamh8"
-    }
-  ],
-  ["path", { d: "m14.5 12.5 2-2", key: "inckbg" }],
-  ["path", { d: "m11.5 9.5 2-2", key: "fmmyf7" }],
-  ["path", { d: "m8.5 6.5 2-2", key: "vc6u1g" }],
-  ["path", { d: "m17.5 15.5 2-2", key: "wo5hmg" }]
-];
-const Ruler = createLucideIcon("ruler", __iconNode$6);
-
-/**
- * @license lucide-react v1.8.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-
-
-const __iconNode$5 = [
   ["path", { d: "M16 10a4 4 0 0 1-8 0", key: "1ltviw" }],
   ["path", { d: "M3.103 6.034h17.794", key: "awc11p" }],
   [
@@ -1858,7 +1858,7 @@ const __iconNode$5 = [
     }
   ]
 ];
-const ShoppingBag = createLucideIcon("shopping-bag", __iconNode$5);
+const ShoppingBag = createLucideIcon("shopping-bag", __iconNode$7);
 
 /**
  * @license lucide-react v1.8.0 - ISC
@@ -1868,7 +1868,28 @@ const ShoppingBag = createLucideIcon("shopping-bag", __iconNode$5);
  */
 
 
-const __iconNode$4 = [
+const __iconNode$6 = [
+  ["path", { d: "M10 8h4", key: "1sr2af" }],
+  ["path", { d: "M12 21v-9", key: "17s77i" }],
+  ["path", { d: "M12 8V3", key: "13r4qs" }],
+  ["path", { d: "M17 16h4", key: "h1uq16" }],
+  ["path", { d: "M19 12V3", key: "o1uvq1" }],
+  ["path", { d: "M19 21v-5", key: "qua636" }],
+  ["path", { d: "M3 14h4", key: "bcjad9" }],
+  ["path", { d: "M5 10V3", key: "cb8scm" }],
+  ["path", { d: "M5 21v-7", key: "1w1uti" }]
+];
+const SlidersVertical = createLucideIcon("sliders-vertical", __iconNode$6);
+
+/**
+ * @license lucide-react v1.8.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+
+
+const __iconNode$5 = [
   ["path", { d: "M20 9V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v3", key: "1dgpiv" }],
   [
     "path",
@@ -1881,7 +1902,7 @@ const __iconNode$4 = [
   ["path", { d: "M20 18v2", key: "1ar1qi" }],
   ["path", { d: "M12 4v9", key: "oqhhn3" }]
 ];
-const Sofa = createLucideIcon("sofa", __iconNode$4);
+const Sofa = createLucideIcon("sofa", __iconNode$5);
 
 /**
  * @license lucide-react v1.8.0 - ISC
@@ -1891,7 +1912,7 @@ const Sofa = createLucideIcon("sofa", __iconNode$4);
  */
 
 
-const __iconNode$3 = [
+const __iconNode$4 = [
   [
     "path",
     {
@@ -1903,7 +1924,21 @@ const __iconNode$3 = [
   ["path", { d: "M22 4h-4", key: "gwowj6" }],
   ["circle", { cx: "4", cy: "20", r: "2", key: "6kqj1y" }]
 ];
-const Sparkles = createLucideIcon("sparkles", __iconNode$3);
+const Sparkles = createLucideIcon("sparkles", __iconNode$4);
+
+/**
+ * @license lucide-react v1.8.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+
+
+const __iconNode$3 = [
+  ["path", { d: "M9 14 4 9l5-5", key: "102s5s" }],
+  ["path", { d: "M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5a5.5 5.5 0 0 1-5.5 5.5H11", key: "f3b9sd" }]
+];
+const Undo2 = createLucideIcon("undo-2", __iconNode$3);
 
 /**
  * @license lucide-react v1.8.0 - ISC
@@ -1914,10 +1949,11 @@ const Sparkles = createLucideIcon("sparkles", __iconNode$3);
 
 
 const __iconNode$2 = [
-  ["path", { d: "M9 14 4 9l5-5", key: "102s5s" }],
-  ["path", { d: "M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5a5.5 5.5 0 0 1-5.5 5.5H11", key: "f3b9sd" }]
+  ["path", { d: "M12 3v12", key: "1x0j5s" }],
+  ["path", { d: "m17 8-5-5-5 5", key: "7q97r8" }],
+  ["path", { d: "M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4", key: "ih7n3h" }]
 ];
-const Undo2 = createLucideIcon("undo-2", __iconNode$2);
+const Upload = createLucideIcon("upload", __iconNode$2);
 
 /**
  * @license lucide-react v1.8.0 - ISC
@@ -1928,21 +1964,6 @@ const Undo2 = createLucideIcon("undo-2", __iconNode$2);
 
 
 const __iconNode$1 = [
-  ["path", { d: "M12 3v12", key: "1x0j5s" }],
-  ["path", { d: "m17 8-5-5-5 5", key: "7q97r8" }],
-  ["path", { d: "M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4", key: "ih7n3h" }]
-];
-const Upload = createLucideIcon("upload", __iconNode$1);
-
-/**
- * @license lucide-react v1.8.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-
-
-const __iconNode = [
   ["path", { d: "M18 21V10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1v11", key: "pb2vm6" }],
   [
     "path",
@@ -1954,7 +1975,21 @@ const __iconNode = [
   ["path", { d: "M6 13h12", key: "yf64js" }],
   ["path", { d: "M6 17h12", key: "1jwigz" }]
 ];
-const Warehouse = createLucideIcon("warehouse", __iconNode);
+const Warehouse = createLucideIcon("warehouse", __iconNode$1);
+
+/**
+ * @license lucide-react v1.8.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+
+
+const __iconNode = [
+  ["path", { d: "M18 6 6 18", key: "1bl5f8" }],
+  ["path", { d: "m6 6 12 12", key: "d8bk6v" }]
+];
+const X = createLucideIcon("x", __iconNode);
 
 const SESSION_STORAGE_KEY = 'modlyai_session_id';
 function createFallbackId() {
@@ -2517,6 +2552,12 @@ function getPrimaryColor(config = {}) {
         : hasText(config.theme?.primaryColor)
             ? config.theme.primaryColor.trim()
             : DEFAULT_PRIMARY_COLOR;
+}
+function getButtonStyle(config = {}) {
+    return config.theme?.buttonStyle === 'logo' ? 'logo' : 'text';
+}
+function getButtonLogoUrl(config = {}) {
+    return hasText(config.theme?.logoUrl) ? config.theme.logoUrl.trim() : undefined;
 }
 function isDarkColor(color) {
     if (!color || color === 'transparent' || color === 'rgba(0, 0, 0, 0)') {
@@ -4921,12 +4962,12 @@ function FurnitureCustomizerPanel({ products, draft, setDraft, isApplying, valid
                                     }, disabled: isApplying, className: "w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 mb-6 disabled:opacity-60", children: products.map((p) => (jsxRuntimeExports.jsx("option", { value: p.id, children: p.name }, p.id))) }), jsxRuntimeExports.jsxs("div", { className: "aspect-square bg-purple-50 rounded-lg mb-6 flex flex-col items-center justify-center border border-purple-200 text-center px-4", children: [jsxRuntimeExports.jsx(Layers, { className: "w-12 h-12 text-purple-400 mb-2" }), jsxRuntimeExports.jsx("p", { className: "text-sm text-purple-600 font-medium", children: selectedProduct?.customizer.thumbnailLabel ?? 'Sectional' }), jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500", children: "Instantly updates with your selections" })] }), jsxRuntimeExports.jsxs("div", { className: "space-y-3 text-sm border-t border-gray-200 pt-4", children: [jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-gray-600", children: [jsxRuntimeExports.jsx("span", { children: "Base Price:" }), jsxRuntimeExports.jsx("span", { className: "font-medium text-gray-900", children: price.base > 0 ? `$${price.base.toLocaleString()}` : 'Quote required' })] }), jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-gray-600", children: [jsxRuntimeExports.jsx("span", { children: "Base Size:" }), jsxRuntimeExports.jsxs("span", { className: "font-medium text-gray-900", children: [selectedProduct?.dimensions.width, selectedProduct?.dimensions.unit, " W"] })] }), jsxRuntimeExports.jsxs("div", { className: "text-gray-600", children: [jsxRuntimeExports.jsx("span", { className: "block mb-1", children: "Materials:" }), jsxRuntimeExports.jsx("span", { className: "font-medium text-gray-900", children: selectedProduct?.materials.join(', ') || 'Custom' })] }), jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-gray-600", children: [jsxRuntimeExports.jsx("span", { children: "Customizations:" }), jsxRuntimeExports.jsxs("span", { className: "font-medium text-purple-600", children: ["+$", price.customizations.toLocaleString()] })] }), jsxRuntimeExports.jsxs("div", { className: "border-t border-gray-200 pt-3 flex justify-between", children: [jsxRuntimeExports.jsx("span", { className: "font-bold text-gray-900", children: "Total:" }), jsxRuntimeExports.jsx("span", { className: "font-bold text-lg text-gray-900", children: price.quoteRequired ? 'Quote required' : `$${price.total.toLocaleString()}` })] })] }), jsxRuntimeExports.jsxs("div", { className: "mt-6 grid grid-cols-3 gap-2", children: [jsxRuntimeExports.jsx("button", { type: "button", onClick: onSaveConfig, disabled: isApplying, className: "px-3 py-2 border border-gray-200 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gray-50 transition disabled:opacity-50", children: "Save" }), jsxRuntimeExports.jsxs("button", { type: "button", onClick: onShareLink, disabled: isApplying, className: "px-3 py-2 border border-gray-200 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gray-50 transition disabled:opacity-50 inline-flex items-center justify-center gap-2", children: [jsxRuntimeExports.jsx(Link2, { className: "w-4 h-4" }), "Share"] }), jsxRuntimeExports.jsxs("button", { type: "button", onClick: onExportPdf, disabled: isApplying, className: "px-3 py-2 border border-gray-200 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gray-50 transition disabled:opacity-50 inline-flex items-center justify-center gap-2", children: [jsxRuntimeExports.jsx(FileDown, { className: "w-4 h-4" }), "PDF"] })] })] }) }), jsxRuntimeExports.jsx("div", { className: "self-start lg:col-span-4", children: jsxRuntimeExports.jsxs("div", { className: "bg-white rounded-2xl border border-gray-200 p-6 shadow-lg", children: [jsxRuntimeExports.jsxs("h3", { className: "text-lg font-bold text-gray-900 mb-6 flex items-center gap-2", children: [jsxRuntimeExports.jsx(Palette, { className: "w-5 h-5 text-purple-600" }), "Customization Options"] }), jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-gray-900 mb-3", children: "Color" }), colorSwatches.length > 0 ? (jsxRuntimeExports.jsx("div", { className: "flex flex-wrap gap-2", children: colorSwatches.map((color) => {
                                                 const isSelected = draft.fabricColor.toLowerCase() === color.hex.toLowerCase();
                                                 return (jsxRuntimeExports.jsxs("button", { type: "button", onClick: () => setDraft({ ...draft, fabricColor: color.hex, selectedColor: color.name }), disabled: isApplying, className: [
-                                                        'flex items-center gap-2 px-3 py-2 rounded-xl border-2 text-sm transition-all',
+                                                        'flex items-center gap-2 px-3 py-2 rounded-full border-2 text-sm transition-all',
                                                         isSelected
                                                             ? 'border-blue-500 bg-blue-50'
                                                             : 'border-gray-200 hover:border-gray-300',
                                                         isApplying ? 'opacity-60 cursor-not-allowed' : '',
-                                                    ].join(' '), "aria-label": `Select color ${color.name}`, title: color.name, children: [jsxRuntimeExports.jsx("div", { className: "w-4 h-4 rounded-full border border-gray-200", style: { backgroundColor: color.hex } }), jsxRuntimeExports.jsx("span", { children: color.name }), formatModifierLabel(color.price) && (jsxRuntimeExports.jsx("span", { className: "text-xs font-semibold text-gray-500", children: formatModifierLabel(color.price) }))] }, color.name));
+                                                    ].join(' '), "aria-label": `Select color ${color.name}`, title: color.name, children: [jsxRuntimeExports.jsx("div", { className: "w-5 h-5 rounded-full border border-gray-200", style: { backgroundColor: color.hex } }), jsxRuntimeExports.jsx("span", { children: color.name }), formatModifierLabel(color.price) && (jsxRuntimeExports.jsx("span", { className: "text-xs font-semibold text-gray-500", children: formatModifierLabel(color.price) }))] }, color.name));
                                             }) })) : (jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-400", children: "No colors available for this product" }))] }), jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-gray-900 mb-3", children: "Material" }), materialOptions.length > 0 ? (jsxRuntimeExports.jsx("div", { className: "space-y-2", children: materialOptions.map((m) => {
                                                 const isSelected = draft.materialId === m.id;
                                                 return (jsxRuntimeExports.jsxs("button", { type: "button", onClick: () => setDraft({ ...draft, materialId: m.id, selectedMaterial: m.name }), disabled: isApplying, className: [
@@ -4948,7 +4989,7 @@ function FurnitureCustomizerPanel({ products, draft, setDraft, isApplying, valid
                                                                     : selectedAddOns.filter((name) => name !== addOn.name);
                                                                 setDraft({ ...draft, selectedAddOns: nextSelectedAddOns });
                                                             }, disabled: isApplying, className: "w-4 h-4 text-purple-600 rounded accent-purple-600" }), jsxRuntimeExports.jsx("span", { className: "flex-1 text-sm text-gray-900", children: addOn.name }), jsxRuntimeExports.jsx("span", { className: "text-sm font-medium text-gray-900", children: typeof addOn.price === 'number' ? `+$${addOn.price.toLocaleString()}` : 'Quote' })] }, addOn.name));
-                                            }) })] })), !customization.hasOptions && (jsxRuntimeExports.jsx("div", { className: "mb-6 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900", children: "This product does not have predefined customization options. Tell us what you want and we'll send it as a quote request." })), jsxRuntimeExports.jsxs("button", { type: "button", onClick: onApply, disabled: isApplying || (validationErrors?.length ?? 0) > 0, className: "w-full py-4 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-700 transition shadow-lg shadow-purple-600/30 flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed", children: [jsxRuntimeExports.jsx(Sparkles, { className: "w-5 h-5" }), isApplying ? 'Applying...' : 'Apply Customizations'] })] }) }), jsxRuntimeExports.jsx("div", { className: "self-start lg:col-span-5", children: jsxRuntimeExports.jsxs("div", { className: "bg-white rounded-2xl border border-gray-200 p-6 shadow-lg sticky top-6", children: [jsxRuntimeExports.jsxs("div", { className: "bg-white rounded-xl border border-gray-200 p-5 mb-4", children: [jsxRuntimeExports.jsx("h3", { className: "font-semibold text-gray-900 mb-1", children: "Tell Us What You Want" }), jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500 mb-3", children: "Describe exactly what you need - AI will tailor suggestions to your specific request" }), jsxRuntimeExports.jsx("textarea", { value: additionalDetails, onChange: (e) => {
+                                            }) })] })), !customization.hasOptions && (jsxRuntimeExports.jsx("div", { className: "mb-6 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900", children: "This product does not have predefined customization options. Tell us what you want and we'll send it as a quote request." })), jsxRuntimeExports.jsxs("button", { type: "button", onClick: onApply, disabled: isApplying || (validationErrors?.length ?? 0) > 0, className: "w-full py-4 bg-purple-600 text-white rounded-full font-semibold hover:bg-purple-700 transition shadow-lg shadow-purple-600/30 flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed", children: [jsxRuntimeExports.jsx(Sparkles, { className: "w-5 h-5" }), isApplying ? 'Applying...' : 'Apply Customizations'] })] }) }), jsxRuntimeExports.jsx("div", { className: "self-start lg:col-span-5", children: jsxRuntimeExports.jsxs("div", { className: "bg-white rounded-2xl border border-gray-200 p-6 shadow-lg sticky top-6", children: [jsxRuntimeExports.jsxs("div", { className: "bg-white rounded-xl border border-gray-200 p-5 mb-4", children: [jsxRuntimeExports.jsx("h3", { className: "font-semibold text-gray-900 mb-1", children: "Tell Us What You Want" }), jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500 mb-3", children: "Describe exactly what you need - AI will tailor suggestions to your specific request" }), jsxRuntimeExports.jsx("textarea", { value: additionalDetails, onChange: (e) => {
                                                 setAdditionalDetails(e.target.value);
                                                 setCharCount(e.target.value.length);
                                                 setDraft({ ...draft, customerRequestText: e.target.value });
@@ -4977,7 +5018,7 @@ function FurnitureCustomizerPanel({ products, draft, setDraft, isApplying, valid
                                                             setAdditionalDetails(newText);
                                                             setCharCount(newText.length);
                                                             setDraft({ ...draft, customerRequestText: newText });
-                                                        }, className: "text-xs bg-gray-100 hover:bg-blue-50 hover:text-blue-600 text-gray-600 px-3 py-1 rounded-full transition-colors", children: ["+ ", chip] }, chip))) })] })] }), roomPlannerPhoto && (jsxRuntimeExports.jsx("button", { onClick: handleAnalyzeWithRoomPlannerPhoto, disabled: analyzing, className: "w-full bg-blue-600 text-white py-3 rounded-xl font-medium hover:bg-blue-700 disabled:opacity-50 flex items-center justify-center gap-2 mb-4", children: analyzing ? (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsx("div", { className: "animate-spin rounded-full h-4 w-4 border-b-2 border-white" }), "Analyzing your room..."] })) : ('✨ Get AI Suggestions') })), jsxRuntimeExports.jsxs("div", { className: "bg-white rounded-xl border border-gray-200 p-4 max-h-[380px] overflow-y-auto", children: [jsxRuntimeExports.jsx("h3", { className: "font-semibold text-gray-900 mb-3", children: "AI Suggestions" }), !roomPlannerPhoto && !analyzing && (jsxRuntimeExports.jsxs("div", { className: "text-center py-8", children: [jsxRuntimeExports.jsx("p", { className: "text-3xl mb-2", children: "\uD83C\uDFE0" }), jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-500", children: "Use Room Planner first to upload a room photo and get personalized suggestions" })] })), analyzing && (jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center py-8 gap-3", children: [jsxRuntimeExports.jsx("div", { className: "animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600" }), jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-500", children: "Analyzing your room and requirements..." })] })), aiSuggestions && !analyzing && (jsxRuntimeExports.jsxs("div", { className: "space-y-3", children: [jsxRuntimeExports.jsxs("div", { className: "bg-blue-50 rounded-lg p-3", children: [jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mb-1", children: [jsxRuntimeExports.jsx("span", { className: "text-sm font-medium text-blue-900", children: "Room Fit Score" }), jsxRuntimeExports.jsxs("span", { className: "text-lg font-bold text-blue-600", children: [aiSuggestions.fitScore, "%"] })] }), jsxRuntimeExports.jsx("div", { className: "w-full bg-blue-200 rounded-full h-2", children: jsxRuntimeExports.jsx("div", { className: "bg-blue-600 h-2 rounded-full transition-all", style: { width: `${aiSuggestions.fitScore}%` } }) }), jsxRuntimeExports.jsx("p", { className: "text-xs text-blue-700 mt-2", children: getShortReason(aiSuggestions.fitReason) })] }), jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap items-center gap-2", children: [jsxRuntimeExports.jsx("span", { className: "text-xs text-gray-500", children: "Room style detected:" }), jsxRuntimeExports.jsx("span", { className: "text-xs font-medium bg-gray-100 text-gray-700 px-2 py-1 rounded-full", children: aiSuggestions.roomStyle })] }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500 mb-1.5", children: "Room colors:" }), jsxRuntimeExports.jsx("div", { className: "flex flex-wrap gap-1.5", children: aiSuggestions.dominantColors?.map((color, i) => (jsxRuntimeExports.jsx("span", { className: "text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded-full", children: color }, i))) })] }), jsxRuntimeExports.jsx("div", { className: "space-y-2", children: compactSuggestions.map((rec, i) => (jsxRuntimeExports.jsxs("div", { className: "border border-gray-100 rounded-lg p-2.5", children: [jsxRuntimeExports.jsx("span", { className: `text-xs font-medium px-2 py-0.5 rounded-full ${rec.type === 'color'
+                                                        }, className: "text-xs bg-gray-100 hover:bg-blue-50 hover:text-blue-600 text-gray-600 px-3 py-1 rounded-full transition-colors", children: ["+ ", chip] }, chip))) })] })] }), roomPlannerPhoto && (jsxRuntimeExports.jsx("button", { onClick: handleAnalyzeWithRoomPlannerPhoto, disabled: analyzing, className: "w-full bg-blue-600 text-white py-3 rounded-full font-medium hover:bg-blue-700 disabled:opacity-50 flex items-center justify-center gap-2 mb-4", children: analyzing ? (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsx("div", { className: "animate-spin rounded-full h-4 w-4 border-b-2 border-white" }), "Analyzing your room..."] })) : (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsx(Sparkles, { className: "w-4 h-4" }), "Get AI Suggestions"] })) })), jsxRuntimeExports.jsxs("div", { className: "bg-white rounded-xl border border-gray-200 p-4 max-h-[380px] overflow-y-auto", children: [jsxRuntimeExports.jsx("h3", { className: "font-semibold text-gray-900 mb-3", children: "AI Suggestions" }), !roomPlannerPhoto && !analyzing && (jsxRuntimeExports.jsxs("div", { className: "text-center py-8", children: [jsxRuntimeExports.jsx("div", { className: "w-10 h-10 mx-auto mb-2 rounded-full bg-gray-100 flex items-center justify-center", children: jsxRuntimeExports.jsx("svg", { className: "w-5 h-5 text-gray-400", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 1.5, d: "M3 12l2-2m0 0l7-7 7 7m-9-9v9m9 9v-9m0 9H5" }) }) }), jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-500", children: "Use Room Planner first to upload a room photo and get personalized suggestions" })] })), analyzing && (jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center py-8 gap-3", children: [jsxRuntimeExports.jsx("div", { className: "animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600" }), jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-500", children: "Analyzing your room and requirements..." })] })), aiSuggestions && !analyzing && (jsxRuntimeExports.jsxs("div", { className: "space-y-3", children: [jsxRuntimeExports.jsxs("div", { className: "bg-blue-50 rounded-lg p-3", children: [jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mb-1", children: [jsxRuntimeExports.jsx("span", { className: "text-sm font-medium text-blue-900", children: "Room Fit Score" }), jsxRuntimeExports.jsxs("span", { className: "text-lg font-bold text-blue-600", children: [aiSuggestions.fitScore, "%"] })] }), jsxRuntimeExports.jsx("div", { className: "w-full bg-blue-200 rounded-full h-2", children: jsxRuntimeExports.jsx("div", { className: "bg-blue-600 h-2 rounded-full transition-all", style: { width: `${aiSuggestions.fitScore}%` } }) }), jsxRuntimeExports.jsx("p", { className: "text-xs text-blue-700 mt-2", children: getShortReason(aiSuggestions.fitReason) })] }), jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap items-center gap-2", children: [jsxRuntimeExports.jsx("span", { className: "text-xs text-gray-500", children: "Room style detected:" }), jsxRuntimeExports.jsx("span", { className: "text-xs font-medium bg-gray-100 text-gray-700 px-2 py-1 rounded-full", children: aiSuggestions.roomStyle })] }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500 mb-1.5", children: "Room colors:" }), jsxRuntimeExports.jsx("div", { className: "flex flex-wrap gap-1.5", children: aiSuggestions.dominantColors?.map((color, i) => (jsxRuntimeExports.jsx("span", { className: "text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded-full", children: color }, i))) })] }), jsxRuntimeExports.jsx("div", { className: "space-y-2", children: compactSuggestions.map((rec, i) => (jsxRuntimeExports.jsxs("div", { className: "border border-gray-100 rounded-lg p-2.5", children: [jsxRuntimeExports.jsx("span", { className: `text-xs font-medium px-2 py-0.5 rounded-full ${rec.type === 'color'
                                                                     ? 'bg-purple-100 text-purple-700'
                                                                     : rec.type === 'material'
                                                                         ? 'bg-green-100 text-green-700'
@@ -5805,11 +5846,9 @@ function MessageBubble({ message, onCustomizeItem, onAddToRoomPlanner, onViewInC
     const isThinking = message.type === 'thinking';
     const actions = enabledActions ?? { viewInCatalog: true, customize: true, requestQuote: true };
     const assistantTextStyle = !isUser && !isThinking && messageTextColor ? { color: messageTextColor } : undefined;
-    return (jsxRuntimeExports.jsx("div", { className: `flex ${isUser ? 'justify-end' : 'justify-start'} mb-4`, children: jsxRuntimeExports.jsx("div", { className: `max-w-[80%] rounded-2xl px-4 py-3 ${isUser
-                ? 'bg-blue-500 text-white'
-                : isThinking
-                    ? 'bg-gray-100 text-gray-600'
-                    : 'bg-gray-50 text-gray-900 border border-gray-200'}`, style: assistantTextStyle, children: isThinking ? (jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [jsxRuntimeExports.jsxs("div", { className: "flex gap-1", children: [jsxRuntimeExports.jsx("div", { className: "w-2 h-2 bg-gray-400 rounded-full animate-bounce", style: { animationDelay: '0ms' } }), jsxRuntimeExports.jsx("div", { className: "w-2 h-2 bg-gray-400 rounded-full animate-bounce", style: { animationDelay: '150ms' } }), jsxRuntimeExports.jsx("div", { className: "w-2 h-2 bg-gray-400 rounded-full animate-bounce", style: { animationDelay: '300ms' } })] }), jsxRuntimeExports.jsx("span", { className: "text-sm", children: "Thinking..." })] })) : (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsx("div", { className: "whitespace-pre-wrap text-sm leading-relaxed", children: message.content }), message.metadata?.recommendations && message.metadata?.recommendations.length > 0 && (jsxRuntimeExports.jsx("div", { className: "mt-4 space-y-3", children: message.metadata?.recommendations.map((rec, index) => (jsxRuntimeExports.jsx(RecommendationCard, { recommendation: rec, onCustomize: onCustomizeItem, onAddToRoomPlanner: onAddToRoomPlanner, onViewInCatalog: onViewInCatalog, enabledActions: actions, primaryColor: primaryColor, analyticsContext: analyticsContext }, rec.item.id || index))) })), message.metadata?.action && (jsxRuntimeExports.jsx("div", { className: "mt-3 pt-3 border-t border-gray-200", children: jsxRuntimeExports.jsxs("div", { className: "text-xs text-gray-500", children: [message.metadata?.action?.type === 'open_room_planner' && 'Ready to analyze your room', message.metadata?.action?.type === 'open_customizer' && 'Ready to customize', message.metadata?.action?.type === 'show_catalog' && 'Ready to browse catalog'] }) }))] })) }) }));
+    const accentColor = primaryColor || '#3B82F6';
+    const accentTextColor = getReadableTextColor(accentColor);
+    return (jsxRuntimeExports.jsx("div", { className: `flex ${isUser ? 'justify-end' : 'justify-start'} mb-3.5`, children: jsxRuntimeExports.jsx("div", { className: `max-w-[82%] rounded-2xl px-4 py-3 ${isThinking ? 'bg-gray-100 text-gray-600' : !isUser ? 'bg-white border border-gray-200 shadow-[0_2px_10px_rgba(15,23,42,0.04)]' : ''}`, style: isUser ? { backgroundColor: accentColor, color: accentTextColor } : assistantTextStyle, children: isThinking ? (jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [jsxRuntimeExports.jsxs("div", { className: "flex gap-1", children: [jsxRuntimeExports.jsx("div", { className: "w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce", style: { animationDelay: '0ms' } }), jsxRuntimeExports.jsx("div", { className: "w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce", style: { animationDelay: '150ms' } }), jsxRuntimeExports.jsx("div", { className: "w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce", style: { animationDelay: '300ms' } })] }), jsxRuntimeExports.jsx("span", { className: "text-sm", children: "Thinking..." })] })) : (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsx("div", { className: "whitespace-pre-wrap text-sm leading-relaxed", children: message.content }), message.metadata?.recommendations && message.metadata?.recommendations.length > 0 && (jsxRuntimeExports.jsx("div", { className: "mt-4 space-y-3", children: message.metadata?.recommendations.map((rec, index) => (jsxRuntimeExports.jsx(RecommendationCard, { recommendation: rec, onCustomize: onCustomizeItem, onAddToRoomPlanner: onAddToRoomPlanner, onViewInCatalog: onViewInCatalog, enabledActions: actions, primaryColor: primaryColor, analyticsContext: analyticsContext }, rec.item.id || index))) })), message.metadata?.action && (jsxRuntimeExports.jsx("div", { className: "mt-3 pt-3 border-t border-gray-200", children: jsxRuntimeExports.jsxs("div", { className: "text-xs text-gray-500", children: [message.metadata?.action?.type === 'open_room_planner' && 'Ready to analyze your room', message.metadata?.action?.type === 'open_customizer' && 'Ready to customize', message.metadata?.action?.type === 'show_catalog' && 'Ready to browse catalog'] }) }))] })) }) }));
 }
 function getProductCatalogUrl(item) {
     return getRealProductUrl(item);
@@ -5817,7 +5856,9 @@ function getProductCatalogUrl(item) {
 function RecommendationCard({ recommendation, onCustomize, onAddToRoomPlanner, onViewInCatalog, enabledActions, primaryColor, analyticsContext, }) {
     const item = recommendation.item;
     const catalogUrl = getProductCatalogUrl(item);
-    const primaryTextColor = primaryColor ? getReadableTextColor(primaryColor) : undefined;
+    const accentColor = primaryColor || '#3B82F6';
+    const accentTextColor = getReadableTextColor(accentColor);
+    const thumbnail = item.images?.[0] || item.imageUrl || item.image;
     const handleViewInCatalogClick = (event) => {
         event.preventDefault();
         event.stopPropagation();
@@ -5839,9 +5880,9 @@ function RecommendationCard({ recommendation, onCustomize, onAddToRoomPlanner, o
         });
         window.open(catalogUrl, '_blank', 'noopener,noreferrer');
     };
-    return (jsxRuntimeExports.jsxs("div", { className: "bg-white rounded-lg border border-gray-200 p-3 shadow-sm", children: [jsxRuntimeExports.jsxs("div", { className: "flex items-start justify-between mb-2", children: [jsxRuntimeExports.jsx("h4", { className: "font-semibold text-sm text-gray-900", children: item.name }), recommendation.matchScore && (jsxRuntimeExports.jsxs("span", { className: "text-xs px-2 py-0.5 bg-blue-100 text-blue-700 rounded", children: [Math.round(recommendation.matchScore * 100), "% match"] }))] }), jsxRuntimeExports.jsxs("p", { className: "text-xs text-gray-600 mb-2", children: [item.category, item.subCategory ? ` • ${item.subCategory}` : ''] }), item.priceRange && (jsxRuntimeExports.jsxs("p", { className: "text-xs font-medium text-gray-900 mb-2", children: ["$", item.priceRange.min?.toLocaleString(), item.priceRange.max && item.priceRange.max !== item.priceRange.min
-                        ? ` - $${item.priceRange.max.toLocaleString()}`
-                        : ''] })), recommendation.reasoning && (jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500 mb-2", children: recommendation.reasoning })), jsxRuntimeExports.jsxs("div", { className: "mt-3 flex gap-2", children: [enabledActions.viewInCatalog && catalogUrl ? (jsxRuntimeExports.jsxs("button", { type: "button", onClick: handleViewInCatalogClick, className: "flex-1 py-1.5 px-3 bg-gray-100 text-gray-700 text-xs rounded hover:bg-gray-200 transition-colors flex items-center justify-center gap-1 border border-gray-300", children: [jsxRuntimeExports.jsxs("svg", { className: "w-3 h-3", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: [jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M15 12a3 3 0 11-6 0 3 3 0 016 0z" }), jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" })] }), "View in Catalog"] })) : enabledActions.viewInCatalog ? (jsxRuntimeExports.jsx("button", { type: "button", disabled: true, className: "flex-1 py-1.5 px-3 bg-gray-100 text-gray-400 text-xs rounded cursor-not-allowed flex items-center justify-center gap-1 border border-gray-300", children: "Catalog link unavailable" })) : null, enabledActions.customize && onCustomize && (jsxRuntimeExports.jsxs("button", { type: "button", onClick: () => onCustomize(item), className: "flex-1 py-1.5 px-3 bg-blue-500 text-white text-xs rounded hover:bg-blue-600 transition-colors flex items-center justify-center gap-1", style: primaryColor ? { backgroundColor: primaryColor, color: primaryTextColor } : undefined, children: [jsxRuntimeExports.jsx("svg", { className: "w-3 h-3", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" }) }), "Customize this"] }))] })] }));
+    return (jsxRuntimeExports.jsxs("div", { className: "bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm", children: [thumbnail ? (jsxRuntimeExports.jsx("div", { className: "h-24 w-full bg-gray-100", children: jsxRuntimeExports.jsx("img", { src: thumbnail, alt: item.name, className: "h-full w-full object-cover" }) })) : (jsxRuntimeExports.jsx("div", { className: "h-24 w-full bg-gray-100 flex items-center justify-center", children: jsxRuntimeExports.jsx("svg", { className: "w-6 h-6 text-gray-300", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 1.5, d: "M3 7l9-4 9 4M3 7v10l9 4m-9-14l9 4m0 10V11m0 10l9-4V7" }) }) })), jsxRuntimeExports.jsxs("div", { className: "p-3", children: [jsxRuntimeExports.jsxs("div", { className: "flex items-start justify-between gap-2 mb-1", children: [jsxRuntimeExports.jsx("h4", { className: "font-semibold text-sm text-gray-900 leading-tight", children: item.name }), recommendation.matchScore && (jsxRuntimeExports.jsxs("span", { className: "shrink-0 text-[11px] px-2 py-0.5 bg-gray-100 text-gray-600 rounded-full font-medium", children: [Math.round(recommendation.matchScore * 100), "% match"] }))] }), jsxRuntimeExports.jsxs("p", { className: "text-xs text-gray-500 mb-1.5", children: [item.category, item.subCategory ? ` · ${item.subCategory}` : ''] }), item.priceRange && (jsxRuntimeExports.jsxs("p", { className: "text-sm font-semibold text-gray-900 mb-2", children: ["$", item.priceRange.min?.toLocaleString(), item.priceRange.max && item.priceRange.max !== item.priceRange.min
+                                ? ` - $${item.priceRange.max.toLocaleString()}`
+                                : ''] })), recommendation.reasoning && (jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500 mb-2 leading-relaxed", children: recommendation.reasoning })), jsxRuntimeExports.jsxs("div", { className: "mt-2.5 flex gap-2", children: [enabledActions.viewInCatalog && catalogUrl ? (jsxRuntimeExports.jsx("button", { type: "button", onClick: handleViewInCatalogClick, className: "flex-1 py-1.5 px-3 bg-gray-100 text-gray-700 text-xs font-medium rounded-full hover:bg-gray-200 transition-colors flex items-center justify-center gap-1", children: "View" })) : enabledActions.viewInCatalog ? (jsxRuntimeExports.jsx("button", { type: "button", disabled: true, className: "flex-1 py-1.5 px-3 bg-gray-100 text-gray-400 text-xs font-medium rounded-full cursor-not-allowed flex items-center justify-center gap-1", children: "Catalog link unavailable" })) : null, enabledActions.customize && onCustomize && (jsxRuntimeExports.jsx("button", { type: "button", onClick: () => onCustomize(item), className: "flex-1 py-1.5 px-3 text-xs font-medium rounded-full transition-colors flex items-center justify-center gap-1", style: { backgroundColor: accentColor, color: accentTextColor }, children: "Customize" }))] })] })] }));
 }
 
 function ConversationInterface({ aiService, onCustomizeItem, onAddToRoomPlanner, onOpenRoomPlanner, onOpenCustomizer, onShowCatalog, onViewInCatalog, enabledActions, primaryColor, messageTextColor, analyticsContext, }) {
@@ -7076,7 +7117,7 @@ function FurnitureAIWidget({ config = {}, defaultTab, widgetTitle }) {
         config.theme?.buttonText ||
         DEFAULT_WIDGET_TITLE;
     const isAccessActive = mergedConfig.access ? mergedConfig.access.active !== false : true;
-    const [viewMode, setViewMode] = require$$0.useState('conversation');
+    const [viewMode, setViewMode] = require$$0.useState(defaultTab || 'conversation');
     const [selectedProduct, setSelectedProduct] = require$$0.useState(null);
     const [saveNotification, setSaveNotification] = require$$0.useState(null);
     const [selectedCatalogItem, setSelectedCatalogItem] = require$$0.useState(null);
@@ -7244,43 +7285,82 @@ function FurnitureAIWidget({ config = {}, defaultTab, widgetTitle }) {
         setShowSubmitModal(false);
         setSubmitConfig(null);
     };
-    return (jsxRuntimeExports.jsxs("div", { className: "furniture-widget-ai h-full flex flex-col", children: [jsxRuntimeExports.jsxs("div", { className: "border-b border-transparent px-6 py-4 pr-16 flex items-center justify-between", style: { backgroundColor: primaryColor }, children: [jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-4", children: [jsxRuntimeExports.jsx("h1", { className: "text-2xl font-bold", style: { color: titleColor }, children: displayTitle === DEFAULT_WIDGET_TITLE ? (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsx("span", { children: "Modly" }), jsxRuntimeExports.jsx("span", { children: "AI" })] })) : (jsxRuntimeExports.jsx("span", { children: displayTitle })) }), viewMode === 'conversation' && (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsx("button", { type: "button", onClick: handleOpenRoomPlanner, className: "text-sm px-3 py-1.5 rounded transition-colors hover:bg-white/15", style: { color: titleColor }, children: "Room Planner" }), enabledActions.customize && (jsxRuntimeExports.jsx("button", { type: "button", onClick: handleOpenCustomizer, className: "text-sm px-3 py-1.5 rounded transition-colors hover:bg-white/15", style: { color: titleColor }, children: "Customizer" }))] })), viewMode !== 'conversation' && (jsxRuntimeExports.jsxs("button", { type: "button", onClick: handleBackToConversation, className: "text-sm flex items-center gap-1", style: { color: titleColor }, children: [jsxRuntimeExports.jsx("svg", { className: "w-4 h-4", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M10 19l-7-7m0 0l7-7m-7 7h18" }) }), "Back to Chat"] }))] }), jsxRuntimeExports.jsx("div", { className: "flex gap-2" })] }), jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-hidden", children: !isAccessActive ? (jsxRuntimeExports.jsxs("div", { className: "h-full flex flex-col items-center justify-center gap-3 px-8 text-center", children: [jsxRuntimeExports.jsx("div", { className: "flex h-12 w-12 items-center justify-center rounded-full bg-amber-100 text-amber-700", children: jsxRuntimeExports.jsx("svg", { className: "h-6 w-6", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M12 9v3.75m0 3.75h.007M21 12a9 9 0 11-18 0 9 9 0 0118 0z" }) }) }), jsxRuntimeExports.jsx("h2", { className: "text-lg font-semibold text-gray-900", children: "This assistant is temporarily unavailable" }), jsxRuntimeExports.jsx("p", { className: "max-w-sm text-sm text-gray-600", children: "This store's ModlyAI plan has ended. Please check back soon, or contact the store directly for help." })] })) : (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [viewMode === 'conversation' && (jsxRuntimeExports.jsxs("div", { className: "h-full flex flex-col", children: [saveNotification && (jsxRuntimeExports.jsx("div", { className: "bg-green-500 text-white px-4 py-2 text-sm text-center flex-shrink-0", children: saveNotification })), jsxRuntimeExports.jsx("div", { className: "flex-1 min-h-0", children: jsxRuntimeExports.jsx(ConversationInterface, { aiService: aiService, onCustomizeItem: handleCustomizeItem, onAddToRoomPlanner: handleAddToRoomPlanner, onOpenRoomPlanner: handleOpenRoomPlanner, onOpenCustomizer: handleOpenCustomizer, onShowCatalog: handleShowCatalog, onViewInCatalog: handleViewInCatalog, enabledActions: enabledActions, primaryColor: primaryColor, messageTextColor: messageTextColor, analyticsContext: analyticsContext }) })] })), viewMode === 'room-planner' && (jsxRuntimeExports.jsx("div", { className: "h-full overflow-y-auto", children: jsxRuntimeExports.jsx(FurnitureRoomPlannerWidget, { config: mergedConfig, onCustomizeItem: enabledActions.customize ? handleCustomizeItem : undefined, onNavigateToCustomizer: enabledActions.customize ? handleOpenCustomizer : undefined }) })), viewMode === 'customizer' && (jsxRuntimeExports.jsx("div", { className: "h-full overflow-y-auto", children: enabledActions.customize && (jsxRuntimeExports.jsx(FurnitureCustomizerWidget, { config: mergedConfig, onNavigateToRoomPlanner: handleOpenRoomPlanner, selectedProduct: selectedProduct, onSelectedProductChange: setSelectedProduct })) }))] })) }), showSubmitModal && submitConfig && (jsxRuntimeExports.jsx(SubmitFlowModal, { config: submitConfig.config, product: submitConfig.product, apiClient: apiClient, onSuccess: handleSubmitSuccess, onClose: handleCloseSubmitModal })), isCatalogModalOpen && selectedCatalogItem && (jsxRuntimeExports.jsx("div", { className: "fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4", children: jsxRuntimeExports.jsxs("div", { className: "bg-white rounded-lg shadow-xl max-w-md w-full p-6", children: [jsxRuntimeExports.jsx("h2", { className: "text-2xl font-bold text-gray-900 mb-4", children: selectedCatalogItem.name }), jsxRuntimeExports.jsxs("div", { className: "space-y-3 mb-6", children: [selectedCatalogItem.dimensions && (jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h3", { className: "text-sm font-semibold text-gray-700 mb-1", children: "Dimensions" }), jsxRuntimeExports.jsxs("p", { className: "text-sm text-gray-600", children: [selectedCatalogItem.dimensions.length, "\" L \u00D7 ", selectedCatalogItem.dimensions.width, "\" W \u00D7 ", selectedCatalogItem.dimensions.height, "\" H"] })] })), selectedCatalogItem.materials && (jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h3", { className: "text-sm font-semibold text-gray-700 mb-1", children: "Materials" }), jsxRuntimeExports.jsxs("p", { className: "text-sm text-gray-600", children: [selectedCatalogItem.materials.primary, selectedCatalogItem.materials.secondary && `, ${selectedCatalogItem.materials.secondary}`] })] })), selectedCatalogItem.colors && (jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h3", { className: "text-sm font-semibold text-gray-700 mb-1", children: "Colors" }), jsxRuntimeExports.jsxs("p", { className: "text-sm text-gray-600", children: [selectedCatalogItem.colors.main, selectedCatalogItem.colors.accent && ` / ${selectedCatalogItem.colors.accent}`] })] })), jsxRuntimeExports.jsx("div", { className: "bg-blue-50 border border-blue-200 rounded-lg p-4 mt-4", children: jsxRuntimeExports.jsxs("p", { className: "text-sm text-blue-900", children: [jsxRuntimeExports.jsx("strong", { children: "Catalog coming soon." }), " You can customize this item instead."] }) })] }), jsxRuntimeExports.jsxs("div", { className: "flex gap-3", children: [enabledActions.customize && (jsxRuntimeExports.jsx("button", { type: "button", onClick: handleCustomizeFromCatalog, className: "flex-1 text-white px-4 py-2 rounded-lg transition-colors font-medium", style: { backgroundColor: primaryColor, color: primaryTextColor }, children: "Customize This" })), jsxRuntimeExports.jsx("button", { type: "button", onClick: handleCloseCatalogModal, className: "flex-1 bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors font-medium", children: "Close" })] })] }) }))] }));
+    return (jsxRuntimeExports.jsxs("div", { className: "furniture-widget-ai h-full flex flex-col", style: { ['--modly-panel-accent']: primaryColor }, children: [jsxRuntimeExports.jsxs("div", { className: "border-b border-transparent px-5 py-3.5 pr-16 flex items-center gap-4", style: { backgroundColor: primaryColor }, children: [jsxRuntimeExports.jsx("h1", { className: "text-base font-semibold shrink-0", style: { color: titleColor }, children: displayTitle === DEFAULT_WIDGET_TITLE ? (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsx("span", { children: "Modly" }), jsxRuntimeExports.jsx("span", { children: "AI" })] })) : (jsxRuntimeExports.jsx("span", { children: displayTitle })) }), jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-1 rounded-full p-1", style: { backgroundColor: 'rgba(255,255,255,0.14)' }, role: "tablist", children: [jsxRuntimeExports.jsx("button", { type: "button", role: "tab", "aria-selected": viewMode === 'conversation', onClick: handleBackToConversation, className: "rounded-full px-3.5 py-1.5 text-xs font-semibold transition-colors", style: viewMode === 'conversation'
+                                    ? { backgroundColor: 'rgba(255,255,255,0.92)', color: primaryColor }
+                                    : { color: titleColor, opacity: 0.85 }, children: "Chat" }), jsxRuntimeExports.jsx("button", { type: "button", role: "tab", "aria-selected": viewMode === 'room-planner', onClick: handleOpenRoomPlanner, className: "rounded-full px-3.5 py-1.5 text-xs font-semibold transition-colors", style: viewMode === 'room-planner'
+                                    ? { backgroundColor: 'rgba(255,255,255,0.92)', color: primaryColor }
+                                    : { color: titleColor, opacity: 0.85 }, children: "Room planner" }), enabledActions.customize && (jsxRuntimeExports.jsx("button", { type: "button", role: "tab", "aria-selected": viewMode === 'customizer', onClick: handleOpenCustomizer, className: "rounded-full px-3.5 py-1.5 text-xs font-semibold transition-colors", style: viewMode === 'customizer'
+                                    ? { backgroundColor: 'rgba(255,255,255,0.92)', color: primaryColor }
+                                    : { color: titleColor, opacity: 0.85 }, children: "Customize" }))] })] }), jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-hidden", children: !isAccessActive ? (jsxRuntimeExports.jsxs("div", { className: "h-full flex flex-col items-center justify-center gap-3 px-8 text-center", children: [jsxRuntimeExports.jsx("div", { className: "flex h-12 w-12 items-center justify-center rounded-full bg-amber-100 text-amber-700", children: jsxRuntimeExports.jsx("svg", { className: "h-6 w-6", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M12 9v3.75m0 3.75h.007M21 12a9 9 0 11-18 0 9 9 0 0118 0z" }) }) }), jsxRuntimeExports.jsx("h2", { className: "text-lg font-semibold text-gray-900", children: "This assistant is temporarily unavailable" }), jsxRuntimeExports.jsx("p", { className: "max-w-sm text-sm text-gray-600", children: "This store's ModlyAI plan has ended. Please check back soon, or contact the store directly for help." })] })) : (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [viewMode === 'conversation' && (jsxRuntimeExports.jsxs("div", { className: "modly-panel-fade h-full flex flex-col", children: [saveNotification && (jsxRuntimeExports.jsx("div", { className: "bg-green-500 text-white px-4 py-2 text-sm text-center flex-shrink-0", children: saveNotification })), jsxRuntimeExports.jsx("div", { className: "flex-1 min-h-0", children: jsxRuntimeExports.jsx(ConversationInterface, { aiService: aiService, onCustomizeItem: handleCustomizeItem, onAddToRoomPlanner: handleAddToRoomPlanner, onOpenRoomPlanner: handleOpenRoomPlanner, onOpenCustomizer: handleOpenCustomizer, onShowCatalog: handleShowCatalog, onViewInCatalog: handleViewInCatalog, enabledActions: enabledActions, primaryColor: primaryColor, messageTextColor: messageTextColor, analyticsContext: analyticsContext }) })] }, "conversation")), viewMode === 'room-planner' && (jsxRuntimeExports.jsx("div", { className: "modly-panel-fade h-full overflow-y-auto", children: jsxRuntimeExports.jsx(FurnitureRoomPlannerWidget, { config: mergedConfig, onCustomizeItem: enabledActions.customize ? handleCustomizeItem : undefined, onNavigateToCustomizer: enabledActions.customize ? handleOpenCustomizer : undefined }) }, "room-planner")), viewMode === 'customizer' && (jsxRuntimeExports.jsx("div", { className: "modly-panel-fade h-full overflow-y-auto", children: enabledActions.customize && (jsxRuntimeExports.jsx(FurnitureCustomizerWidget, { config: mergedConfig, onNavigateToRoomPlanner: handleOpenRoomPlanner, selectedProduct: selectedProduct, onSelectedProductChange: setSelectedProduct })) }, "customizer"))] })) }), showSubmitModal && submitConfig && (jsxRuntimeExports.jsx(SubmitFlowModal, { config: submitConfig.config, product: submitConfig.product, apiClient: apiClient, onSuccess: handleSubmitSuccess, onClose: handleCloseSubmitModal })), isCatalogModalOpen && selectedCatalogItem && (jsxRuntimeExports.jsx("div", { className: "fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4", children: jsxRuntimeExports.jsxs("div", { className: "bg-white rounded-lg shadow-xl max-w-md w-full p-6", children: [jsxRuntimeExports.jsx("h2", { className: "text-2xl font-bold text-gray-900 mb-4", children: selectedCatalogItem.name }), jsxRuntimeExports.jsxs("div", { className: "space-y-3 mb-6", children: [selectedCatalogItem.dimensions && (jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h3", { className: "text-sm font-semibold text-gray-700 mb-1", children: "Dimensions" }), jsxRuntimeExports.jsxs("p", { className: "text-sm text-gray-600", children: [selectedCatalogItem.dimensions.length, "\" L \u00D7 ", selectedCatalogItem.dimensions.width, "\" W \u00D7 ", selectedCatalogItem.dimensions.height, "\" H"] })] })), selectedCatalogItem.materials && (jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h3", { className: "text-sm font-semibold text-gray-700 mb-1", children: "Materials" }), jsxRuntimeExports.jsxs("p", { className: "text-sm text-gray-600", children: [selectedCatalogItem.materials.primary, selectedCatalogItem.materials.secondary && `, ${selectedCatalogItem.materials.secondary}`] })] })), selectedCatalogItem.colors && (jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h3", { className: "text-sm font-semibold text-gray-700 mb-1", children: "Colors" }), jsxRuntimeExports.jsxs("p", { className: "text-sm text-gray-600", children: [selectedCatalogItem.colors.main, selectedCatalogItem.colors.accent && ` / ${selectedCatalogItem.colors.accent}`] })] })), jsxRuntimeExports.jsx("div", { className: "bg-blue-50 border border-blue-200 rounded-lg p-4 mt-4", children: jsxRuntimeExports.jsxs("p", { className: "text-sm text-blue-900", children: [jsxRuntimeExports.jsx("strong", { children: "Catalog coming soon." }), " You can customize this item instead."] }) })] }), jsxRuntimeExports.jsxs("div", { className: "flex gap-3", children: [enabledActions.customize && (jsxRuntimeExports.jsx("button", { type: "button", onClick: handleCustomizeFromCatalog, className: "flex-1 text-white px-4 py-2 rounded-lg transition-colors font-medium", style: { backgroundColor: primaryColor, color: primaryTextColor }, children: "Customize This" })), jsxRuntimeExports.jsx("button", { type: "button", onClick: handleCloseCatalogModal, className: "flex-1 bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors font-medium", children: "Close" })] })] }) }))] }));
 }
 
+const menuOptions = [
+    { tab: 'conversation', label: 'Chat', Icon: MessageCircle },
+    { tab: 'customizer', label: 'Customize', Icon: SlidersVertical },
+    { tab: 'room-planner', label: 'Room planner', Icon: Ruler },
+];
 function FurnitureAIWidgetButton({ config = {}, defaultTab = 'room-planner', buttonText, buttonPosition = 'bottom-right', buttonStyle, className = '' }) {
     const [isOpen, setIsOpen] = require$$0.useState(false);
+    const [menuOpen, setMenuOpen] = require$$0.useState(false);
+    const [entryTab, setEntryTab] = require$$0.useState('conversation');
+    const [isTouchDevice, setIsTouchDevice] = require$$0.useState(false);
+    const [prefersReducedMotion, setPrefersReducedMotion] = require$$0.useState(false);
+    const [logoFailed, setLogoFailed] = require$$0.useState(false);
+    const closeTimerRef = require$$0.useRef(null);
+    const wantsLogo = getButtonStyle(config) === 'logo';
+    const logoUrl = getButtonLogoUrl(config);
+    const showLogo = wantsLogo && Boolean(logoUrl) && !logoFailed;
+    require$$0.useEffect(() => {
+        setLogoFailed(false);
+    }, [logoUrl]);
     const displayTitle = config.widgetTitle ||
         config.theme?.buttonText ||
         buttonText ||
         DEFAULT_WIDGET_TITLE;
-    const trackOpen = () => {
+    const trackOpen = (source) => {
         trackWidgetEvent({
             apiBaseUrl: config.apiBaseUrl,
             storeId: config.storeId || config.widgetId,
             widgetId: config.widgetId,
             type: 'widget_opened',
             metadata: {
-                source: 'widget_button',
+                source,
             },
         });
     };
     require$$0.useEffect(() => {
-        const onOpen = () => {
-            setIsOpen(true);
-            trackOpen();
-        };
+        setIsTouchDevice(typeof window !== 'undefined' && window.matchMedia('(hover: none)').matches);
+        const reducedMotionQuery = typeof window !== 'undefined' ? window.matchMedia('(prefers-reduced-motion: reduce)') : null;
+        if (reducedMotionQuery) {
+            setPrefersReducedMotion(reducedMotionQuery.matches);
+            const listener = () => setPrefersReducedMotion(reducedMotionQuery.matches);
+            reducedMotionQuery.addEventListener('change', listener);
+            return () => reducedMotionQuery.removeEventListener('change', listener);
+        }
+    }, []);
+    const openWidget = (tab, source) => {
+        setEntryTab(tab);
+        setMenuOpen(false);
+        setIsOpen(true);
+        trackOpen(source);
+    };
+    require$$0.useEffect(() => {
+        const onOpen = () => openWidget('conversation', 'widget_button_event');
         window.addEventListener('modly:open-widget', onOpen);
         return () => window.removeEventListener('modly:open-widget', onOpen);
     }, [config.apiBaseUrl, config.storeId, config.widgetId]);
     require$$0.useEffect(() => {
         const handleEscape = (e) => {
-            if (e.key === 'Escape' && isOpen) {
-                setIsOpen(false);
+            if (e.key === 'Escape') {
+                if (isOpen)
+                    setIsOpen(false);
+                else if (menuOpen)
+                    setMenuOpen(false);
             }
         };
         document.addEventListener('keydown', handleEscape);
         return () => document.removeEventListener('keydown', handleEscape);
-    }, [isOpen]);
+    }, [isOpen, menuOpen]);
     require$$0.useEffect(() => {
         if (isOpen) {
             document.body.style.overflow = 'hidden';
@@ -7292,58 +7372,102 @@ function FurnitureAIWidgetButton({ config = {}, defaultTab = 'room-planner', but
             document.body.style.overflow = 'unset';
         };
     }, [isOpen]);
+    const clearCloseTimer = () => {
+        if (closeTimerRef.current) {
+            window.clearTimeout(closeTimerRef.current);
+            closeTimerRef.current = null;
+        }
+    };
+    const handleMouseEnter = () => {
+        if (isTouchDevice)
+            return;
+        clearCloseTimer();
+        setMenuOpen(true);
+    };
+    const handleMouseLeave = () => {
+        if (isTouchDevice)
+            return;
+        clearCloseTimer();
+        closeTimerRef.current = window.setTimeout(() => setMenuOpen(false), 220);
+    };
+    const handleMainButtonClick = () => {
+        if (isTouchDevice) {
+            setMenuOpen((prev) => !prev);
+            return;
+        }
+        // Desktop: clicking the main button jumps straight into chat, matching prior behavior.
+        openWidget('conversation', 'widget_button');
+    };
     const positionClasses = {
         'bottom-right': 'bottom-6 right-6',
         'bottom-left': 'bottom-6 left-6',
         'top-right': 'top-6 right-6',
         'top-left': 'top-6 left-6',
     };
+    const isBottomAligned = buttonPosition === 'bottom-right' || buttonPosition === 'bottom-left';
+    const primaryColor = getPrimaryColor(config);
+    const textColor = getReadableTextColor(primaryColor);
+    const isDarkPrimary = isDarkColor(primaryColor);
     const finalButtonStyle = require$$0.useMemo(() => {
-        const primaryColor = getPrimaryColor(config);
-        const textColor = getReadableTextColor(primaryColor);
-        const isDarkPrimary = isDarkColor(primaryColor);
-        const baseStyle = {
-            height: '44px',
-            minWidth: '112px',
-            padding: '0 18px',
-            background: isDarkPrimary
-                ? `linear-gradient(180deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.04) 48%, rgba(0,0,0,0.10) 100%), ${primaryColor}`
-                : `linear-gradient(180deg, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.10) 45%, rgba(17,24,39,0.06) 100%), ${primaryColor}`,
-            border: isDarkPrimary
-                ? '1px solid rgba(255, 255, 255, 0.20)'
-                : '1px solid rgba(17, 24, 39, 0.14)',
-            color: textColor,
-            boxShadow: '0 10px 24px rgba(15, 23, 42, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.20)',
-            ...buttonStyle
-        };
+        const baseStyle = showLogo
+            ? {
+                height: '52px',
+                width: '52px',
+                padding: '2px',
+                background: '#ffffff',
+                border: isDarkPrimary
+                    ? '1px solid rgba(255, 255, 255, 0.20)'
+                    : '1px solid rgba(17, 24, 39, 0.10)',
+                boxShadow: '0 10px 24px rgba(15, 23, 42, 0.18)',
+                ...buttonStyle,
+            }
+            : {
+                height: '44px',
+                minWidth: '112px',
+                padding: '0 18px',
+                background: isDarkPrimary
+                    ? `linear-gradient(180deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.04) 48%, rgba(0,0,0,0.10) 100%), ${primaryColor}`
+                    : `linear-gradient(180deg, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.10) 45%, rgba(17,24,39,0.06) 100%), ${primaryColor}`,
+                border: isDarkPrimary
+                    ? '1px solid rgba(255, 255, 255, 0.20)'
+                    : '1px solid rgba(17, 24, 39, 0.14)',
+                color: textColor,
+                boxShadow: '0 10px 24px rgba(15, 23, 42, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.20)',
+                ...buttonStyle,
+            };
         return baseStyle;
-    }, [config, buttonStyle]);
-    return (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsxs("button", { onClick: () => {
-                    setIsOpen(true);
-                    trackOpen();
-                }, style: finalButtonStyle, className: `modly-widget-button fixed ${positionClasses[buttonPosition]} z-50 cursor-pointer rounded-full inline-flex items-center justify-center gap-2 transition-all duration-200 ease-out ${className}`, onMouseEnter: (e) => {
-                    e.currentTarget.style.transform = 'translateY(-2px)';
-                    e.currentTarget.style.filter = 'brightness(1.04)';
-                    e.currentTarget.style.boxShadow = '0 14px 30px rgba(15, 23, 42, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.24)';
-                }, onMouseLeave: (e) => {
-                    e.currentTarget.style.transform = 'translateY(0)';
-                    e.currentTarget.style.filter = 'brightness(1)';
-                    e.currentTarget.style.boxShadow = '0 10px 24px rgba(15, 23, 42, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.20)';
-                }, onFocus: (e) => {
-                    e.currentTarget.style.outline = '2px solid rgba(99, 102, 241, 0.5)';
-                    e.currentTarget.style.outlineOffset = '2px';
-                }, onBlur: (e) => {
-                    e.currentTarget.style.outline = 'none';
-                }, "aria-label": `Open ${displayTitle} widget`, children: [jsxRuntimeExports.jsx(MessageCircle, { "aria-hidden": "true", className: "h-4 w-4 shrink-0", strokeWidth: 2 }), jsxRuntimeExports.jsx("span", { className: "text-[14.5px] font-semibold", style: {
-                            letterSpacing: '0',
-                            lineHeight: 1,
-                            fontWeight: 600,
-                            whiteSpace: 'nowrap'
-                        }, children: displayTitle })] }), isOpen && (jsxRuntimeExports.jsx("div", { className: "modly-widget-modal-backdrop fixed inset-0 z-[100] bg-black bg-opacity-50 flex items-center justify-center p-4", onClick: (e) => {
+    }, [primaryColor, textColor, isDarkPrimary, buttonStyle, showLogo]);
+    const transitionClass = prefersReducedMotion ? '' : 'transition-all duration-200 ease-out';
+    return (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsxs("div", { className: `fixed ${positionClasses[buttonPosition]} z-50 flex flex-col items-end gap-2`, onMouseEnter: handleMouseEnter, onMouseLeave: handleMouseLeave, children: [jsxRuntimeExports.jsx("div", { className: `flex flex-col items-end gap-2 ${isBottomAligned ? 'order-1' : 'order-2'}`, "aria-hidden": !menuOpen, children: menuOptions.map(({ tab, label, Icon }, index) => (jsxRuntimeExports.jsxs("button", { type: "button", onClick: () => openWidget(tab, `widget_menu_${tab}`), className: `modly-widget-menu-item flex items-center gap-2 rounded-full bg-white px-4 py-2.5 text-sm font-semibold text-gray-800 shadow-[0_10px_24px_rgba(15,23,42,0.16)] ${transitionClass}`, style: {
+                                opacity: menuOpen ? 1 : 0,
+                                transform: menuOpen ? 'translateY(0) scale(1)' : 'translateY(8px) scale(0.94)',
+                                pointerEvents: menuOpen ? 'auto' : 'none',
+                                transitionDelay: menuOpen ? `${index * 55}ms` : '0ms',
+                            }, children: [jsxRuntimeExports.jsx(Icon, { "aria-hidden": "true", className: "h-4 w-4 shrink-0", strokeWidth: 2, style: { color: primaryColor } }), jsxRuntimeExports.jsx("span", { className: "whitespace-nowrap", children: label })] }, tab))) }), jsxRuntimeExports.jsx("button", { onClick: handleMainButtonClick, style: finalButtonStyle, className: `modly-widget-button order-${isBottomAligned ? '2' : '1'} cursor-pointer rounded-full inline-flex items-center justify-center gap-2 ${transitionClass} ${className}`, onMouseOver: (e) => {
+                            if (isTouchDevice)
+                                return;
+                            e.currentTarget.style.transform = 'translateY(-2px)';
+                            e.currentTarget.style.filter = 'brightness(1.04)';
+                            e.currentTarget.style.boxShadow = '0 14px 30px rgba(15, 23, 42, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.24)';
+                        }, onMouseOut: (e) => {
+                            e.currentTarget.style.transform = 'translateY(0)';
+                            e.currentTarget.style.filter = 'brightness(1)';
+                            e.currentTarget.style.boxShadow = '0 10px 24px rgba(15, 23, 42, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.20)';
+                        }, onFocus: (e) => {
+                            e.currentTarget.style.outline = '2px solid rgba(99, 102, 241, 0.5)';
+                            e.currentTarget.style.outlineOffset = '2px';
+                        }, onBlur: (e) => {
+                            e.currentTarget.style.outline = 'none';
+                        }, "aria-label": menuOpen ? `Close ${displayTitle} menu` : `Open ${displayTitle} widget`, "aria-expanded": menuOpen, children: showLogo ? (jsxRuntimeExports.jsx("img", { src: logoUrl, alt: displayTitle, className: "h-full w-full rounded-full object-contain", onError: () => setLogoFailed(true) })) : (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [menuOpen && isTouchDevice ? (jsxRuntimeExports.jsx(X, { "aria-hidden": "true", className: "h-4 w-4 shrink-0", strokeWidth: 2 })) : (jsxRuntimeExports.jsx(MessageCircle, { "aria-hidden": "true", className: "h-4 w-4 shrink-0", strokeWidth: 2 })), jsxRuntimeExports.jsx("span", { className: "text-[14.5px] font-semibold", style: {
+                                        letterSpacing: '0',
+                                        lineHeight: 1,
+                                        fontWeight: 600,
+                                        whiteSpace: 'nowrap'
+                                    }, children: displayTitle })] })) })] }), isOpen && (jsxRuntimeExports.jsx("div", { className: "modly-widget-modal-backdrop fixed inset-0 z-[100] bg-black bg-opacity-50 flex items-center justify-center p-4", onClick: (e) => {
                     if (e.target === e.currentTarget) {
                         setIsOpen(false);
                     }
-                }, children: jsxRuntimeExports.jsxs("div", { className: "modly-widget-modal-panel bg-white rounded-lg shadow-2xl w-full max-w-6xl h-[90vh] overflow-hidden flex flex-col relative", children: [jsxRuntimeExports.jsx("button", { onClick: () => setIsOpen(false), className: "modly-widget-modal-close absolute top-4 right-4 z-10 bg-gray-100 hover:bg-gray-200 rounded-full p-2 transition-colors", "aria-label": "Close modal", children: jsxRuntimeExports.jsx("svg", { className: "w-6 h-6 text-gray-600", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M6 18L18 6M6 6l12 12" }) }) }), jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-hidden", children: jsxRuntimeExports.jsx(FurnitureAIWidget, { config: config, defaultTab: defaultTab, widgetTitle: displayTitle }) })] }) }))] }));
+                }, children: jsxRuntimeExports.jsxs("div", { className: "modly-widget-modal-panel bg-white rounded-lg shadow-2xl w-full max-w-6xl h-[90vh] overflow-hidden flex flex-col relative", children: [jsxRuntimeExports.jsx("button", { onClick: () => setIsOpen(false), className: "modly-widget-modal-close absolute top-4 right-4 z-10 bg-gray-100 hover:bg-gray-200 rounded-full p-2 transition-colors", "aria-label": "Close modal", children: jsxRuntimeExports.jsx("svg", { className: "w-6 h-6 text-gray-600", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M6 18L18 6M6 6l12 12" }) }) }), jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-hidden", children: jsxRuntimeExports.jsx(FurnitureAIWidget, { config: config, defaultTab: entryTab === 'conversation' ? undefined : entryTab, widgetTitle: displayTitle }) })] }) }))] }));
 }
 
 exports.FurnitureAIWidget = FurnitureAIWidget;

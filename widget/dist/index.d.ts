@@ -460,6 +460,8 @@ interface WidgetConfig {
         messageTextColor?: string;
         buttonText?: string;
         buttonPosition?: 'bottom-right' | 'bottom-left' | 'top-right' | 'top-left';
+        buttonStyle?: 'text' | 'logo';
+        logoUrl?: string;
     };
     features?: {
         roomPlanner?: boolean;

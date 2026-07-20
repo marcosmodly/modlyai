@@ -28,6 +28,8 @@ type SettingsStore = {
   primaryColor?: string
   titleColor?: string
   messageTextColor?: string
+  widgetButtonStyle?: string
+  widgetLogoUrl?: string
   welcomeMessage?: string
   enableViewInCatalog?: boolean
   enableCustomize?: boolean
@@ -44,6 +46,8 @@ type FormState = {
   primaryColor: string
   titleColor: string
   messageTextColor: string
+  widgetButtonStyle: 'text' | 'logo'
+  widgetLogoUrl: string
   welcomeMessage: string
   enabledActions: EnabledActions
   quoteEmail: string
@@ -58,6 +62,8 @@ function buildInitialState(store: SettingsStore, fallbackStoreName?: string): Fo
     primaryColor: isHexColor(store.primaryColor) ? store.primaryColor : DEFAULT_PRIMARY_COLOR,
     titleColor: isHexColor(store.titleColor) ? store.titleColor : DEFAULT_TITLE_COLOR,
     messageTextColor: isHexColor(store.messageTextColor) ? store.messageTextColor : DEFAULT_MESSAGE_TEXT_COLOR,
+    widgetButtonStyle: store.widgetButtonStyle === 'logo' ? 'logo' : 'text',
+    widgetLogoUrl: store.widgetLogoUrl || '',
     welcomeMessage: store.welcomeMessage || DEFAULT_WELCOME_MESSAGE,
     enabledActions: {
       viewInCatalog: store.enableViewInCatalog ?? store.enabledActions?.viewInCatalog ?? true,
@@ -123,6 +129,8 @@ export default function WhiteLabelSettingsForm({
   const [status, setStatus] = useState<'idle' | 'saving' | 'success' | 'error'>('idle')
   const [message, setMessage] = useState('')
   const [selectedTextTarget, setSelectedTextTarget] = useState<'title' | 'message'>('title')
+  const [logoWarning, setLogoWarning] = useState('')
+  const [logoChecking, setLogoChecking] = useState(false)
   const colorSwatchValue = isHexColor(form.primaryColor) ? form.primaryColor : DEFAULT_PRIMARY_COLOR
   const titleColorValue = isHexColor(form.titleColor) ? form.titleColor : DEFAULT_TITLE_COLOR
   const messageTextColorValue = isHexColor(form.messageTextColor) ? form.messageTextColor : DEFAULT_MESSAGE_TEXT_COLOR
@@ -142,6 +150,40 @@ export default function WhiteLabelSettingsForm({
     })
   }
 
+  const checkLogoImage = (url: string) => {
+    setLogoWarning('')
+    if (!url.trim()) return
+
+    setLogoChecking(true)
+
+    // Best-effort dimension check using a plain Image element. We don't set
+    // crossOrigin here since we only need natural dimensions (not pixel data),
+    // and requiring CORS would wrongly fail images that display fine but lack
+    // CORS headers.
+    const img = new Image()
+    img.onload = () => {
+      setLogoChecking(false)
+      const { naturalWidth: w, naturalHeight: h } = img
+      if (w > 1000 || h > 1000) {
+        setLogoWarning(
+          `This image is ${w}×${h}px, which is larger than needed. We recommend a square image under 512×512px so it loads quickly for your shoppers.`
+        )
+      } else {
+        const aspectRatio = w / h
+        if (aspectRatio > 1.5 || aspectRatio < 0.67) {
+          setLogoWarning(
+            'This image is not roughly square. It will be padded inside the button so it is not stretched or cropped.'
+          )
+        }
+      }
+    }
+    img.onerror = () => {
+      setLogoChecking(false)
+      setLogoWarning('Could not load this image. Double-check the URL is correct and publicly accessible.')
+    }
+    img.src = url.trim()
+  }
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     setStatus('saving')
@@ -157,6 +199,8 @@ export default function WhiteLabelSettingsForm({
         primaryColor: form.primaryColor,
         titleColor: form.titleColor,
         messageTextColor: form.messageTextColor,
+        widgetButtonStyle: form.widgetButtonStyle,
+        widgetLogoUrl: form.widgetLogoUrl,
         welcomeMessage: form.welcomeMessage,
         quoteEmail: form.quoteEmail,
         enableViewInCatalog: form.enabledActions.viewInCatalog,
@@ -314,6 +358,68 @@ export default function WhiteLabelSettingsForm({
                 className={`${inputClass} min-h-32 resize-y leading-6`}
               />
             </Field>
+
+            <Field label="Widget button style">
+              <div className="grid grid-cols-2 gap-3">
+                <button
+                  type="button"
+                  onClick={() => updateField('widgetButtonStyle', 'text')}
+                  className={`rounded-2xl border-2 px-4 py-3 text-left text-sm font-medium transition ${
+                    form.widgetButtonStyle === 'text'
+                      ? 'border-blue-500 bg-blue-50 text-stone-900'
+                      : 'border-stone-200 bg-stone-50 text-stone-600 hover:border-stone-300'
+                  }`}
+                >
+                  Text button
+                  <span className="mt-1 block text-xs font-normal text-stone-500">Icon + widget title (default)</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => updateField('widgetButtonStyle', 'logo')}
+                  className={`rounded-2xl border-2 px-4 py-3 text-left text-sm font-medium transition ${
+                    form.widgetButtonStyle === 'logo'
+                      ? 'border-blue-500 bg-blue-50 text-stone-900'
+                      : 'border-stone-200 bg-stone-50 text-stone-600 hover:border-stone-300'
+                  }`}
+                >
+                  Logo only
+                  <span className="mt-1 block text-xs font-normal text-stone-500">Your own logo image</span>
+                </button>
+              </div>
+            </Field>
+
+            {form.widgetButtonStyle === 'logo' && (
+              <Field label="Logo image URL">
+                <div className="flex items-center gap-3">
+                  {form.widgetLogoUrl ? (
+                    <img
+                      src={form.widgetLogoUrl}
+                      alt="Logo preview"
+                      className="h-12 w-12 shrink-0 rounded-full border border-stone-200 bg-white object-contain p-0.5"
+                      onError={() => setLogoWarning('Could not load this image. Double-check the URL is correct and publicly accessible.')}
+                    />
+                  ) : null}
+                  <input
+                    type="url"
+                    value={form.widgetLogoUrl}
+                    onChange={(event) => updateField('widgetLogoUrl', event.target.value)}
+                    onBlur={(event) => checkLogoImage(event.target.value)}
+                    className={inputClass}
+                    placeholder="https://example.com/logo.png"
+                  />
+                </div>
+                <p className="mt-2 text-xs text-stone-500">
+                  Paste a link to a hosted PNG or JPEG. If this is left empty or fails to load, the widget will fall
+                  back to the text button automatically.
+                </p>
+                {logoChecking && <p className="mt-2 text-xs text-stone-400">Checking image...</p>}
+                {logoWarning && !logoChecking && (
+                  <p className="mt-2 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-800">
+                    {logoWarning}
+                  </p>
+                )}
+              </Field>
+            )}
           </div>
 
           <div>
@@ -370,30 +476,60 @@ export default function WhiteLabelSettingsForm({
             <p className="mt-3 text-xs text-stone-500">
               Live preview. This reflects how the widget header and welcome message will look on your storefront.
             </p>
+
+            {form.widgetButtonStyle === 'logo' && (
+              <div className="mt-6 rounded-2xl border border-blue-200 bg-blue-50 p-4">
+                <p className="text-sm font-semibold text-blue-900">How to add your logo</p>
+                <ul className="mt-2 space-y-1.5 text-xs leading-5 text-blue-800">
+                  <li>
+                    <strong>Size:</strong> square works best, ideally 512×512px or smaller. Larger images still work but
+                    load slower for your shoppers.
+                  </li>
+                  <li>
+                    <strong>Format:</strong> PNG with a transparent background looks cleanest, since the logo sits on a
+                    white circular badge.
+                  </li>
+                  <li>
+                    <strong>Must be a direct image link</strong>, not a webpage. Paste the URL into a new browser tab
+                    first, if you see just the image (nothing else), it will work here.
+                  </li>
+                  <li>
+                    <strong>Avoid</strong> Google Drive or Dropbox "share" links, and image gallery pages (like an
+                    Imgur album page). These show a webpage, not the image file itself.
+                  </li>
+                  <li>
+                    <strong>Where to get one:</strong> your own website's asset folder, your Shopify CDN if you're on
+                    Shopify, or a free host like Imgur (right-click the image itself and choose "Copy image address").
+                  </li>
+                </ul>
+              </div>
+            )}
+
+            <div className="mt-6 space-y-3">
+              <p className="text-sm font-medium text-stone-700">Customer actions</p>
+              <Toggle
+                label="Enable View in Catalog"
+                checked={form.enabledActions.viewInCatalog}
+                onChange={(checked) => updateAction('viewInCatalog', checked)}
+              />
+              <Toggle
+                label="Enable Customize this"
+                checked={form.enabledActions.customize}
+                onChange={(checked) => updateAction('customize', checked)}
+              />
+              <Toggle
+                label="Enable Request Quote"
+                checked={form.enabledActions.requestQuote}
+                onChange={(checked) => updateAction('requestQuote', checked)}
+              />
+            </div>
           </div>
         </div>
       </section>
 
       <section className="rounded-[32px] border border-stone-200 bg-white p-6 shadow-sm">
-        <h2 className="text-2xl font-bold tracking-tight text-stone-950">Customer Actions</h2>
-        <div className="mt-6 grid gap-5 md:grid-cols-2">
-          <div className="space-y-3">
-            <Toggle
-              label="Enable View in Catalog"
-              checked={form.enabledActions.viewInCatalog}
-              onChange={(checked) => updateAction('viewInCatalog', checked)}
-            />
-            <Toggle
-              label="Enable Customize this"
-              checked={form.enabledActions.customize}
-              onChange={(checked) => updateAction('customize', checked)}
-            />
-            <Toggle
-              label="Enable Request Quote"
-              checked={form.enabledActions.requestQuote}
-              onChange={(checked) => updateAction('requestQuote', checked)}
-            />
-          </div>
+        <h2 className="text-2xl font-bold tracking-tight text-stone-950">Quote Requests</h2>
+        <div className="mt-6 max-w-md">
           <Field label="Quote request email">
             <input
               type="email"
@@ -414,10 +550,18 @@ export default function WhiteLabelSettingsForm({
       </p>
 
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <div aria-live="polite">
-          {message ? (
-            <p className={`text-sm font-medium ${status === 'error' ? 'text-red-700' : 'text-emerald-700'}`}>{message}</p>
-          ) : null}
+        <div className="flex flex-wrap items-center gap-3">
+          <Link
+            href="/how-it-works"
+            className="inline-flex items-center gap-2 rounded-xl border border-stone-300 bg-white px-5 py-3 text-sm font-semibold text-stone-700 transition hover:bg-stone-50"
+          >
+            See how it works
+          </Link>
+          <div aria-live="polite">
+            {message ? (
+              <p className={`text-sm font-medium ${status === 'error' ? 'text-red-700' : 'text-emerald-700'}`}>{message}</p>
+            ) : null}
+          </div>
         </div>
         <button
           type="submit"

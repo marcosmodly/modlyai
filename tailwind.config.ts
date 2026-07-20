@@ -9,6 +9,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        heading: ["var(--font-fraunces)", "Georgia", "serif"],
+      },
       colors: {
         // Dark Earth Tone palette
         earth: {

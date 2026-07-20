@@ -37,6 +37,8 @@ export interface WidgetConfig {
     messageTextColor?: string;
     buttonText?: string; // NEW
     buttonPosition?: 'bottom-right' | 'bottom-left' | 'top-right' | 'top-left'; // NEW
+    buttonStyle?: 'text' | 'logo';
+    logoUrl?: string;
   };
   features?: {
     roomPlanner?: boolean;
@@ -168,6 +170,14 @@ export function getPrimaryColor(config: WidgetConfig = {}): string {
     : hasText(config.theme?.primaryColor)
       ? config.theme.primaryColor.trim()
       : DEFAULT_PRIMARY_COLOR;
+}
+
+export function getButtonStyle(config: WidgetConfig = {}): 'text' | 'logo' {
+  return config.theme?.buttonStyle === 'logo' ? 'logo' : 'text';
+}
+
+export function getButtonLogoUrl(config: WidgetConfig = {}): string | undefined {
+  return hasText(config.theme?.logoUrl) ? config.theme!.logoUrl!.trim() : undefined;
 }
 
 export function isDarkColor(color: string): boolean {

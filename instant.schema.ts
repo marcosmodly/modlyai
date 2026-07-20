@@ -96,6 +96,8 @@ const _schema = i.schema({
       userId: i.any().optional(),
       welcomeMessage: i.string().optional(),
       widgetId: i.any().optional(),
+      widgetButtonStyle: i.string().optional(),
+      widgetLogoUrl: i.string().optional(),
       widgetTitle: i.string().optional(),
       wooKey: i.any().optional(),
       wooSecret: i.any().optional(),
@@ -144,18 +146,6 @@ const _schema = i.schema({
         label: "linkedGuestUsers",
       },
     },
-    storesEvents: {
-      forward: {
-        on: "stores",
-        has: "many",
-        label: "events",
-      },
-      reverse: {
-        on: "events",
-        has: "one",
-        label: "store",
-      },
-    },
     storesProducts: {
       forward: {
         on: "stores",
@@ -164,6 +154,18 @@ const _schema = i.schema({
       },
       reverse: {
         on: "products",
+        has: "one",
+        label: "store",
+      },
+    },
+    storesEvents: {
+      forward: {
+        on: "stores",
+        has: "many",
+        label: "events",
+      },
+      reverse: {
+        on: "events",
         has: "one",
         label: "store",
       },

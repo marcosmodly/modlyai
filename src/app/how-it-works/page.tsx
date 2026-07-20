@@ -88,7 +88,7 @@ function StepText({ step }: { step: (typeof steps)[number] }) {
       <div className="inline-flex items-center rounded-full border border-[#ded2c1] bg-[#fffaf2] px-3 py-1 text-xs font-semibold text-[#856a47] shadow-sm">
         Step {step.number}
       </div>
-      <h2 className="mt-5 text-3xl font-semibold leading-tight text-[#171411] md:text-4xl">
+      <h2 className="font-heading mt-5 text-3xl font-semibold leading-tight text-[#171411] md:text-4xl">
         {step.title}
       </h2>
       <p className="mt-4 max-w-xl text-base leading-7 text-[#665c52] md:text-lg">
@@ -309,7 +309,7 @@ export default function HowItWorksPage() {
             <Sparkles className="h-4 w-4 text-[#9a7445]" />
             Furniture retail walkthrough
           </div>
-          <h1 className="mt-6 text-4xl font-semibold leading-tight text-[#171411] md:text-6xl">
+          <h1 className="font-heading mt-6 text-4xl font-semibold leading-tight text-[#171411] md:text-6xl">
             How ModlyAI works
           </h1>
           <p className="mx-auto mt-5 max-w-2xl text-lg leading-8 text-[#665c52]">
@@ -343,7 +343,7 @@ export default function HowItWorksPage() {
             <div className="inline-flex items-center gap-2 rounded-full border border-[#dfd3c4] bg-white/70 px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-[#856a47] shadow-sm">
               Where to find it
             </div>
-            <h2 className="mt-5 text-3xl font-semibold leading-tight text-[#171411] md:text-4xl">
+            <h2 className="font-heading mt-5 text-3xl font-semibold leading-tight text-[#171411] md:text-4xl">
               The widget button lives in the bottom-right corner of this page.
             </h2>
             <p className="mt-4 max-w-xl text-base leading-7 text-[#665c52]">
@@ -363,7 +363,7 @@ export default function HowItWorksPage() {
             <div className="inline-flex items-center gap-2 rounded-full border border-[#dfd3c4] bg-white/70 px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-[#856a47] shadow-sm">
               What the widget can do
             </div>
-            <h2 className="mt-5 text-3xl font-semibold leading-tight text-[#171411] md:text-4xl">
+            <h2 className="font-heading mt-5 text-3xl font-semibold leading-tight text-[#171411] md:text-4xl">
               Everything shoppers need to buy with confidence, in one panel.
             </h2>
           </div>
@@ -384,7 +384,7 @@ export default function HowItWorksPage() {
       <section className="border-y border-[#e7ddd1] bg-[#f8f1e7] px-6 py-16 md:py-20">
         <div className="mx-auto max-w-7xl">
           <div className="text-center">
-            <h2 className="text-3xl font-semibold text-[#171411] md:text-4xl">Works With Your Platform</h2>
+            <h2 className="font-heading text-3xl font-semibold text-[#171411] md:text-4xl">Works With Your Platform</h2>
             <p className="mx-auto mt-3 max-w-2xl text-base leading-7 text-[#665c52]">
               Start with the catalog source you already use, then expand as your storefront grows.
             </p>
@@ -405,7 +405,7 @@ export default function HowItWorksPage() {
 
       <section className="px-6 py-16 md:py-24">
         <div className="mx-auto max-w-7xl overflow-hidden rounded-3xl border border-[#ded1c2] bg-[radial-gradient(circle_at_20%_0%,rgba(216,183,129,0.22),transparent_34%),linear-gradient(135deg,#171411_0%,#24374c_100%)] px-6 py-14 text-center shadow-[0_28px_80px_rgba(75,61,47,0.18)] md:px-10 md:py-16">
-          <h2 className="mx-auto max-w-3xl text-3xl font-semibold text-[#fffaf2] md:text-4xl">
+          <h2 className="font-heading mx-auto max-w-3xl text-3xl font-semibold text-[#fffaf2] md:text-4xl">
             Ready to help shoppers buy with confidence?
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-[#d8cfc4]">
