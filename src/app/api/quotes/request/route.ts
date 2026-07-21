@@ -297,10 +297,11 @@ async function getStoreEmailDestination({
     const { adminDb } = await getInstantAdmin();
     const result = await adminDb.query({
       stores: {
+        $: { where: { id: storeId } },
         users: {},
       },
     });
-    store = result.stores?.find((candidate) => readText(candidate?.id) === storeId) ?? null;
+    store = result.stores?.[0] ?? null;
   }
 
   const owner = Array.isArray(store?.users) ? store.users[0] : store?.users;
@@ -495,7 +496,7 @@ async function sendQuoteEmail({
   ].join('\n');
 
   const { error } = await resend.emails.send({
-    from: 'ModlyAI <onboarding@resend.dev>',
+    from: 'ModlyAI <hello@modlyai.tech>',
     replyTo: customer.email,
     to,
     subject: isRoomQuote
