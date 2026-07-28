@@ -10,6 +10,10 @@ const schema = i.schema({
       emailVerified: i.boolean().optional(),
       verificationCode: i.string().optional(),
       verificationCodeExpiry: i.number().optional(),
+      tokenVersion: i.number().optional(),
+      pendingEmail: i.string().optional(),
+      pendingEmailCode: i.string().optional(),
+      pendingEmailCodeExpiry: i.number().optional(),
     }),
     stores: i.entity({
       name: i.any(),

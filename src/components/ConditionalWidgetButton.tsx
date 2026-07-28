@@ -57,26 +57,15 @@ export default function ConditionalWidgetButton() {
     ...remoteConfig,
   }), [remoteConfig, session?.user?.apiKey, storeId]);
 
-  if (pathname?.startsWith('/dashboard')) {
-    return null;
-  }
-
-  if (pathname === '/') {
-    return null;
-  }
-
-  if (pathname?.startsWith('/auth')) {
+  if (pathname !== '/how-it-works') {
     return null;
   }
 
   if (!session?.user) {
-    const isHowItWorksPage = pathname === '/how-it-works';
     return (
       <Link
         href="/auth/signup"
-        className={`fixed bottom-6 right-6 z-50 inline-flex h-11 items-center gap-2 rounded-full bg-[#171411] px-5 text-sm font-semibold text-white shadow-[0_10px_24px_rgba(15,23,42,0.22)] transition hover:-translate-y-0.5 hover:bg-black ${
-          isHowItWorksPage ? 'modly-signup-glow' : ''
-        }`}
+        className="fixed bottom-6 right-6 z-50 inline-flex h-11 items-center gap-2 rounded-full bg-[#171411] px-5 text-sm font-semibold text-white shadow-[0_10px_24px_rgba(15,23,42,0.22)] transition hover:-translate-y-0.5 hover:bg-black modly-signup-glow"
       >
         <Sparkles className="h-4 w-4" strokeWidth={2} />
         Sign up to try the widget

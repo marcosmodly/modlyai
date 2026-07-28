@@ -519,43 +519,6 @@ export function FurnitureRoomPlannerWidget({
           }
         `}</style>
 
-        <section className="py-12 bg-gradient-to-br from-blue-600 to-blue-800 text-white">
-          <div className="max-w-7xl mx-auto px-4">
-            <div className="max-w-3xl">
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full mb-4">
-                <Sparkles className="w-4 h-4" />
-                <span className="text-sm font-medium">AI-Powered Room Analysis</span>
-              </div>
-
-              <h1 className="text-5xl font-bold mb-4">Room Planner</h1>
-
-              <p className="text-xl text-blue-100 mb-8">
-                Upload a photo of your room and get catalog-based furniture and customization
-                suggestions based on your space and style.
-              </p>
-
-              <div className="flex flex-wrap gap-4">
-                <div className="flex items-center gap-2 text-sm">
-                  <Check className="w-5 h-5 text-green-300" />
-                  <span>Room photo upload</span>
-                </div>
-                <div className="flex items-center gap-2 text-sm">
-                  <Check className="w-5 h-5 text-green-300" />
-                  <span>Catalog-based product suggestions</span>
-                </div>
-                <div className="flex items-center gap-2 text-sm">
-                  <Check className="w-5 h-5 text-green-300" />
-                  <span>Style-aware recommendations</span>
-                </div>
-                <div className="flex items-center gap-2 text-sm">
-                  <Check className="w-5 h-5 text-green-300" />
-                  <span>Placement guidance</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
         <section className="py-12 bg-gray-50">
           <div className="max-w-7xl mx-auto px-4">
             <div className="rounded-[28px] border border-gray-200 bg-white p-5 shadow-xl md:p-6">

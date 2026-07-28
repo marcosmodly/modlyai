@@ -2,6 +2,14 @@ import { NextResponse } from 'next/server'
 import bcrypt from 'bcryptjs'
 import { adminDb, id } from '@/lib/instant-admin'
 import { generatePublicApiKey, resolveWidgetId } from '@/lib/store-public-identity'
+import { checkRateLimit } from '@/lib/rate-limit'
+
+const MIN_PASSWORD_LENGTH = 8
+
+function getClientIp(req: Request) {
+  const forwardedFor = req.headers.get('x-forwarded-for')
+  return forwardedFor?.split(',')[0]?.trim() || 'unknown'
+}
 
 function getErrorMessage(error: unknown) {
   return error instanceof Error ? error.message : String(error)
@@ -73,6 +81,24 @@ export async function POST(req: Request) {
       )
     }
 
+    if (typeof password !== 'string' || password.length < MIN_PASSWORD_LENGTH) {
+      return NextResponse.json(
+        { error: `Password must be at least ${MIN_PASSWORD_LENGTH} characters.` },
+        { status: 400 }
+      )
+    }
+
+    const ip = getClientIp(req)
+    const ipRateLimit = checkRateLimit(`register-ip:${ip}`, { limit: 10, windowMs: 60 * 60 * 1000 })
+    const emailRateLimit = checkRateLimit(`register-email:${normalizedEmail}`, { limit: 5, windowMs: 60 * 60 * 1000 })
+
+    if (!ipRateLimit.allowed || !emailRateLimit.allowed) {
+      return NextResponse.json(
+        { error: 'Too many signup attempts. Please try again later.' },
+        { status: 429 }
+      )
+    }
+
     const existing = await adminDb.query({
       users: {
         $: { where: { email: normalizedEmail } },
@@ -86,7 +112,7 @@ export async function POST(req: Request) {
       )
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10)
+    const hashedPassword = await bcrypt.hash(password, 12)
     const userId = id()
     const storeId = id()
     const nowDate = new Date()
@@ -100,6 +126,7 @@ export async function POST(req: Request) {
       emailVerified: false,
       verificationCode: null,
       verificationCodeExpiry: null,
+      tokenVersion: 1,
       createdAt: now,
     }
     storePayload = createDefaultStorePayload({

@@ -1,4 +1,4 @@
-import { checkoutPlanIds, getPlanLimits, type CheckoutPlanId, type PlanId } from '@/lib/plans'
+import { getPlanLimits, isPaidPlan as isPaidPlanId, type PlanId } from '@/lib/plans'
 
 const MS_PER_DAY = 24 * 60 * 60 * 1000
 const TRIAL_DAYS = 14
@@ -34,6 +34,11 @@ function parseDate(value?: string | Date | null) {
   return Number.isFinite(date.getTime()) ? date : null
 }
 
+function normalizePlan(value?: string | null): PlanId {
+  if (isPaidPlanId(value)) return value
+  return 'free_trial'
+}
+
 function toIsoDate(value?: string | Date | null) {
   return parseDate(value)?.toISOString() ?? null
 }
@@ -42,13 +47,8 @@ function normalizeStatus(value?: string | null) {
   return String(value || '').trim().toLowerCase()
 }
 
-function normalizePlan(value?: string | null): PlanId {
-  if (checkoutPlanIds.includes(value as CheckoutPlanId)) return value as CheckoutPlanId
-  return 'free_trial'
-}
-
-function isPaidPlan(value?: string | null): value is CheckoutPlanId {
-  return checkoutPlanIds.includes(value as CheckoutPlanId)
+function isPaidPlan(value?: string | null): value is PlanId {
+  return isPaidPlanId(value)
 }
 
 function isFreeTrialPlan(value?: string | null) {

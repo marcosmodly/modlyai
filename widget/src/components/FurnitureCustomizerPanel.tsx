@@ -9,6 +9,7 @@ import {
   Redo2,
   Sparkles,
   Undo2,
+  X,
 } from 'lucide-react';
 import {
   getMaterialDescription,
@@ -67,6 +68,10 @@ interface FurnitureCustomizerPanelProps {
   onShareLink: () => void;
   onExportPdf: () => void;
   onViewFullRoomAnalysis?: () => void;
+  onSuggestionsError?: (message: string) => void;
+  onRequestQuote?: () => void;
+  showRequestQuote?: boolean;
+  primaryColor?: string;
 }
 
 interface PersistedRoomPlannerState {
@@ -286,6 +291,10 @@ export default function FurnitureCustomizerPanel({
   onShareLink,
   onExportPdf,
   onViewFullRoomAnalysis,
+  onSuggestionsError,
+  onRequestQuote,
+  showRequestQuote,
+  primaryColor,
 }: FurnitureCustomizerPanelProps) {
   const selectedProduct = useMemo(
     () => products.find((p) => p.id === draft.productId) ?? products[0],
@@ -334,6 +343,7 @@ export default function FurnitureCustomizerPanel({
     useState<RoomAnalysisResponse | null>(null);
   const [aiSuggestions, setAiSuggestions] = useState<CustomizerAiSuggestions | null>(null);
   const [analyzing, setAnalyzing] = useState(false);
+  const [aiSuggestionsOpen, setAiSuggestionsOpen] = useState(false);
 
   const roomPlannerSuggestions = useMemo(() => {
     if (!roomPlannerRecommendations) return null;
@@ -422,8 +432,10 @@ export default function FurnitureCustomizerPanel({
       });
       const data = await res.json();
       if (data.success) setAiSuggestions(data.suggestions);
+      else onSuggestionsError?.("Couldn't get suggestions. Try again.");
     } catch (error) {
       console.error('Analysis error:', error);
+      onSuggestionsError?.("Couldn't get suggestions. Try again.");
     } finally {
       setAnalyzing(false);
     }
@@ -454,11 +466,27 @@ export default function FurnitureCustomizerPanel({
   };
 
   return (
+    <>
     <section className="py-12 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4">
-        <div className="grid items-start gap-6 lg:grid-cols-12">
-          <div className="self-start lg:col-span-3">
-            <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-lg sticky top-6">
+        <button
+          type="button"
+          onClick={() => setAiSuggestionsOpen((prev) => !prev)}
+          aria-pressed={aiSuggestionsOpen}
+          className={[
+            'mb-6 inline-flex items-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold transition border',
+            aiSuggestionsOpen
+              ? 'border-blue-200 bg-blue-50 text-blue-700'
+              : 'border-gray-200 bg-white text-gray-700 shadow-sm hover:bg-gray-50',
+          ].join(' ')}
+        >
+          <Sparkles className="w-4 h-4" />
+          AI Suggestions
+        </button>
+
+        <div className="grid items-stretch gap-6 lg:grid-cols-12">
+          <div className="self-stretch lg:col-start-1 lg:col-span-3 lg:row-start-1">
+            <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-lg sticky top-6 h-full flex flex-col">
               <div className="flex items-start justify-between gap-4 mb-4">
                 <div>
                   <h3 className="text-lg font-bold text-gray-900 mb-4">Select Product</h3>
@@ -597,8 +625,8 @@ export default function FurnitureCustomizerPanel({
             </div>
           </div>
 
-          <div className="self-start lg:col-span-4">
-            <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-lg">
+          <div className="self-stretch lg:col-start-4 lg:col-span-4 lg:row-start-1">
+            <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-lg h-full">
               <h3 className="text-lg font-bold text-gray-900 mb-6 flex items-center gap-2">
                 <Palette className="w-5 h-5 text-purple-600" />
                 Customization Options
@@ -911,21 +939,11 @@ export default function FurnitureCustomizerPanel({
                   This product does not have predefined customization options. Tell us what you want and we&apos;ll send it as a quote request.
                 </div>
               )}
-
-              <button
-                type="button"
-                onClick={onApply}
-                disabled={isApplying || (validationErrors?.length ?? 0) > 0}
-                className="w-full py-4 bg-purple-600 text-white rounded-full font-semibold hover:bg-purple-700 transition shadow-lg shadow-purple-600/30 flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
-              >
-                <Sparkles className="w-5 h-5" />
-                {isApplying ? 'Applying...' : 'Apply Customizations'}
-              </button>
             </div>
           </div>
 
-          <div className="self-start lg:col-span-5">
-            <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-lg sticky top-6">
+          <div className="self-stretch lg:col-start-8 lg:col-span-5 lg:row-start-1">
+            <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-lg sticky top-6 h-full flex flex-col">
               {/* Additional Details */}
               <div className="bg-white rounded-xl border border-gray-200 p-5 mb-4">
                 <h3 className="font-semibold text-gray-900 mb-1">
@@ -1004,170 +1022,230 @@ export default function FurnitureCustomizerPanel({
                 </div>
               </div>
 
-              {/* Analyze Button */}
-              {roomPlannerPhoto && (
+              <button
+                type="button"
+                onClick={onApply}
+                disabled={isApplying || (validationErrors?.length ?? 0) > 0}
+                className="w-full py-4 bg-purple-600 text-white rounded-full font-semibold hover:bg-purple-700 transition shadow-lg shadow-purple-600/30 flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
+              >
+                <Sparkles className="w-5 h-5" />
+                {isApplying ? 'Applying...' : 'Apply Customizations'}
+              </button>
+
+              <div className="mt-3 grid grid-cols-2 gap-3">
+                {showRequestQuote && (
+                  <button
+                    type="button"
+                    onClick={onRequestQuote}
+                    disabled={isApplying}
+                    className="min-h-12 rounded-lg px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:opacity-95 disabled:opacity-60"
+                    style={{ backgroundColor: primaryColor ?? '#2563eb' }}
+                  >
+                    Add to Quote
+                  </button>
+                )}
                 <button
-                  onClick={handleAnalyzeWithRoomPlannerPhoto}
-                  disabled={analyzing}
-                  className="w-full bg-blue-600 text-white py-3 rounded-full font-medium hover:bg-blue-700 disabled:opacity-50 flex items-center justify-center gap-2 mb-4"
+                  type="button"
+                  onClick={handleViewFullRoomAnalysis}
+                  className={[
+                    'min-h-12 rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm font-semibold text-gray-800 transition hover:bg-gray-50',
+                    showRequestQuote ? '' : 'col-span-2',
+                  ].join(' ')}
                 >
-                  {analyzing ? (
-                    <>
-                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white" />
-                      Analyzing your room...
-                    </>
-                  ) : (
-                    <>
-                      <Sparkles className="w-4 h-4" />
-                      Get AI Suggestions
-                    </>
-                  )}
+                  View in Room Planner
                 </button>
-              )}
-
-              {/* AI Results */}
-              <div className="bg-white rounded-xl border border-gray-200 p-4 max-h-[380px] overflow-y-auto">
-                <h3 className="font-semibold text-gray-900 mb-3">
-                  AI Suggestions
-                </h3>
-
-                {/* No room planner photo */}
-                {!roomPlannerPhoto && !analyzing && (
-                  <div className="text-center py-8">
-                    <div className="w-10 h-10 mx-auto mb-2 rounded-full bg-gray-100 flex items-center justify-center">
-                      <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 12l2-2m0 0l7-7 7 7m-9-9v9m9 9v-9m0 9H5" />
-                      </svg>
-                    </div>
-                    <p className="text-sm text-gray-500">
-                      Use Room Planner first to upload a room photo and get personalized suggestions
-                    </p>
-                  </div>
-                )}
-
-                {/* Loading */}
-                {analyzing && (
-                  <div className="flex flex-col items-center py-8 gap-3">
-                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600" />
-                    <p className="text-sm text-gray-500">
-                      Analyzing your room and requirements...
-                    </p>
-                  </div>
-                )}
-
-                {/* Results */}
-                {aiSuggestions && !analyzing && (
-                  <div className="space-y-3">
-
-                    {/* Fit Score */}
-                    <div className="bg-blue-50 rounded-lg p-3">
-                      <div className="flex items-center justify-between mb-1">
-                        <span className="text-sm font-medium text-blue-900">
-                          Room Fit Score
-                        </span>
-                        <span className="text-lg font-bold text-blue-600">
-                          {aiSuggestions.fitScore}%
-                        </span>
-                      </div>
-                      <div className="w-full bg-blue-200 rounded-full h-2">
-                        <div
-                          className="bg-blue-600 h-2 rounded-full transition-all"
-                          style={{ width: `${aiSuggestions.fitScore}%` }}
-                        />
-                      </div>
-                      <p className="text-xs text-blue-700 mt-2">
-                        {getShortReason(aiSuggestions.fitReason)}
-                      </p>
-                    </div>
-
-                    {/* Room Style */}
-                    <div className="flex flex-wrap items-center gap-2">
-                      <span className="text-xs text-gray-500">
-                        Room style detected:
-                      </span>
-                      <span className="text-xs font-medium bg-gray-100 text-gray-700 px-2 py-1 rounded-full">
-                        {aiSuggestions.roomStyle}
-                      </span>
-                    </div>
-
-                    {/* Colors detected */}
-                    <div>
-                      <p className="text-xs text-gray-500 mb-1.5">Room colors:</p>
-                      <div className="flex flex-wrap gap-1.5">
-                        {aiSuggestions.dominantColors?.map(
-                          (color: string, i: number) => (
-                            <span key={i}
-                              className="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded-full">
-                              {color}
-                            </span>
-                          )
-                        )}
-                      </div>
-                    </div>
-
-                    {/* Recommendations */}
-                    <div className="space-y-2">
-                      {compactSuggestions.map(
-                        (rec, i) => (
-                          <div key={i}
-                            className="border border-gray-100 rounded-lg p-2.5">
-                            <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${
-                              rec.type === 'color'
-                                ? 'bg-purple-100 text-purple-700'
-                                : rec.type === 'material'
-                                ? 'bg-green-100 text-green-700'
-                                : rec.type === 'customization'
-                                ? 'bg-blue-100 text-blue-700'
-                                : 'bg-orange-100 text-orange-700'
-                            }`}>
-                              {rec.type}
-                            </span>
-                            <p className="text-sm font-medium text-gray-900 mt-1.5">
-                              {rec.suggestion}
-                            </p>
-                            <p className="text-xs text-gray-500 mt-0.5">
-                              {getShortReason(rec.reason)}
-                            </p>
-                          </div>
-                        )
-                      )}
-                    </div>
-
-                    {hasMoreSuggestions && (
-                      <button
-                        type="button"
-                        onClick={handleViewFullRoomAnalysis}
-                        className="w-full rounded-lg border border-blue-200 bg-blue-50 px-3 py-2 text-sm font-medium text-blue-700 transition hover:bg-blue-100"
-                      >
-                        View full room analysis
-                      </button>
-                    )}
-
-                    {/* Warning */}
-                    {aiSuggestions.warning && (
-                      <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-2.5">
-                        <p className="text-xs text-yellow-800">
-                          ⚠️ {aiSuggestions.warning}
-                        </p>
-                      </div>
-                    )}
-
-                    {/* Re-analyze button */}
-                    {roomPlannerPhoto && (
-                      <button
-                        onClick={handleAnalyzeWithRoomPlannerPhoto}
-                        className="w-full text-sm text-blue-600 hover:underline text-center mt-2"
-                      >
-                        Re-analyze with updated details
-                      </button>
-                    )}
-                  </div>
-                )}
               </div>
             </div>
           </div>
         </div>
       </div>
     </section>
+
+    {aiSuggestionsOpen && (
+      <>
+        <div
+          className="fixed inset-0 z-40 bg-black/30"
+          onClick={() => setAiSuggestionsOpen(false)}
+          aria-hidden="true"
+        />
+        <div className="fixed inset-x-0 top-[60px] z-50 mx-auto w-full max-w-md px-4 modly-panel-fade">
+          <div className="max-h-[75vh] overflow-y-auto rounded-2xl border border-gray-200 bg-white p-5 shadow-2xl">
+            <div className="mb-3 flex items-center justify-between">
+              <h3 className="font-semibold text-gray-900">AI Suggestions</h3>
+              <button
+                type="button"
+                onClick={() => setAiSuggestionsOpen(false)}
+                className="rounded-full p-1 text-gray-400 transition hover:bg-gray-100 hover:text-gray-600"
+                aria-label="Close AI Suggestions"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            {/* Analyze Button */}
+            {roomPlannerPhoto && (
+              <button
+                onClick={handleAnalyzeWithRoomPlannerPhoto}
+                disabled={analyzing}
+                className="w-full bg-blue-600 text-white py-3 rounded-full font-medium hover:bg-blue-700 disabled:opacity-50 flex items-center justify-center gap-2 mb-4"
+              >
+                {analyzing ? (
+                  <>
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white" />
+                    Analyzing your room...
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="w-4 h-4" />
+                    Get AI Suggestions
+                  </>
+                )}
+              </button>
+            )}
+
+            {/* No room planner photo */}
+            {!roomPlannerPhoto && !analyzing && (
+              <div className="text-center py-8">
+                <div className="w-10 h-10 mx-auto mb-2 rounded-full bg-gray-100 flex items-center justify-center">
+                  <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 12l2-2m0 0l7-7 7 7m-9-9v9m9 9v-9m0 9H5" />
+                  </svg>
+                </div>
+                <p className="text-sm text-gray-500">
+                  Use Room Planner first to upload a room photo and get personalized suggestions
+                </p>
+                <button
+                  type="button"
+                  onClick={handleViewFullRoomAnalysis}
+                  className="mt-3 rounded-full border border-blue-200 bg-blue-50 px-4 py-2 text-xs font-semibold text-blue-700 transition hover:bg-blue-100"
+                >
+                  Go to Room Planner
+                </button>
+              </div>
+            )}
+
+            {/* Loading */}
+            {analyzing && (
+              <div className="flex flex-col items-center py-8 gap-3">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600" />
+                <p className="text-sm text-gray-500">
+                  Analyzing your room and requirements...
+                </p>
+              </div>
+            )}
+
+            {/* Results */}
+            {aiSuggestions && !analyzing && (
+              <div className="space-y-3">
+
+                {/* Fit Score */}
+                <div className="bg-blue-50 rounded-lg p-3">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-sm font-medium text-blue-900">
+                      Room Fit Score
+                    </span>
+                    <span className="text-lg font-bold text-blue-600">
+                      {aiSuggestions.fitScore}%
+                    </span>
+                  </div>
+                  <div className="w-full bg-blue-200 rounded-full h-2">
+                    <div
+                      className="bg-blue-600 h-2 rounded-full transition-all"
+                      style={{ width: `${aiSuggestions.fitScore}%` }}
+                    />
+                  </div>
+                  <p className="text-xs text-blue-700 mt-2">
+                    {getShortReason(aiSuggestions.fitReason)}
+                  </p>
+                </div>
+
+                {/* Room Style */}
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="text-xs text-gray-500">
+                    Room style detected:
+                  </span>
+                  <span className="text-xs font-medium bg-gray-100 text-gray-700 px-2 py-1 rounded-full">
+                    {aiSuggestions.roomStyle}
+                  </span>
+                </div>
+
+                {/* Colors detected */}
+                <div>
+                  <p className="text-xs text-gray-500 mb-1.5">Room colors:</p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {aiSuggestions.dominantColors?.map(
+                      (color: string, i: number) => (
+                        <span key={i}
+                          className="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded-full">
+                          {color}
+                        </span>
+                      )
+                    )}
+                  </div>
+                </div>
+
+                {/* Recommendations */}
+                <div className="space-y-2">
+                  {compactSuggestions.map(
+                    (rec, i) => (
+                      <div key={i}
+                        className="border border-gray-100 rounded-lg p-2.5">
+                        <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${
+                          rec.type === 'color'
+                            ? 'bg-purple-100 text-purple-700'
+                            : rec.type === 'material'
+                            ? 'bg-green-100 text-green-700'
+                            : rec.type === 'customization'
+                            ? 'bg-blue-100 text-blue-700'
+                            : 'bg-orange-100 text-orange-700'
+                        }`}>
+                          {rec.type}
+                        </span>
+                        <p className="text-sm font-medium text-gray-900 mt-1.5">
+                          {rec.suggestion}
+                        </p>
+                        <p className="text-xs text-gray-500 mt-0.5">
+                          {getShortReason(rec.reason)}
+                        </p>
+                      </div>
+                    )
+                  )}
+                </div>
+
+                {hasMoreSuggestions && (
+                  <button
+                    type="button"
+                    onClick={handleViewFullRoomAnalysis}
+                    className="w-full rounded-lg border border-blue-200 bg-blue-50 px-3 py-2 text-sm font-medium text-blue-700 transition hover:bg-blue-100"
+                  >
+                    View full room analysis
+                  </button>
+                )}
+
+                {/* Warning */}
+                {aiSuggestions.warning && (
+                  <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-2.5">
+                    <p className="text-xs text-yellow-800">
+                      ⚠️ {aiSuggestions.warning}
+                    </p>
+                  </div>
+                )}
+
+                {/* Re-analyze button */}
+                {roomPlannerPhoto && (
+                  <button
+                    onClick={handleAnalyzeWithRoomPlannerPhoto}
+                    className="w-full text-sm text-blue-600 hover:underline text-center mt-2"
+                  >
+                    Re-analyze with updated details
+                  </button>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+      </>
+    )}
+    </>
   );
 }

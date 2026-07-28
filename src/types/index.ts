@@ -82,6 +82,12 @@ export interface Recommendation {
   };
   reasoning: string;
   matchScore: number;
+  matchBreakdown?: {
+    sizeFit?: number;
+    colorMaterialHarmony?: number;
+    styleCompatibility?: number;
+    existingFurnitureComplement?: number;
+  };
 }
 
 export interface CustomizationConfig {

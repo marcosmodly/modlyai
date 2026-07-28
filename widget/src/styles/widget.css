@@ -272,15 +272,71 @@
 }
 
 @media (max-width: 640px) {
-  .modly-widget-root .modly-widget-button {
-    bottom: 16px !important;
+  /* Text mode: stretch the actual positioned wrapper edge-to-edge (the button
+     itself is a flex child, not position:fixed, so top/left/right/bottom have
+     to apply here, not on the button element). */
+  .modly-widget-root .modly-widget-shell--text {
+    bottom: calc(16px + env(safe-area-inset-bottom, 0px)) !important;
     left: 16px !important;
     right: 16px !important;
-    width: calc(100vw - 32px);
   }
 
-  .modly-widget-root .modly-widget-button.top-6 {
+  .modly-widget-root .modly-widget-shell--text.top-6 {
     top: 16px !important;
     bottom: auto !important;
+  }
+
+  .modly-widget-root .modly-widget-shell--text .modly-widget-button--text {
+    width: 100%;
+  }
+
+  /* Logo mode: keep the shell compact and right-anchored, just respect safe-area inset. */
+  .modly-widget-root .modly-widget-shell--logo {
+    bottom: calc(16px + env(safe-area-inset-bottom, 0px)) !important;
+    right: 16px !important;
+  }
+
+  /* Open widget goes full-screen on mobile instead of a centered floating card. */
+  .modly-widget-root .modly-widget-modal-backdrop {
+    padding: 0 !important;
+  }
+
+  .modly-widget-root .modly-widget-modal-panel {
+    width: 100vw !important;
+    max-width: 100vw !important;
+    height: 100dvh !important;
+    max-height: 100dvh !important;
+    border-radius: 0 !important;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  /* Header: let the tab row take priority over the title when space is tight. */
+  .modly-widget-root .modly-widget-header {
+    gap: 10px;
+    padding-left: 14px;
+    padding-right: 52px;
+  }
+
+  .modly-widget-root .modly-widget-title {
+    max-width: 34vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .modly-widget-root .modly-widget-tabs {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .modly-widget-root .modly-widget-tabs::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@media (max-width: 360px) {
+  /* On the narrowest phones, drop the title entirely and let the tabs have the row. */
+  .modly-widget-root .modly-widget-title {
+    display: none;
   }
 }

@@ -47,6 +47,10 @@ export type PlanId = keyof typeof plans
 export type CheckoutPlanId = 'starter' | 'growth'
 
 export const checkoutPlanIds = ['starter', 'growth'] as const
+// Plans that grant paid access even though they don't go through self-serve
+// Paddle checkout - currently just 'scale', for manually-negotiated custom
+// deals granted via the admin tool (see /api/admin/grant-custom-access).
+const paidPlanIds = ['starter', 'growth', 'scale'] as const
 const MS_PER_DAY = 24 * 60 * 60 * 1000
 const PAYMENT_GRACE_PERIOD_DAYS = 7
 const PAYMENT_GRACE_PERIOD_MS = PAYMENT_GRACE_PERIOD_DAYS * MS_PER_DAY
@@ -66,6 +70,13 @@ type BillingAccessStoreLike = {
 
 export function isCheckoutPlan(plan: unknown): plan is CheckoutPlanId {
   return plan === 'starter' || plan === 'growth'
+}
+
+// Broader than isCheckoutPlan: includes 'scale' (manually-granted custom
+// deals), which never goes through Paddle checkout but should still count as
+// a real paid plan everywhere else (access checks, limits, billing reminders).
+export function isPaidPlan(plan: unknown): plan is PlanId {
+  return typeof plan === 'string' && (paidPlanIds as readonly string[]).includes(plan)
 }
 
 export function getPaddlePriceId(plan: CheckoutPlanId) {
@@ -95,7 +106,7 @@ export function isCurrentPeriodFuture(currentPeriodEnd?: string | Date | null, n
 }
 
 export function hasPaidPlanAccess(store?: BillingAccessStoreLike | null, now = Date.now()) {
-  if (!store || !isCheckoutPlan(store.subscriptionPlan)) return false
+  if (!store || !isPaidPlan(store.subscriptionPlan)) return false
 
   const status = store.subscriptionStatus
   const endTime = periodEndTime(store.currentPeriodEnd)

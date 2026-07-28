@@ -8,6 +8,7 @@ declare module 'next-auth' {
       storeId?: string
       storeName?: string
       apiKey?: string
+      sessionId?: string
     }
   }
 
@@ -17,6 +18,10 @@ declare module 'next-auth' {
     storeId?: string
     storeName?: string
     apiKey?: string
+    tokenVersion?: number
+    sessionId?: string
+    userAgent?: string
+    ip?: string
   }
 }
 
@@ -27,5 +32,7 @@ declare module 'next-auth/jwt' {
     storeId?: string
     storeName?: string
     apiKey?: string
+    tokenVersion?: number
+    sessionId?: string
   }
 }

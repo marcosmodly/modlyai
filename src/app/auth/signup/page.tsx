@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { plans } from '@/lib/plans'
+import PasswordInput from '@/components/PasswordInput'
 
 export default function SignUpPage() {
   const router = useRouter()
@@ -14,10 +15,6 @@ export default function SignUpPage() {
     password: '',
     storeName: '',
   })
-
-  const getSignupPasswordKey = (email: string) => {
-    return `modlyai:signup-password:${email.trim().toLowerCase()}`
-  }
 
   const getErrorMessage = (data: unknown) => {
     if (!data || typeof data !== 'object') {
@@ -45,6 +42,12 @@ export default function SignUpPage() {
 
   const handleSubmit = async () => {
     setError('')
+
+    if (form.password.length < 8) {
+      setError('Password must be at least 8 characters.')
+      return
+    }
+
     setIsSubmitting(true)
 
     try {
@@ -64,19 +67,14 @@ export default function SignUpPage() {
 
       if (res.ok) {
         const email = form.email.trim().toLowerCase()
-        const code = String(Math.floor(100000 + Math.random() * 900000))
-        const expiry = Date.now() + 10 * 60 * 1000
-
-        window.sessionStorage.setItem(getSignupPasswordKey(email), form.password)
 
         const verificationRes = await fetch('/api/auth/send-verification', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, code, expiry }),
+          body: JSON.stringify({ email }),
         })
 
         if (!verificationRes.ok) {
-          window.sessionStorage.removeItem(getSignupPasswordKey(email))
           setError('Account created, but we could not send the verification email. Please try again.')
           setIsSubmitting(false)
           return
@@ -159,13 +157,12 @@ export default function SignUpPage() {
             <label className="mb-1 block text-sm font-medium text-gray-700">
               Password
             </label>
-            <input
-              type="password"
+            <PasswordInput
+              value={form.password}
+              onChange={(value) => setForm({ ...form, password: value })}
               placeholder="Create a password"
-              onChange={(event) =>
-                setForm({ ...form, password: event.target.value })
-              }
-              className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              autoComplete="new-password"
+              minLength={8}
             />
           </div>
 

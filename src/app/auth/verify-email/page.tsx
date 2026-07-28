@@ -1,12 +1,7 @@
 'use client'
 
-import { FormEvent, Suspense, useEffect, useMemo, useState } from 'react'
-import { signIn } from 'next-auth/react'
+import { FormEvent, Suspense, useMemo, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
-
-function getSignupPasswordKey(email: string) {
-  return `modlyai:signup-password:${email}`
-}
 
 function VerifyEmailForm() {
   const router = useRouter()
@@ -18,14 +13,8 @@ function VerifyEmailForm() {
   const [code, setCode] = useState('')
   const [error, setError] = useState('')
   const [message, setMessage] = useState('')
-  const [password, setPassword] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isResending, setIsResending] = useState(false)
-
-  useEffect(() => {
-    if (!email) return
-    setPassword(window.sessionStorage.getItem(getSignupPasswordKey(email)) || '')
-  }, [email])
 
   const requestVerificationCode = async () => {
     setError('')
@@ -33,11 +22,10 @@ function VerifyEmailForm() {
     setIsResending(true)
 
     try {
-      const nextCode = String(Math.floor(100000 + Math.random() * 900000))
       const res = await fetch('/api/auth/send-verification', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, code: nextCode }),
+        body: JSON.stringify({ email }),
       })
 
       if (!res.ok) {
@@ -74,22 +62,7 @@ function VerifyEmailForm() {
         return
       }
 
-      if (password) {
-        const signInResult = await signIn('credentials', {
-          email,
-          password,
-          redirect: false,
-        })
-
-        if (signInResult?.ok) {
-          window.sessionStorage.removeItem(getSignupPasswordKey(email))
-          router.push('/dashboard')
-          router.refresh()
-          return
-        }
-      }
-
-      router.push('/auth/signin')
+      router.push('/auth/signin?verified=1')
     } catch {
       setError('Invalid or expired code')
     } finally {

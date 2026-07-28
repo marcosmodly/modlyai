@@ -1,9 +1,12 @@
 'use client'
 
 import { Save } from 'lucide-react'
+import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import type React from 'react'
 import { useState } from 'react'
+import ImageUploadField from '@/components/ImageUploadField'
+import { notifyProfileUpdated } from '@/lib/use-profile-summary'
 
 const DEFAULT_WIDGET_TITLE = 'ModlyAI'
 const DEFAULT_PRIMARY_COLOR = '#3B82F6'
@@ -125,6 +128,7 @@ export default function WhiteLabelSettingsForm({
   store: SettingsStore
   fallbackStoreName?: string
 }) {
+  const { update } = useSession()
   const [form, setForm] = useState<FormState>(() => buildInitialState(store, fallbackStoreName))
   const [status, setStatus] = useState<'idle' | 'saving' | 'success' | 'error'>('idle')
   const [message, setMessage] = useState('')
@@ -233,6 +237,14 @@ export default function WhiteLabelSettingsForm({
 
       setStatus('success')
       setMessage('Settings saved.')
+
+      // Sidebar/Header pull storeName from the session, so refresh it now -
+      // otherwise it would only pick up the change after a full re-login (the
+      // same staleness bug we fixed for the account name field). The logo
+      // itself is fetched separately (see use-profile-summary.ts) since it
+      // can be too large to fit in the session cookie.
+      await update()
+      notifyProfileUpdated()
     } catch (error) {
       setStatus('error')
       setMessage(error instanceof Error ? error.message : 'Unable to save settings')
@@ -389,16 +401,20 @@ export default function WhiteLabelSettingsForm({
             </Field>
 
             {form.widgetButtonStyle === 'logo' && (
-              <Field label="Logo image URL">
-                <div className="flex items-center gap-3">
-                  {form.widgetLogoUrl ? (
-                    <img
-                      src={form.widgetLogoUrl}
-                      alt="Logo preview"
-                      className="h-12 w-12 shrink-0 rounded-full border border-stone-200 bg-white object-contain p-0.5"
-                      onError={() => setLogoWarning('Could not load this image. Double-check the URL is correct and publicly accessible.')}
-                    />
-                  ) : null}
+              <Field label="Logo image">
+                <ImageUploadField
+                  value={form.widgetLogoUrl}
+                  onChange={(url) => {
+                    updateField('widgetLogoUrl', url)
+                    setLogoWarning('')
+                    if (url) checkLogoImage(url)
+                  }}
+                  shape="square"
+                  size={64}
+                  label="Drag and drop your logo, or click to browse"
+                />
+                <p className="mt-3 text-xs font-medium text-stone-500">Or paste a link instead</p>
+                <div className="mt-1 flex items-center gap-3">
                   <input
                     type="url"
                     value={form.widgetLogoUrl}
@@ -409,8 +425,8 @@ export default function WhiteLabelSettingsForm({
                   />
                 </div>
                 <p className="mt-2 text-xs text-stone-500">
-                  Paste a link to a hosted PNG or JPEG. If this is left empty or fails to load, the widget will fall
-                  back to the text button automatically.
+                  Uploaded images are stored directly - up to 2MB. If this is left empty or fails to load, the
+                  widget will fall back to the text button automatically.
                 </p>
                 {logoChecking && <p className="mt-2 text-xs text-stone-400">Checking image...</p>}
                 {logoWarning && !logoChecking && (

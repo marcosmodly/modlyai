@@ -1,5 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Check, Info, Palette } from 'lucide-react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   CustomizationConfig,
   CustomizedFurnitureItem,
@@ -30,6 +29,7 @@ import FurnitureCustomizerPanel, {
   CustomizerDraft,
   DraftPriceBreakdown,
 } from './FurnitureCustomizerPanel';
+import { ActionToast, ToastState } from './ActionToast';
 import { FinalizeQuoteModal } from './FinalizeQuoteModal';
 import { QuoteRequestForm } from './QuoteRequestForm';
 
@@ -237,8 +237,9 @@ export function FurnitureCustomizerWidget({
   const [, setCustomizedItem] = useState<any>(null);
   const [savedItem, setSavedItem] = useState<CustomizedFurnitureItem | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [saveNotification, setSaveNotification] = useState<string | null>(null);
+  const [toast, setToast] = useState<ToastState | null>(null);
+  const toastTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const toastIdRef = useRef(0);
   const [lastConfig, setLastConfig] = useState<CustomizationConfig | null>(null);
   const [baseProduct, setBaseProduct] = useState<Product>(defaultProduct);
   const [draft, setDraft] = useState<CustomizerDraft>(() => createDraftForProduct(defaultProduct));
@@ -247,7 +248,38 @@ export function FurnitureCustomizerWidget({
 
   const [showFinalizeModal, setShowFinalizeModal] = useState(false);
   const [showQuoteForm, setShowQuoteForm] = useState(false);
-  const [quoteSuccess, setQuoteSuccess] = useState(false);
+
+  const dismissToast = useCallback(() => {
+    if (toastTimeoutRef.current) {
+      clearTimeout(toastTimeoutRef.current);
+      toastTimeoutRef.current = null;
+    }
+    setToast(null);
+  }, []);
+
+  const showToast = useCallback((type: ToastState['type'], message: string) => {
+    if (toastTimeoutRef.current) {
+      clearTimeout(toastTimeoutRef.current);
+      toastTimeoutRef.current = null;
+    }
+    toastIdRef.current += 1;
+    setToast({ id: toastIdRef.current, type, message });
+
+    if (type !== 'loading') {
+      toastTimeoutRef.current = setTimeout(() => {
+        setToast(null);
+        toastTimeoutRef.current = null;
+      }, 5500);
+    }
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (toastTimeoutRef.current) {
+        clearTimeout(toastTimeoutRef.current);
+      }
+    };
+  }, []);
 
   const canUndo = historyIndex > 0;
   const canRedo = historyIndex < history.length - 1;
@@ -258,6 +290,7 @@ export function FurnitureCustomizerWidget({
       setSavedItem(null);
       setCustomizedItem(null);
       setLastConfig(null);
+      dismissToast();
       setHistory((prev) => {
         const sliced = prev.slice(0, historyIndex + 1);
         const nextHistory = [...sliced, next];
@@ -265,7 +298,7 @@ export function FurnitureCustomizerWidget({
       });
       setHistoryIndex((prev) => Math.min(prev + 1, 59));
     },
-    [historyIndex]
+    [dismissToast, historyIndex]
   );
 
   const applySelectedProduct = useCallback(
@@ -277,8 +310,7 @@ export function FurnitureCustomizerWidget({
       setHistoryIndex(0);
       setCustomizedItem(null);
       setSavedItem(null);
-      setError(null);
-      setSaveNotification(null);
+      dismissToast();
       setLastConfig(null);
       onSelectedProductChange?.(product);
 
@@ -286,7 +318,7 @@ export function FurnitureCustomizerWidget({
         sessionStorage.removeItem('modly-customize-item');
       }
     },
-    [onSelectedProductChange]
+    [dismissToast, onSelectedProductChange]
   );
 
   useEffect(() => {
@@ -537,13 +569,12 @@ export function FurnitureCustomizerWidget({
           pricingMode: price.quoteRequired ? 'quote_required' : 'estimated',
         },
       });
-      setSaveNotification('Configuration saved!');
-      setTimeout(() => setSaveNotification(null), 2500);
+      showToast('success', 'Configuration saved');
     } catch (saveError) {
       console.error('Failed to save configuration:', saveError);
-      setError('Failed to save configuration.');
+      showToast('error', "Couldn't save. Try again.");
     }
-  }, [analyticsContext, configStorageKey, draft, price, selectedProduct]);
+  }, [analyticsContext, configStorageKey, draft, price, selectedProduct, showToast]);
 
   const encodeSharePayload = useCallback((payload: unknown) => {
     const json = JSON.stringify(payload);
@@ -575,13 +606,12 @@ export function FurnitureCustomizerWidget({
         document.execCommand('copy');
         textarea.remove();
       }
-      setSaveNotification('Share link copied to clipboard!');
-      setTimeout(() => setSaveNotification(null), 2500);
+      showToast('success', 'Link copied to clipboard');
     } catch (copyError) {
       console.error('Failed to copy share link:', copyError);
-      setError('Failed to copy share link.');
+      showToast('error', "Couldn't copy link. Try again.");
     }
-  }, [shareLink]);
+  }, [shareLink, showToast]);
 
   const exportAsPdf = useCallback(() => {
     if (typeof window === 'undefined') return;
@@ -668,7 +698,6 @@ export function FurnitureCustomizerWidget({
       link.click();
       link.remove();
       window.setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
-      setError(null);
       trackWidgetEvent({
         ...analyticsContext,
         type: 'pdf_exported',
@@ -681,13 +710,12 @@ export function FurnitureCustomizerWidget({
           pricingMode: price.quoteRequired ? 'quote_required' : 'estimated',
         },
       });
-      setSaveNotification('Export started.');
-      setTimeout(() => setSaveNotification(null), 2500);
+      showToast('success', 'PDF download started');
     } catch (exportError) {
       console.error('Failed to export customization:', exportError);
-      setError('Could not export your customization. Please try again.');
+      showToast('error', "Couldn't export PDF. Try again.");
     }
-  }, [analyticsContext, draft, mergedConfig, price, savedItem?.id, selectedProduct]);
+  }, [analyticsContext, draft, mergedConfig, price, savedItem?.id, selectedProduct, showToast]);
 
   const handleNavigateToRoomPlanner = () => {
     if (onNavigateToRoomPlanner) {
@@ -854,13 +882,12 @@ export function FurnitureCustomizerWidget({
   const handleCustomize = useCallback(
     async (customizationConfig: CustomizationConfig) => {
       if (!selectedProduct?.id) {
-        setError('Please select a product first.');
+        showToast('error', 'Please select a product first.');
         return;
       }
 
       setIsLoading(true);
-      setError(null);
-      setSaveNotification(null);
+      showToast('loading', 'Applying your changes...');
       setLastConfig(customizationConfig);
 
       const immediatePreview = {
@@ -920,15 +947,14 @@ export function FurnitureCustomizerWidget({
 
         try {
           saveCustomizedFurnitureForCurrentDraft(mergedData);
-          setSaveNotification('Customized furniture saved automatically!');
-          setTimeout(() => setSaveNotification(null), 3000);
+          showToast('success', 'Applied — saved and ready to quote, export, or share');
         } catch (saveError) {
           console.error('Failed to auto-save:', saveError);
         }
       } catch (customizeError) {
         const errorMessage =
-          customizeError instanceof Error ? customizeError.message : 'An error occurred';
-        setError(errorMessage);
+          customizeError instanceof Error ? customizeError.message : "Couldn't apply changes. Try again.";
+        showToast('error', errorMessage);
         mergedConfig.onError?.(
           customizeError instanceof Error ? customizeError : new Error(errorMessage)
         );
@@ -941,13 +967,12 @@ export function FurnitureCustomizerWidget({
       mergedConfig,
       saveCustomizedFurnitureForCurrentDraft,
       selectedProduct,
+      showToast,
     ]
   );
 
   const handleApply = useCallback(() => {
-    setError(null);
     if (validationErrors.length > 0) {
-      setError(validationErrors[0] ?? 'Please review your customizations.');
       return;
     }
     handleCustomize(buildCustomizationConfig());
@@ -955,15 +980,13 @@ export function FurnitureCustomizerWidget({
 
   const handleFinalize = () => {
     if (!enabledActions.requestQuote) return;
-    setError(null);
-    setSaveNotification(null);
 
     if (!selectedProduct?.id) {
-      setError('Please customize an item first before requesting a quote.');
+      showToast('error', 'Please customize an item first before requesting a quote.');
       return;
     }
     if (validationErrors.length > 0) {
-      setError(validationErrors[0] ?? 'Please review your customizations.');
+      showToast('error', validationErrors[0] ?? 'Please review your customizations.');
       return;
     }
 
@@ -987,7 +1010,7 @@ export function FurnitureCustomizerWidget({
       setShowQuoteForm(true);
     } catch (saveError) {
       console.error('Failed to save customization before quote:', saveError);
-      setError('Could not prepare your customization for quote. Please try again.');
+      showToast('error', 'Could not prepare your customization for quote. Please try again.');
     }
   };
 
@@ -1012,13 +1035,7 @@ export function FurnitureCustomizerWidget({
   const handleQuoteSubmit = async (quoteRequest: QuoteRequest) => {
     try {
       const response = await apiClient.submitQuoteRequest(quoteRequest);
-      setQuoteSuccess(true);
-      setSaveNotification('Quote request sent. The store will follow up with pricing and next steps.');
-
-      setTimeout(() => {
-        setQuoteSuccess(false);
-        setSaveNotification(null);
-      }, 5000);
+      showToast('success', 'Quote sent — the store will follow up soon');
       return response;
     } catch (quoteError) {
       throw quoteError;
@@ -1028,56 +1045,6 @@ export function FurnitureCustomizerWidget({
   return (
     <WidgetProvider apiClient={apiClient} storage={storage} config={mergedConfig}>
       <div className="furniture-widget-customizer min-h-screen bg-white">
-        <section className="py-12 bg-gradient-to-br from-purple-600 to-purple-800 text-white">
-          <div className="max-w-7xl mx-auto px-4">
-            <div className="max-w-3xl">
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full mb-4">
-                <Palette className="w-4 h-4" />
-                <span className="text-sm font-medium">AI-Powered Customization</span>
-              </div>
-
-              <h1 className="text-5xl font-bold mb-4">Furniture Customizer</h1>
-              <p className="text-xl text-purple-100 mb-8">
-                Customize furniture colors, materials, and dimensions with AI assistance. See
-                changes in real-time and get instant feasibility feedback.
-              </p>
-
-              <div className="flex flex-wrap gap-4">
-                <div className="flex items-center gap-2 text-sm">
-                  <Check className="w-5 h-5 text-green-300" />
-                  <span>Real-time preview</span>
-                </div>
-                <div className="flex items-center gap-2 text-sm">
-                  <Check className="w-5 h-5 text-green-300" />
-                  <span>Factory-approved options</span>
-                </div>
-                <div className="flex items-center gap-2 text-sm">
-                  <Check className="w-5 h-5 text-green-300" />
-                  <span>Instant pricing</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <div className="max-w-7xl mx-auto px-4">
-          {saveNotification && (
-            <div className="mt-6 bg-emerald-50 border border-emerald-200 text-emerald-800 p-4 rounded-xl flex items-center gap-3">
-              <Check className="w-5 h-5" />
-              <span className="font-medium">{saveNotification}</span>
-            </div>
-          )}
-
-          {error && (
-            <div className="mt-6 bg-red-50 border border-red-200 text-red-700 p-4 rounded-xl">
-              <div className="flex items-start gap-2">
-                <Info className="w-5 h-5 mt-0.5" />
-                <div>{error}</div>
-              </div>
-            </div>
-          )}
-        </div>
-
         <FurnitureCustomizerPanel
           products={availableProducts}
           draft={draft}
@@ -1094,6 +1061,10 @@ export function FurnitureCustomizerWidget({
           onShareLink={copyShareLink}
           onExportPdf={exportAsPdf}
           onViewFullRoomAnalysis={handleNavigateToRoomPlanner}
+          onSuggestionsError={(message) => showToast('error', message)}
+          onRequestQuote={handleFinalize}
+          showRequestQuote={enabledActions.requestQuote}
+          primaryColor={primaryColor}
         />
 
         <section className="py-8 bg-stone-50/70 border-t border-stone-200">
@@ -1109,17 +1080,7 @@ export function FurnitureCustomizerWidget({
                 </p>
               </div>
 
-              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
-              {enabledActions.requestQuote && (
-                <button
-                  type="button"
-                  onClick={handleFinalize}
-                  className="min-h-12 rounded-lg px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:opacity-95 sm:col-span-2 lg:col-span-1"
-                  style={{ backgroundColor: primaryColor }}
-                >
-                  Add to Quote
-                </button>
-              )}
+              <div className="grid gap-3 sm:grid-cols-3">
               <button
                 type="button"
                 onClick={saveDraftConfig}
@@ -1141,13 +1102,6 @@ export function FurnitureCustomizerWidget({
               >
                 Export PDF
               </button>
-              <button
-                type="button"
-                onClick={handleNavigateToRoomPlanner}
-                className="min-h-12 rounded-lg border border-stone-300 bg-white px-5 py-3 text-sm font-semibold text-gray-800 transition hover:bg-stone-50"
-              >
-                View in Room Planner
-              </button>
               </div>
             </div>
           </div>
@@ -1168,22 +1122,7 @@ export function FurnitureCustomizerWidget({
         item={savedItem}
       />
 
-      {quoteSuccess && (
-        <div className="fixed bottom-6 right-6 bg-emerald-600 text-white px-6 py-4 rounded-xl shadow-2xl flex items-center gap-3 z-50 animate-slide-up">
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-            />
-          </svg>
-          <div>
-            <p className="font-semibold">Quote Request Submitted!</p>
-            <p className="text-sm text-white/90">We&apos;ll contact you soon with details.</p>
-          </div>
-        </div>
-      )}
+      <ActionToast toast={toast} onDismiss={dismissToast} />
     </WidgetProvider>
   );
 }

@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import { signOut, useSession } from 'next-auth/react';
 import { ArrowLeftIcon, BarChart3, CreditCard, Home, Package, Puzzle, Settings, LogOut } from 'lucide-react';
 import { db } from '@/lib/instantdb';
+import { useProfileSummary } from '@/lib/use-profile-summary';
 
 const navigation = [
   { name: 'Overview', href: '/dashboard', icon: Home },
@@ -42,6 +43,7 @@ export default function Sidebar() {
   const storeName = session?.user?.storeName || 'My Store';
   const userEmail = session?.user?.email || 'store@example.com';
   const storeInitial = storeName[0]?.toUpperCase() || 'M';
+  const { controlPanelAvatarUrl } = useProfileSummary();
   const storeId = session?.user?.storeId;
   const { data, isLoading } = db.useQuery(
     storeId
@@ -96,8 +98,12 @@ export default function Sidebar() {
         <div className="relative px-4 py-3">
           <p className="mb-1 text-xs uppercase tracking-wider text-gray-400">Control Panel</p>
           <div className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600 text-sm font-bold text-white">
-              {storeInitial}
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-blue-600 text-sm font-bold text-white">
+              {controlPanelAvatarUrl ? (
+                <img src={controlPanelAvatarUrl} alt="" className="h-full w-full object-cover" />
+              ) : (
+                storeInitial
+              )}
             </div>
             <div className="min-w-0">
               <p className="truncate text-sm font-bold text-gray-900">{storeName}</p>

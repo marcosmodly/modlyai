@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { signOut, useSession } from 'next-auth/react';
 import {
   Bell,
@@ -14,6 +14,8 @@ import {
   Search,
   Settings,
 } from 'lucide-react';
+import { formatRelativeTime } from '@/lib/format-session';
+import { useProfileSummary } from '@/lib/use-profile-summary';
 
 const navItems = [
   { name: 'Overview', href: '/dashboard' },
@@ -31,11 +33,33 @@ const titles: Record<string, string> = {
   '/dashboard/settings': 'Settings',
 };
 
+type NotificationRow = {
+  id: string;
+  type: string;
+  title: string;
+  message: string;
+  link?: string;
+  read: boolean;
+  createdAt: number;
+};
+
+async function safeJson(res: Response): Promise<{ error?: string; [key: string]: unknown }> {
+  try {
+    return await res.json();
+  } catch {
+    return { error: `Unexpected error (status ${res.status}). Please try again.` };
+  }
+}
+
 export default function Header() {
   const pathname = usePathname();
+  const router = useRouter();
   const { data: session } = useSession();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
+  const [notifications, setNotifications] = useState<NotificationRow[]>([]);
+  const [unreadCount, setUnreadCount] = useState(0);
+  const [loadingNotifications, setLoadingNotifications] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const notificationsRef = useRef<HTMLDivElement>(null);
   const currentTitle = titles[pathname] ?? 'Dashboard';
@@ -43,6 +67,57 @@ export default function Header() {
   const userInitial = userEmail[0]?.toUpperCase() ?? 'S';
   const userName = session?.user?.name || 'Store Owner';
   const storeName = session?.user?.storeName || 'My Store';
+  const { avatarUrl } = useProfileSummary();
+
+  const loadNotifications = () => {
+    setLoadingNotifications(true);
+    fetch('/api/notifications')
+      .then(safeJson)
+      .then((data) => {
+        if (data.error) throw new Error(String(data.error));
+        setNotifications((data.notifications as NotificationRow[]) || []);
+        setUnreadCount(Number(data.unreadCount) || 0);
+      })
+      .catch(() => {
+        // Fail quietly here - the bell just won't show anything new rather
+        // than surfacing an error banner for a non-critical feature.
+      })
+      .finally(() => setLoadingNotifications(false));
+  };
+
+  useEffect(() => {
+    if (!session?.user?.id) return;
+    loadNotifications();
+    // Light polling so the unread count stays roughly fresh without needing
+    // a websocket/live-query setup for this.
+    const interval = setInterval(loadNotifications, 60000);
+    return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [session?.user?.id]);
+
+  const handleNotificationClick = async (notification: NotificationRow) => {
+    if (!notification.read) {
+      setNotifications((prev) =>
+        prev.map((n) => (n.id === notification.id ? { ...n, read: true } : n))
+      );
+      setUnreadCount((count) => Math.max(0, count - 1));
+      fetch(`/api/notifications/${notification.id}/read`, { method: 'POST' }).catch(() => {});
+    }
+    setNotificationsOpen(false);
+    if (notification.link) {
+      router.push(notification.link);
+    }
+  };
+
+  const handleMarkAllRead = async () => {
+    setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
+    setUnreadCount(0);
+    try {
+      await fetch('/api/notifications/mark-all-read', { method: 'POST' });
+    } catch {
+      // best-effort - a stale unread count on failure isn't worth surfacing an error for
+    }
+  };
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -95,23 +170,74 @@ export default function Header() {
             <div className="relative hidden sm:block" ref={notificationsRef}>
               <button
                 type="button"
-                onClick={() => setNotificationsOpen((open) => !open)}
+                onClick={() => {
+                  setNotificationsOpen((open) => !open);
+                  if (!notificationsOpen) loadNotifications();
+                }}
                 className="relative flex h-11 w-11 items-center justify-center rounded-2xl border border-stone-200 bg-white text-stone-600 shadow-sm transition hover:border-blue-200 hover:text-blue-700"
                 aria-label="Open notifications"
                 aria-expanded={notificationsOpen}
                 aria-haspopup="dialog"
               >
                 <Bell className="h-5 w-5" />
-                <span className="absolute right-3 top-3 h-2.5 w-2.5 rounded-full bg-amber-500" />
+                {unreadCount > 0 && (
+                  <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-bold text-white">
+                    {unreadCount > 9 ? '9+' : unreadCount}
+                  </span>
+                )}
               </button>
 
               {notificationsOpen && (
-                <div className="absolute right-0 top-12 z-50 w-72 rounded-xl border border-stone-200 bg-white p-4 shadow-lg">
-                  <h3 className="text-sm font-semibold text-stone-900">Notifications</h3>
-                  <p className="mt-3 text-sm text-stone-700">No notifications yet.</p>
-                  <p className="mt-2 text-xs leading-5 text-stone-500">
-                    Activity alerts will appear here once tracking is connected.
-                  </p>
+                <div className="absolute right-0 top-12 z-50 w-80 rounded-xl border border-stone-200 bg-white p-3 shadow-lg">
+                  <div className="flex items-center justify-between px-1 pb-2">
+                    <h3 className="text-sm font-semibold text-stone-900">Notifications</h3>
+                    {unreadCount > 0 && (
+                      <button
+                        type="button"
+                        onClick={handleMarkAllRead}
+                        className="text-xs font-medium text-blue-600 hover:underline"
+                      >
+                        Mark all as read
+                      </button>
+                    )}
+                  </div>
+
+                  {loadingNotifications && notifications.length === 0 ? (
+                    <p className="px-1 py-4 text-sm text-stone-500">Loading...</p>
+                  ) : notifications.length === 0 ? (
+                    <>
+                      <p className="px-1 py-2 text-sm text-stone-700">No notifications yet.</p>
+                      <p className="px-1 pb-1 text-xs leading-5 text-stone-500">
+                        Activity like new quote requests and security alerts will appear here.
+                      </p>
+                    </>
+                  ) : (
+                    <div className="max-h-96 overflow-y-auto">
+                      {notifications.map((notification) => (
+                        <button
+                          key={notification.id}
+                          type="button"
+                          onClick={() => handleNotificationClick(notification)}
+                          className={`block w-full rounded-lg px-2 py-2.5 text-left transition hover:bg-stone-50 ${
+                            notification.read ? '' : 'bg-blue-50/60'
+                          }`}
+                        >
+                          <div className="flex items-start gap-2">
+                            {!notification.read && (
+                              <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-blue-600" />
+                            )}
+                            <div className={notification.read ? 'pl-3.5' : ''}>
+                              <p className="text-sm font-medium text-stone-900">{notification.title}</p>
+                              <p className="mt-0.5 text-xs text-stone-600">{notification.message}</p>
+                              <p className="mt-1 text-xs text-stone-400">
+                                {formatRelativeTime(notification.createdAt)}
+                              </p>
+                            </div>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
             </div>
@@ -121,10 +247,10 @@ export default function Header() {
                 onClick={() => setDropdownOpen((open) => !open)}
                 className="flex items-center gap-2 rounded-xl bg-gray-900 px-4 py-2 text-sm text-white shadow-sm transition-colors hover:bg-gray-700"
               >
-                <div className="flex h-7 w-7 items-center justify-center rounded-full bg-blue-600 text-sm font-bold">
-                  {userInitial}
+                <div className="flex h-7 w-7 shrink-0 items-center justify-center overflow-hidden rounded-full bg-blue-600 text-sm font-bold text-white">
+                  {avatarUrl ? <img src={avatarUrl} alt="" className="h-full w-full object-cover" /> : userInitial}
                 </div>
-                <span className="hidden max-w-40 truncate sm:inline">{userEmail}</span>
+                <span className="hidden max-w-40 truncate sm:inline">{userName}</span>
                 <ChevronDown className="h-4 w-4" />
               </button>
 
@@ -132,8 +258,8 @@ export default function Header() {
                 <div className="absolute right-0 top-12 z-50 w-64 rounded-xl border border-gray-200 bg-white p-2 shadow-lg">
                   <div className="mb-2 border-b border-gray-100 px-3 py-3">
                     <div className="flex items-center gap-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-600 font-bold text-white">
-                        {userInitial}
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-blue-600 font-bold text-white">
+                        {avatarUrl ? <img src={avatarUrl} alt="" className="h-full w-full object-cover" /> : userInitial}
                       </div>
                       <div className="min-w-0">
                         <p className="truncate text-sm font-semibold text-gray-900">{userName}</p>

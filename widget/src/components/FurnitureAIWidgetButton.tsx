@@ -193,7 +193,7 @@ export function FurnitureAIWidgetButton({
   return (
     <>
       <div
-        className={`fixed ${positionClasses[buttonPosition]} z-50 flex flex-col items-end gap-2`}
+        className={`modly-widget-shell ${showLogo ? 'modly-widget-shell--logo' : 'modly-widget-shell--text'} fixed ${positionClasses[buttonPosition]} z-50 flex flex-col items-end gap-2`}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
@@ -225,7 +225,7 @@ export function FurnitureAIWidgetButton({
         <button
           onClick={handleMainButtonClick}
           style={finalButtonStyle}
-          className={`modly-widget-button order-${isBottomAligned ? '2' : '1'} cursor-pointer rounded-full inline-flex items-center justify-center gap-2 ${transitionClass} ${className}`}
+          className={`modly-widget-button ${showLogo ? 'modly-widget-button--logo' : 'modly-widget-button--text'} order-${isBottomAligned ? '2' : '1'} cursor-pointer rounded-full inline-flex items-center justify-center gap-2 ${transitionClass} ${className}`}
           onMouseOver={(e) => {
             if (isTouchDevice) return;
             e.currentTarget.style.transform = 'translateY(-2px)';

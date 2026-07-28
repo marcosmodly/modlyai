@@ -240,10 +240,10 @@ export function FurnitureAIWidget({ config = {}, defaultTab, widgetTitle }: Furn
     <div className="furniture-widget-ai h-full flex flex-col" style={{ ['--modly-panel-accent' as any]: primaryColor }}>
       {/* Header */}
       <div
-        className="border-b border-transparent px-5 py-3.5 pr-16 flex items-center gap-4"
+        className="modly-widget-header border-b border-transparent px-5 py-3.5 pr-16 flex items-center gap-4"
         style={{ backgroundColor: primaryColor }}
       >
-        <h1 className="text-base font-semibold shrink-0" style={{ color: titleColor }}>
+        <h1 className="modly-widget-title text-base font-semibold shrink-0" style={{ color: titleColor }}>
           {displayTitle === DEFAULT_WIDGET_TITLE ? (
             <>
               <span>Modly</span>
@@ -255,7 +255,11 @@ export function FurnitureAIWidget({ config = {}, defaultTab, widgetTitle }: Furn
         </h1>
 
         {/* Persistent pill tab switcher, visible in every mode */}
-        <div className="flex items-center gap-1 rounded-full p-1" style={{ backgroundColor: 'rgba(255,255,255,0.14)' }} role="tablist">
+        <div
+          className="modly-widget-tabs flex min-w-0 flex-1 items-center gap-1 overflow-x-auto rounded-full p-1"
+          style={{ backgroundColor: 'rgba(255,255,255,0.14)' }}
+          role="tablist"
+        >
           <button
             type="button"
             role="tab"

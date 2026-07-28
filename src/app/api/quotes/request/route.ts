@@ -644,6 +644,20 @@ async function handlePOST(request: NextRequest) {
         ]);
         saveSucceeded = true;
         delivery.push('instantdb');
+
+        const productLabel =
+          normalized.item?.productName || normalized.item?.name || 'a product';
+        import('@/lib/notifications')
+          .then(({ notifyStoreUsers }) =>
+            notifyStoreUsers({
+              storeId,
+              type: 'quote_request',
+              title: 'New quote request',
+              message: `${normalized.customer.name} requested a quote for ${productLabel}.`,
+              link: '/dashboard',
+            })
+          )
+          .catch((notifyError) => console.error('[Notifications] Failed to notify store users:', notifyError));
       } catch (error) {
         saveError = error;
         logQuoteFailure('InstantDB save', error, {

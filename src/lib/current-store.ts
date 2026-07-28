@@ -12,6 +12,8 @@ export type CurrentStore = {
   name?: string | null
   apiKey?: string | null
   widgetId?: string | null
+  widgetLogoUrl?: string | null
+  customPlanNote?: string | null
   userId?: string | null
   ownerEmail?: string | null
   paddleCustomerId?: string | null
