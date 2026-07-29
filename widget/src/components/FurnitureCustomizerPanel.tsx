@@ -98,6 +98,20 @@ type CustomizerAiSuggestions = {
 
 const isDemoProduct = (product?: Product) => Boolean(product && !product.source);
 
+const getProductImageUrl = (product?: Product): string | undefined => {
+  if (!product) return undefined;
+  const candidate =
+    product.imageUrl ||
+    product.image ||
+    product.thumbnail ||
+    product.images?.front ||
+    product.images?.thumbnail ||
+    product.images?.angle ||
+    product.images?.side;
+
+  return candidate?.trim() || undefined;
+};
+
 const normalizeOptionNames = (value: unknown): string[] => {
   const entries = Array.isArray(value)
     ? value
@@ -344,6 +358,7 @@ export default function FurnitureCustomizerPanel({
   const [aiSuggestions, setAiSuggestions] = useState<CustomizerAiSuggestions | null>(null);
   const [analyzing, setAnalyzing] = useState(false);
   const [aiSuggestionsOpen, setAiSuggestionsOpen] = useState(false);
+  const [productImageErrors, setProductImageErrors] = useState<Set<string>>(() => new Set());
 
   const roomPlannerSuggestions = useMemo(() => {
     if (!roomPlannerRecommendations) return null;
@@ -552,12 +567,29 @@ export default function FurnitureCustomizerPanel({
                 ))}
               </select>
 
-              <div className="aspect-square bg-purple-50 rounded-lg mb-6 flex flex-col items-center justify-center border border-purple-200 text-center px-4">
-                <Layers className="w-12 h-12 text-purple-400 mb-2" />
-                <p className="text-sm text-purple-600 font-medium">
-                  {selectedProduct?.customizer.thumbnailLabel ?? 'Sectional'}
-                </p>
-                <p className="text-xs text-gray-500">Instantly updates with your selections</p>
+              <div className="aspect-square bg-purple-50 rounded-lg mb-6 flex flex-col items-center justify-center border border-purple-200 text-center px-4 overflow-hidden">
+                {selectedProduct && getProductImageUrl(selectedProduct) && !productImageErrors.has(selectedProduct.id) ? (
+                  <img
+                    src={getProductImageUrl(selectedProduct)}
+                    alt={selectedProduct.name}
+                    className="h-full w-full object-cover"
+                    onError={() =>
+                      setProductImageErrors((prev) => {
+                        const next = new Set(prev);
+                        next.add(selectedProduct.id);
+                        return next;
+                      })
+                    }
+                  />
+                ) : (
+                  <>
+                    <Layers className="w-12 h-12 text-purple-400 mb-2" />
+                    <p className="text-sm text-purple-600 font-medium">
+                      {selectedProduct?.customizer.thumbnailLabel ?? 'Sectional'}
+                    </p>
+                    <p className="text-xs text-gray-500">Instantly updates with your selections</p>
+                  </>
+                )}
               </div>
 
               <div className="space-y-3 text-sm border-t border-gray-200 pt-4">

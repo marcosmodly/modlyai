@@ -718,6 +718,13 @@ export function FurnitureCustomizerWidget({
   }, [analyticsContext, draft, mergedConfig, price, savedItem?.id, selectedProduct, showToast]);
 
   const handleNavigateToRoomPlanner = () => {
+    if (typeof window !== 'undefined' && savedItem?.id) {
+      // Lets Room Planner scroll to and highlight the item that was just
+      // applied here, instead of leaving the customer to scroll and hunt
+      // for it themselves among possibly several saved customizations.
+      sessionStorage.setItem('modly-highlight-customized-item', savedItem.id);
+    }
+
     if (onNavigateToRoomPlanner) {
       onNavigateToRoomPlanner();
     } else {

@@ -136,6 +136,7 @@ export function FurnitureRoomPlannerWidget({
   const [quoteSuccess, setQuoteSuccess] = useState(false);
   const [selectedRecommendation, setSelectedRecommendation] = useState<Recommendation | null>(null);
   const [selectedCustomizedItem, setSelectedCustomizedItem] = useState<CustomizedFurnitureItem | null>(null);
+  const [highlightItemId, setHighlightItemId] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const resultsRef = useRef<HTMLDivElement | null>(null);
   const lastScrolledRequestRef = useRef(0);
@@ -200,6 +201,33 @@ export function FurnitureRoomPlannerWidget({
     const items = storage.getCustomizedFurniture();
     setCustomizedFurniture(items);
   }, [storage]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    // Set by the Customizer's "View in Room Planner" button right before
+    // navigating here, so the customer lands on exactly what they just
+    // customized instead of having to scroll and find it themselves.
+    const targetId = sessionStorage.getItem('modly-highlight-customized-item');
+    if (!targetId) return;
+
+    sessionStorage.removeItem('modly-highlight-customized-item');
+    setHighlightItemId(targetId);
+
+    const scrollTimer = window.setTimeout(() => {
+      document.getElementById(`customized-item-${targetId}`)?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+      });
+    }, 150);
+
+    const clearTimer = window.setTimeout(() => setHighlightItemId(null), 4000);
+
+    return () => {
+      window.clearTimeout(scrollTimer);
+      window.clearTimeout(clearTimer);
+    };
+  }, []);
 
   useEffect(() => {
     if (
@@ -935,6 +963,7 @@ export function FurnitureRoomPlannerWidget({
                 onItemRemoved={handleItemRemoved}
                 onNavigateToCustomizer={handleNavigateToCustomizer}
                 onRequestQuote={enabledActions.requestQuote ? handleRequestQuoteForCustomizedItem : undefined}
+                highlightItemId={highlightItemId}
               />
             </div>
 

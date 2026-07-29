@@ -7,6 +7,7 @@ interface CustomizedFurnitureListProps {
   onItemRemoved?: () => void;
   onNavigateToCustomizer?: () => void;
   onRequestQuote?: (item: CustomizedFurnitureItem) => void;
+  highlightItemId?: string | null;
 }
 
 const formatCurrency = (value: number | undefined, prefix = '') =>
@@ -35,6 +36,7 @@ export default function CustomizedFurnitureList({
   onItemRemoved,
   onNavigateToCustomizer,
   onRequestQuote,
+  highlightItemId,
 }: CustomizedFurnitureListProps) {
   const { storage } = useWidgetContext();
   const [removingId, setRemovingId] = useState<string | null>(null);
@@ -123,7 +125,13 @@ export default function CustomizedFurnitureList({
           return (
             <article
               key={item.id}
-              className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-[0_18px_45px_rgba(15,23,42,0.08)] transition-shadow hover:shadow-[0_22px_55px_rgba(15,23,42,0.12)]"
+              id={`customized-item-${item.id}`}
+              className={[
+                'overflow-hidden rounded-2xl border bg-white shadow-[0_18px_45px_rgba(15,23,42,0.08)] transition-shadow hover:shadow-[0_22px_55px_rgba(15,23,42,0.12)]',
+                item.id === highlightItemId
+                  ? 'border-blue-400 ring-2 ring-blue-300'
+                  : 'border-gray-200',
+              ].join(' ')}
             >
               <div className="relative p-3 pb-0">
                 <div className="aspect-[4/3] overflow-hidden rounded-xl border border-gray-100 bg-gray-50">
