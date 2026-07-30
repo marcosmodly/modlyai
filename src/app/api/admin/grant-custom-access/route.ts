@@ -28,7 +28,24 @@ export async function POST(req: Request) {
     const session = await getServerSession(authOptions)
 
     if (!isAdminEmail(session?.user?.email)) {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+      // TEMPORARY DIAGNOSTICS - remove once the 403 is sorted out. Doesn't
+      // leak the actual allowlist, just enough to tell which check failed.
+      const allowlistConfigured = String(process.env.ADMIN_EMAILS || '').trim().length > 0
+      return NextResponse.json(
+        {
+          error: 'Forbidden',
+          debug: {
+            allowlistConfigured,
+            allowlistCount: String(process.env.ADMIN_EMAILS || '')
+              .split(',')
+              .map((e) => e.trim())
+              .filter(Boolean).length,
+            sessionFound: Boolean(session),
+            detectedEmail: session?.user?.email ?? null,
+          },
+        },
+        { status: 403 }
+      )
     }
 
     const { storeId, periodEndIso, note } = await req.json()
