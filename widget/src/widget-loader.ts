@@ -30,6 +30,13 @@ async function initWidget(userConfig?: Partial<WidgetConfig>) {
   // Create container
   container = document.createElement('div');
   container.id = 'modly-widget-container';
+  // Many storefront themes (e.g. Shopify Dawn's base.css) ship a global
+  // `div:empty { display: none }` reset. This container's real content lives
+  // entirely in its shadow root, which doesn't count toward :empty - so
+  // without a light-DOM child, those themes hide the widget outright. A
+  // zero-width text node defeats :empty without being visible (the shadow
+  // root has no <slot>, so light-DOM children are never rendered anyway).
+  container.appendChild(document.createTextNode('​'))
   document.body.appendChild(container);
   const shadowRoot = container.attachShadow({ mode: 'open' });
   injectWidgetStyles(shadowRoot);
