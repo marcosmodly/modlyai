@@ -10,6 +10,7 @@ import {
   getPlanLimits,
   isCancelAtPeriodEnd,
   isCheckoutPlan,
+  isPaidPlan,
   plans as planConfig,
   type CheckoutPlanId,
   type PlanId,
@@ -135,7 +136,12 @@ export default function BillingCard({
   const [error, setError] = useState('')
 
   const access = getBillingAccess(store)
-  const paidPlan = isCheckoutPlan(store.subscriptionPlan)
+  // Broader than isCheckoutPlan (which only covers starter/growth, since
+  // those are the only ones with self-serve Paddle checkout) - this needs
+  // to also recognize 'scale' for stores manually granted a custom plan via
+  // /api/admin/grant-custom-access, otherwise every plan/status display on
+  // this page below falls back to showing "Free Trial" for them.
+  const paidPlan = isPaidPlan(store.subscriptionPlan)
   const billingPlan = normalizePlan(store.subscriptionPlan)
   const hasPaidSubscription = access.isPaid && access.hasActiveAccess
   const paddleCustomerId = String(store.paddleCustomerId ?? '').trim()
