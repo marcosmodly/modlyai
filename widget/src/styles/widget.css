@@ -173,25 +173,12 @@
 }
 
 /*
- * Room Planner and Customizer sub-panel headers now inherit the store's
- * actual primaryColor (passed through as --modly-panel-accent by each
- * component) instead of a hardcoded blue/purple gradient, so all three
- * panels share one consistent theme color.
+ * NOTE: the previous ">section:first-of-type" accent-color rule assumed
+ * Room Planner/Customizer had a small dedicated header section, but their
+ * first <section> is actually the entire main content block - so it was
+ * painting the whole panel with primaryColor instead of a header strip.
+ * Removed; these panels keep their own bg-gray-50/bg-white styling.
  */
-.modly-widget-root .furniture-widget-room-planner > section:first-of-type,
-.modly-widget-root .furniture-widget-customizer > section:first-of-type {
-  color: #ffffff !important;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
-  background: var(--modly-panel-accent, #2563eb) !important;
-}
-
-.modly-widget-root .furniture-widget-room-planner > section:first-of-type :where(h1, h2, h3, p, span, div),
-.modly-widget-root .furniture-widget-customizer > section:first-of-type :where(h1, h2, h3, p, span, div) {
-  color: #ffffff !important;
-}
-
-.modly-widget-root .furniture-widget-room-planner > section:first-of-type [class~="text-blue-100"],
-.modly-widget-root .furniture-widget-customizer > section:first-of-type [class~="text-purple-100"],
 .modly-widget-root [class~="text-white/80"],
 .modly-widget-root [class~="text-white/70"] {
   color: rgba(255, 255, 255, 0.92) !important;
