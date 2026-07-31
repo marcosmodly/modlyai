@@ -41,15 +41,17 @@ const nextConfig = {
         // Overrides Vercel/CDN's default long static-asset cache (was 4h,
         // causing stale widget code to keep serving for hours after every
         // deploy - the exact issue that made "did you clear your cache"
-        // debugging necessary all afternoon). Short max-age + must-revalidate
-        // means any CDN/browser cache checks back in with the origin almost
-        // immediately after a new version ships, while still avoiding a full
-        // refetch on every single page load.
+        // debugging necessary all afternoon). no-cache forces every layer
+        // (browser, Cloudflare, Vercel's edge) to revalidate with the origin
+        // on every request via ETag/Last-Modified - cheap 304s when nothing
+        // changed, instant freshness the moment something does. A max-age
+        // value turned out to keep getting partially overridden by Vercel's
+        // own static-asset defaults, so this avoids that ambiguity entirely.
         source: '/widget.js',
         headers: [
           {
             key: 'Cache-Control',
-            value: 'public, max-age=60, s-maxage=60, must-revalidate',
+            value: 'no-cache, must-revalidate',
           },
         ],
       },
