@@ -475,6 +475,19 @@ export async function removeShopifyWidgetScriptTag(input: {
   return { removed: true }
 }
 
+// Deep-links into the merchant's theme editor with the ModlyAI app embed
+// block pre-selected under "App embeds", so enabling the widget is a single
+// toggle instead of requiring any manual theme.liquid editing. The extension
+// UUID is assigned by Shopify only after `shopify app deploy`, so it's read
+// from an env var rather than hardcoded.
+export function getShopifyThemeEditorDeepLink(shopDomain: string): string | null {
+  const extensionUuid = process.env.SHOPIFY_THEME_EXTENSION_UUID
+  if (!extensionUuid) return null
+
+  const domain = normalizeShopifyDomain(shopDomain)
+  return `https://${domain}/admin/themes/current/editor?context=apps&activateAppId=${extensionUuid}/embed`
+}
+
 export async function testShopifyConnection(input: {
   shopifyStoreDomain: string
   shopifyAccessToken: string

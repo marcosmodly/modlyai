@@ -21,6 +21,7 @@ type StoreSummary = {
   shopifyConnectedAt?: string
   shopifyLastSyncedAt?: string
   hasShopifyAccessToken: boolean
+  shopifyThemeEditorUrl?: string | null
   wooSiteUrl?: string
   wooConnectedAt?: string
   wooLastSyncedAt?: string
@@ -34,7 +35,7 @@ const platformInstructions = [
   {
     platform: 'Shopify',
     instructions:
-      'Connecting Shopify below auto-installs the widget on your storefront - no code needed. Or manually: Online Store -> Themes -> Edit code -> theme.liquid. Paste before the closing </body> tag, then save.',
+      'Connect Shopify below to sync your catalog, then click "Enable widget in theme editor" and turn on the ModlyAI app embed - one click, no code. Or manually: Online Store -> Themes -> Edit code -> theme.liquid. Paste before the closing </body> tag, then save.',
   },
   {
     platform: 'WooCommerce / WordPress',
@@ -443,6 +444,16 @@ export default function IntegrationsClient({
           </button>
           {shopifyConnectedLocal ? (
             <>
+              {store.shopifyThemeEditorUrl ? (
+                <a
+                  href={store.shopifyThemeEditorUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-emerald-700"
+                >
+                  Enable widget in theme editor
+                </a>
+              ) : null}
               <button
                 type="button"
                 onClick={syncShopify}
@@ -462,6 +473,13 @@ export default function IntegrationsClient({
             </>
           ) : null}
         </div>
+
+        {shopifyConnectedLocal && !store.shopifyThemeEditorUrl ? (
+          <p className="mt-3 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+            The widget isn&apos;t enabled on your storefront yet. Go to Online Store -&gt; Themes -&gt; Customize -&gt;
+            App embeds, and turn on &quot;ModlyAI Widget&quot;.
+          </p>
+        ) : null}
 
         {shopifyMessage ? (
           <p className={`mt-3 text-sm font-medium ${shopifyStatus === 'error' ? 'text-red-700' : 'text-emerald-700'}`}>

@@ -1,0 +1,18 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+client_id = "3944044cf5d9b97fbcfd235151d7123c"
+name = "ModlyAI Widget"
+application_url = "https://modlyai.tech/"
+embedded = true
+
+[webhooks]
+api_version = "2026-07"
+
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
+scopes = "read_products,write_script_tags"
+use_legacy_install_flow = false
+optional_scopes = [ ]
+
+[auth]
+redirect_urls = [ "https://modlyai.tech/api/shopify/callback" ]

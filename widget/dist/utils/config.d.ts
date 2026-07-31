@@ -2,6 +2,7 @@ import { RoomAnalysisResponse } from '../types';
 export interface WidgetConfig {
     apiBaseUrl?: string;
     storeId?: string;
+    shop?: string;
     storeName?: string;
     storeUrl?: string;
     supportEmail?: string;
@@ -62,7 +63,7 @@ export declare const DEFAULT_ENABLED_ACTIONS: {
     customize: boolean;
     requestQuote: boolean;
 };
-export declare const defaultConfig: Required<Omit<WidgetConfig, 'apiBaseUrl' | 'storeId' | 'apiKey' | 'publicApiKey' | 'storeDomain' | 'configUrl' | 'widgetId' | 'onError' | 'onRoomAnalyzed' | 'onFurnitureCustomized' | 'theme'>>;
+export declare const defaultConfig: Required<Omit<WidgetConfig, 'apiBaseUrl' | 'storeId' | 'shop' | 'apiKey' | 'publicApiKey' | 'storeDomain' | 'configUrl' | 'widgetId' | 'onError' | 'onRoomAnalyzed' | 'onFurnitureCustomized' | 'theme'>>;
 export declare function mergeConfig(userConfig?: WidgetConfig): WidgetConfig;
 export declare function getWidgetTitle(config?: WidgetConfig): string;
 export declare function getPrimaryColor(config?: WidgetConfig): string;
@@ -77,5 +78,5 @@ export declare function getEnabledActions(config?: WidgetConfig): {
     requestQuote: boolean;
 };
 export declare function getApiBaseUrlFromConfigUrl(configUrl?: string): string | undefined;
-export declare function fetchRemoteConfig(configUrl: string, widgetId?: string, storeId?: string): Promise<WidgetConfig>;
+export declare function fetchRemoteConfig(configUrl: string, widgetId?: string, storeId?: string, shop?: string): Promise<WidgetConfig>;
 //# sourceMappingURL=config.d.ts.map

@@ -50,8 +50,12 @@ interface FurnitureCustomizerPanelProps {
     onShareLink: () => void;
     onExportPdf: () => void;
     onViewFullRoomAnalysis?: () => void;
+    onSuggestionsError?: (message: string) => void;
+    onRequestQuote?: () => void;
+    showRequestQuote?: boolean;
+    primaryColor?: string;
 }
 type DimensionKey = 'width' | 'length' | 'height';
-export default function FurnitureCustomizerPanel({ products, draft, setDraft, isApplying, validationErrors, price, onApply, onUndo, onRedo, canUndo, canRedo, onSaveConfig, onShareLink, onExportPdf, onViewFullRoomAnalysis, }: FurnitureCustomizerPanelProps): import("react/jsx-runtime").JSX.Element;
+export default function FurnitureCustomizerPanel({ products, draft, setDraft, isApplying, validationErrors, price, onApply, onUndo, onRedo, canUndo, canRedo, onSaveConfig, onShareLink, onExportPdf, onViewFullRoomAnalysis, onSuggestionsError, onRequestQuote, showRequestQuote, primaryColor, }: FurnitureCustomizerPanelProps): import("react/jsx-runtime").JSX.Element;
 export {};
 //# sourceMappingURL=FurnitureCustomizerPanel.d.ts.map

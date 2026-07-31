@@ -3,6 +3,7 @@ import { RoomAnalysisResponse, CustomizationConfig } from '../types';
 export interface WidgetConfig {
   apiBaseUrl?: string;
   storeId?: string;
+  shop?: string;
   storeName?: string;
   storeUrl?: string;
   supportEmail?: string;
@@ -70,7 +71,7 @@ function hasText(value: unknown): value is string {
   return typeof value === 'string' && value.trim().length > 0;
 }
 
-export const defaultConfig: Required<Omit<WidgetConfig, 'apiBaseUrl' | 'storeId' | 'apiKey' | 'publicApiKey' | 'storeDomain' | 'configUrl' | 'widgetId' | 'onError' | 'onRoomAnalyzed' | 'onFurnitureCustomized' | 'theme'>> = {
+export const defaultConfig: Required<Omit<WidgetConfig, 'apiBaseUrl' | 'storeId' | 'shop' | 'apiKey' | 'publicApiKey' | 'storeDomain' | 'configUrl' | 'widgetId' | 'onError' | 'onRoomAnalyzed' | 'onFurnitureCustomized' | 'theme'>> = {
   storeName: '',
   storeUrl: '',
   supportEmail: '',
@@ -262,7 +263,7 @@ function isLocalhostUrl(value?: string) {
 }
 
 // NEW: Fetch config from server
-export async function fetchRemoteConfig(configUrl: string, widgetId?: string, storeId?: string): Promise<WidgetConfig> {
+export async function fetchRemoteConfig(configUrl: string, widgetId?: string, storeId?: string, shop?: string): Promise<WidgetConfig> {
   const apiBaseUrl = getApiBaseUrlFromConfigUrl(configUrl);
 
   try {
@@ -272,6 +273,9 @@ export async function fetchRemoteConfig(configUrl: string, widgetId?: string, st
     }
     if (widgetId) {
       url.searchParams.set('widgetId', widgetId);
+    }
+    if (shop) {
+      url.searchParams.set('shop', shop);
     }
     if (typeof window !== 'undefined' && window.location.hostname) {
       url.searchParams.set('domain', window.location.hostname);

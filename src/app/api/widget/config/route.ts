@@ -90,8 +90,9 @@ async function handleGET(req: Request) {
     const apiOrigin = new URL(req.url).origin
     const widgetId = readText(searchParams.get('widgetId'))
     const storeId = readText(searchParams.get('storeId'))
+    const shop = readText(searchParams.get('shop')).toLowerCase()
 
-    if (!widgetId && !storeId) {
+    if (!widgetId && !storeId && !shop) {
       return NextResponse.json(
         { error: 'Missing widgetId' },
         { status: 400 }
@@ -101,7 +102,7 @@ async function handleGET(req: Request) {
     let store: WidgetStore | null = null
     let products: WidgetProduct[] = []
 
-    if (storeId || widgetId) {
+    if (storeId || widgetId || shop) {
       const storesResult = await adminDb.query({
         stores: {},
       })
@@ -116,8 +117,20 @@ async function handleGET(req: Request) {
             readField(candidate, 'id') === widgetId
           )
         : undefined
+      // Theme app extension installs identify the store by Shopify domain
+      // instead of storeId, since Liquid only exposes shop.permanent_domain
+      // for free (no extra Admin API scope or stored config needed).
+      const storeByShopDomain = shop
+        ? stores.find((candidate) => {
+            const credentials = (candidate as any)?.credentials
+            const shopifyDomain = isRecord(credentials) && isRecord(credentials.shopify)
+              ? String(credentials.shopify.storeDomain || '').toLowerCase()
+              : ''
+            return shopifyDomain === shop
+          })
+        : undefined
 
-      store = storeById ?? storeByWidgetId ?? null
+      store = storeById ?? storeByWidgetId ?? storeByShopDomain ?? null
 
       const resolvedStoreId = readText(store?.id)
       if (resolvedStoreId) {

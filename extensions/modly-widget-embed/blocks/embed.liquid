@@ -1,0 +1,17 @@
+{% comment %}
+  App embed block: merchants toggle this on in Online Store > Themes > Customize
+  > App embeds. Loads the ModlyAI widget on every storefront page. Uses
+  shop.permanent_domain (always available in Liquid, no extra Admin API scope)
+  so /api/widget/config can resolve the store without a stored storeId.
+{% endcomment %}
+<script
+  src="https://modlyai.tech/widget.js?shop={{ shop.permanent_domain }}"
+  defer
+></script>
+
+{% schema %}
+{
+  "name": "ModlyAI Widget",
+  "target": "body"
+}
+{% endschema %}

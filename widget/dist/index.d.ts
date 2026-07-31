@@ -426,6 +426,7 @@ interface QuoteRequestResponse {
 interface WidgetConfig {
     apiBaseUrl?: string;
     storeId?: string;
+    shop?: string;
     storeName?: string;
     storeUrl?: string;
     supportEmail?: string;

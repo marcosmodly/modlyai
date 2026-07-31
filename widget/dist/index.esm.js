@@ -1502,11 +1502,42 @@ const createLucideIcon = (iconName, iconNode) => {
  */
 
 
-const __iconNode$p = [
+const __iconNode$r = [
   ["path", { d: "M5 12h14", key: "1ays0h" }],
   ["path", { d: "m12 5 7 7-7 7", key: "xquz4c" }]
 ];
-const ArrowRight = createLucideIcon("arrow-right", __iconNode$p);
+const ArrowRight = createLucideIcon("arrow-right", __iconNode$r);
+
+/**
+ * @license lucide-react v1.8.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+
+
+const __iconNode$q = [
+  [
+    "path",
+    {
+      d: "M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z",
+      key: "18u6gg"
+    }
+  ],
+  ["circle", { cx: "12", cy: "13", r: "3", key: "1vg3eu" }]
+];
+const Camera = createLucideIcon("camera", __iconNode$q);
+
+/**
+ * @license lucide-react v1.8.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+
+
+const __iconNode$p = [["path", { d: "M20 6 9 17l-5-5", key: "1gmf2c" }]];
+const Check = createLucideIcon("check", __iconNode$p);
 
 /**
  * @license lucide-react v1.8.0 - ISC
@@ -1517,16 +1548,11 @@ const ArrowRight = createLucideIcon("arrow-right", __iconNode$p);
 
 
 const __iconNode$o = [
-  [
-    "path",
-    {
-      d: "M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z",
-      key: "18u6gg"
-    }
-  ],
-  ["circle", { cx: "12", cy: "13", r: "3", key: "1vg3eu" }]
+  ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
+  ["line", { x1: "12", x2: "12", y1: "8", y2: "12", key: "1pkeuh" }],
+  ["line", { x1: "12", x2: "12.01", y1: "16", y2: "16", key: "4dfq90" }]
 ];
-const Camera = createLucideIcon("camera", __iconNode$o);
+const CircleAlert = createLucideIcon("circle-alert", __iconNode$o);
 
 /**
  * @license lucide-react v1.8.0 - ISC
@@ -1536,8 +1562,11 @@ const Camera = createLucideIcon("camera", __iconNode$o);
  */
 
 
-const __iconNode$n = [["path", { d: "M20 6 9 17l-5-5", key: "1gmf2c" }]];
-const Check = createLucideIcon("check", __iconNode$n);
+const __iconNode$n = [
+  ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
+  ["path", { d: "m9 12 2 2 4-4", key: "dzmm74" }]
+];
+const CircleCheck = createLucideIcon("circle-check", __iconNode$n);
 
 /**
  * @license lucide-react v1.8.0 - ISC
@@ -1623,21 +1652,6 @@ const Image = createLucideIcon("image", __iconNode$j);
 
 
 const __iconNode$i = [
-  ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
-  ["path", { d: "M12 16v-4", key: "1dtifu" }],
-  ["path", { d: "M12 8h.01", key: "e9boi3" }]
-];
-const Info = createLucideIcon("info", __iconNode$i);
-
-/**
- * @license lucide-react v1.8.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-
-
-const __iconNode$h = [
   ["path", { d: "M12 12v6", key: "3ahymv" }],
   [
     "path",
@@ -1651,7 +1665,7 @@ const __iconNode$h = [
     { d: "M8 20a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1z", key: "1mmzpi" }
   ]
 ];
-const Lamp = createLucideIcon("lamp", __iconNode$h);
+const Lamp = createLucideIcon("lamp", __iconNode$i);
 
 /**
  * @license lucide-react v1.8.0 - ISC
@@ -1661,7 +1675,7 @@ const Lamp = createLucideIcon("lamp", __iconNode$h);
  */
 
 
-const __iconNode$g = [
+const __iconNode$h = [
   [
     "path",
     {
@@ -1684,7 +1698,7 @@ const __iconNode$g = [
     }
   ]
 ];
-const Layers = createLucideIcon("layers", __iconNode$g);
+const Layers = createLucideIcon("layers", __iconNode$h);
 
 /**
  * @license lucide-react v1.8.0 - ISC
@@ -1694,12 +1708,23 @@ const Layers = createLucideIcon("layers", __iconNode$g);
  */
 
 
-const __iconNode$f = [
+const __iconNode$g = [
   ["path", { d: "M9 17H7A5 5 0 0 1 7 7h2", key: "8i5ue5" }],
   ["path", { d: "M15 7h2a5 5 0 1 1 0 10h-2", key: "1b9ql8" }],
   ["line", { x1: "8", x2: "16", y1: "12", y2: "12", key: "1jonct" }]
 ];
-const Link2 = createLucideIcon("link-2", __iconNode$f);
+const Link2 = createLucideIcon("link-2", __iconNode$g);
+
+/**
+ * @license lucide-react v1.8.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+
+
+const __iconNode$f = [["path", { d: "M21 12a9 9 0 1 1-6.219-8.56", key: "13zald" }]];
+const LoaderCircle = createLucideIcon("loader-circle", __iconNode$f);
 
 /**
  * @license lucide-react v1.8.0 - ISC
@@ -2698,7 +2723,7 @@ const uniqueByName = (values) => {
         return true;
     });
 };
-function CustomizedFurnitureList({ items, onItemRemoved, onNavigateToCustomizer, onRequestQuote, }) {
+function CustomizedFurnitureList({ items, onItemRemoved, onNavigateToCustomizer, onRequestQuote, highlightItemId, }) {
     const { storage } = useWidgetContext();
     const [removingId, setRemovingId] = useState(null);
     const [imageErrors, setImageErrors] = useState(() => new Set());
@@ -2747,7 +2772,12 @@ function CustomizedFurnitureList({ items, onItemRemoved, onNavigateToCustomizer,
                     const basePrice = formatCurrency$3(item.basePrice ?? item.price);
                     const customizationPrice = formatCurrency$3(item.customizationPrice, '+');
                     const estimatedTotal = formatCurrency$3(item.estimatedTotal);
-                    return (jsxRuntimeExports.jsxs("article", { className: "overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-[0_18px_45px_rgba(15,23,42,0.08)] transition-shadow hover:shadow-[0_22px_55px_rgba(15,23,42,0.12)]", children: [jsxRuntimeExports.jsxs("div", { className: "relative p-3 pb-0", children: [jsxRuntimeExports.jsx("div", { className: "aspect-[4/3] overflow-hidden rounded-xl border border-gray-100 bg-gray-50", children: canShowImage ? (jsxRuntimeExports.jsx("img", { src: imageUrl, alt: productName, className: "h-full w-full object-cover", onError: () => setImageErrors((prev) => {
+                    return (jsxRuntimeExports.jsxs("article", { id: `customized-item-${item.id}`, className: [
+                            'overflow-hidden rounded-2xl border bg-white shadow-[0_18px_45px_rgba(15,23,42,0.08)] transition-shadow hover:shadow-[0_22px_55px_rgba(15,23,42,0.12)]',
+                            item.id === highlightItemId
+                                ? 'border-blue-400 ring-2 ring-blue-300'
+                                : 'border-gray-200',
+                        ].join(' '), children: [jsxRuntimeExports.jsxs("div", { className: "relative p-3 pb-0", children: [jsxRuntimeExports.jsx("div", { className: "aspect-[4/3] overflow-hidden rounded-xl border border-gray-100 bg-gray-50", children: canShowImage ? (jsxRuntimeExports.jsx("img", { src: imageUrl, alt: productName, className: "h-full w-full object-cover", onError: () => setImageErrors((prev) => {
                                                 const next = new Set(prev);
                                                 next.add(item.id);
                                                 return next;
@@ -3370,7 +3400,7 @@ function getRealProductUrl(product) {
 function getProductCatalogUrl$1(item) {
     return getRealProductUrl(item);
 }
-function getProductImageUrl$1(item) {
+function getProductImageUrl$2(item) {
     return item.images?.find((image) => image?.trim()) ?? undefined;
 }
 function getPriceLabel(item) {
@@ -3400,7 +3430,7 @@ function RecommendationsList({ recommendations, onCustomize, onFinalize, enabled
     }
     return (jsxRuntimeExports.jsxs("div", { className: "space-y-6", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h2", { className: "text-3xl font-bold text-gray-950", children: "Matching catalog products" }), jsxRuntimeExports.jsx("p", { className: "mt-2 text-sm text-gray-600", children: "Suggestions are based on the uploaded room photo, your preferences, and available catalog data." })] }), jsxRuntimeExports.jsx("div", { className: "grid md:grid-cols-2 lg:grid-cols-3 gap-6", children: recommendations.map((rec, index) => {
                     const catalogUrl = getProductCatalogUrl$1(rec.item);
-                    const imageUrl = getProductImageUrl$1(rec.item);
+                    const imageUrl = getProductImageUrl$2(rec.item);
                     const dimensionLabel = getDimensionLabel(rec.item);
                     const priceLabel = getPriceLabel(rec.item);
                     const handleViewInCatalogClick = (event) => {
@@ -3509,6 +3539,7 @@ function FurnitureRoomPlannerWidget({ config = {}, onCustomizeItem, onNavigateTo
     const [quoteSuccess, setQuoteSuccess] = useState(false);
     const [selectedRecommendation, setSelectedRecommendation] = useState(null);
     const [selectedCustomizedItem, setSelectedCustomizedItem] = useState(null);
+    const [highlightItemId, setHighlightItemId] = useState(null);
     const fileInputRef = useRef(null);
     const resultsRef = useRef(null);
     const lastScrolledRequestRef = useRef(0);
@@ -3571,6 +3602,29 @@ function FurnitureRoomPlannerWidget({ config = {}, onCustomizeItem, onNavigateTo
         const items = storage.getCustomizedFurniture();
         setCustomizedFurniture(items);
     }, [storage]);
+    useEffect(() => {
+        if (typeof window === 'undefined')
+            return;
+        // Set by the Customizer's "View in Room Planner" button right before
+        // navigating here, so the customer lands on exactly what they just
+        // customized instead of having to scroll and find it themselves.
+        const targetId = sessionStorage.getItem('modly-highlight-customized-item');
+        if (!targetId)
+            return;
+        sessionStorage.removeItem('modly-highlight-customized-item');
+        setHighlightItemId(targetId);
+        const scrollTimer = window.setTimeout(() => {
+            document.getElementById(`customized-item-${targetId}`)?.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center',
+            });
+        }, 150);
+        const clearTimer = window.setTimeout(() => setHighlightItemId(null), 4000);
+        return () => {
+            window.clearTimeout(scrollTimer);
+            window.clearTimeout(clearTimer);
+        };
+    }, []);
     useEffect(() => {
         if (resultsScrollRequest === 0 ||
             lastScrolledRequestRef.current === resultsScrollRequest ||
@@ -3843,7 +3897,7 @@ function FurnitureRoomPlannerWidget({ config = {}, onCustomizeItem, onNavigateTo
             .print-only { display: block !important; }
             body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
           }
-        ` }), jsxRuntimeExports.jsx("section", { className: "py-12 bg-gradient-to-br from-blue-600 to-blue-800 text-white", children: jsxRuntimeExports.jsx("div", { className: "max-w-7xl mx-auto px-4", children: jsxRuntimeExports.jsxs("div", { className: "max-w-3xl", children: [jsxRuntimeExports.jsxs("div", { className: "inline-flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full mb-4", children: [jsxRuntimeExports.jsx(Sparkles, { className: "w-4 h-4" }), jsxRuntimeExports.jsx("span", { className: "text-sm font-medium", children: "AI-Powered Room Analysis" })] }), jsxRuntimeExports.jsx("h1", { className: "text-5xl font-bold mb-4", children: "Room Planner" }), jsxRuntimeExports.jsx("p", { className: "text-xl text-blue-100 mb-8", children: "Upload a photo of your room and get catalog-based furniture and customization suggestions based on your space and style." }), jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap gap-4", children: [jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 text-sm", children: [jsxRuntimeExports.jsx(Check, { className: "w-5 h-5 text-green-300" }), jsxRuntimeExports.jsx("span", { children: "Room photo upload" })] }), jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 text-sm", children: [jsxRuntimeExports.jsx(Check, { className: "w-5 h-5 text-green-300" }), jsxRuntimeExports.jsx("span", { children: "Catalog-based product suggestions" })] }), jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 text-sm", children: [jsxRuntimeExports.jsx(Check, { className: "w-5 h-5 text-green-300" }), jsxRuntimeExports.jsx("span", { children: "Style-aware recommendations" })] }), jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 text-sm", children: [jsxRuntimeExports.jsx(Check, { className: "w-5 h-5 text-green-300" }), jsxRuntimeExports.jsx("span", { children: "Placement guidance" })] })] })] }) }) }), jsxRuntimeExports.jsx("section", { className: "py-12 bg-gray-50", children: jsxRuntimeExports.jsxs("div", { className: "max-w-7xl mx-auto px-4", children: [jsxRuntimeExports.jsxs("div", { className: "rounded-[28px] border border-gray-200 bg-white p-5 shadow-xl md:p-6", children: [recommendations && (jsxRuntimeExports.jsx("div", { className: "mb-4 flex justify-end", children: jsxRuntimeExports.jsx("div", { className: "inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-sm font-medium text-green-700", children: "Suggested analysis" }) })), jsxRuntimeExports.jsx("input", { ref: fileInputRef, type: "file", accept: "image/*", multiple: true, onChange: handleFileChange, className: "hidden" }), jsxRuntimeExports.jsxs("div", { className: "mt-6 grid gap-5 lg:grid-cols-2", children: [jsxRuntimeExports.jsxs("div", { className: "rounded-2xl border border-stone-200 bg-[#fffdf9] p-5 shadow-sm", children: [jsxRuntimeExports.jsxs("div", { className: "mb-3 flex items-center justify-between gap-3", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h2", { className: "text-lg font-semibold text-gray-950", children: "Upload a room photo" }), jsxRuntimeExports.jsx("p", { className: "mt-1 text-sm leading-6 text-gray-600", children: "ModlyAI compares your room, style, and budget with products in this store's catalog." })] }), uploadedPhotos.length > 0 && (jsxRuntimeExports.jsx("button", { type: "button", onClick: () => setUploadedPhotos([]), className: "shrink-0 rounded-full border border-stone-200 px-3 py-1 text-sm font-medium text-gray-500 transition hover:border-stone-300 hover:text-gray-900", children: "Remove" }))] }), jsxRuntimeExports.jsx("div", { role: "button", tabIndex: 0, onClick: () => fileInputRef.current?.click(), onKeyDown: (e) => {
+        ` }), jsxRuntimeExports.jsx("section", { className: "py-12 bg-gray-50", children: jsxRuntimeExports.jsxs("div", { className: "max-w-7xl mx-auto px-4", children: [jsxRuntimeExports.jsxs("div", { className: "rounded-[28px] border border-gray-200 bg-white p-5 shadow-xl md:p-6", children: [recommendations && (jsxRuntimeExports.jsx("div", { className: "mb-4 flex justify-end", children: jsxRuntimeExports.jsx("div", { className: "inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-sm font-medium text-green-700", children: "Suggested analysis" }) })), jsxRuntimeExports.jsx("input", { ref: fileInputRef, type: "file", accept: "image/*", multiple: true, onChange: handleFileChange, className: "hidden" }), jsxRuntimeExports.jsxs("div", { className: "mt-6 grid gap-5 lg:grid-cols-2", children: [jsxRuntimeExports.jsxs("div", { className: "rounded-2xl border border-stone-200 bg-[#fffdf9] p-5 shadow-sm", children: [jsxRuntimeExports.jsxs("div", { className: "mb-3 flex items-center justify-between gap-3", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h2", { className: "text-lg font-semibold text-gray-950", children: "Upload a room photo" }), jsxRuntimeExports.jsx("p", { className: "mt-1 text-sm leading-6 text-gray-600", children: "ModlyAI compares your room, style, and budget with products in this store's catalog." })] }), uploadedPhotos.length > 0 && (jsxRuntimeExports.jsx("button", { type: "button", onClick: () => setUploadedPhotos([]), className: "shrink-0 rounded-full border border-stone-200 px-3 py-1 text-sm font-medium text-gray-500 transition hover:border-stone-300 hover:text-gray-900", children: "Remove" }))] }), jsxRuntimeExports.jsx("div", { role: "button", tabIndex: 0, onClick: () => fileInputRef.current?.click(), onKeyDown: (e) => {
                                                                 if (e.key === 'Enter' || e.key === ' ')
                                                                     fileInputRef.current?.click();
                                                             }, onDragOver: (e) => {
@@ -3871,7 +3925,7 @@ function FurnitureRoomPlannerWidget({ config = {}, onCustomizeItem, onNavigateTo
                                                                                                 'block text-sm font-semibold',
                                                                                                 isSelected ? 'text-blue-950' : 'text-gray-800',
                                                                                             ].join(' '), children: styleOption.label })] }, styleOption.id));
-                                                                            }) })] }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-gray-700 mb-2", children: "Preferred Colors" }), jsxRuntimeExports.jsx("input", { type: "text", value: colorInput, onChange: (e) => setColorInput(e.target.value), placeholder: "e.g., Beige, Forest Green, Terracotta", className: "w-full rounded-lg border border-stone-300 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" }), jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500 mt-1", children: "Comma-separated" })] })] })] }), jsxRuntimeExports.jsxs("div", { className: "rounded-2xl border border-stone-200 bg-white p-5 shadow-sm lg:col-span-4", children: [jsxRuntimeExports.jsxs("div", { className: "mb-5 flex items-start gap-3", children: [jsxRuntimeExports.jsx("div", { className: "flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700", children: jsxRuntimeExports.jsx(ShoppingBag, { className: "h-5 w-5" }) }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h3", { className: "text-lg font-bold text-gray-950", children: "Budget & Actions" }), jsxRuntimeExports.jsx("p", { className: "mt-1 text-sm text-gray-500", children: "Recommendations stay grounded in your imported catalog." })] })] }), jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-2 gap-3", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-gray-700 mb-2", children: "Budget Min ($)" }), jsxRuntimeExports.jsx("input", { type: "number", value: budgetMin, onChange: (e) => setBudgetMin(e.target.value), placeholder: "500", className: "w-full rounded-lg border border-stone-300 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" })] }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-gray-700 mb-2", children: "Budget Max ($)" }), jsxRuntimeExports.jsx("input", { type: "number", value: budgetMax, onChange: (e) => setBudgetMax(e.target.value), placeholder: "2000", className: "w-full rounded-lg border border-stone-300 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" })] })] }), jsxRuntimeExports.jsxs("div", { className: "rounded-xl border border-blue-100 bg-blue-50/80 px-4 py-4 text-sm text-blue-950", children: [jsxRuntimeExports.jsx("p", { className: "font-semibold", children: "What ModlyAI checks" }), jsxRuntimeExports.jsx("div", { className: "mt-3 grid gap-2", children: trustItems.map((item) => (jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 text-blue-900", children: [jsxRuntimeExports.jsx(Check, { className: "h-4 w-4 shrink-0 text-blue-600" }), jsxRuntimeExports.jsx("span", { children: item })] }, item))) })] }), jsxRuntimeExports.jsxs("div", { className: "space-y-3 pt-1", children: [jsxRuntimeExports.jsx("button", { type: "button", onClick: handleAnalyze, disabled: isLoading, className: "flex w-full items-center justify-center gap-2 rounded-lg bg-blue-600 py-4 font-semibold text-white shadow-lg shadow-blue-600/20 transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50", style: { backgroundColor: primaryColor }, children: isLoading ? (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsx("span", { className: "h-5 w-5 rounded-full border-2 border-white/50 border-t-white animate-spin" }), "Finding matches..."] })) : (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsx(Sparkles, { className: "w-5 h-5" }), "Find matching catalog products"] })) }), jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-1 gap-3 sm:grid-cols-2", children: [jsxRuntimeExports.jsx("button", { type: "button", onClick: handleExportPdf, className: "min-h-11 rounded-lg border border-stone-300 bg-white px-4 py-3 text-sm font-semibold text-gray-700 transition hover:bg-stone-50", children: "Export PDF" }), jsxRuntimeExports.jsx("button", { type: "button", onClick: handleShare, className: "min-h-11 rounded-lg border border-stone-300 bg-white px-4 py-3 text-sm font-semibold text-gray-700 transition hover:bg-stone-50", children: "Share" })] })] })] })] })] }), shareMessage && (jsxRuntimeExports.jsx("div", { className: "mt-4 rounded-lg border border-blue-200 bg-blue-50 px-4 py-3 text-sm text-blue-900", children: shareMessage })), error && (jsxRuntimeExports.jsxs("div", { className: "mt-4 rounded-xl border border-red-200 bg-red-50 p-4 text-red-700", children: [jsxRuntimeExports.jsx("p", { className: "font-semibold", children: "Error" }), jsxRuntimeExports.jsx("p", { className: "text-sm", children: error })] })), jsxRuntimeExports.jsxs("div", { className: "print-only hidden mt-6 text-left", children: [jsxRuntimeExports.jsx("h3", { className: "text-xl font-semibold text-gray-900", children: "Room Planner Share Summary" }), jsxRuntimeExports.jsx("pre", { className: "mt-2 whitespace-pre-wrap text-sm text-gray-700", children: buildShareText() })] })] }), jsxRuntimeExports.jsx("div", { className: "mt-8 bg-white p-6 md:p-8 rounded-2xl shadow-lg border border-gray-200", children: jsxRuntimeExports.jsx(CustomizedFurnitureList, { items: customizedFurniture, onItemRemoved: handleItemRemoved, onNavigateToCustomizer: handleNavigateToCustomizer, onRequestQuote: enabledActions.requestQuote ? handleRequestQuoteForCustomizedItem : undefined }) }), recommendations && (jsxRuntimeExports.jsxs("div", { ref: resultsRef, className: "mt-8 scroll-mt-24 rounded-2xl border border-gray-200 bg-white p-6 shadow-lg transition-all md:p-8", children: [recommendations.roomAnalysis && (jsxRuntimeExports.jsxs("div", { className: "mb-8 rounded-xl border border-blue-100 bg-blue-50/80 p-6", children: [jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between gap-4 mb-4", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h2", { className: "text-2xl font-semibold text-gray-950", children: "Room analysis" }), jsxRuntimeExports.jsx("p", { className: "mt-1 text-sm text-blue-900/70", children: "Use room details and catalog data to improve recommendations." })] }), jsxRuntimeExports.jsx("span", { className: "px-3 py-1 bg-green-100 text-green-700 text-sm font-medium rounded-full", children: "Success" })] }), jsxRuntimeExports.jsxs("div", { className: "grid md:grid-cols-2 gap-4", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-600 mb-1", children: "Observed style cues" }), jsxRuntimeExports.jsx("p", { className: "text-lg font-semibold text-gray-900", children: recommendations.roomAnalysis.detectedStyle })] }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-600 mb-1", children: "Color cues" }), jsxRuntimeExports.jsx("div", { className: "flex flex-wrap gap-2 mt-1", children: recommendations.roomAnalysis.dominantColors.map((color, i) => (jsxRuntimeExports.jsx("span", { className: "px-3 py-1 bg-white border border-blue-200 rounded-full text-sm text-gray-900", children: color }, i))) })] }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-600 mb-1", children: "Layout notes" }), jsxRuntimeExports.jsx("p", { className: "text-lg font-semibold text-gray-900", children: recommendations.roomAnalysis.freeSpace.description })] })] })] })), jsxRuntimeExports.jsx(RecommendationsList, { recommendations: recommendations.recommendations, onCustomize: enabledActions.customize ? handleCustomize : undefined, onFinalize: enabledActions.requestQuote ? handleFinalizeRecommendation : undefined, enabledActions: enabledActions, primaryColor: primaryColor, analyticsContext: analyticsContext }), enabledActions.requestQuote && recommendations.recommendations && recommendations.recommendations.length > 0 && (jsxRuntimeExports.jsxs("div", { className: "mt-8 pt-6 border-t border-gray-200 text-center", children: [jsxRuntimeExports.jsx("p", { className: "text-gray-700 mb-4 font-medium", children: "Ready to convert this into a quote?" }), jsxRuntimeExports.jsx("div", { className: "grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3", children: recommendations.recommendations.slice(0, 3).map((rec, idx) => (jsxRuntimeExports.jsxs("button", { type: "button", onClick: (event) => {
+                                                                            }) })] }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-gray-700 mb-2", children: "Preferred Colors" }), jsxRuntimeExports.jsx("input", { type: "text", value: colorInput, onChange: (e) => setColorInput(e.target.value), placeholder: "e.g., Beige, Forest Green, Terracotta", className: "w-full rounded-lg border border-stone-300 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" }), jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500 mt-1", children: "Comma-separated" })] })] })] }), jsxRuntimeExports.jsxs("div", { className: "rounded-2xl border border-stone-200 bg-white p-5 shadow-sm lg:col-span-4", children: [jsxRuntimeExports.jsxs("div", { className: "mb-5 flex items-start gap-3", children: [jsxRuntimeExports.jsx("div", { className: "flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700", children: jsxRuntimeExports.jsx(ShoppingBag, { className: "h-5 w-5" }) }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h3", { className: "text-lg font-bold text-gray-950", children: "Budget & Actions" }), jsxRuntimeExports.jsx("p", { className: "mt-1 text-sm text-gray-500", children: "Recommendations stay grounded in your imported catalog." })] })] }), jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-2 gap-3", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-gray-700 mb-2", children: "Budget Min ($)" }), jsxRuntimeExports.jsx("input", { type: "number", value: budgetMin, onChange: (e) => setBudgetMin(e.target.value), placeholder: "500", className: "w-full rounded-lg border border-stone-300 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" })] }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-gray-700 mb-2", children: "Budget Max ($)" }), jsxRuntimeExports.jsx("input", { type: "number", value: budgetMax, onChange: (e) => setBudgetMax(e.target.value), placeholder: "2000", className: "w-full rounded-lg border border-stone-300 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" })] })] }), jsxRuntimeExports.jsxs("div", { className: "rounded-xl border border-blue-100 bg-blue-50/80 px-4 py-4 text-sm text-blue-950", children: [jsxRuntimeExports.jsx("p", { className: "font-semibold", children: "What ModlyAI checks" }), jsxRuntimeExports.jsx("div", { className: "mt-3 grid gap-2", children: trustItems.map((item) => (jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 text-blue-900", children: [jsxRuntimeExports.jsx(Check, { className: "h-4 w-4 shrink-0 text-blue-600" }), jsxRuntimeExports.jsx("span", { children: item })] }, item))) })] }), jsxRuntimeExports.jsxs("div", { className: "space-y-3 pt-1", children: [jsxRuntimeExports.jsx("button", { type: "button", onClick: handleAnalyze, disabled: isLoading, className: "flex w-full items-center justify-center gap-2 rounded-lg bg-blue-600 py-4 font-semibold text-white shadow-lg shadow-blue-600/20 transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50", style: { backgroundColor: primaryColor }, children: isLoading ? (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsx("span", { className: "h-5 w-5 rounded-full border-2 border-white/50 border-t-white animate-spin" }), "Finding matches..."] })) : (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsx(Sparkles, { className: "w-5 h-5" }), "Find matching catalog products"] })) }), jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-1 gap-3 sm:grid-cols-2", children: [jsxRuntimeExports.jsx("button", { type: "button", onClick: handleExportPdf, className: "min-h-11 rounded-lg border border-stone-300 bg-white px-4 py-3 text-sm font-semibold text-gray-700 transition hover:bg-stone-50", children: "Export PDF" }), jsxRuntimeExports.jsx("button", { type: "button", onClick: handleShare, className: "min-h-11 rounded-lg border border-stone-300 bg-white px-4 py-3 text-sm font-semibold text-gray-700 transition hover:bg-stone-50", children: "Share" })] })] })] })] })] }), shareMessage && (jsxRuntimeExports.jsx("div", { className: "mt-4 rounded-lg border border-blue-200 bg-blue-50 px-4 py-3 text-sm text-blue-900", children: shareMessage })), error && (jsxRuntimeExports.jsxs("div", { className: "mt-4 rounded-xl border border-red-200 bg-red-50 p-4 text-red-700", children: [jsxRuntimeExports.jsx("p", { className: "font-semibold", children: "Error" }), jsxRuntimeExports.jsx("p", { className: "text-sm", children: error })] })), jsxRuntimeExports.jsxs("div", { className: "print-only hidden mt-6 text-left", children: [jsxRuntimeExports.jsx("h3", { className: "text-xl font-semibold text-gray-900", children: "Room Planner Share Summary" }), jsxRuntimeExports.jsx("pre", { className: "mt-2 whitespace-pre-wrap text-sm text-gray-700", children: buildShareText() })] })] }), jsxRuntimeExports.jsx("div", { className: "mt-8 bg-white p-6 md:p-8 rounded-2xl shadow-lg border border-gray-200", children: jsxRuntimeExports.jsx(CustomizedFurnitureList, { items: customizedFurniture, onItemRemoved: handleItemRemoved, onNavigateToCustomizer: handleNavigateToCustomizer, onRequestQuote: enabledActions.requestQuote ? handleRequestQuoteForCustomizedItem : undefined, highlightItemId: highlightItemId }) }), recommendations && (jsxRuntimeExports.jsxs("div", { ref: resultsRef, className: "mt-8 scroll-mt-24 rounded-2xl border border-gray-200 bg-white p-6 shadow-lg transition-all md:p-8", children: [recommendations.roomAnalysis && (jsxRuntimeExports.jsxs("div", { className: "mb-8 rounded-xl border border-blue-100 bg-blue-50/80 p-6", children: [jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between gap-4 mb-4", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h2", { className: "text-2xl font-semibold text-gray-950", children: "Room analysis" }), jsxRuntimeExports.jsx("p", { className: "mt-1 text-sm text-blue-900/70", children: "Use room details and catalog data to improve recommendations." })] }), jsxRuntimeExports.jsx("span", { className: "px-3 py-1 bg-green-100 text-green-700 text-sm font-medium rounded-full", children: "Success" })] }), jsxRuntimeExports.jsxs("div", { className: "grid md:grid-cols-2 gap-4", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-600 mb-1", children: "Observed style cues" }), jsxRuntimeExports.jsx("p", { className: "text-lg font-semibold text-gray-900", children: recommendations.roomAnalysis.detectedStyle })] }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-600 mb-1", children: "Color cues" }), jsxRuntimeExports.jsx("div", { className: "flex flex-wrap gap-2 mt-1", children: recommendations.roomAnalysis.dominantColors.map((color, i) => (jsxRuntimeExports.jsx("span", { className: "px-3 py-1 bg-white border border-blue-200 rounded-full text-sm text-gray-900", children: color }, i))) })] }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-600 mb-1", children: "Layout notes" }), jsxRuntimeExports.jsx("p", { className: "text-lg font-semibold text-gray-900", children: recommendations.roomAnalysis.freeSpace.description })] })] })] })), jsxRuntimeExports.jsx(RecommendationsList, { recommendations: recommendations.recommendations, onCustomize: enabledActions.customize ? handleCustomize : undefined, onFinalize: enabledActions.requestQuote ? handleFinalizeRecommendation : undefined, enabledActions: enabledActions, primaryColor: primaryColor, analyticsContext: analyticsContext }), enabledActions.requestQuote && recommendations.recommendations && recommendations.recommendations.length > 0 && (jsxRuntimeExports.jsxs("div", { className: "mt-8 pt-6 border-t border-gray-200 text-center", children: [jsxRuntimeExports.jsx("p", { className: "text-gray-700 mb-4 font-medium", children: "Ready to convert this into a quote?" }), jsxRuntimeExports.jsx("div", { className: "grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3", children: recommendations.recommendations.slice(0, 3).map((rec, idx) => (jsxRuntimeExports.jsxs("button", { type: "button", onClick: (event) => {
                                                             event.preventDefault();
                                                             event.stopPropagation();
                                                             handleFinalizeRecommendation(rec);
@@ -4665,6 +4719,18 @@ const ROOM_PLANNER_STORAGE_KEY = 'modly-room-planner-state';
 const CUSTOMIZER_SUGGESTION_LIMIT = 3;
 const SHORT_REASON_MAX_LENGTH = 120;
 const isDemoProduct$1 = (product) => Boolean(product && !product.source);
+const getProductImageUrl$1 = (product) => {
+    if (!product)
+        return undefined;
+    const candidate = product.imageUrl ||
+        product.image ||
+        product.thumbnail ||
+        product.images?.front ||
+        product.images?.thumbnail ||
+        product.images?.angle ||
+        product.images?.side;
+    return candidate?.trim() || undefined;
+};
 const normalizeDisplayOptions$1 = (value) => normalizeCustomizationOptionValues(value).map((option) => ({
     name: getOptionName(option),
     price: getOptionPrice(option),
@@ -4797,7 +4863,7 @@ const getProductCustomization = (product) => {
             optionLabels.length > 0,
     };
 };
-function FurnitureCustomizerPanel({ products, draft, setDraft, isApplying, validationErrors, price, onApply, onUndo, onRedo, canUndo, canRedo, onSaveConfig, onShareLink, onExportPdf, onViewFullRoomAnalysis, }) {
+function FurnitureCustomizerPanel({ products, draft, setDraft, isApplying, validationErrors, price, onApply, onUndo, onRedo, canUndo, canRedo, onSaveConfig, onShareLink, onExportPdf, onViewFullRoomAnalysis, onSuggestionsError, onRequestQuote, showRequestQuote, primaryColor, }) {
     const selectedProduct = useMemo(() => products.find((p) => p.id === draft.productId) ?? products[0], [draft.productId, products]);
     const customization = useMemo(() => getProductCustomization(selectedProduct), [selectedProduct]);
     useEffect(() => {
@@ -4833,6 +4899,8 @@ function FurnitureCustomizerPanel({ products, draft, setDraft, isApplying, valid
     const [roomPlannerRecommendations, setRoomPlannerRecommendations] = useState(null);
     const [aiSuggestions, setAiSuggestions] = useState(null);
     const [analyzing, setAnalyzing] = useState(false);
+    const [aiSuggestionsOpen, setAiSuggestionsOpen] = useState(false);
+    const [productImageErrors, setProductImageErrors] = useState(() => new Set());
     const roomPlannerSuggestions = useMemo(() => {
         if (!roomPlannerRecommendations)
             return null;
@@ -4913,9 +4981,12 @@ function FurnitureCustomizerPanel({ products, draft, setDraft, isApplying, valid
             const data = await res.json();
             if (data.success)
                 setAiSuggestions(data.suggestions);
+            else
+                onSuggestionsError?.("Couldn't get suggestions. Try again.");
         }
         catch (error) {
             console.error('Analysis error:', error);
+            onSuggestionsError?.("Couldn't get suggestions. Try again.");
         }
         finally {
             setAnalyzing(false);
@@ -4938,91 +5009,114 @@ function FurnitureCustomizerPanel({ products, draft, setDraft, isApplying, valid
             window.dispatchEvent(new CustomEvent('modly:navigate-to-room-planner'));
         }
     };
-    return (jsxRuntimeExports.jsx("section", { className: "py-12 bg-gray-50", children: jsxRuntimeExports.jsx("div", { className: "max-w-7xl mx-auto px-4", children: jsxRuntimeExports.jsxs("div", { className: "grid items-start gap-6 lg:grid-cols-12", children: [jsxRuntimeExports.jsx("div", { className: "self-start lg:col-span-3", children: jsxRuntimeExports.jsxs("div", { className: "bg-white rounded-2xl border border-gray-200 p-6 shadow-lg sticky top-6", children: [jsxRuntimeExports.jsxs("div", { className: "flex items-start justify-between gap-4 mb-4", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h3", { className: "text-lg font-bold text-gray-900 mb-4", children: "Select Product" }), jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-600 mb-4", children: "B2B-ready configs with instant pricing" })] }), jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [jsxRuntimeExports.jsx("button", { type: "button", onClick: onUndo, disabled: !canUndo || isApplying, className: "p-2 border border-gray-200 rounded-lg hover:bg-gray-50 transition disabled:opacity-50 disabled:cursor-not-allowed", title: "Undo", children: jsxRuntimeExports.jsx(Undo2, { className: "w-4 h-4 text-gray-600" }) }), jsxRuntimeExports.jsx("button", { type: "button", onClick: onRedo, disabled: !canRedo || isApplying, className: "p-2 border border-gray-200 rounded-lg hover:bg-gray-50 transition disabled:opacity-50 disabled:cursor-not-allowed", title: "Redo", children: jsxRuntimeExports.jsx(Redo2, { className: "w-4 h-4 text-gray-600" }) })] })] }), jsxRuntimeExports.jsx("select", { value: draft.productId, onChange: (e) => {
-                                        const nextProduct = products.find((product) => product.id === e.target.value);
-                                        if (!nextProduct) {
-                                            return;
-                                        }
-                                        setDraft({
-                                            ...draft,
-                                            productId: nextProduct.id,
-                                            fabricColor: getProductCustomization(nextProduct).colors[0]?.hex ?? draft.fabricColor,
-                                            selectedColor: getProductCustomization(nextProduct).colors[0]?.name,
-                                            materialId: getProductCustomization(nextProduct).materials[0]?.id ?? draft.materialId,
-                                            selectedMaterial: getProductCustomization(nextProduct).materials[0]?.name,
-                                            widthIn: getProductCustomization(nextProduct).dimensions.width?.default ??
-                                                nextProduct.customizer.defaultWidthIn,
-                                            depthIn: getProductCustomization(nextProduct).dimensions.length?.default ??
-                                                nextProduct.customizer.defaultDepthIn,
-                                            heightIn: getProductCustomization(nextProduct).dimensions.height?.default,
-                                            selectedAddOns: [],
-                                        });
-                                    }, disabled: isApplying, className: "w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 mb-6 disabled:opacity-60", children: products.map((p) => (jsxRuntimeExports.jsx("option", { value: p.id, children: p.name }, p.id))) }), jsxRuntimeExports.jsxs("div", { className: "aspect-square bg-purple-50 rounded-lg mb-6 flex flex-col items-center justify-center border border-purple-200 text-center px-4", children: [jsxRuntimeExports.jsx(Layers, { className: "w-12 h-12 text-purple-400 mb-2" }), jsxRuntimeExports.jsx("p", { className: "text-sm text-purple-600 font-medium", children: selectedProduct?.customizer.thumbnailLabel ?? 'Sectional' }), jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500", children: "Instantly updates with your selections" })] }), jsxRuntimeExports.jsxs("div", { className: "space-y-3 text-sm border-t border-gray-200 pt-4", children: [jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-gray-600", children: [jsxRuntimeExports.jsx("span", { children: "Base Price:" }), jsxRuntimeExports.jsx("span", { className: "font-medium text-gray-900", children: price.base > 0 ? `$${price.base.toLocaleString()}` : 'Quote required' })] }), jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-gray-600", children: [jsxRuntimeExports.jsx("span", { children: "Base Size:" }), jsxRuntimeExports.jsxs("span", { className: "font-medium text-gray-900", children: [selectedProduct?.dimensions.width, selectedProduct?.dimensions.unit, " W"] })] }), jsxRuntimeExports.jsxs("div", { className: "text-gray-600", children: [jsxRuntimeExports.jsx("span", { className: "block mb-1", children: "Materials:" }), jsxRuntimeExports.jsx("span", { className: "font-medium text-gray-900", children: selectedProduct?.materials.join(', ') || 'Custom' })] }), jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-gray-600", children: [jsxRuntimeExports.jsx("span", { children: "Customizations:" }), jsxRuntimeExports.jsxs("span", { className: "font-medium text-purple-600", children: ["+$", price.customizations.toLocaleString()] })] }), jsxRuntimeExports.jsxs("div", { className: "border-t border-gray-200 pt-3 flex justify-between", children: [jsxRuntimeExports.jsx("span", { className: "font-bold text-gray-900", children: "Total:" }), jsxRuntimeExports.jsx("span", { className: "font-bold text-lg text-gray-900", children: price.quoteRequired ? 'Quote required' : `$${price.total.toLocaleString()}` })] })] }), jsxRuntimeExports.jsxs("div", { className: "mt-6 grid grid-cols-3 gap-2", children: [jsxRuntimeExports.jsx("button", { type: "button", onClick: onSaveConfig, disabled: isApplying, className: "px-3 py-2 border border-gray-200 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gray-50 transition disabled:opacity-50", children: "Save" }), jsxRuntimeExports.jsxs("button", { type: "button", onClick: onShareLink, disabled: isApplying, className: "px-3 py-2 border border-gray-200 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gray-50 transition disabled:opacity-50 inline-flex items-center justify-center gap-2", children: [jsxRuntimeExports.jsx(Link2, { className: "w-4 h-4" }), "Share"] }), jsxRuntimeExports.jsxs("button", { type: "button", onClick: onExportPdf, disabled: isApplying, className: "px-3 py-2 border border-gray-200 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gray-50 transition disabled:opacity-50 inline-flex items-center justify-center gap-2", children: [jsxRuntimeExports.jsx(FileDown, { className: "w-4 h-4" }), "PDF"] })] })] }) }), jsxRuntimeExports.jsx("div", { className: "self-start lg:col-span-4", children: jsxRuntimeExports.jsxs("div", { className: "bg-white rounded-2xl border border-gray-200 p-6 shadow-lg", children: [jsxRuntimeExports.jsxs("h3", { className: "text-lg font-bold text-gray-900 mb-6 flex items-center gap-2", children: [jsxRuntimeExports.jsx(Palette, { className: "w-5 h-5 text-purple-600" }), "Customization Options"] }), jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-gray-900 mb-3", children: "Color" }), colorSwatches.length > 0 ? (jsxRuntimeExports.jsx("div", { className: "flex flex-wrap gap-2", children: colorSwatches.map((color) => {
-                                                const isSelected = draft.fabricColor.toLowerCase() === color.hex.toLowerCase();
-                                                return (jsxRuntimeExports.jsxs("button", { type: "button", onClick: () => setDraft({ ...draft, fabricColor: color.hex, selectedColor: color.name }), disabled: isApplying, className: [
-                                                        'flex items-center gap-2 px-3 py-2 rounded-full border-2 text-sm transition-all',
-                                                        isSelected
-                                                            ? 'border-blue-500 bg-blue-50'
-                                                            : 'border-gray-200 hover:border-gray-300',
-                                                        isApplying ? 'opacity-60 cursor-not-allowed' : '',
-                                                    ].join(' '), "aria-label": `Select color ${color.name}`, title: color.name, children: [jsxRuntimeExports.jsx("div", { className: "w-5 h-5 rounded-full border border-gray-200", style: { backgroundColor: color.hex } }), jsxRuntimeExports.jsx("span", { children: color.name }), formatModifierLabel(color.price) && (jsxRuntimeExports.jsx("span", { className: "text-xs font-semibold text-gray-500", children: formatModifierLabel(color.price) }))] }, color.name));
-                                            }) })) : (jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-400", children: "No colors available for this product" }))] }), jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-gray-900 mb-3", children: "Material" }), materialOptions.length > 0 ? (jsxRuntimeExports.jsx("div", { className: "space-y-2", children: materialOptions.map((m) => {
-                                                const isSelected = draft.materialId === m.id;
-                                                return (jsxRuntimeExports.jsxs("button", { type: "button", onClick: () => setDraft({ ...draft, materialId: m.id, selectedMaterial: m.name }), disabled: isApplying, className: [
-                                                        'w-full flex items-center justify-between px-4 py-3 rounded-xl border-2 text-sm transition-all text-left',
-                                                        isSelected
-                                                            ? 'border-purple-500 bg-purple-50'
-                                                            : 'border-gray-200 hover:border-gray-300',
-                                                        isApplying ? 'opacity-60 cursor-not-allowed' : '',
-                                                    ].join(' '), children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("p", { className: "font-medium text-gray-900", children: m.name }), jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500", children: m.description || getMaterialDescription(m.name) })] }), jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [formatModifierLabel(m.priceDelta) && (jsxRuntimeExports.jsx("span", { className: "text-xs font-semibold text-gray-500", children: formatModifierLabel(m.priceDelta) })), isSelected && jsxRuntimeExports.jsx(Check, { className: "w-4 h-4 text-purple-500" })] })] }, m.id));
-                                            }) })) : (jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-400", children: "No materials available for this product" }))] }), (customization.dimensions.width || customization.dimensions.length || customization.dimensions.height) && (jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [jsxRuntimeExports.jsxs("label", { className: "block text-sm font-medium text-gray-900 mb-3 flex items-center gap-2", children: [jsxRuntimeExports.jsx(Maximize2, { className: "w-4 h-4 text-purple-600" }), "Dimensions"] }), jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [customization.dimensions.width && (jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-sm mb-2", children: [jsxRuntimeExports.jsx("span", { className: "text-gray-600", children: "Width" }), jsxRuntimeExports.jsxs("span", { className: "font-medium text-gray-900", children: [draft.widthIn, " ", customization.dimensions.width.unit] })] }), jsxRuntimeExports.jsx("input", { type: "range", min: widthMin, max: widthMax, value: draft.widthIn, onChange: (e) => setDraft({ ...draft, widthIn: Number(e.target.value) }), disabled: isApplying, className: "w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-600" }), jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-xs text-gray-500 mt-1", children: [jsxRuntimeExports.jsxs("span", { children: [widthMin, customization.dimensions.width.unit] }), jsxRuntimeExports.jsxs("span", { children: [widthMax, customization.dimensions.width.unit] })] }), typeof customization.dimensions.width.pricePerExtraUnit === 'number' && (jsxRuntimeExports.jsxs("p", { className: "mt-1 text-xs text-gray-500", children: ["+$", customization.dimensions.width.pricePerExtraUnit.toLocaleString(), " per extra ", customization.dimensions.width.unit] }))] })), customization.dimensions.length && (jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-sm mb-2", children: [jsxRuntimeExports.jsx("span", { className: "text-gray-600", children: "Length" }), jsxRuntimeExports.jsxs("span", { className: "font-medium text-gray-900", children: [draft.depthIn, " ", customization.dimensions.length.unit] })] }), jsxRuntimeExports.jsx("input", { type: "range", min: lengthMin, max: lengthMax, value: draft.depthIn, onChange: (e) => setDraft({ ...draft, depthIn: Number(e.target.value) }), disabled: isApplying, className: "w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-600" }), jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-xs text-gray-500 mt-1", children: [jsxRuntimeExports.jsxs("span", { children: [lengthMin, customization.dimensions.length.unit] }), jsxRuntimeExports.jsxs("span", { children: [lengthMax, customization.dimensions.length.unit] })] }), typeof customization.dimensions.length.pricePerExtraUnit === 'number' && (jsxRuntimeExports.jsxs("p", { className: "mt-1 text-xs text-gray-500", children: ["+$", customization.dimensions.length.pricePerExtraUnit.toLocaleString(), " per extra ", customization.dimensions.length.unit] }))] })), customization.dimensions.height && (jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-sm mb-2", children: [jsxRuntimeExports.jsx("span", { className: "text-gray-600", children: "Height" }), jsxRuntimeExports.jsxs("span", { className: "font-medium text-gray-900", children: [draft.heightIn ?? baseDimensions.height, " ", customization.dimensions.height.unit] })] }), jsxRuntimeExports.jsx("input", { type: "range", min: heightMin, max: heightMax, value: draft.heightIn ?? baseDimensions.height, onChange: (e) => setDraft({ ...draft, heightIn: Number(e.target.value) }), disabled: isApplying, className: "w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-600" }), jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-xs text-gray-500 mt-1", children: [jsxRuntimeExports.jsxs("span", { children: [heightMin, customization.dimensions.height.unit] }), jsxRuntimeExports.jsxs("span", { children: [heightMax, customization.dimensions.height.unit] })] }), typeof customization.dimensions.height.pricePerExtraUnit === 'number' && (jsxRuntimeExports.jsxs("p", { className: "mt-1 text-xs text-gray-500", children: ["+$", customization.dimensions.height.pricePerExtraUnit.toLocaleString(), " per extra ", customization.dimensions.height.unit] }))] }))] }), validationErrors && validationErrors.length > 0 && (jsxRuntimeExports.jsxs("div", { className: "mt-4 bg-red-50 border border-red-200 text-red-700 rounded-lg p-3 text-sm", children: [jsxRuntimeExports.jsx("div", { className: "font-semibold mb-1", children: "Adjustments need review" }), jsxRuntimeExports.jsx("ul", { className: "list-disc pl-5 space-y-1", children: validationErrors.map((e, i) => (jsxRuntimeExports.jsx("li", { children: e }, i))) })] }))] })), !(customization.dimensions.width || customization.dimensions.length || customization.dimensions.height) &&
-                                    (customization.dimensionSummary.width ||
-                                        customization.dimensionSummary.length ||
-                                        customization.dimensionSummary.height) && (jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [jsxRuntimeExports.jsxs("label", { className: "block text-sm font-medium text-gray-900 mb-3 flex items-center gap-2", children: [jsxRuntimeExports.jsx(Maximize2, { className: "w-4 h-4 text-purple-600" }), "Dimensions"] }), jsxRuntimeExports.jsxs("div", { className: "space-y-2 rounded-xl border border-gray-200 bg-gray-50 p-4 text-sm", children: [customization.dimensionSummary.width && (jsxRuntimeExports.jsxs("div", { className: "flex justify-between gap-4", children: [jsxRuntimeExports.jsx("span", { className: "text-gray-600", children: "Width" }), jsxRuntimeExports.jsxs("span", { className: "font-medium text-gray-900", children: [customization.dimensionSummary.width.value, " ", customization.dimensionSummary.width.unit] })] })), customization.dimensionSummary.length && (jsxRuntimeExports.jsxs("div", { className: "flex justify-between gap-4", children: [jsxRuntimeExports.jsx("span", { className: "text-gray-600", children: "Length" }), jsxRuntimeExports.jsxs("span", { className: "font-medium text-gray-900", children: [customization.dimensionSummary.length.value, " ", customization.dimensionSummary.length.unit] })] })), customization.dimensionSummary.height && (jsxRuntimeExports.jsxs("div", { className: "flex justify-between gap-4", children: [jsxRuntimeExports.jsx("span", { className: "text-gray-600", children: "Height" }), jsxRuntimeExports.jsxs("span", { className: "font-medium text-gray-900", children: [customization.dimensionSummary.height.value, " ", customization.dimensionSummary.height.unit] })] }))] })] })), customization.optionLabels.length > 0 && (jsxRuntimeExports.jsx("div", { className: "mb-6 space-y-3", children: customization.optionLabels.map((option) => (jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-gray-900 mb-2", children: option.name }), jsxRuntimeExports.jsx("div", { className: "flex flex-wrap gap-2", children: option.values.map((value) => (jsxRuntimeExports.jsxs("span", { className: "px-3 py-1.5 rounded-full border border-gray-200 bg-gray-50 text-sm text-gray-700", children: [value.name, formatModifierLabel(value.price, '') && (jsxRuntimeExports.jsx("span", { className: "ml-1 text-xs font-semibold text-gray-500", children: formatModifierLabel(value.price, '') }))] }, value.name))) })] }, option.name))) })), customization.addOns.length > 0 && (jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [jsxRuntimeExports.jsxs("label", { className: "block text-sm font-medium text-gray-900 mb-3 flex items-center gap-2", children: [jsxRuntimeExports.jsx(Layers, { className: "w-4 h-4 text-purple-600" }), "Add-ons"] }), jsxRuntimeExports.jsx("div", { className: "space-y-2", children: customization.addOns.map((addOn) => {
-                                                const selectedAddOns = draft.selectedAddOns ?? [];
-                                                const isChecked = selectedAddOns.includes(addOn.name);
-                                                return (jsxRuntimeExports.jsxs("label", { className: "flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition", children: [jsxRuntimeExports.jsx("input", { type: "checkbox", checked: isChecked, onChange: (e) => {
-                                                                const nextSelectedAddOns = e.target.checked
-                                                                    ? [...selectedAddOns, addOn.name]
-                                                                    : selectedAddOns.filter((name) => name !== addOn.name);
-                                                                setDraft({ ...draft, selectedAddOns: nextSelectedAddOns });
-                                                            }, disabled: isApplying, className: "w-4 h-4 text-purple-600 rounded accent-purple-600" }), jsxRuntimeExports.jsx("span", { className: "flex-1 text-sm text-gray-900", children: addOn.name }), jsxRuntimeExports.jsx("span", { className: "text-sm font-medium text-gray-900", children: typeof addOn.price === 'number' ? `+$${addOn.price.toLocaleString()}` : 'Quote' })] }, addOn.name));
-                                            }) })] })), !customization.hasOptions && (jsxRuntimeExports.jsx("div", { className: "mb-6 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900", children: "This product does not have predefined customization options. Tell us what you want and we'll send it as a quote request." })), jsxRuntimeExports.jsxs("button", { type: "button", onClick: onApply, disabled: isApplying || (validationErrors?.length ?? 0) > 0, className: "w-full py-4 bg-purple-600 text-white rounded-full font-semibold hover:bg-purple-700 transition shadow-lg shadow-purple-600/30 flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed", children: [jsxRuntimeExports.jsx(Sparkles, { className: "w-5 h-5" }), isApplying ? 'Applying...' : 'Apply Customizations'] })] }) }), jsxRuntimeExports.jsx("div", { className: "self-start lg:col-span-5", children: jsxRuntimeExports.jsxs("div", { className: "bg-white rounded-2xl border border-gray-200 p-6 shadow-lg sticky top-6", children: [jsxRuntimeExports.jsxs("div", { className: "bg-white rounded-xl border border-gray-200 p-5 mb-4", children: [jsxRuntimeExports.jsx("h3", { className: "font-semibold text-gray-900 mb-1", children: "Tell Us What You Want" }), jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500 mb-3", children: "Describe exactly what you need - AI will tailor suggestions to your specific request" }), jsxRuntimeExports.jsx("textarea", { value: additionalDetails, onChange: (e) => {
-                                                setAdditionalDetails(e.target.value);
-                                                setCharCount(e.target.value.length);
-                                                setDraft({ ...draft, customerRequestText: e.target.value });
-                                            }, maxLength: 500, rows: 5, placeholder: `Examples:
+    return (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsx("section", { className: "py-12 bg-gray-50", children: jsxRuntimeExports.jsxs("div", { className: "max-w-7xl mx-auto px-4", children: [jsxRuntimeExports.jsxs("button", { type: "button", onClick: () => setAiSuggestionsOpen((prev) => !prev), "aria-pressed": aiSuggestionsOpen, className: [
+                                'mb-6 inline-flex items-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold transition border',
+                                aiSuggestionsOpen
+                                    ? 'border-blue-200 bg-blue-50 text-blue-700'
+                                    : 'border-gray-200 bg-white text-gray-700 shadow-sm hover:bg-gray-50',
+                            ].join(' '), children: [jsxRuntimeExports.jsx(Sparkles, { className: "w-4 h-4" }), "AI Suggestions"] }), jsxRuntimeExports.jsxs("div", { className: "grid items-stretch gap-6 lg:grid-cols-12", children: [jsxRuntimeExports.jsx("div", { className: "self-stretch lg:col-start-1 lg:col-span-3 lg:row-start-1", children: jsxRuntimeExports.jsxs("div", { className: "bg-white rounded-2xl border border-gray-200 p-6 shadow-lg sticky top-6 h-full flex flex-col", children: [jsxRuntimeExports.jsxs("div", { className: "flex items-start justify-between gap-4 mb-4", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h3", { className: "text-lg font-bold text-gray-900 mb-4", children: "Select Product" }), jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-600 mb-4", children: "B2B-ready configs with instant pricing" })] }), jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [jsxRuntimeExports.jsx("button", { type: "button", onClick: onUndo, disabled: !canUndo || isApplying, className: "p-2 border border-gray-200 rounded-lg hover:bg-gray-50 transition disabled:opacity-50 disabled:cursor-not-allowed", title: "Undo", children: jsxRuntimeExports.jsx(Undo2, { className: "w-4 h-4 text-gray-600" }) }), jsxRuntimeExports.jsx("button", { type: "button", onClick: onRedo, disabled: !canRedo || isApplying, className: "p-2 border border-gray-200 rounded-lg hover:bg-gray-50 transition disabled:opacity-50 disabled:cursor-not-allowed", title: "Redo", children: jsxRuntimeExports.jsx(Redo2, { className: "w-4 h-4 text-gray-600" }) })] })] }), jsxRuntimeExports.jsx("select", { value: draft.productId, onChange: (e) => {
+                                                    const nextProduct = products.find((product) => product.id === e.target.value);
+                                                    if (!nextProduct) {
+                                                        return;
+                                                    }
+                                                    setDraft({
+                                                        ...draft,
+                                                        productId: nextProduct.id,
+                                                        fabricColor: getProductCustomization(nextProduct).colors[0]?.hex ?? draft.fabricColor,
+                                                        selectedColor: getProductCustomization(nextProduct).colors[0]?.name,
+                                                        materialId: getProductCustomization(nextProduct).materials[0]?.id ?? draft.materialId,
+                                                        selectedMaterial: getProductCustomization(nextProduct).materials[0]?.name,
+                                                        widthIn: getProductCustomization(nextProduct).dimensions.width?.default ??
+                                                            nextProduct.customizer.defaultWidthIn,
+                                                        depthIn: getProductCustomization(nextProduct).dimensions.length?.default ??
+                                                            nextProduct.customizer.defaultDepthIn,
+                                                        heightIn: getProductCustomization(nextProduct).dimensions.height?.default,
+                                                        selectedAddOns: [],
+                                                    });
+                                                }, disabled: isApplying, className: "w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 mb-6 disabled:opacity-60", children: products.map((p) => (jsxRuntimeExports.jsx("option", { value: p.id, children: p.name }, p.id))) }), jsxRuntimeExports.jsx("div", { className: "aspect-square bg-purple-50 rounded-lg mb-6 flex flex-col items-center justify-center border border-purple-200 text-center px-4 overflow-hidden", children: selectedProduct && getProductImageUrl$1(selectedProduct) && !productImageErrors.has(selectedProduct.id) ? (jsxRuntimeExports.jsx("img", { src: getProductImageUrl$1(selectedProduct), alt: selectedProduct.name, className: "h-full w-full object-cover", onError: () => setProductImageErrors((prev) => {
+                                                        const next = new Set(prev);
+                                                        next.add(selectedProduct.id);
+                                                        return next;
+                                                    }) })) : (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsx(Layers, { className: "w-12 h-12 text-purple-400 mb-2" }), jsxRuntimeExports.jsx("p", { className: "text-sm text-purple-600 font-medium", children: selectedProduct?.customizer.thumbnailLabel ?? 'Sectional' }), jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500", children: "Instantly updates with your selections" })] })) }), jsxRuntimeExports.jsxs("div", { className: "space-y-3 text-sm border-t border-gray-200 pt-4", children: [jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-gray-600", children: [jsxRuntimeExports.jsx("span", { children: "Base Price:" }), jsxRuntimeExports.jsx("span", { className: "font-medium text-gray-900", children: price.base > 0 ? `$${price.base.toLocaleString()}` : 'Quote required' })] }), jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-gray-600", children: [jsxRuntimeExports.jsx("span", { children: "Base Size:" }), jsxRuntimeExports.jsxs("span", { className: "font-medium text-gray-900", children: [selectedProduct?.dimensions.width, selectedProduct?.dimensions.unit, " W"] })] }), jsxRuntimeExports.jsxs("div", { className: "text-gray-600", children: [jsxRuntimeExports.jsx("span", { className: "block mb-1", children: "Materials:" }), jsxRuntimeExports.jsx("span", { className: "font-medium text-gray-900", children: selectedProduct?.materials.join(', ') || 'Custom' })] }), jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-gray-600", children: [jsxRuntimeExports.jsx("span", { children: "Customizations:" }), jsxRuntimeExports.jsxs("span", { className: "font-medium text-purple-600", children: ["+$", price.customizations.toLocaleString()] })] }), jsxRuntimeExports.jsxs("div", { className: "border-t border-gray-200 pt-3 flex justify-between", children: [jsxRuntimeExports.jsx("span", { className: "font-bold text-gray-900", children: "Total:" }), jsxRuntimeExports.jsx("span", { className: "font-bold text-lg text-gray-900", children: price.quoteRequired ? 'Quote required' : `$${price.total.toLocaleString()}` })] })] }), jsxRuntimeExports.jsxs("div", { className: "mt-6 grid grid-cols-3 gap-2", children: [jsxRuntimeExports.jsx("button", { type: "button", onClick: onSaveConfig, disabled: isApplying, className: "px-3 py-2 border border-gray-200 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gray-50 transition disabled:opacity-50", children: "Save" }), jsxRuntimeExports.jsxs("button", { type: "button", onClick: onShareLink, disabled: isApplying, className: "px-3 py-2 border border-gray-200 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gray-50 transition disabled:opacity-50 inline-flex items-center justify-center gap-2", children: [jsxRuntimeExports.jsx(Link2, { className: "w-4 h-4" }), "Share"] }), jsxRuntimeExports.jsxs("button", { type: "button", onClick: onExportPdf, disabled: isApplying, className: "px-3 py-2 border border-gray-200 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gray-50 transition disabled:opacity-50 inline-flex items-center justify-center gap-2", children: [jsxRuntimeExports.jsx(FileDown, { className: "w-4 h-4" }), "PDF"] })] })] }) }), jsxRuntimeExports.jsx("div", { className: "self-stretch lg:col-start-4 lg:col-span-4 lg:row-start-1", children: jsxRuntimeExports.jsxs("div", { className: "bg-white rounded-2xl border border-gray-200 p-6 shadow-lg h-full", children: [jsxRuntimeExports.jsxs("h3", { className: "text-lg font-bold text-gray-900 mb-6 flex items-center gap-2", children: [jsxRuntimeExports.jsx(Palette, { className: "w-5 h-5 text-purple-600" }), "Customization Options"] }), jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-gray-900 mb-3", children: "Color" }), colorSwatches.length > 0 ? (jsxRuntimeExports.jsx("div", { className: "flex flex-wrap gap-2", children: colorSwatches.map((color) => {
+                                                            const isSelected = draft.fabricColor.toLowerCase() === color.hex.toLowerCase();
+                                                            return (jsxRuntimeExports.jsxs("button", { type: "button", onClick: () => setDraft({ ...draft, fabricColor: color.hex, selectedColor: color.name }), disabled: isApplying, className: [
+                                                                    'flex items-center gap-2 px-3 py-2 rounded-full border-2 text-sm transition-all',
+                                                                    isSelected
+                                                                        ? 'border-blue-500 bg-blue-50'
+                                                                        : 'border-gray-200 hover:border-gray-300',
+                                                                    isApplying ? 'opacity-60 cursor-not-allowed' : '',
+                                                                ].join(' '), "aria-label": `Select color ${color.name}`, title: color.name, children: [jsxRuntimeExports.jsx("div", { className: "w-5 h-5 rounded-full border border-gray-200", style: { backgroundColor: color.hex } }), jsxRuntimeExports.jsx("span", { children: color.name }), formatModifierLabel(color.price) && (jsxRuntimeExports.jsx("span", { className: "text-xs font-semibold text-gray-500", children: formatModifierLabel(color.price) }))] }, color.name));
+                                                        }) })) : (jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-400", children: "No colors available for this product" }))] }), jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-gray-900 mb-3", children: "Material" }), materialOptions.length > 0 ? (jsxRuntimeExports.jsx("div", { className: "space-y-2", children: materialOptions.map((m) => {
+                                                            const isSelected = draft.materialId === m.id;
+                                                            return (jsxRuntimeExports.jsxs("button", { type: "button", onClick: () => setDraft({ ...draft, materialId: m.id, selectedMaterial: m.name }), disabled: isApplying, className: [
+                                                                    'w-full flex items-center justify-between px-4 py-3 rounded-xl border-2 text-sm transition-all text-left',
+                                                                    isSelected
+                                                                        ? 'border-purple-500 bg-purple-50'
+                                                                        : 'border-gray-200 hover:border-gray-300',
+                                                                    isApplying ? 'opacity-60 cursor-not-allowed' : '',
+                                                                ].join(' '), children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("p", { className: "font-medium text-gray-900", children: m.name }), jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500", children: m.description || getMaterialDescription(m.name) })] }), jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [formatModifierLabel(m.priceDelta) && (jsxRuntimeExports.jsx("span", { className: "text-xs font-semibold text-gray-500", children: formatModifierLabel(m.priceDelta) })), isSelected && jsxRuntimeExports.jsx(Check, { className: "w-4 h-4 text-purple-500" })] })] }, m.id));
+                                                        }) })) : (jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-400", children: "No materials available for this product" }))] }), (customization.dimensions.width || customization.dimensions.length || customization.dimensions.height) && (jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [jsxRuntimeExports.jsxs("label", { className: "block text-sm font-medium text-gray-900 mb-3 flex items-center gap-2", children: [jsxRuntimeExports.jsx(Maximize2, { className: "w-4 h-4 text-purple-600" }), "Dimensions"] }), jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [customization.dimensions.width && (jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-sm mb-2", children: [jsxRuntimeExports.jsx("span", { className: "text-gray-600", children: "Width" }), jsxRuntimeExports.jsxs("span", { className: "font-medium text-gray-900", children: [draft.widthIn, " ", customization.dimensions.width.unit] })] }), jsxRuntimeExports.jsx("input", { type: "range", min: widthMin, max: widthMax, value: draft.widthIn, onChange: (e) => setDraft({ ...draft, widthIn: Number(e.target.value) }), disabled: isApplying, className: "w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-600" }), jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-xs text-gray-500 mt-1", children: [jsxRuntimeExports.jsxs("span", { children: [widthMin, customization.dimensions.width.unit] }), jsxRuntimeExports.jsxs("span", { children: [widthMax, customization.dimensions.width.unit] })] }), typeof customization.dimensions.width.pricePerExtraUnit === 'number' && (jsxRuntimeExports.jsxs("p", { className: "mt-1 text-xs text-gray-500", children: ["+$", customization.dimensions.width.pricePerExtraUnit.toLocaleString(), " per extra ", customization.dimensions.width.unit] }))] })), customization.dimensions.length && (jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-sm mb-2", children: [jsxRuntimeExports.jsx("span", { className: "text-gray-600", children: "Length" }), jsxRuntimeExports.jsxs("span", { className: "font-medium text-gray-900", children: [draft.depthIn, " ", customization.dimensions.length.unit] })] }), jsxRuntimeExports.jsx("input", { type: "range", min: lengthMin, max: lengthMax, value: draft.depthIn, onChange: (e) => setDraft({ ...draft, depthIn: Number(e.target.value) }), disabled: isApplying, className: "w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-600" }), jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-xs text-gray-500 mt-1", children: [jsxRuntimeExports.jsxs("span", { children: [lengthMin, customization.dimensions.length.unit] }), jsxRuntimeExports.jsxs("span", { children: [lengthMax, customization.dimensions.length.unit] })] }), typeof customization.dimensions.length.pricePerExtraUnit === 'number' && (jsxRuntimeExports.jsxs("p", { className: "mt-1 text-xs text-gray-500", children: ["+$", customization.dimensions.length.pricePerExtraUnit.toLocaleString(), " per extra ", customization.dimensions.length.unit] }))] })), customization.dimensions.height && (jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-sm mb-2", children: [jsxRuntimeExports.jsx("span", { className: "text-gray-600", children: "Height" }), jsxRuntimeExports.jsxs("span", { className: "font-medium text-gray-900", children: [draft.heightIn ?? baseDimensions.height, " ", customization.dimensions.height.unit] })] }), jsxRuntimeExports.jsx("input", { type: "range", min: heightMin, max: heightMax, value: draft.heightIn ?? baseDimensions.height, onChange: (e) => setDraft({ ...draft, heightIn: Number(e.target.value) }), disabled: isApplying, className: "w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-600" }), jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-xs text-gray-500 mt-1", children: [jsxRuntimeExports.jsxs("span", { children: [heightMin, customization.dimensions.height.unit] }), jsxRuntimeExports.jsxs("span", { children: [heightMax, customization.dimensions.height.unit] })] }), typeof customization.dimensions.height.pricePerExtraUnit === 'number' && (jsxRuntimeExports.jsxs("p", { className: "mt-1 text-xs text-gray-500", children: ["+$", customization.dimensions.height.pricePerExtraUnit.toLocaleString(), " per extra ", customization.dimensions.height.unit] }))] }))] }), validationErrors && validationErrors.length > 0 && (jsxRuntimeExports.jsxs("div", { className: "mt-4 bg-red-50 border border-red-200 text-red-700 rounded-lg p-3 text-sm", children: [jsxRuntimeExports.jsx("div", { className: "font-semibold mb-1", children: "Adjustments need review" }), jsxRuntimeExports.jsx("ul", { className: "list-disc pl-5 space-y-1", children: validationErrors.map((e, i) => (jsxRuntimeExports.jsx("li", { children: e }, i))) })] }))] })), !(customization.dimensions.width || customization.dimensions.length || customization.dimensions.height) &&
+                                                (customization.dimensionSummary.width ||
+                                                    customization.dimensionSummary.length ||
+                                                    customization.dimensionSummary.height) && (jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [jsxRuntimeExports.jsxs("label", { className: "block text-sm font-medium text-gray-900 mb-3 flex items-center gap-2", children: [jsxRuntimeExports.jsx(Maximize2, { className: "w-4 h-4 text-purple-600" }), "Dimensions"] }), jsxRuntimeExports.jsxs("div", { className: "space-y-2 rounded-xl border border-gray-200 bg-gray-50 p-4 text-sm", children: [customization.dimensionSummary.width && (jsxRuntimeExports.jsxs("div", { className: "flex justify-between gap-4", children: [jsxRuntimeExports.jsx("span", { className: "text-gray-600", children: "Width" }), jsxRuntimeExports.jsxs("span", { className: "font-medium text-gray-900", children: [customization.dimensionSummary.width.value, " ", customization.dimensionSummary.width.unit] })] })), customization.dimensionSummary.length && (jsxRuntimeExports.jsxs("div", { className: "flex justify-between gap-4", children: [jsxRuntimeExports.jsx("span", { className: "text-gray-600", children: "Length" }), jsxRuntimeExports.jsxs("span", { className: "font-medium text-gray-900", children: [customization.dimensionSummary.length.value, " ", customization.dimensionSummary.length.unit] })] })), customization.dimensionSummary.height && (jsxRuntimeExports.jsxs("div", { className: "flex justify-between gap-4", children: [jsxRuntimeExports.jsx("span", { className: "text-gray-600", children: "Height" }), jsxRuntimeExports.jsxs("span", { className: "font-medium text-gray-900", children: [customization.dimensionSummary.height.value, " ", customization.dimensionSummary.height.unit] })] }))] })] })), customization.optionLabels.length > 0 && (jsxRuntimeExports.jsx("div", { className: "mb-6 space-y-3", children: customization.optionLabels.map((option) => (jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-gray-900 mb-2", children: option.name }), jsxRuntimeExports.jsx("div", { className: "flex flex-wrap gap-2", children: option.values.map((value) => (jsxRuntimeExports.jsxs("span", { className: "px-3 py-1.5 rounded-full border border-gray-200 bg-gray-50 text-sm text-gray-700", children: [value.name, formatModifierLabel(value.price, '') && (jsxRuntimeExports.jsx("span", { className: "ml-1 text-xs font-semibold text-gray-500", children: formatModifierLabel(value.price, '') }))] }, value.name))) })] }, option.name))) })), customization.addOns.length > 0 && (jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [jsxRuntimeExports.jsxs("label", { className: "block text-sm font-medium text-gray-900 mb-3 flex items-center gap-2", children: [jsxRuntimeExports.jsx(Layers, { className: "w-4 h-4 text-purple-600" }), "Add-ons"] }), jsxRuntimeExports.jsx("div", { className: "space-y-2", children: customization.addOns.map((addOn) => {
+                                                            const selectedAddOns = draft.selectedAddOns ?? [];
+                                                            const isChecked = selectedAddOns.includes(addOn.name);
+                                                            return (jsxRuntimeExports.jsxs("label", { className: "flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition", children: [jsxRuntimeExports.jsx("input", { type: "checkbox", checked: isChecked, onChange: (e) => {
+                                                                            const nextSelectedAddOns = e.target.checked
+                                                                                ? [...selectedAddOns, addOn.name]
+                                                                                : selectedAddOns.filter((name) => name !== addOn.name);
+                                                                            setDraft({ ...draft, selectedAddOns: nextSelectedAddOns });
+                                                                        }, disabled: isApplying, className: "w-4 h-4 text-purple-600 rounded accent-purple-600" }), jsxRuntimeExports.jsx("span", { className: "flex-1 text-sm text-gray-900", children: addOn.name }), jsxRuntimeExports.jsx("span", { className: "text-sm font-medium text-gray-900", children: typeof addOn.price === 'number' ? `+$${addOn.price.toLocaleString()}` : 'Quote' })] }, addOn.name));
+                                                        }) })] })), !customization.hasOptions && (jsxRuntimeExports.jsx("div", { className: "mb-6 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900", children: "This product does not have predefined customization options. Tell us what you want and we'll send it as a quote request." }))] }) }), jsxRuntimeExports.jsx("div", { className: "self-stretch lg:col-start-8 lg:col-span-5 lg:row-start-1", children: jsxRuntimeExports.jsxs("div", { className: "bg-white rounded-2xl border border-gray-200 p-6 shadow-lg sticky top-6 h-full flex flex-col", children: [jsxRuntimeExports.jsxs("div", { className: "bg-white rounded-xl border border-gray-200 p-5 mb-4", children: [jsxRuntimeExports.jsx("h3", { className: "font-semibold text-gray-900 mb-1", children: "Tell Us What You Want" }), jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500 mb-3", children: "Describe exactly what you need - AI will tailor suggestions to your specific request" }), jsxRuntimeExports.jsx("textarea", { value: additionalDetails, onChange: (e) => {
+                                                            setAdditionalDetails(e.target.value);
+                                                            setCharCount(e.target.value.length);
+                                                            setDraft({ ...draft, customerRequestText: e.target.value });
+                                                        }, maxLength: 500, rows: 5, placeholder: `Examples:
 - I want something that matches my grey walls
 - Need storage space underneath
 - Looking for pet-friendly fabric
 - Want it to feel cozy but modern
 - Must fit through a 32 inch doorway`, className: "w-full border border-gray-300 rounded-xl px-4 py-3 text-sm text-gray-700 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400" }), jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mt-2", children: [jsxRuntimeExports.jsxs("span", { className: "text-xs text-gray-400", children: [charCount, "/500 characters"] }), additionalDetails && (jsxRuntimeExports.jsx("button", { onClick: () => {
-                                                        setAdditionalDetails('');
-                                                        setCharCount(0);
-                                                        setDraft({ ...draft, customerRequestText: '' });
-                                                    }, className: "text-xs text-gray-400 hover:text-gray-600", children: "Clear" }))] }), jsxRuntimeExports.jsxs("div", { className: "mt-3", children: [jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-400 mb-2", children: "Quick adds:" }), jsxRuntimeExports.jsx("div", { className: "flex flex-wrap gap-2", children: [
-                                                        'Pet-friendly fabric',
-                                                        'Easy to clean',
-                                                        'Extra storage',
-                                                        'Child-safe',
-                                                        'Matches grey walls',
-                                                        'Cozy and warm feel',
-                                                        'Minimalist style',
-                                                        'Must fit small space',
-                                                    ].map((chip) => (jsxRuntimeExports.jsxs("button", { onClick: () => {
-                                                            const newText = additionalDetails
-                                                                ? `${additionalDetails}, ${chip.toLowerCase()}`
-                                                                : chip;
-                                                            setAdditionalDetails(newText);
-                                                            setCharCount(newText.length);
-                                                            setDraft({ ...draft, customerRequestText: newText });
-                                                        }, className: "text-xs bg-gray-100 hover:bg-blue-50 hover:text-blue-600 text-gray-600 px-3 py-1 rounded-full transition-colors", children: ["+ ", chip] }, chip))) })] })] }), roomPlannerPhoto && (jsxRuntimeExports.jsx("button", { onClick: handleAnalyzeWithRoomPlannerPhoto, disabled: analyzing, className: "w-full bg-blue-600 text-white py-3 rounded-full font-medium hover:bg-blue-700 disabled:opacity-50 flex items-center justify-center gap-2 mb-4", children: analyzing ? (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsx("div", { className: "animate-spin rounded-full h-4 w-4 border-b-2 border-white" }), "Analyzing your room..."] })) : (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsx(Sparkles, { className: "w-4 h-4" }), "Get AI Suggestions"] })) })), jsxRuntimeExports.jsxs("div", { className: "bg-white rounded-xl border border-gray-200 p-4 max-h-[380px] overflow-y-auto", children: [jsxRuntimeExports.jsx("h3", { className: "font-semibold text-gray-900 mb-3", children: "AI Suggestions" }), !roomPlannerPhoto && !analyzing && (jsxRuntimeExports.jsxs("div", { className: "text-center py-8", children: [jsxRuntimeExports.jsx("div", { className: "w-10 h-10 mx-auto mb-2 rounded-full bg-gray-100 flex items-center justify-center", children: jsxRuntimeExports.jsx("svg", { className: "w-5 h-5 text-gray-400", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 1.5, d: "M3 12l2-2m0 0l7-7 7 7m-9-9v9m9 9v-9m0 9H5" }) }) }), jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-500", children: "Use Room Planner first to upload a room photo and get personalized suggestions" })] })), analyzing && (jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center py-8 gap-3", children: [jsxRuntimeExports.jsx("div", { className: "animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600" }), jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-500", children: "Analyzing your room and requirements..." })] })), aiSuggestions && !analyzing && (jsxRuntimeExports.jsxs("div", { className: "space-y-3", children: [jsxRuntimeExports.jsxs("div", { className: "bg-blue-50 rounded-lg p-3", children: [jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mb-1", children: [jsxRuntimeExports.jsx("span", { className: "text-sm font-medium text-blue-900", children: "Room Fit Score" }), jsxRuntimeExports.jsxs("span", { className: "text-lg font-bold text-blue-600", children: [aiSuggestions.fitScore, "%"] })] }), jsxRuntimeExports.jsx("div", { className: "w-full bg-blue-200 rounded-full h-2", children: jsxRuntimeExports.jsx("div", { className: "bg-blue-600 h-2 rounded-full transition-all", style: { width: `${aiSuggestions.fitScore}%` } }) }), jsxRuntimeExports.jsx("p", { className: "text-xs text-blue-700 mt-2", children: getShortReason(aiSuggestions.fitReason) })] }), jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap items-center gap-2", children: [jsxRuntimeExports.jsx("span", { className: "text-xs text-gray-500", children: "Room style detected:" }), jsxRuntimeExports.jsx("span", { className: "text-xs font-medium bg-gray-100 text-gray-700 px-2 py-1 rounded-full", children: aiSuggestions.roomStyle })] }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500 mb-1.5", children: "Room colors:" }), jsxRuntimeExports.jsx("div", { className: "flex flex-wrap gap-1.5", children: aiSuggestions.dominantColors?.map((color, i) => (jsxRuntimeExports.jsx("span", { className: "text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded-full", children: color }, i))) })] }), jsxRuntimeExports.jsx("div", { className: "space-y-2", children: compactSuggestions.map((rec, i) => (jsxRuntimeExports.jsxs("div", { className: "border border-gray-100 rounded-lg p-2.5", children: [jsxRuntimeExports.jsx("span", { className: `text-xs font-medium px-2 py-0.5 rounded-full ${rec.type === 'color'
-                                                                    ? 'bg-purple-100 text-purple-700'
-                                                                    : rec.type === 'material'
-                                                                        ? 'bg-green-100 text-green-700'
-                                                                        : rec.type === 'customization'
-                                                                            ? 'bg-blue-100 text-blue-700'
-                                                                            : 'bg-orange-100 text-orange-700'}`, children: rec.type }), jsxRuntimeExports.jsx("p", { className: "text-sm font-medium text-gray-900 mt-1.5", children: rec.suggestion }), jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500 mt-0.5", children: getShortReason(rec.reason) })] }, i))) }), hasMoreSuggestions && (jsxRuntimeExports.jsx("button", { type: "button", onClick: handleViewFullRoomAnalysis, className: "w-full rounded-lg border border-blue-200 bg-blue-50 px-3 py-2 text-sm font-medium text-blue-700 transition hover:bg-blue-100", children: "View full room analysis" })), aiSuggestions.warning && (jsxRuntimeExports.jsx("div", { className: "bg-yellow-50 border border-yellow-200 rounded-lg p-2.5", children: jsxRuntimeExports.jsxs("p", { className: "text-xs text-yellow-800", children: ["\u26A0\uFE0F ", aiSuggestions.warning] }) })), roomPlannerPhoto && (jsxRuntimeExports.jsx("button", { onClick: handleAnalyzeWithRoomPlannerPhoto, className: "w-full text-sm text-blue-600 hover:underline text-center mt-2", children: "Re-analyze with updated details" }))] }))] })] }) })] }) }) }));
+                                                                    setAdditionalDetails('');
+                                                                    setCharCount(0);
+                                                                    setDraft({ ...draft, customerRequestText: '' });
+                                                                }, className: "text-xs text-gray-400 hover:text-gray-600", children: "Clear" }))] }), jsxRuntimeExports.jsxs("div", { className: "mt-3", children: [jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-400 mb-2", children: "Quick adds:" }), jsxRuntimeExports.jsx("div", { className: "flex flex-wrap gap-2", children: [
+                                                                    'Pet-friendly fabric',
+                                                                    'Easy to clean',
+                                                                    'Extra storage',
+                                                                    'Child-safe',
+                                                                    'Matches grey walls',
+                                                                    'Cozy and warm feel',
+                                                                    'Minimalist style',
+                                                                    'Must fit small space',
+                                                                ].map((chip) => (jsxRuntimeExports.jsxs("button", { onClick: () => {
+                                                                        const newText = additionalDetails
+                                                                            ? `${additionalDetails}, ${chip.toLowerCase()}`
+                                                                            : chip;
+                                                                        setAdditionalDetails(newText);
+                                                                        setCharCount(newText.length);
+                                                                        setDraft({ ...draft, customerRequestText: newText });
+                                                                    }, className: "text-xs bg-gray-100 hover:bg-blue-50 hover:text-blue-600 text-gray-600 px-3 py-1 rounded-full transition-colors", children: ["+ ", chip] }, chip))) })] })] }), jsxRuntimeExports.jsxs("button", { type: "button", onClick: onApply, disabled: isApplying || (validationErrors?.length ?? 0) > 0, className: "w-full py-4 bg-purple-600 text-white rounded-full font-semibold hover:bg-purple-700 transition shadow-lg shadow-purple-600/30 flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed", children: [jsxRuntimeExports.jsx(Sparkles, { className: "w-5 h-5" }), isApplying ? 'Applying...' : 'Apply Customizations'] }), jsxRuntimeExports.jsxs("div", { className: "mt-3 grid grid-cols-2 gap-3", children: [showRequestQuote && (jsxRuntimeExports.jsx("button", { type: "button", onClick: onRequestQuote, disabled: isApplying, className: "min-h-12 rounded-lg px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:opacity-95 disabled:opacity-60", style: { backgroundColor: primaryColor ?? '#2563eb' }, children: "Add to Quote" })), jsxRuntimeExports.jsx("button", { type: "button", onClick: handleViewFullRoomAnalysis, className: [
+                                                            'min-h-12 rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm font-semibold text-gray-800 transition hover:bg-gray-50',
+                                                            showRequestQuote ? '' : 'col-span-2',
+                                                        ].join(' '), children: "View in Room Planner" })] })] }) })] })] }) }), aiSuggestionsOpen && (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsx("div", { className: "fixed inset-0 z-40 bg-black/30", onClick: () => setAiSuggestionsOpen(false), "aria-hidden": "true" }), jsxRuntimeExports.jsx("div", { className: "fixed inset-x-0 top-[60px] z-50 mx-auto w-full max-w-md px-4 modly-panel-fade", children: jsxRuntimeExports.jsxs("div", { className: "max-h-[75vh] overflow-y-auto rounded-2xl border border-gray-200 bg-white p-5 shadow-2xl", children: [jsxRuntimeExports.jsxs("div", { className: "mb-3 flex items-center justify-between", children: [jsxRuntimeExports.jsx("h3", { className: "font-semibold text-gray-900", children: "AI Suggestions" }), jsxRuntimeExports.jsx("button", { type: "button", onClick: () => setAiSuggestionsOpen(false), className: "rounded-full p-1 text-gray-400 transition hover:bg-gray-100 hover:text-gray-600", "aria-label": "Close AI Suggestions", children: jsxRuntimeExports.jsx(X, { className: "h-5 w-5" }) })] }), roomPlannerPhoto && (jsxRuntimeExports.jsx("button", { onClick: handleAnalyzeWithRoomPlannerPhoto, disabled: analyzing, className: "w-full bg-blue-600 text-white py-3 rounded-full font-medium hover:bg-blue-700 disabled:opacity-50 flex items-center justify-center gap-2 mb-4", children: analyzing ? (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsx("div", { className: "animate-spin rounded-full h-4 w-4 border-b-2 border-white" }), "Analyzing your room..."] })) : (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsx(Sparkles, { className: "w-4 h-4" }), "Get AI Suggestions"] })) })), !roomPlannerPhoto && !analyzing && (jsxRuntimeExports.jsxs("div", { className: "text-center py-8", children: [jsxRuntimeExports.jsx("div", { className: "w-10 h-10 mx-auto mb-2 rounded-full bg-gray-100 flex items-center justify-center", children: jsxRuntimeExports.jsx("svg", { className: "w-5 h-5 text-gray-400", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 1.5, d: "M3 12l2-2m0 0l7-7 7 7m-9-9v9m9 9v-9m0 9H5" }) }) }), jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-500", children: "Use Room Planner first to upload a room photo and get personalized suggestions" }), jsxRuntimeExports.jsx("button", { type: "button", onClick: handleViewFullRoomAnalysis, className: "mt-3 rounded-full border border-blue-200 bg-blue-50 px-4 py-2 text-xs font-semibold text-blue-700 transition hover:bg-blue-100", children: "Go to Room Planner" })] })), analyzing && (jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center py-8 gap-3", children: [jsxRuntimeExports.jsx("div", { className: "animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600" }), jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-500", children: "Analyzing your room and requirements..." })] })), aiSuggestions && !analyzing && (jsxRuntimeExports.jsxs("div", { className: "space-y-3", children: [jsxRuntimeExports.jsxs("div", { className: "bg-blue-50 rounded-lg p-3", children: [jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mb-1", children: [jsxRuntimeExports.jsx("span", { className: "text-sm font-medium text-blue-900", children: "Room Fit Score" }), jsxRuntimeExports.jsxs("span", { className: "text-lg font-bold text-blue-600", children: [aiSuggestions.fitScore, "%"] })] }), jsxRuntimeExports.jsx("div", { className: "w-full bg-blue-200 rounded-full h-2", children: jsxRuntimeExports.jsx("div", { className: "bg-blue-600 h-2 rounded-full transition-all", style: { width: `${aiSuggestions.fitScore}%` } }) }), jsxRuntimeExports.jsx("p", { className: "text-xs text-blue-700 mt-2", children: getShortReason(aiSuggestions.fitReason) })] }), jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap items-center gap-2", children: [jsxRuntimeExports.jsx("span", { className: "text-xs text-gray-500", children: "Room style detected:" }), jsxRuntimeExports.jsx("span", { className: "text-xs font-medium bg-gray-100 text-gray-700 px-2 py-1 rounded-full", children: aiSuggestions.roomStyle })] }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500 mb-1.5", children: "Room colors:" }), jsxRuntimeExports.jsx("div", { className: "flex flex-wrap gap-1.5", children: aiSuggestions.dominantColors?.map((color, i) => (jsxRuntimeExports.jsx("span", { className: "text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded-full", children: color }, i))) })] }), jsxRuntimeExports.jsx("div", { className: "space-y-2", children: compactSuggestions.map((rec, i) => (jsxRuntimeExports.jsxs("div", { className: "border border-gray-100 rounded-lg p-2.5", children: [jsxRuntimeExports.jsx("span", { className: `text-xs font-medium px-2 py-0.5 rounded-full ${rec.type === 'color'
+                                                            ? 'bg-purple-100 text-purple-700'
+                                                            : rec.type === 'material'
+                                                                ? 'bg-green-100 text-green-700'
+                                                                : rec.type === 'customization'
+                                                                    ? 'bg-blue-100 text-blue-700'
+                                                                    : 'bg-orange-100 text-orange-700'}`, children: rec.type }), jsxRuntimeExports.jsx("p", { className: "text-sm font-medium text-gray-900 mt-1.5", children: rec.suggestion }), jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500 mt-0.5", children: getShortReason(rec.reason) })] }, i))) }), hasMoreSuggestions && (jsxRuntimeExports.jsx("button", { type: "button", onClick: handleViewFullRoomAnalysis, className: "w-full rounded-lg border border-blue-200 bg-blue-50 px-3 py-2 text-sm font-medium text-blue-700 transition hover:bg-blue-100", children: "View full room analysis" })), aiSuggestions.warning && (jsxRuntimeExports.jsx("div", { className: "bg-yellow-50 border border-yellow-200 rounded-lg p-2.5", children: jsxRuntimeExports.jsxs("p", { className: "text-xs text-yellow-800", children: ["\u26A0\uFE0F ", aiSuggestions.warning] }) })), roomPlannerPhoto && (jsxRuntimeExports.jsx("button", { onClick: handleAnalyzeWithRoomPlannerPhoto, className: "w-full text-sm text-blue-600 hover:underline text-center mt-2", children: "Re-analyze with updated details" }))] }))] }) })] }))] }));
+}
+
+const TOAST_STYLES = {
+    loading: 'border-gray-200 bg-white text-gray-800',
+    success: 'border-emerald-200 bg-emerald-50 text-emerald-800',
+    error: 'border-red-200 bg-red-50 text-red-700',
+};
+function ActionToast({ toast, onDismiss }) {
+    if (!toast)
+        return null;
+    return (jsxRuntimeExports.jsx("div", { className: "fixed top-4 left-1/2 z-[60] w-[calc(100%-2rem)] max-w-sm -translate-x-1/2 modly-panel-fade", role: "status", "aria-live": "polite", children: jsxRuntimeExports.jsxs("div", { className: `flex items-center gap-3 rounded-xl border px-4 py-3 shadow-lg ${TOAST_STYLES[toast.type]}`, children: [toast.type === 'loading' && jsxRuntimeExports.jsx(LoaderCircle, { className: "h-5 w-5 shrink-0 animate-spin" }), toast.type === 'success' && jsxRuntimeExports.jsx(CircleCheck, { className: "h-5 w-5 shrink-0" }), toast.type === 'error' && jsxRuntimeExports.jsx(CircleAlert, { className: "h-5 w-5 shrink-0" }), jsxRuntimeExports.jsx("p", { className: "flex-1 text-sm font-medium leading-snug", children: toast.message }), toast.type !== 'loading' && (jsxRuntimeExports.jsx("button", { type: "button", onClick: onDismiss, className: "shrink-0 rounded-full p-1 transition hover:bg-black/5", "aria-label": "Dismiss notification", children: jsxRuntimeExports.jsx(X, { className: "h-4 w-4" }) }))] }) }, toast.id));
 }
 
 const createDraftForProduct = (product) => ({
@@ -5171,8 +5265,9 @@ function FurnitureCustomizerWidget({ config = {}, onNavigateToRoomPlanner, selec
     const [, setCustomizedItem] = useState(null);
     const [savedItem, setSavedItem] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState(null);
-    const [saveNotification, setSaveNotification] = useState(null);
+    const [toast, setToast] = useState(null);
+    const toastTimeoutRef = useRef(null);
+    const toastIdRef = useRef(0);
     const [lastConfig, setLastConfig] = useState(null);
     const [baseProduct, setBaseProduct] = useState(defaultProduct);
     const [draft, setDraft] = useState(() => createDraftForProduct(defaultProduct));
@@ -5180,7 +5275,34 @@ function FurnitureCustomizerWidget({ config = {}, onNavigateToRoomPlanner, selec
     const [historyIndex, setHistoryIndex] = useState(0);
     const [showFinalizeModal, setShowFinalizeModal] = useState(false);
     const [showQuoteForm, setShowQuoteForm] = useState(false);
-    const [quoteSuccess, setQuoteSuccess] = useState(false);
+    const dismissToast = useCallback(() => {
+        if (toastTimeoutRef.current) {
+            clearTimeout(toastTimeoutRef.current);
+            toastTimeoutRef.current = null;
+        }
+        setToast(null);
+    }, []);
+    const showToast = useCallback((type, message) => {
+        if (toastTimeoutRef.current) {
+            clearTimeout(toastTimeoutRef.current);
+            toastTimeoutRef.current = null;
+        }
+        toastIdRef.current += 1;
+        setToast({ id: toastIdRef.current, type, message });
+        if (type !== 'loading') {
+            toastTimeoutRef.current = setTimeout(() => {
+                setToast(null);
+                toastTimeoutRef.current = null;
+            }, 5500);
+        }
+    }, []);
+    useEffect(() => {
+        return () => {
+            if (toastTimeoutRef.current) {
+                clearTimeout(toastTimeoutRef.current);
+            }
+        };
+    }, []);
     const canUndo = historyIndex > 0;
     const canRedo = historyIndex < history.length - 1;
     const setDraftWithHistory = useCallback((next) => {
@@ -5188,13 +5310,14 @@ function FurnitureCustomizerWidget({ config = {}, onNavigateToRoomPlanner, selec
         setSavedItem(null);
         setCustomizedItem(null);
         setLastConfig(null);
+        dismissToast();
         setHistory((prev) => {
             const sliced = prev.slice(0, historyIndex + 1);
             const nextHistory = [...sliced, next];
             return nextHistory.length > 60 ? nextHistory.slice(nextHistory.length - 60) : nextHistory;
         });
         setHistoryIndex((prev) => Math.min(prev + 1, 59));
-    }, [historyIndex]);
+    }, [dismissToast, historyIndex]);
     const applySelectedProduct = useCallback((product, clearSessionStorage = false) => {
         const nextDraft = createDraftForProduct(product);
         setBaseProduct(product);
@@ -5203,14 +5326,13 @@ function FurnitureCustomizerWidget({ config = {}, onNavigateToRoomPlanner, selec
         setHistoryIndex(0);
         setCustomizedItem(null);
         setSavedItem(null);
-        setError(null);
-        setSaveNotification(null);
+        dismissToast();
         setLastConfig(null);
         onSelectedProductChange?.(product);
         if (clearSessionStorage && typeof window !== 'undefined') {
             sessionStorage.removeItem('modly-customize-item');
         }
-    }, [onSelectedProductChange]);
+    }, [dismissToast, onSelectedProductChange]);
     useEffect(() => {
         let cancelled = false;
         const loadCatalogProducts = async () => {
@@ -5413,14 +5535,13 @@ function FurnitureCustomizerWidget({ config = {}, onNavigateToRoomPlanner, selec
                     pricingMode: price.quoteRequired ? 'quote_required' : 'estimated',
                 },
             });
-            setSaveNotification('Configuration saved!');
-            setTimeout(() => setSaveNotification(null), 2500);
+            showToast('success', 'Configuration saved');
         }
         catch (saveError) {
             console.error('Failed to save configuration:', saveError);
-            setError('Failed to save configuration.');
+            showToast('error', "Couldn't save. Try again.");
         }
-    }, [analyticsContext, configStorageKey, draft, price, selectedProduct]);
+    }, [analyticsContext, configStorageKey, draft, price, selectedProduct, showToast]);
     const encodeSharePayload = useCallback((payload) => {
         const json = JSON.stringify(payload);
         const b64 = typeof window !== 'undefined' ? window.btoa(unescape(encodeURIComponent(json))) : '';
@@ -5448,14 +5569,13 @@ function FurnitureCustomizerWidget({ config = {}, onNavigateToRoomPlanner, selec
                 document.execCommand('copy');
                 textarea.remove();
             }
-            setSaveNotification('Share link copied to clipboard!');
-            setTimeout(() => setSaveNotification(null), 2500);
+            showToast('success', 'Link copied to clipboard');
         }
         catch (copyError) {
             console.error('Failed to copy share link:', copyError);
-            setError('Failed to copy share link.');
+            showToast('error', "Couldn't copy link. Try again.");
         }
-    }, [shareLink]);
+    }, [shareLink, showToast]);
     const exportAsPdf = useCallback(() => {
         if (typeof window === 'undefined')
             return;
@@ -5535,7 +5655,6 @@ function FurnitureCustomizerWidget({ config = {}, onNavigateToRoomPlanner, selec
             link.click();
             link.remove();
             window.setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
-            setError(null);
             trackWidgetEvent({
                 ...analyticsContext,
                 type: 'pdf_exported',
@@ -5548,15 +5667,20 @@ function FurnitureCustomizerWidget({ config = {}, onNavigateToRoomPlanner, selec
                     pricingMode: price.quoteRequired ? 'quote_required' : 'estimated',
                 },
             });
-            setSaveNotification('Export started.');
-            setTimeout(() => setSaveNotification(null), 2500);
+            showToast('success', 'PDF download started');
         }
         catch (exportError) {
             console.error('Failed to export customization:', exportError);
-            setError('Could not export your customization. Please try again.');
+            showToast('error', "Couldn't export PDF. Try again.");
         }
-    }, [analyticsContext, draft, mergedConfig, price, savedItem?.id, selectedProduct]);
+    }, [analyticsContext, draft, mergedConfig, price, savedItem?.id, selectedProduct, showToast]);
     const handleNavigateToRoomPlanner = () => {
+        if (typeof window !== 'undefined' && savedItem?.id) {
+            // Lets Room Planner scroll to and highlight the item that was just
+            // applied here, instead of leaving the customer to scroll and hunt
+            // for it themselves among possibly several saved customizations.
+            sessionStorage.setItem('modly-highlight-customized-item', savedItem.id);
+        }
         if (onNavigateToRoomPlanner) {
             onNavigateToRoomPlanner();
         }
@@ -5690,12 +5814,11 @@ function FurnitureCustomizerWidget({ config = {}, onNavigateToRoomPlanner, selec
     }, [buildCustomizedFurniturePayload, storage]);
     const handleCustomize = useCallback(async (customizationConfig) => {
         if (!selectedProduct?.id) {
-            setError('Please select a product first.');
+            showToast('error', 'Please select a product first.');
             return;
         }
         setIsLoading(true);
-        setError(null);
-        setSaveNotification(null);
+        showToast('loading', 'Applying your changes...');
         setLastConfig(customizationConfig);
         const immediatePreview = {
             name: selectedProduct.name,
@@ -5737,16 +5860,15 @@ function FurnitureCustomizerWidget({ config = {}, onNavigateToRoomPlanner, selec
             setCustomizedItem(mergedData);
             try {
                 saveCustomizedFurnitureForCurrentDraft(mergedData);
-                setSaveNotification('Customized furniture saved automatically!');
-                setTimeout(() => setSaveNotification(null), 3000);
+                showToast('success', 'Applied — saved and ready to quote, export, or share');
             }
             catch (saveError) {
                 console.error('Failed to auto-save:', saveError);
             }
         }
         catch (customizeError) {
-            const errorMessage = customizeError instanceof Error ? customizeError.message : 'An error occurred';
-            setError(errorMessage);
+            const errorMessage = customizeError instanceof Error ? customizeError.message : "Couldn't apply changes. Try again.";
+            showToast('error', errorMessage);
             mergedConfig.onError?.(customizeError instanceof Error ? customizeError : new Error(errorMessage));
         }
         finally {
@@ -5757,11 +5879,10 @@ function FurnitureCustomizerWidget({ config = {}, onNavigateToRoomPlanner, selec
         mergedConfig,
         saveCustomizedFurnitureForCurrentDraft,
         selectedProduct,
+        showToast,
     ]);
     const handleApply = useCallback(() => {
-        setError(null);
         if (validationErrors.length > 0) {
-            setError(validationErrors[0] ?? 'Please review your customizations.');
             return;
         }
         handleCustomize(buildCustomizationConfig());
@@ -5769,14 +5890,12 @@ function FurnitureCustomizerWidget({ config = {}, onNavigateToRoomPlanner, selec
     const handleFinalize = () => {
         if (!enabledActions.requestQuote)
             return;
-        setError(null);
-        setSaveNotification(null);
         if (!selectedProduct?.id) {
-            setError('Please customize an item first before requesting a quote.');
+            showToast('error', 'Please customize an item first before requesting a quote.');
             return;
         }
         if (validationErrors.length > 0) {
-            setError(validationErrors[0] ?? 'Please review your customizations.');
+            showToast('error', validationErrors[0] ?? 'Please review your customizations.');
             return;
         }
         try {
@@ -5800,7 +5919,7 @@ function FurnitureCustomizerWidget({ config = {}, onNavigateToRoomPlanner, selec
         }
         catch (saveError) {
             console.error('Failed to save customization before quote:', saveError);
-            setError('Could not prepare your customization for quote. Please try again.');
+            showToast('error', 'Could not prepare your customization for quote. Please try again.');
         }
     };
     const handleProceedToQuote = () => {
@@ -5824,19 +5943,14 @@ function FurnitureCustomizerWidget({ config = {}, onNavigateToRoomPlanner, selec
     const handleQuoteSubmit = async (quoteRequest) => {
         try {
             const response = await apiClient.submitQuoteRequest(quoteRequest);
-            setQuoteSuccess(true);
-            setSaveNotification('Quote request sent. The store will follow up with pricing and next steps.');
-            setTimeout(() => {
-                setQuoteSuccess(false);
-                setSaveNotification(null);
-            }, 5000);
+            showToast('success', 'Quote sent — the store will follow up soon');
             return response;
         }
         catch (quoteError) {
             throw quoteError;
         }
     };
-    return (jsxRuntimeExports.jsxs(WidgetProvider, { apiClient: apiClient, storage: storage, config: mergedConfig, children: [jsxRuntimeExports.jsxs("div", { className: "furniture-widget-customizer min-h-screen bg-white", children: [jsxRuntimeExports.jsx("section", { className: "py-12 bg-gradient-to-br from-purple-600 to-purple-800 text-white", children: jsxRuntimeExports.jsx("div", { className: "max-w-7xl mx-auto px-4", children: jsxRuntimeExports.jsxs("div", { className: "max-w-3xl", children: [jsxRuntimeExports.jsxs("div", { className: "inline-flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full mb-4", children: [jsxRuntimeExports.jsx(Palette, { className: "w-4 h-4" }), jsxRuntimeExports.jsx("span", { className: "text-sm font-medium", children: "AI-Powered Customization" })] }), jsxRuntimeExports.jsx("h1", { className: "text-5xl font-bold mb-4", children: "Furniture Customizer" }), jsxRuntimeExports.jsx("p", { className: "text-xl text-purple-100 mb-8", children: "Customize furniture colors, materials, and dimensions with AI assistance. See changes in real-time and get instant feasibility feedback." }), jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap gap-4", children: [jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 text-sm", children: [jsxRuntimeExports.jsx(Check, { className: "w-5 h-5 text-green-300" }), jsxRuntimeExports.jsx("span", { children: "Real-time preview" })] }), jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 text-sm", children: [jsxRuntimeExports.jsx(Check, { className: "w-5 h-5 text-green-300" }), jsxRuntimeExports.jsx("span", { children: "Factory-approved options" })] }), jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 text-sm", children: [jsxRuntimeExports.jsx(Check, { className: "w-5 h-5 text-green-300" }), jsxRuntimeExports.jsx("span", { children: "Instant pricing" })] })] })] }) }) }), jsxRuntimeExports.jsxs("div", { className: "max-w-7xl mx-auto px-4", children: [saveNotification && (jsxRuntimeExports.jsxs("div", { className: "mt-6 bg-emerald-50 border border-emerald-200 text-emerald-800 p-4 rounded-xl flex items-center gap-3", children: [jsxRuntimeExports.jsx(Check, { className: "w-5 h-5" }), jsxRuntimeExports.jsx("span", { className: "font-medium", children: saveNotification })] })), error && (jsxRuntimeExports.jsx("div", { className: "mt-6 bg-red-50 border border-red-200 text-red-700 p-4 rounded-xl", children: jsxRuntimeExports.jsxs("div", { className: "flex items-start gap-2", children: [jsxRuntimeExports.jsx(Info, { className: "w-5 h-5 mt-0.5" }), jsxRuntimeExports.jsx("div", { children: error })] }) }))] }), jsxRuntimeExports.jsx(FurnitureCustomizerPanel, { products: availableProducts, draft: draft, setDraft: setDraftWithHistory, isApplying: isLoading, validationErrors: validationErrors, price: price, onApply: handleApply, onUndo: handleUndo, onRedo: handleRedo, canUndo: canUndo, canRedo: canRedo, onSaveConfig: saveDraftConfig, onShareLink: copyShareLink, onExportPdf: exportAsPdf, onViewFullRoomAnalysis: handleNavigateToRoomPlanner }), jsxRuntimeExports.jsx("section", { className: "py-8 bg-stone-50/70 border-t border-stone-200", children: jsxRuntimeExports.jsx("div", { className: "max-w-5xl mx-auto px-4", children: jsxRuntimeExports.jsxs("div", { className: "rounded-2xl border border-stone-200 bg-[#fffaf4] p-5 shadow-sm", children: [jsxRuntimeExports.jsxs("div", { className: "mb-5 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h2", { className: "text-xl font-bold text-gray-950", children: "Love Your Custom Design?" }), jsxRuntimeExports.jsx("p", { className: "mt-1 text-sm text-gray-600", children: "Save, share, export, or send this configuration to the store." })] }), jsxRuntimeExports.jsxs("p", { className: "text-sm font-semibold text-gray-900", children: ["Estimated total: ", price.quoteRequired ? 'Quote required' : `$${price.total.toLocaleString()}`] })] }), jsxRuntimeExports.jsxs("div", { className: "grid gap-3 sm:grid-cols-2 lg:grid-cols-5", children: [enabledActions.requestQuote && (jsxRuntimeExports.jsx("button", { type: "button", onClick: handleFinalize, className: "min-h-12 rounded-lg px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:opacity-95 sm:col-span-2 lg:col-span-1", style: { backgroundColor: primaryColor }, children: "Add to Quote" })), jsxRuntimeExports.jsx("button", { type: "button", onClick: saveDraftConfig, className: "min-h-12 rounded-lg border border-stone-300 bg-white px-5 py-3 text-sm font-semibold text-gray-800 transition hover:bg-stone-50", children: "Save Configuration" }), jsxRuntimeExports.jsx("button", { type: "button", onClick: copyShareLink, className: "min-h-12 rounded-lg border border-stone-300 bg-white px-5 py-3 text-sm font-semibold text-gray-800 transition hover:bg-stone-50", children: "Share Design" }), jsxRuntimeExports.jsx("button", { type: "button", onClick: exportAsPdf, className: "min-h-12 rounded-lg border border-stone-300 bg-white px-5 py-3 text-sm font-semibold text-gray-800 transition hover:bg-stone-50", children: "Export PDF" }), jsxRuntimeExports.jsx("button", { type: "button", onClick: handleNavigateToRoomPlanner, className: "min-h-12 rounded-lg border border-stone-300 bg-white px-5 py-3 text-sm font-semibold text-gray-800 transition hover:bg-stone-50", children: "View in Room Planner" })] })] }) }) })] }), jsxRuntimeExports.jsx(FinalizeQuoteModal, { isOpen: enabledActions.requestQuote && showFinalizeModal, onClose: () => setShowFinalizeModal(false), onProceed: handleProceedToQuote, item: savedItem }), jsxRuntimeExports.jsx(QuoteRequestForm, { isOpen: enabledActions.requestQuote && showQuoteForm, onClose: () => setShowQuoteForm(false), onSubmit: handleQuoteSubmit, item: savedItem }), quoteSuccess && (jsxRuntimeExports.jsxs("div", { className: "fixed bottom-6 right-6 bg-emerald-600 text-white px-6 py-4 rounded-xl shadow-2xl flex items-center gap-3 z-50 animate-slide-up", children: [jsxRuntimeExports.jsx("svg", { className: "w-6 h-6", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" }) }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("p", { className: "font-semibold", children: "Quote Request Submitted!" }), jsxRuntimeExports.jsx("p", { className: "text-sm text-white/90", children: "We'll contact you soon with details." })] })] }))] }));
+    return (jsxRuntimeExports.jsxs(WidgetProvider, { apiClient: apiClient, storage: storage, config: mergedConfig, children: [jsxRuntimeExports.jsxs("div", { className: "furniture-widget-customizer min-h-screen bg-white", children: [jsxRuntimeExports.jsx(FurnitureCustomizerPanel, { products: availableProducts, draft: draft, setDraft: setDraftWithHistory, isApplying: isLoading, validationErrors: validationErrors, price: price, onApply: handleApply, onUndo: handleUndo, onRedo: handleRedo, canUndo: canUndo, canRedo: canRedo, onSaveConfig: saveDraftConfig, onShareLink: copyShareLink, onExportPdf: exportAsPdf, onViewFullRoomAnalysis: handleNavigateToRoomPlanner, onSuggestionsError: (message) => showToast('error', message), onRequestQuote: handleFinalize, showRequestQuote: enabledActions.requestQuote, primaryColor: primaryColor }), jsxRuntimeExports.jsx("section", { className: "py-8 bg-stone-50/70 border-t border-stone-200", children: jsxRuntimeExports.jsx("div", { className: "max-w-5xl mx-auto px-4", children: jsxRuntimeExports.jsxs("div", { className: "rounded-2xl border border-stone-200 bg-[#fffaf4] p-5 shadow-sm", children: [jsxRuntimeExports.jsxs("div", { className: "mb-5 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h2", { className: "text-xl font-bold text-gray-950", children: "Love Your Custom Design?" }), jsxRuntimeExports.jsx("p", { className: "mt-1 text-sm text-gray-600", children: "Save, share, export, or send this configuration to the store." })] }), jsxRuntimeExports.jsxs("p", { className: "text-sm font-semibold text-gray-900", children: ["Estimated total: ", price.quoteRequired ? 'Quote required' : `$${price.total.toLocaleString()}`] })] }), jsxRuntimeExports.jsxs("div", { className: "grid gap-3 sm:grid-cols-3", children: [jsxRuntimeExports.jsx("button", { type: "button", onClick: saveDraftConfig, className: "min-h-12 rounded-lg border border-stone-300 bg-white px-5 py-3 text-sm font-semibold text-gray-800 transition hover:bg-stone-50", children: "Save Configuration" }), jsxRuntimeExports.jsx("button", { type: "button", onClick: copyShareLink, className: "min-h-12 rounded-lg border border-stone-300 bg-white px-5 py-3 text-sm font-semibold text-gray-800 transition hover:bg-stone-50", children: "Share Design" }), jsxRuntimeExports.jsx("button", { type: "button", onClick: exportAsPdf, className: "min-h-12 rounded-lg border border-stone-300 bg-white px-5 py-3 text-sm font-semibold text-gray-800 transition hover:bg-stone-50", children: "Export PDF" })] })] }) }) })] }), jsxRuntimeExports.jsx(FinalizeQuoteModal, { isOpen: enabledActions.requestQuote && showFinalizeModal, onClose: () => setShowFinalizeModal(false), onProceed: handleProceedToQuote, item: savedItem }), jsxRuntimeExports.jsx(QuoteRequestForm, { isOpen: enabledActions.requestQuote && showQuoteForm, onClose: () => setShowQuoteForm(false), onSubmit: handleQuoteSubmit, item: savedItem }), jsxRuntimeExports.jsx(ActionToast, { toast: toast, onDismiss: dismissToast })] }));
 }
 
 function MessageBubble({ message, onCustomizeItem, onAddToRoomPlanner, onViewInCatalog, enabledActions, primaryColor, messageTextColor, analyticsContext }) {
@@ -7283,7 +7397,7 @@ function FurnitureAIWidget({ config = {}, defaultTab, widgetTitle }) {
         setShowSubmitModal(false);
         setSubmitConfig(null);
     };
-    return (jsxRuntimeExports.jsxs("div", { className: "furniture-widget-ai h-full flex flex-col", style: { ['--modly-panel-accent']: primaryColor }, children: [jsxRuntimeExports.jsxs("div", { className: "border-b border-transparent px-5 py-3.5 pr-16 flex items-center gap-4", style: { backgroundColor: primaryColor }, children: [jsxRuntimeExports.jsx("h1", { className: "text-base font-semibold shrink-0", style: { color: titleColor }, children: displayTitle === DEFAULT_WIDGET_TITLE ? (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsx("span", { children: "Modly" }), jsxRuntimeExports.jsx("span", { children: "AI" })] })) : (jsxRuntimeExports.jsx("span", { children: displayTitle })) }), jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-1 rounded-full p-1", style: { backgroundColor: 'rgba(255,255,255,0.14)' }, role: "tablist", children: [jsxRuntimeExports.jsx("button", { type: "button", role: "tab", "aria-selected": viewMode === 'conversation', onClick: handleBackToConversation, className: "rounded-full px-3.5 py-1.5 text-xs font-semibold transition-colors", style: viewMode === 'conversation'
+    return (jsxRuntimeExports.jsxs("div", { className: "furniture-widget-ai h-full flex flex-col", style: { ['--modly-panel-accent']: primaryColor }, children: [jsxRuntimeExports.jsxs("div", { className: "modly-widget-header border-b border-transparent px-5 py-3.5 pr-16 flex items-center gap-4", style: { backgroundColor: primaryColor }, children: [jsxRuntimeExports.jsx("h1", { className: "modly-widget-title text-base font-semibold shrink-0", style: { color: titleColor }, children: displayTitle === DEFAULT_WIDGET_TITLE ? (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsx("span", { children: "Modly" }), jsxRuntimeExports.jsx("span", { children: "AI" })] })) : (jsxRuntimeExports.jsx("span", { children: displayTitle })) }), jsxRuntimeExports.jsxs("div", { className: "modly-widget-tabs flex min-w-0 flex-1 items-center gap-1 overflow-x-auto rounded-full p-1", style: { backgroundColor: 'rgba(255,255,255,0.14)' }, role: "tablist", children: [jsxRuntimeExports.jsx("button", { type: "button", role: "tab", "aria-selected": viewMode === 'conversation', onClick: handleBackToConversation, className: "rounded-full px-3.5 py-1.5 text-xs font-semibold transition-colors", style: viewMode === 'conversation'
                                     ? { backgroundColor: 'rgba(255,255,255,0.92)', color: primaryColor }
                                     : { color: titleColor, opacity: 0.85 }, children: "Chat" }), jsxRuntimeExports.jsx("button", { type: "button", role: "tab", "aria-selected": viewMode === 'room-planner', onClick: handleOpenRoomPlanner, className: "rounded-full px-3.5 py-1.5 text-xs font-semibold transition-colors", style: viewMode === 'room-planner'
                                     ? { backgroundColor: 'rgba(255,255,255,0.92)', color: primaryColor }
@@ -7436,12 +7550,12 @@ function FurnitureAIWidgetButton({ config = {}, defaultTab = 'room-planner', but
         return baseStyle;
     }, [primaryColor, textColor, isDarkPrimary, buttonStyle, showLogo]);
     const transitionClass = prefersReducedMotion ? '' : 'transition-all duration-200 ease-out';
-    return (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsxs("div", { className: `fixed ${positionClasses[buttonPosition]} z-50 flex flex-col items-end gap-2`, onMouseEnter: handleMouseEnter, onMouseLeave: handleMouseLeave, children: [jsxRuntimeExports.jsx("div", { className: `flex flex-col items-end gap-2 ${isBottomAligned ? 'order-1' : 'order-2'}`, "aria-hidden": !menuOpen, children: menuOptions.map(({ tab, label, Icon }, index) => (jsxRuntimeExports.jsxs("button", { type: "button", onClick: () => openWidget(tab, `widget_menu_${tab}`), className: `modly-widget-menu-item flex items-center gap-2 rounded-full bg-white px-4 py-2.5 text-sm font-semibold text-gray-800 shadow-[0_10px_24px_rgba(15,23,42,0.16)] ${transitionClass}`, style: {
+    return (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsxs("div", { className: `modly-widget-shell ${showLogo ? 'modly-widget-shell--logo' : 'modly-widget-shell--text'} fixed ${positionClasses[buttonPosition]} z-50 flex flex-col items-end gap-2`, onMouseEnter: handleMouseEnter, onMouseLeave: handleMouseLeave, children: [jsxRuntimeExports.jsx("div", { className: `flex flex-col items-end gap-2 ${isBottomAligned ? 'order-1' : 'order-2'}`, "aria-hidden": !menuOpen, children: menuOptions.map(({ tab, label, Icon }, index) => (jsxRuntimeExports.jsxs("button", { type: "button", onClick: () => openWidget(tab, `widget_menu_${tab}`), className: `modly-widget-menu-item flex items-center gap-2 rounded-full bg-white px-4 py-2.5 text-sm font-semibold text-gray-800 shadow-[0_10px_24px_rgba(15,23,42,0.16)] ${transitionClass}`, style: {
                                 opacity: menuOpen ? 1 : 0,
                                 transform: menuOpen ? 'translateY(0) scale(1)' : 'translateY(8px) scale(0.94)',
                                 pointerEvents: menuOpen ? 'auto' : 'none',
                                 transitionDelay: menuOpen ? `${index * 55}ms` : '0ms',
-                            }, children: [jsxRuntimeExports.jsx(Icon, { "aria-hidden": "true", className: "h-4 w-4 shrink-0", strokeWidth: 2, style: { color: primaryColor } }), jsxRuntimeExports.jsx("span", { className: "whitespace-nowrap", children: label })] }, tab))) }), jsxRuntimeExports.jsx("button", { onClick: handleMainButtonClick, style: finalButtonStyle, className: `modly-widget-button order-${isBottomAligned ? '2' : '1'} cursor-pointer rounded-full inline-flex items-center justify-center gap-2 ${transitionClass} ${className}`, onMouseOver: (e) => {
+                            }, children: [jsxRuntimeExports.jsx(Icon, { "aria-hidden": "true", className: "h-4 w-4 shrink-0", strokeWidth: 2, style: { color: primaryColor } }), jsxRuntimeExports.jsx("span", { className: "whitespace-nowrap", children: label })] }, tab))) }), jsxRuntimeExports.jsx("button", { onClick: handleMainButtonClick, style: finalButtonStyle, className: `modly-widget-button ${showLogo ? 'modly-widget-button--logo' : 'modly-widget-button--text'} order-${isBottomAligned ? '2' : '1'} cursor-pointer rounded-full inline-flex items-center justify-center gap-2 ${transitionClass} ${className}`, onMouseOver: (e) => {
                             if (isTouchDevice)
                                 return;
                             e.currentTarget.style.transform = 'translateY(-2px)';

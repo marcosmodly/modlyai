@@ -39,10 +39,10 @@ async function initWidget(userConfig?: Partial<WidgetConfig>) {
 
   // Fetch remote config if configUrl is provided
   let remoteConfig: WidgetConfig = {};
-  const configUrl = userConfig?.configUrl || ((userConfig?.widgetId || userConfig?.storeId) ? '/api/widget/config' : undefined);
+  const configUrl = userConfig?.configUrl || ((userConfig?.widgetId || userConfig?.storeId || userConfig?.shop) ? '/api/widget/config' : undefined);
   const apiBaseUrl = userConfig?.apiBaseUrl || getApiBaseUrlFromConfigUrl(configUrl);
   if (configUrl) {
-    remoteConfig = await fetchRemoteConfig(configUrl, userConfig?.widgetId, userConfig?.storeId);
+    remoteConfig = await fetchRemoteConfig(configUrl, userConfig?.widgetId, userConfig?.storeId, userConfig?.shop);
   }
 
   // Merge configs (remote > user > defaults)
@@ -111,25 +111,27 @@ function autoInit() {
   }
 
   // Fallback for platforms that can only inject a plain <script src="...">
-  // with no custom data-* attributes (e.g. Shopify's ScriptTag API) - read
-  // storeId/widgetId/configUrl from this script's own src query string
-  // instead. document.currentScript correctly refers to this exact <script>
-  // tag while it's synchronously executing, even when it was inserted
-  // dynamically, as long as it isn't type="module" or async-deferred in a
-  // way that breaks that association.
+  // with no custom data-* attributes (e.g. Shopify's ScriptTag API, or the
+  // theme app extension's embed block) - read storeId/widgetId/shop/configUrl
+  // from this script's own src query string instead. document.currentScript
+  // correctly refers to this exact <script> tag while it's synchronously
+  // executing, even when it was inserted dynamically, as long as it isn't
+  // type="module" or async-deferred in a way that breaks that association.
   const currentScript = document.currentScript as HTMLScriptElement | null;
   if (currentScript?.src) {
     try {
       const url = new URL(currentScript.src);
       const storeId = url.searchParams.get('storeId');
       const widgetId = url.searchParams.get('widgetId');
+      const shop = url.searchParams.get('shop');
       const configUrl = url.searchParams.get('configUrl');
 
-      if (storeId || widgetId) {
+      if (storeId || widgetId || shop) {
         initWidget({
           configUrl: configUrl || undefined,
           storeId: storeId || undefined,
           widgetId: widgetId || undefined,
+          shop: shop || undefined,
         });
       }
     } catch {

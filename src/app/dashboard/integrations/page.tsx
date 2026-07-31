@@ -6,6 +6,7 @@ import NoStoreState from '@/components/dashboard/NoStoreState'
 import { authOptions } from '@/lib/auth-options'
 import { getCurrentStoreForUser, normalizeStorePublicIdentity } from '@/lib/current-store'
 import { adminDb } from '@/lib/instant-admin'
+import { getShopifyThemeEditorDeepLink } from '@/lib/shopify'
 import { createWidgetInstallSnippet } from '@/lib/widget-install-snippet'
 
 function readCredentials(value: unknown): Record<string, any> {
@@ -86,6 +87,7 @@ export default async function IntegrationsPage({
   const installSnippetError = !widgetId
     ? 'Your ModlyAI store was found, but the widget ID could not be generated.'
     : undefined
+  const shopifyThemeEditorUrl = shopifyStoreDomain ? getShopifyThemeEditorDeepLink(shopifyStoreDomain) : null
 
   return (
     <div className="space-y-8">
@@ -116,6 +118,7 @@ export default async function IntegrationsPage({
           shopifyConnectedAt,
           shopifyLastSyncedAt,
           hasShopifyAccessToken,
+          shopifyThemeEditorUrl,
           wooSiteUrl: store.wooSiteUrl ? String(store.wooSiteUrl) : '',
           wooConnectedAt: store.wooConnectedAt ? String(store.wooConnectedAt) : '',
           wooLastSyncedAt: store.wooLastSyncedAt ? String(store.wooLastSyncedAt) : '',
