@@ -9,5 +9,16 @@
       "path": "/api/cron/billing-reminders",
       "schedule": "0 13 * * *"
     }
+  ],
+  "headers": [
+    {
+      "source": "/widget.js",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, must-revalidate"
+        }
+      ]
+    }
   ]
 }
