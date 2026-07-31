@@ -127,6 +127,10 @@ async function handleSubscriptionCreated(subscriptionId: string) {
     plan,
     subscription,
     customerId: subscription.customerId,
+    // A subscription.created event means a real, deliberate new paid
+    // signup just happened - this should take over even if the store was
+    // previously on a manually-granted custom plan.
+    skipIfCustomPlan: false,
   })
 }
 

@@ -140,20 +140,39 @@ export async function updateStoreBillingFromSubscription({
   plan,
   subscription,
   customerId,
+  skipIfCustomPlan = true,
 }: {
   storeId: string
   plan?: string | null
   subscription: Subscription
   customerId?: string | null
+  // Stores manually granted the 'scale' custom plan (see
+  // /api/admin/grant-custom-access) should not have that overwritten by
+  // Paddle webhooks tied to an old/stale subscription still lingering on the
+  // account - only a genuinely new subscription.created event should take
+  // precedence over a custom grant (see route.ts, which passes false there).
+  skipIfCustomPlan?: boolean
 }) {
   const normalizedStoreId = String(storeId || '').trim()
-  const resolvedPlan = subscriptionPlanFromPaddle(subscription, plan)
-  const resolvedCustomerId = String(customerId || subscription.customerId || '').trim() || undefined
-  const { trialStartedAt, trialEndsAt } = trialDatesFromSubscription(subscription)
 
   if (!normalizedStoreId) {
     throw new Error('Missing storeId for Paddle billing update.')
   }
+
+  if (skipIfCustomPlan) {
+    const existing = await readStoreById(normalizedStoreId)
+    if (existing?.subscriptionPlan === 'scale') {
+      console.warn('[Billing sync skipped] store is on a manually-granted custom plan', {
+        storeId: normalizedStoreId,
+        subscriptionId: subscription.id,
+      })
+      return existing
+    }
+  }
+
+  const resolvedPlan = subscriptionPlanFromPaddle(subscription, plan)
+  const resolvedCustomerId = String(customerId || subscription.customerId || '').trim() || undefined
+  const { trialStartedAt, trialEndsAt } = trialDatesFromSubscription(subscription)
 
   if (!isCheckoutPlan(resolvedPlan)) {
     throw new Error(`Missing paid plan for Paddle billing update on store ${normalizedStoreId}.`)
@@ -195,13 +214,25 @@ export async function updateStoreBillingFromSubscription({
 export async function updateStoreBillingFields({
   storeId,
   update,
+  skipIfCustomPlan = true,
 }: {
   storeId: string
   update: Record<string, unknown>
+  skipIfCustomPlan?: boolean
 }) {
   const normalizedStoreId = String(storeId || '').trim()
   if (!normalizedStoreId) {
     throw new Error('Missing storeId for Paddle billing update.')
+  }
+
+  if (skipIfCustomPlan) {
+    const existing = await readStoreById(normalizedStoreId)
+    if (existing?.subscriptionPlan === 'scale') {
+      console.warn('[Billing sync skipped] store is on a manually-granted custom plan', {
+        storeId: normalizedStoreId,
+      })
+      return existing
+    }
   }
 
   const payload = compactUpdate({
