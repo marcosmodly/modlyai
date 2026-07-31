@@ -116,6 +116,10 @@ export default async function IntegrationsPage({
           shopifyConnectedAt,
           shopifyLastSyncedAt,
           hasShopifyAccessToken,
+          wooSiteUrl: store.wooSiteUrl ? String(store.wooSiteUrl) : '',
+          wooConnectedAt: store.wooConnectedAt ? String(store.wooConnectedAt) : '',
+          wooLastSyncedAt: store.wooLastSyncedAt ? String(store.wooLastSyncedAt) : '',
+          hasWooCredentials: Boolean(store.wooKey && store.wooSecret),
         }}
         productCount={productCount}
         syncCount={syncCount}

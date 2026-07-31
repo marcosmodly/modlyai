@@ -28,7 +28,7 @@ export async function GET(request: NextRequest) {
     const apiKey = getRequiredEnv('SHOPIFY_API_KEY')
     const apiSecret = getRequiredEnv('SHOPIFY_API_SECRET')
     const appUrl = getRequiredEnv('NEXT_PUBLIC_APP_URL').replace(/\/$/, '')
-    const scopes = process.env.SHOPIFY_SCOPES || 'read_products'
+    const scopes = process.env.SHOPIFY_SCOPES || 'read_products,write_script_tags'
     const shop = normalizeShopifyDomain(request.nextUrl.searchParams.get('shop'))
     const issuedAt = Date.now()
     const nonce = crypto.randomBytes(16).toString('hex')

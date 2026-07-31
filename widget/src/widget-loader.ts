@@ -107,5 +107,33 @@ function autoInit() {
         widgetId: widgetId || undefined,
       });
     }
+    return;
+  }
+
+  // Fallback for platforms that can only inject a plain <script src="...">
+  // with no custom data-* attributes (e.g. Shopify's ScriptTag API) - read
+  // storeId/widgetId/configUrl from this script's own src query string
+  // instead. document.currentScript correctly refers to this exact <script>
+  // tag while it's synchronously executing, even when it was inserted
+  // dynamically, as long as it isn't type="module" or async-deferred in a
+  // way that breaks that association.
+  const currentScript = document.currentScript as HTMLScriptElement | null;
+  if (currentScript?.src) {
+    try {
+      const url = new URL(currentScript.src);
+      const storeId = url.searchParams.get('storeId');
+      const widgetId = url.searchParams.get('widgetId');
+      const configUrl = url.searchParams.get('configUrl');
+
+      if (storeId || widgetId) {
+        initWidget({
+          configUrl: configUrl || undefined,
+          storeId: storeId || undefined,
+          widgetId: widgetId || undefined,
+        });
+      }
+    } catch {
+      // Malformed script src - nothing to auto-init from.
+    }
   }
 }

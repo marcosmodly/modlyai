@@ -1,7 +1,7 @@
 import crypto from 'crypto'
 import { NextRequest, NextResponse } from 'next/server'
 import { adminDb } from '@/lib/instant-admin'
-import { normalizeShopifyDomain } from '@/lib/shopify'
+import { normalizeShopifyDomain, ensureShopifyWidgetScriptTag } from '@/lib/shopify'
 
 type ShopifyState = {
   storeId: string
@@ -138,6 +138,31 @@ export async function GET(request: NextRequest) {
     } catch (error) {
       logInstantTransactionFailure('stores', storeUpdate, error)
       throw error
+    }
+
+    // Auto-install the widget on the storefront via Shopify's ScriptTag API,
+    // so the merchant doesn't have to manually paste the install snippet
+    // into their theme. Non-fatal: if this fails (e.g. missing scope on an
+    // older connection), the Shopify connection itself still succeeds - the
+    // merchant can still install the widget manually as a fallback.
+    const widgetId = storeResult.stores[0]?.widgetId ? String(storeResult.stores[0].widgetId) : ''
+    if (widgetId) {
+      try {
+        await ensureShopifyWidgetScriptTag({
+          shopifyStoreDomain: shop,
+          shopifyAccessToken: payload.access_token,
+          storeId: state.storeId,
+          widgetId,
+        })
+      } catch (scriptTagError) {
+        console.error('[Shopify ScriptTag install failed]', {
+          message: scriptTagError instanceof Error ? scriptTagError.message : String(scriptTagError),
+          storeId: state.storeId,
+          shop,
+        })
+      }
+    } else {
+      console.error('[Shopify ScriptTag install skipped] missing widgetId', { storeId: state.storeId })
     }
 
     return NextResponse.redirect(`${appUrl}/dashboard/integrations?shopify=connected`)

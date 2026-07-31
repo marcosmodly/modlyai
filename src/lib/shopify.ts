@@ -351,6 +351,130 @@ function mapShopifyProduct(domain: string, product: ShopifyProductNode): Shopify
   }
 }
 
+// ScriptTag is a REST-only Shopify Admin API resource - there's no GraphQL
+// equivalent, so this uses a plain fetch rather than shopifyGraphQl above.
+// Registers (idempotently) a script tag that auto-loads the ModlyAI widget
+// on every storefront page, so merchants don't have to manually paste the
+// install snippet into their theme after connecting via OAuth.
+export async function ensureShopifyWidgetScriptTag(input: {
+  shopifyStoreDomain: string
+  shopifyAccessToken: string
+  storeId: string
+  widgetId: string
+}) {
+  const domain = normalizeShopifyDomain(input.shopifyStoreDomain)
+  const token = String(input.shopifyAccessToken || '').trim()
+  const storeId = String(input.storeId || '').trim()
+  const widgetId = String(input.widgetId || '').trim()
+
+  if (!token) throw new ShopifyError('Connect Shopify before installing the widget script.')
+  if (!storeId || !widgetId) throw new ShopifyError('Missing storeId or widgetId for widget install.')
+
+  const scriptSrc = `https://modlyai.tech/widget.js?storeId=${encodeURIComponent(storeId)}&widgetId=${encodeURIComponent(widgetId)}&configUrl=${encodeURIComponent('https://modlyai.tech/api/widget/config')}`
+  const headers = {
+    'Content-Type': 'application/json',
+    'X-Shopify-Access-Token': token,
+  }
+
+  // Check for an existing ModlyAI script tag first, so reconnecting doesn't
+  // pile up duplicate script tags on the storefront.
+  const listResponse = await fetch(
+    `https://${domain}/admin/api/${SHOPIFY_API_VERSION}/script_tags.json?limit=250`,
+    { headers }
+  )
+
+  if (!listResponse.ok) {
+    throw shopifyRequestError(listResponse.status, await listResponse.text())
+  }
+
+  const listPayload = (await listResponse.json()) as { script_tags?: Array<{ id: number; src: string }> }
+  const existing = (listPayload.script_tags ?? []).find((tag) => tag.src.startsWith('https://modlyai.tech/widget.js'))
+
+  if (existing) {
+    if (existing.src === scriptSrc) {
+      return { created: false, updated: false }
+    }
+
+    const updateResponse = await fetch(
+      `https://${domain}/admin/api/${SHOPIFY_API_VERSION}/script_tags/${existing.id}.json`,
+      {
+        method: 'PUT',
+        headers,
+        body: JSON.stringify({ script_tag: { id: existing.id, src: scriptSrc } }),
+      }
+    )
+
+    if (!updateResponse.ok) {
+      throw shopifyRequestError(updateResponse.status, await updateResponse.text())
+    }
+
+    return { created: false, updated: true }
+  }
+
+  const createResponse = await fetch(`https://${domain}/admin/api/${SHOPIFY_API_VERSION}/script_tags.json`, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify({
+      script_tag: {
+        event: 'onload',
+        src: scriptSrc,
+      },
+    }),
+  })
+
+  if (!createResponse.ok) {
+    throw shopifyRequestError(createResponse.status, await createResponse.text())
+  }
+
+  return { created: true, updated: false }
+}
+
+// Removes the auto-installed script tag (see ensureShopifyWidgetScriptTag)
+// when a merchant disconnects Shopify, so the widget stops appearing on
+// their storefront rather than lingering after disconnect. Best-effort: if
+// the token is already revoked or the tag is already gone, this just no-ops
+// rather than blocking the disconnect action itself.
+export async function removeShopifyWidgetScriptTag(input: {
+  shopifyStoreDomain: string
+  shopifyAccessToken: string
+}) {
+  const domain = normalizeShopifyDomain(input.shopifyStoreDomain)
+  const token = String(input.shopifyAccessToken || '').trim()
+  if (!token) return { removed: false }
+
+  const headers = {
+    'Content-Type': 'application/json',
+    'X-Shopify-Access-Token': token,
+  }
+
+  const listResponse = await fetch(
+    `https://${domain}/admin/api/${SHOPIFY_API_VERSION}/script_tags.json?limit=250`,
+    { headers }
+  )
+
+  if (!listResponse.ok) {
+    throw shopifyRequestError(listResponse.status, await listResponse.text())
+  }
+
+  const listPayload = (await listResponse.json()) as { script_tags?: Array<{ id: number; src: string }> }
+  const existing = (listPayload.script_tags ?? []).find((tag) => tag.src.startsWith('https://modlyai.tech/widget.js'))
+
+  if (!existing) {
+    return { removed: false }
+  }
+
+  const deleteResponse = await fetch(
+    `https://${domain}/admin/api/${SHOPIFY_API_VERSION}/script_tags/${existing.id}.json`,
+    { method: 'DELETE', headers }
+  )
+
+  if (!deleteResponse.ok) {
+    throw shopifyRequestError(deleteResponse.status, await deleteResponse.text())
+  }
+
+  return { removed: true }
+}
+
 export async function testShopifyConnection(input: {
   shopifyStoreDomain: string
   shopifyAccessToken: string

@@ -120,6 +120,9 @@ const _schema = i.schema({
       widgetTitle: i.string().optional(),
       wooKey: i.any().optional(),
       wooSecret: i.any().optional(),
+      wooSiteUrl: i.string().optional(),
+      wooConnectedAt: i.string().optional(),
+      wooLastSyncedAt: i.string().optional(),
     }),
     syncEvents: i.entity({
       createdAt: i.string().optional(),
