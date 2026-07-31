@@ -1,7 +1,7 @@
 import crypto from 'crypto'
 import { NextRequest, NextResponse } from 'next/server'
 import { adminDb } from '@/lib/instant-admin'
-import { normalizeShopifyDomain, ensureShopifyWidgetScriptTag } from '@/lib/shopify'
+import { normalizeShopifyDomain } from '@/lib/shopify'
 
 type ShopifyState = {
   storeId: string
@@ -140,30 +140,12 @@ export async function GET(request: NextRequest) {
       throw error
     }
 
-    // Auto-install the widget on the storefront via Shopify's ScriptTag API,
-    // so the merchant doesn't have to manually paste the install snippet
-    // into their theme. Non-fatal: if this fails (e.g. missing scope on an
-    // older connection), the Shopify connection itself still succeeds - the
-    // merchant can still install the widget manually as a fallback.
-    const widgetId = storeResult.stores[0]?.widgetId ? String(storeResult.stores[0].widgetId) : ''
-    if (widgetId) {
-      try {
-        await ensureShopifyWidgetScriptTag({
-          shopifyStoreDomain: shop,
-          shopifyAccessToken: payload.access_token,
-          storeId: state.storeId,
-          widgetId,
-        })
-      } catch (scriptTagError) {
-        console.error('[Shopify ScriptTag install failed]', {
-          message: scriptTagError instanceof Error ? scriptTagError.message : String(scriptTagError),
-          storeId: state.storeId,
-          shop,
-        })
-      }
-    } else {
-      console.error('[Shopify ScriptTag install skipped] missing widgetId', { storeId: state.storeId })
-    }
+    // Widget install is now handled by the Theme App Extension (app embed
+    // block, see extensions/modly-widget-embed) - merchants enable it from
+    // the theme editor. ScriptTag is deprecated on Shopify's end and doesn't
+    // render on Online Store 2.0 themes, so it's no longer created here (see
+    // removeShopifyWidgetScriptTag in the disconnect route for cleanup of
+    // any pre-existing ones from before this change).
 
     return NextResponse.redirect(`${appUrl}/dashboard/integrations?shopify=connected`)
   } catch (error) {
