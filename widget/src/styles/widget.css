@@ -237,14 +237,22 @@
   box-shadow: var(--modly-shadow-card) !important;
 }
 
+/*
+ * Opacity-only: an element with any keyframe touching `transform` becomes
+ * the containing block for `position: fixed` descendants for as long as the
+ * animation (including its "both"-filled tail) is in effect - which is
+ * indefinite here, since the animation never gets removed after it settles.
+ * That broke fixed-position modals (e.g. QuoteRequestForm) nested inside a
+ * .modly-panel-fade tab panel, making them scroll with the panel instead of
+ * staying pinned to the viewport. Dropping the translateY keeps the fade
+ * effect without ever creating that containing block.
+ */
 @keyframes modlyPanelFadeIn {
   from {
     opacity: 0;
-    transform: translateY(6px);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
   }
 }
 
