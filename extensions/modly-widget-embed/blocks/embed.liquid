@@ -3,9 +3,15 @@
   > App embeds. Loads the ModlyAI widget on every storefront page. Uses
   shop.permanent_domain (always available in Liquid, no extra Admin API scope)
   so /api/widget/config can resolve the store without a stored storeId.
+
+  configUrl must be explicit and absolute: without it, the widget falls back
+  to a relative "/api/widget/config" path, which resolves against the
+  storefront's own origin (e.g. modly-azsybo9p.myshopify.com) instead of
+  modlyai.tech - every request 404s and the widget silently falls back to
+  demo defaults. Confirmed via live network inspection.
 {% endcomment %}
 <script
-  src="https://modlyai.tech/widget.js?shop={{ shop.permanent_domain }}"
+  src="https://modlyai.tech/widget.js?shop={{ shop.permanent_domain }}&configUrl={{ 'https://modlyai.tech/api/widget/config' | url_encode }}"
   defer
 ></script>
 
