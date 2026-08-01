@@ -44,6 +44,16 @@
 }
 
 .modly-widget-root {
+  /* Tailwind v4's border-* utilities read border-style from
+     var(--tw-border-style), which Tailwind normally defaults via
+     `@property --tw-border-style { initial-value: solid; }`. That
+     registration isn't respected when it only exists inside a Shadow Root
+     (browsers vary here) - so the var resolved to nothing, border-style
+     computed to invalid/"none", and per spec, border-width then computes to
+     0 regardless of what was set. This plain (non-@property) declaration
+     inherits normally and gives every border-* utility in the widget a
+     working default without needing @property to work at all. */
+  --tw-border-style: solid;
   --modly-color-text: #111827;
   --modly-color-heading: #030712;
   --modly-color-muted: #4b5563;
@@ -113,6 +123,31 @@
   border-radius: 9999px !important;
   color: inherit;
   text-decoration: none;
+  animation: modlyButtonPulse 2.6s ease-out infinite;
+}
+
+/* box-shadow only, deliberately no transform/scale - an animated transform
+   on this element would make it a containing block for any position:fixed
+   descendant, the same bug that broke the request-quote modal elsewhere. */
+@keyframes modlyButtonPulse {
+  0%,
+  60%,
+  100% {
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 0 0 0 rgba(15, 23, 42, 0.28);
+  }
+  30% {
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 0 0 10px rgba(15, 23, 42, 0);
+  }
+}
+
+.modly-widget-root .modly-widget-button:hover {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .modly-widget-root .modly-widget-button {
+    animation: none;
+  }
 }
 
 .modly-widget-root .modly-widget-button svg,
