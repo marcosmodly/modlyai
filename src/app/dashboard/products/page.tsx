@@ -1,6 +1,6 @@
 'use client'
 
-import { ImageOff, PackagePlus, Pencil, Trash2 } from 'lucide-react'
+import { ImageOff, Plus, PackagePlus, Pencil, Trash2 } from 'lucide-react'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { useState } from 'react'
@@ -25,6 +25,7 @@ export default function ProductsPage() {
 
   const catalog = useCatalogProducts(storeId)
   const [editingProduct, setEditingProduct] = useState<Record<string, any> | null>(null)
+  const [creatingProduct, setCreatingProduct] = useState(false)
   const [deletingId, setDeletingId] = useState<string | null>(null)
   const [deleteError, setDeleteError] = useState('')
 
@@ -82,13 +83,23 @@ export default function ProductsPage() {
             </p>
           </div>
 
-          <Link
-            href="/dashboard/integrations"
-            className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
-          >
-            <PackagePlus className="h-4 w-4" />
-            Import Products
-          </Link>
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setCreatingProduct(true)}
+              className="inline-flex items-center gap-2 rounded-lg border border-stone-300 bg-white px-4 py-2 text-sm font-medium text-stone-800 hover:bg-stone-50"
+            >
+              <Plus className="h-4 w-4" />
+              Add Product
+            </button>
+            <Link
+              href="/dashboard/integrations"
+              className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+            >
+              <PackagePlus className="h-4 w-4" />
+              Import Products
+            </Link>
+          </div>
         </div>
       </section>
 
@@ -110,13 +121,22 @@ export default function ProductsPage() {
             <PackagePlus className="h-7 w-7" />
           </div>
           <h2 className="mt-5 text-xl font-bold text-stone-950">No products yet</h2>
-          <p className="mx-auto mt-2 max-w-md text-sm text-stone-500">Import your catalog to get started.</p>
-          <Link
-            href="/dashboard/integrations"
-            className="mt-5 inline-flex items-center gap-2 rounded-lg bg-blue-600 px-6 py-2 text-sm font-medium text-white hover:bg-blue-700"
-          >
-            Import via CSV
-          </Link>
+          <p className="mx-auto mt-2 max-w-md text-sm text-stone-500">Add a product yourself, or import your catalog to get started.</p>
+          <div className="mt-5 flex flex-wrap items-center justify-center gap-2">
+            <button
+              type="button"
+              onClick={() => setCreatingProduct(true)}
+              className="inline-flex items-center gap-2 rounded-lg border border-stone-300 bg-white px-6 py-2 text-sm font-medium text-stone-800 hover:bg-stone-50"
+            >
+              Add Product
+            </button>
+            <Link
+              href="/dashboard/integrations"
+              className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-6 py-2 text-sm font-medium text-white hover:bg-blue-700"
+            >
+              Import via CSV
+            </Link>
+          </div>
         </section>
       ) : (
         <section className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
@@ -198,6 +218,16 @@ export default function ProductsPage() {
           onClose={() => setEditingProduct(null)}
           onSaved={() => {
             setEditingProduct(null)
+            catalog.refetch()
+          }}
+        />
+      ) : null}
+
+      {creatingProduct ? (
+        <ProductEditModal
+          onClose={() => setCreatingProduct(false)}
+          onSaved={() => {
+            setCreatingProduct(false)
             catalog.refetch()
           }}
         />

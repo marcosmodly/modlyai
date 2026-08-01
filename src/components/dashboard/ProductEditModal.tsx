@@ -2,6 +2,7 @@
 
 import { X } from 'lucide-react'
 import { useState } from 'react'
+import ImageUploadField from '@/components/ImageUploadField'
 import type { ProductCustomizationOptions } from '@/lib/product-customization'
 
 const inputClass =
@@ -99,22 +100,23 @@ export default function ProductEditModal({
   onClose,
   onSaved,
 }: {
-  product: Record<string, any>
+  product?: Record<string, any> | null
   onClose: () => void
   onSaved: () => void
 }) {
-  const options = (product.customizationOptions ?? undefined) as ProductCustomizationOptions | undefined
+  const isCreate = !product
+  const options = (product?.customizationOptions ?? undefined) as ProductCustomizationOptions | undefined
 
-  const [name, setName] = useState<string>(product.title ?? product.name ?? '')
-  const [category, setCategory] = useState<string>(product.category ?? '')
+  const [name, setName] = useState<string>(product?.title ?? product?.name ?? '')
+  const [category, setCategory] = useState<string>(product?.category ?? '')
   const [price, setPrice] = useState<string>(
-    product.price !== undefined && product.price !== null ? String(product.price) : ''
+    product?.price !== undefined && product?.price !== null ? String(product.price) : ''
   )
-  const [productStatus, setProductStatus] = useState<string>(product.status || 'active')
-  const [imageUrl, setImageUrl] = useState<string>(product.imageUrl ?? product.image ?? '')
-  const [description, setDescription] = useState<string>(product.description ?? '')
-  const [colors, setColors] = useState<string>(joinOptionNames(options?.colors) || (product.colors ?? ''))
-  const [materials, setMaterials] = useState<string>(joinOptionNames(options?.materials) || (product.materials ?? ''))
+  const [productStatus, setProductStatus] = useState<string>(product?.status || 'active')
+  const [imageUrl, setImageUrl] = useState<string>(product?.imageUrl ?? product?.image ?? '')
+  const [description, setDescription] = useState<string>(product?.description ?? '')
+  const [colors, setColors] = useState<string>(joinOptionNames(options?.colors) || (product?.colors ?? ''))
+  const [materials, setMaterials] = useState<string>(joinOptionNames(options?.materials) || (product?.materials ?? ''))
   const [width, setWidth] = useState<DimensionField>(dimensionFromOptions(options, 'width'))
   const [length, setLength] = useState<DimensionField>(dimensionFromOptions(options, 'length'))
   const [height, setHeight] = useState<DimensionField>(dimensionFromOptions(options, 'height'))
@@ -143,8 +145,8 @@ export default function ProductEditModal({
     setSaveMessage('')
 
     try {
-      const res = await fetch(`/api/products/${product.id}`, {
-        method: 'PATCH',
+      const res = await fetch(isCreate ? '/api/products' : `/api/products/${product!.id}`, {
+        method: isCreate ? 'POST' : 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           name: trimmedName,
@@ -165,13 +167,13 @@ export default function ProductEditModal({
       const result = await safeJson(res)
 
       if (!res.ok) {
-        throw new Error(result?.error || 'Unable to save product.')
+        throw new Error(result?.error || `Unable to ${isCreate ? 'create' : 'save'} product.`)
       }
 
       onSaved()
     } catch (error) {
       setSaveState('error')
-      setSaveMessage(error instanceof Error ? error.message : 'Unable to save product.')
+      setSaveMessage(error instanceof Error ? error.message : `Unable to ${isCreate ? 'create' : 'save'} product.`)
     }
   }
 
@@ -179,7 +181,7 @@ export default function ProductEditModal({
     <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-stone-950/50 p-4 opacity-100">
       <div className="my-8 w-full max-w-2xl rounded-[28px] border border-stone-200 bg-white shadow-xl">
         <div className="flex items-center justify-between border-b border-stone-200 px-6 py-5">
-          <h2 className="text-lg font-bold text-stone-950">Edit product</h2>
+          <h2 className="text-lg font-bold text-stone-950">{isCreate ? 'Add product' : 'Edit product'}</h2>
           <button
             type="button"
             onClick={onClose}
@@ -235,16 +237,12 @@ export default function ProductEditModal({
             </label>
           </div>
 
-          <label className="block">
-            <span className={labelClass}>Image URL</span>
-            <input
-              type="text"
-              value={imageUrl}
-              onChange={(event) => setImageUrl(event.target.value)}
-              className={`${inputClass} mt-2`}
-              placeholder="https://..."
-            />
-          </label>
+          <div>
+            <span className={labelClass}>Photo</span>
+            <div className="mt-2">
+              <ImageUploadField value={imageUrl} onChange={setImageUrl} shape="square" size={88} />
+            </div>
+          </div>
 
           <label className="block">
             <span className={labelClass}>Description</span>
@@ -311,7 +309,7 @@ export default function ProductEditModal({
               disabled={saveState === 'saving'}
               className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
             >
-              {saveState === 'saving' ? 'Saving...' : 'Save changes'}
+              {saveState === 'saving' ? (isCreate ? 'Creating...' : 'Saving...') : isCreate ? 'Create product' : 'Save changes'}
             </button>
           </div>
         </form>
