@@ -718,11 +718,18 @@ export function FurnitureCustomizerWidget({
   }, [analyticsContext, draft, mergedConfig, price, savedItem?.id, selectedProduct, showToast]);
 
   const handleNavigateToRoomPlanner = () => {
-    if (typeof window !== 'undefined' && savedItem?.id) {
+    // savedItem is only set once the customer has explicitly applied/saved
+    // this draft - if they click straight to Room Planner without doing
+    // that first, save it now so there's always something to land on and
+    // highlight in My Customized Furniture, instead of just switching tabs
+    // with nothing to show for it.
+    const itemToHighlight = savedItem ?? saveCustomizedFurnitureForCurrentDraft();
+
+    if (typeof window !== 'undefined' && itemToHighlight?.id) {
       // Lets Room Planner scroll to and highlight the item that was just
       // applied here, instead of leaving the customer to scroll and hunt
       // for it themselves among possibly several saved customizations.
-      sessionStorage.setItem('modly-highlight-customized-item', savedItem.id);
+      sessionStorage.setItem('modly-highlight-customized-item', itemToHighlight.id);
     }
 
     if (onNavigateToRoomPlanner) {
