@@ -128,6 +128,7 @@ export async function POST(request: NextRequest) {
     let createdCount = 0
     let updatedCount = 0
     let skippedCount = 0
+    const matchedProductIds = new Set<string>()
 
     const productTransactionItems = shopifyProducts.map((product) => {
       const productUrl = product.handle ? `https://${shopifyStoreDomain}/products/${product.handle}` : product.productUrl || ''
@@ -155,6 +156,7 @@ export async function POST(request: NextRequest) {
         sku: product.sku || '',
         category: product.category || '',
         status: product.status || '',
+        source: 'shopify',
         customizationOptions: product.customizationOptions ?? null,
         createdAt: existingProduct?.createdAt ? String(existingProduct.createdAt) : now,
         ...(isUpdate ? { updatedAt: now } : {}),
@@ -162,6 +164,7 @@ export async function POST(request: NextRequest) {
 
       if (isUpdate) {
         updatedCount += 1
+        matchedProductIds.add(productId)
       } else {
         createdCount += 1
       }
@@ -175,6 +178,25 @@ export async function POST(request: NextRequest) {
         instantDbIdIsUuid: isUuid(productId),
       }
     })
+
+    // Reconcile: remove previously-synced Shopify products that are no longer
+    // returned by this fetch (deleted or archived on Shopify's side). Scoped
+    // to source: 'shopify' only, so CSV/manual products are never touched.
+    // Guarded on a non-empty fetch so a transient empty response from Shopify
+    // can't wipe out the whole synced catalog.
+    const staleShopifyProducts =
+      shopifyProducts.length > 0
+        ? existingProducts.filter(
+            (product: any) => product.source === 'shopify' && !matchedProductIds.has(String(product.id))
+          )
+        : []
+    const removedCount = staleShopifyProducts.length
+    const productDeleteItems = staleShopifyProducts.map((product: any) => ({
+      tx: db.tx.products[String(product.id)].delete(),
+      entity: 'products' as const,
+      payload: {},
+      instantDbIdIsUuid: isUuid(String(product.id)),
+    }))
 
     const nextProductCount = existingProducts.length + createdCount
     const productLimitCheck = checkProductLimit(store, nextProductCount)
@@ -193,6 +215,7 @@ export async function POST(request: NextRequest) {
     const BATCH_SIZE = 25
     const catalogTransactionItems = [
       ...productTransactionItems,
+      ...productDeleteItems,
     ]
     const productLogPayload = {
       storeId: '',
@@ -250,6 +273,7 @@ export async function POST(request: NextRequest) {
       created: createdCount,
       updated: updatedCount,
       skipped: skippedCount,
+      removed: removedCount,
       totalProcessed: shopifyProducts.length,
     })
   } catch (error) {

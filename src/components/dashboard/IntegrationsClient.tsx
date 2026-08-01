@@ -190,7 +190,7 @@ export default function IntegrationsClient({
       setSyncedCount(Number.isFinite(count) ? count : 0)
       setShopifyLastSyncedAt(new Date().toISOString())
       setShopifyStatus('success')
-      setShopifyMessage(`Products synced: ${Number(result?.created ?? 0)} created, ${Number(result?.updated ?? 0)} updated`)
+      setShopifyMessage(`Products synced: ${Number(result?.created ?? 0)} created, ${Number(result?.updated ?? 0)} updated, ${Number(result?.removed ?? 0)} removed`)
     } catch (error) {
       setShopifyStatus('error')
       setShopifyMessage(error instanceof Error ? error.message : 'Unable to sync Shopify products')
@@ -293,7 +293,7 @@ export default function IntegrationsClient({
       setWooSyncedCount(Number.isFinite(count) ? count : 0)
       setWooLastSyncedAt(new Date().toISOString())
       setWooStatus('success')
-      setWooMessage(`Products synced: ${Number(result?.created ?? 0)} created, ${Number(result?.updated ?? 0)} updated`)
+      setWooMessage(`Products synced: ${Number(result?.created ?? 0)} created, ${Number(result?.updated ?? 0)} updated, ${Number(result?.removed ?? 0)} removed`)
     } catch (error) {
       setWooStatus('error')
       setWooMessage(error instanceof Error ? error.message : 'Unable to sync WooCommerce products')

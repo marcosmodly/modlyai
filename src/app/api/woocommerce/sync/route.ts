@@ -57,6 +57,7 @@ export async function POST(request: NextRequest) {
     const now = new Date().toISOString()
     let createdCount = 0
     let updatedCount = 0
+    const matchedProductIds = new Set<string>()
 
     const productTransactionItems = wooProducts.map((product) => {
       const identityInput = {
@@ -90,13 +91,33 @@ export async function POST(request: NextRequest) {
         ...(isUpdate ? { updatedAt: now } : {}),
       }
 
-      if (isUpdate) updatedCount += 1
-      else createdCount += 1
+      if (isUpdate) {
+        updatedCount += 1
+        matchedProductIds.add(productId)
+      } else {
+        createdCount += 1
+      }
 
       addProductToIdentityIndex(productIndex, { id: productId, ...productUpdate } as any)
 
       return db.tx.products[productId].update(productUpdate)
     })
+
+    // Reconcile: remove previously-synced WooCommerce products that are no
+    // longer returned by this fetch (deleted on WooCommerce's side). Scoped
+    // to source: 'woocommerce' only, so CSV/manual products are untouched.
+    // Guarded on a non-empty fetch so a transient empty response can't wipe
+    // out the whole synced catalog.
+    const staleWooProducts =
+      wooProducts.length > 0
+        ? existingProducts.filter(
+            (product: any) => product.source === 'woocommerce' && !matchedProductIds.has(String(product.id))
+          )
+        : []
+    const removedCount = staleWooProducts.length
+    const productDeleteItems = staleWooProducts.map((product: any) =>
+      db.tx.products[String(product.id)].delete()
+    )
 
     const nextProductCount = existingProducts.length + createdCount
     const productLimitCheck = checkProductLimit(store, nextProductCount)
@@ -112,8 +133,9 @@ export async function POST(request: NextRequest) {
     }
 
     const BATCH_SIZE = 25
-    for (let i = 0; i < productTransactionItems.length; i += BATCH_SIZE) {
-      const batch = productTransactionItems.slice(i, i + BATCH_SIZE)
+    const catalogTransactionItems = [...productTransactionItems, ...productDeleteItems]
+    for (let i = 0; i < catalogTransactionItems.length; i += BATCH_SIZE) {
+      const batch = catalogTransactionItems.slice(i, i + BATCH_SIZE)
       await db.transact(batch)
     }
 
@@ -126,6 +148,7 @@ export async function POST(request: NextRequest) {
       synced: wooProducts.length,
       created: createdCount,
       updated: updatedCount,
+      removed: removedCount,
     })
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Unable to sync WooCommerce products.'
