@@ -19,6 +19,7 @@ import {
   Product,
 } from '../data/products';
 import { RoomAnalysisResponse } from '../types';
+import ImageLightbox from './ImageLightbox';
 
 export type CustomizerDraft = {
   productId: string;
@@ -359,6 +360,7 @@ export default function FurnitureCustomizerPanel({
   const [analyzing, setAnalyzing] = useState(false);
   const [aiSuggestionsOpen, setAiSuggestionsOpen] = useState(false);
   const [productImageErrors, setProductImageErrors] = useState<Set<string>>(() => new Set());
+  const [lightboxImage, setLightboxImage] = useState<string | null>(null);
 
   const roomPlannerSuggestions = useMemo(() => {
     if (!roomPlannerRecommendations) return null;
@@ -567,20 +569,30 @@ export default function FurnitureCustomizerPanel({
                 ))}
               </select>
 
-              <div className="aspect-square bg-purple-50 rounded-lg mb-6 flex flex-col items-center justify-center border border-purple-200 text-center px-4 overflow-hidden">
+              <div className="relative aspect-square bg-purple-50 rounded-lg mb-6 flex flex-col items-center justify-center border border-purple-200 text-center px-4 overflow-hidden">
                 {selectedProduct && getProductImageUrl(selectedProduct) && !productImageErrors.has(selectedProduct.id) ? (
-                  <img
-                    src={getProductImageUrl(selectedProduct)}
-                    alt={selectedProduct.name}
-                    className="h-full w-full object-cover"
-                    onError={() =>
-                      setProductImageErrors((prev) => {
-                        const next = new Set(prev);
-                        next.add(selectedProduct.id);
-                        return next;
-                      })
-                    }
-                  />
+                  <button
+                    type="button"
+                    onClick={() => setLightboxImage(getProductImageUrl(selectedProduct) ?? null)}
+                    className="group relative h-full w-full cursor-zoom-in"
+                    aria-label={`View full-size photo of ${selectedProduct.name}`}
+                  >
+                    <img
+                      src={getProductImageUrl(selectedProduct)}
+                      alt={selectedProduct.name}
+                      className="h-full w-full object-cover"
+                      onError={() =>
+                        setProductImageErrors((prev) => {
+                          const next = new Set(prev);
+                          next.add(selectedProduct.id);
+                          return next;
+                        })
+                      }
+                    />
+                    <span className="absolute inset-0 flex items-center justify-center bg-black/0 opacity-0 transition group-hover:bg-black/20 group-hover:opacity-100">
+                      <Maximize2 className="h-6 w-6 text-white drop-shadow" />
+                    </span>
+                  </button>
                 ) : (
                   <>
                     <Layers className="w-12 h-12 text-purple-400 mb-2" />
@@ -1277,6 +1289,13 @@ export default function FurnitureCustomizerPanel({
           </div>
         </div>
       </>
+    )}
+    {lightboxImage && (
+      <ImageLightbox
+        src={lightboxImage}
+        alt={selectedProduct?.name}
+        onClose={() => setLightboxImage(null)}
+      />
     )}
     </>
   );

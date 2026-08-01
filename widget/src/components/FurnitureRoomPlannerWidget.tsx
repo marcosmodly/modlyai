@@ -5,6 +5,7 @@ import {
   Check,
   Flower2,
   Lamp,
+  Maximize2,
   Ruler,
   ShoppingBag,
   Sofa,
@@ -28,6 +29,7 @@ import { WidgetProvider } from '../utils/WidgetContext';
 import { trackWidgetEvent } from '../utils/analytics';
 import CustomizedFurnitureList from './CustomizedFurnitureList';
 import { FinalizeQuoteModal } from './FinalizeQuoteModal';
+import ImageLightbox from './ImageLightbox';
 import { QuoteRequestForm } from './QuoteRequestForm';
 import RecommendationsList from './RecommendationsList';
 
@@ -137,6 +139,7 @@ export function FurnitureRoomPlannerWidget({
   const [selectedRecommendation, setSelectedRecommendation] = useState<Recommendation | null>(null);
   const [selectedCustomizedItem, setSelectedCustomizedItem] = useState<CustomizedFurnitureItem | null>(null);
   const [highlightItemId, setHighlightItemId] = useState<string | null>(null);
+  const [lightboxImage, setLightboxImage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const resultsRef = useRef<HTMLDivElement | null>(null);
   const lastScrolledRequestRef = useRef(0);
@@ -641,11 +644,21 @@ export function FurnitureRoomPlannerWidget({
                   </div>
                   <div className="flex aspect-video w-full items-center justify-center overflow-hidden rounded-xl border border-stone-200 bg-stone-50">
                     {uploadedPhotos[0] ? (
-                      <img
-                        src={uploadedPhotos[0]}
-                        alt="Uploaded room preview"
-                        className="aspect-video w-full rounded-xl object-cover"
-                      />
+                      <button
+                        type="button"
+                        onClick={() => setLightboxImage(uploadedPhotos[0])}
+                        className="group relative aspect-video w-full cursor-zoom-in"
+                        aria-label="View full-size room photo"
+                      >
+                        <img
+                          src={uploadedPhotos[0]}
+                          alt="Uploaded room preview"
+                          className="h-full w-full rounded-xl object-cover"
+                        />
+                        <span className="absolute inset-0 flex items-center justify-center rounded-xl bg-black/0 opacity-0 transition group-hover:bg-black/20 group-hover:opacity-100">
+                          <Maximize2 className="h-6 w-6 text-white drop-shadow" />
+                        </span>
+                      </button>
                     ) : (
                       <div className="px-6 text-center text-gray-500">
                         <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-white shadow-sm">
@@ -1091,6 +1104,14 @@ export function FurnitureRoomPlannerWidget({
             <p className="text-sm text-white/90">Quote request sent. The store will follow up with pricing and next steps.</p>
           </div>
         </div>
+      )}
+
+      {lightboxImage && (
+        <ImageLightbox
+          src={lightboxImage}
+          alt="Uploaded room preview"
+          onClose={() => setLightboxImage(null)}
+        />
       )}
     </WidgetProvider>
   );

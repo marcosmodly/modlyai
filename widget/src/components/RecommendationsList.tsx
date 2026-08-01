@@ -1,9 +1,10 @@
-import React from 'react';
-import { ExternalLink, ImageIcon, MessageSquareQuote, Pencil, Ruler } from 'lucide-react';
+import React, { useState } from 'react';
+import { ExternalLink, ImageIcon, Maximize2, MessageSquareQuote, Pencil, Ruler } from 'lucide-react';
 import { Recommendation, FurnitureItem } from '../types';
 import { getRealProductUrl } from '../utils/productUrl';
 import { getReadableTextColor } from '../utils/config';
 import { trackWidgetEvent } from '../utils/analytics';
+import ImageLightbox from './ImageLightbox';
 
 interface RecommendationsListProps {
   recommendations: Recommendation[];
@@ -56,6 +57,7 @@ function getDimensionLabel(item: FurnitureItem) {
 export default function RecommendationsList({ recommendations, onCustomize, onFinalize, enabledActions, primaryColor, analyticsContext }: RecommendationsListProps) {
   const actions = enabledActions ?? { viewInCatalog: true, customize: true, requestQuote: true };
   const primaryTextColor = primaryColor ? getReadableTextColor(primaryColor) : undefined;
+  const [lightbox, setLightbox] = useState<{ src: string; alt?: string } | null>(null);
 
   if (recommendations.length === 0) {
     return (
@@ -108,11 +110,21 @@ export default function RecommendationsList({ recommendations, onCustomize, onFi
             >
               <div className="aspect-[4/3] bg-stone-100">
                 {imageUrl ? (
-                  <img
-                    src={imageUrl}
-                    alt={rec.item.name}
-                    className="h-full w-full object-cover"
-                  />
+                  <button
+                    type="button"
+                    onClick={() => setLightbox({ src: imageUrl, alt: rec.item.name })}
+                    className="group relative h-full w-full cursor-zoom-in"
+                    aria-label={`View full-size photo of ${rec.item.name}`}
+                  >
+                    <img
+                      src={imageUrl}
+                      alt={rec.item.name}
+                      className="h-full w-full object-cover"
+                    />
+                    <span className="absolute inset-0 flex items-center justify-center bg-black/0 opacity-0 transition group-hover:bg-black/20 group-hover:opacity-100">
+                      <Maximize2 className="h-6 w-6 text-white drop-shadow" />
+                    </span>
+                  </button>
                 ) : (
                   <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-stone-100 to-stone-50 text-stone-400">
                     <ImageIcon className="h-10 w-10" />
@@ -274,6 +286,9 @@ export default function RecommendationsList({ recommendations, onCustomize, onFi
           );
         })}
       </div>
+      {lightbox && (
+        <ImageLightbox src={lightbox.src} alt={lightbox.alt} onClose={() => setLightbox(null)} />
+      )}
     </div>
   );
 }
