@@ -8,6 +8,7 @@ import {
 } from '../types';
 import {
   Product,
+  getColorHex,
   getMaterialDescription,
   getOptionName,
   getOptionPrice,
@@ -92,11 +93,11 @@ const getCustomizationForProduct = (product: Product) => {
   const productMaterialNames = product.materials
     .filter((name) => allowDemoFallback || name.toLowerCase() !== 'custom');
   const colors = (colorNames.length > 0 ? colorNames : productColorNames)
-    .map((name, index) => {
+    .map((name) => {
       const existing = product.colors.find((color) => color.name.toLowerCase() === name.toLowerCase());
       const pricedColor = pricedColors.find((option) => option.name.toLowerCase() === name.toLowerCase());
       return {
-        ...(existing ?? { name, hex: product.colors[index]?.hex ?? '#E5E7EB', available: true }),
+        ...(existing ?? { name, hex: getColorHex(name), available: true }),
         price: pricedColor?.price,
       };
     })

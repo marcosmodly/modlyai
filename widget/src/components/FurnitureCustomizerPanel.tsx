@@ -681,7 +681,7 @@ export default function FurnitureCustomizerPanel({
                           }
                           disabled={isApplying}
                           className={[
-                            'flex items-center gap-2 px-3 py-2 rounded-full border-2 text-sm transition-all',
+                            'flex items-center gap-2 px-3 py-2 rounded-full border-2 text-sm text-gray-900 transition-all',
                             isSelected
                               ? 'border-blue-500 bg-blue-50'
                               : 'border-gray-200 hover:border-gray-300',
@@ -694,7 +694,7 @@ export default function FurnitureCustomizerPanel({
                             className="w-5 h-5 rounded-full border border-gray-200"
                             style={{ backgroundColor: color.hex }}
                           />
-                          <span>{color.name}</span>
+                          <span className="text-gray-900">{color.name}</span>
                           {formatModifierLabel(color.price) && (
                             <span className="text-xs font-semibold text-gray-500">
                               {formatModifierLabel(color.price)}

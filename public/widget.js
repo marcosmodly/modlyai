@@ -1345,6 +1345,7 @@
 	    charcoal: '#374151',
 	    white: '#FFFFFF',
 	    black: '#111827',
+	    matte_black: '#1A1A1A',
 	    brown: '#92400E',
 	    navy_blue: '#1E3A5F',
 	    navy: '#1E3A5F',
@@ -1355,37 +1356,84 @@
 	    midnight_blue: '#1E3A8A',
 	    burgundy: '#7F1D1D',
 	    cream: '#FEFCE8',
+	    ivory: '#FFFFF0',
 	    gold: '#D97706',
 	    walnut: '#7C3D12',
+	    dark_walnut: '#431407',
 	    oak: '#A16207',
+	    white_oak: '#FEF9C3',
+	    warm_oak: '#A16207',
+	    warmoak: '#A16207',
+	    mahogany: '#4E2A1E',
+	    cherry: '#6F2C22',
+	    maple: '#D8B88A',
+	    pine: '#DEC08B',
+	    birch: '#E4CFA3',
+	    ash: '#D6C6A5',
+	    teak: '#B58A4A',
+	    ebony: '#231710',
+	    espresso: '#3C2415',
 	    natural: '#D4B896',
 	    caramel: '#B45309',
 	    cognac: '#9A3412',
 	    rustic_brown: '#78350F',
-	    dark_walnut: '#431407',
 	    gray_wash: '#D1D5DB',
 	    smoked: '#6B7280',
 	    dusty_rose: '#FDA4AF',
 	    blush_pink: '#FBCFE8',
 	    clear: '#E0F2FE',
-	    white_oak: '#FEF9C3',
 	    pebble: '#C4B8AE',
 	    slate: '#475569',
 	    sand: '#D4C5B9',
+	    taupe: '#8B7D6B',
+	    greige: '#B8AFA4',
 	    oat: '#D8CCB8',
 	    mist: '#CBD5E1',
-	    warm_oak: '#A16207',
-	    warmoak: '#A16207',
 	    blue: '#3B82F6',
 	    green: '#10B981',
+	    red: '#DC2626',
+	    orange: '#EA580C',
+	    yellow: '#EAB308',
+	    purple: '#7C3AED',
+	    pink: '#EC4899',
+	    silver: '#C0C0C0',
+	    copper: '#B87333',
+	    bronze: '#8C5E2A',
 	    terracotta: '#C2410C',
 	    graphite: '#4B5563',
 	    chrome: '#9CA3AF',
 	    brass: '#B45309',
 	};
+	// Resolves any valid CSS color keyword (e.g. "Crimson", "Teal", "SaddleBrown")
+	// via the browser's own color parser, so COLOR_HEX_BY_NAME above only needs
+	// to cover furniture-specific finish names that aren't real CSS keywords
+	// (wood tones like "Oak"/"Walnut", "Matte Black", etc).
+	const resolveCssColorHex = (name) => {
+	    if (typeof document === 'undefined')
+	        return null;
+	    const probe = document.createElement('span');
+	    probe.style.color = '';
+	    probe.style.color = name;
+	    if (!probe.style.color)
+	        return null;
+	    probe.style.display = 'none';
+	    document.body.appendChild(probe);
+	    const computed = getComputedStyle(probe).color;
+	    document.body.removeChild(probe);
+	    const match = computed.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+	    if (!match)
+	        return null;
+	    const toHex = (value) => Number(value).toString(16).padStart(2, '0');
+	    return `#${toHex(match[1])}${toHex(match[2])}${toHex(match[3])}`;
+	};
 	const getColorHex = (colorName) => {
 	    const normalized = colorName.toLowerCase().replace(/\s+/g, '_');
-	    return COLOR_HEX_BY_NAME[normalized] ?? '#E5E7EB';
+	    if (COLOR_HEX_BY_NAME[normalized])
+	        return COLOR_HEX_BY_NAME[normalized];
+	    const dictionaryMatch = Object.keys(COLOR_HEX_BY_NAME).find((key) => normalized.includes(key));
+	    if (dictionaryMatch)
+	        return COLOR_HEX_BY_NAME[dictionaryMatch];
+	    return resolveCssColorHex(colorName) ?? '#E5E7EB';
 	};
 	const getMaterialDescription = (material) => {
 	    const descriptions = {
@@ -4198,12 +4246,12 @@
 	                                                    }) })) : (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsx(Layers, { className: "w-12 h-12 text-purple-400 mb-2" }), jsxRuntimeExports.jsx("p", { className: "text-sm text-purple-600 font-medium", children: selectedProduct?.customizer.thumbnailLabel ?? 'Sectional' }), jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500", children: "Instantly updates with your selections" })] })) }), jsxRuntimeExports.jsxs("div", { className: "space-y-3 text-sm border-t border-gray-200 pt-4", children: [jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-gray-600", children: [jsxRuntimeExports.jsx("span", { children: "Base Price:" }), jsxRuntimeExports.jsx("span", { className: "font-medium text-gray-900", children: price.base > 0 ? `$${price.base.toLocaleString()}` : 'Quote required' })] }), jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-gray-600", children: [jsxRuntimeExports.jsx("span", { children: "Base Size:" }), jsxRuntimeExports.jsxs("span", { className: "font-medium text-gray-900", children: [selectedProduct?.dimensions.width, selectedProduct?.dimensions.unit, " W"] })] }), jsxRuntimeExports.jsxs("div", { className: "text-gray-600", children: [jsxRuntimeExports.jsx("span", { className: "block mb-1", children: "Materials:" }), jsxRuntimeExports.jsx("span", { className: "font-medium text-gray-900", children: selectedProduct?.materials.join(', ') || 'Custom' })] }), jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-gray-600", children: [jsxRuntimeExports.jsx("span", { children: "Customizations:" }), jsxRuntimeExports.jsxs("span", { className: "font-medium text-purple-600", children: ["+$", price.customizations.toLocaleString()] })] }), jsxRuntimeExports.jsxs("div", { className: "border-t border-gray-200 pt-3 flex justify-between", children: [jsxRuntimeExports.jsx("span", { className: "font-bold text-gray-900", children: "Total:" }), jsxRuntimeExports.jsx("span", { className: "font-bold text-lg text-gray-900", children: price.quoteRequired ? 'Quote required' : `$${price.total.toLocaleString()}` })] })] }), jsxRuntimeExports.jsxs("div", { className: "mt-6 grid grid-cols-3 gap-2", children: [jsxRuntimeExports.jsx("button", { type: "button", onClick: onSaveConfig, disabled: isApplying, className: "px-3 py-2 border border-gray-200 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gray-50 transition disabled:opacity-50", children: "Save" }), jsxRuntimeExports.jsxs("button", { type: "button", onClick: onShareLink, disabled: isApplying, className: "px-3 py-2 border border-gray-200 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gray-50 transition disabled:opacity-50 inline-flex items-center justify-center gap-2", children: [jsxRuntimeExports.jsx(Link2, { className: "w-4 h-4" }), "Share"] }), jsxRuntimeExports.jsxs("button", { type: "button", onClick: onExportPdf, disabled: isApplying, className: "px-3 py-2 border border-gray-200 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gray-50 transition disabled:opacity-50 inline-flex items-center justify-center gap-2", children: [jsxRuntimeExports.jsx(FileDown, { className: "w-4 h-4" }), "PDF"] })] })] }) }), jsxRuntimeExports.jsx("div", { className: "self-stretch lg:col-start-4 lg:col-span-4 lg:row-start-1", children: jsxRuntimeExports.jsxs("div", { className: "bg-white rounded-2xl border border-gray-200 p-6 shadow-lg h-full", children: [jsxRuntimeExports.jsxs("h3", { className: "text-lg font-bold text-gray-900 mb-6 flex items-center gap-2", children: [jsxRuntimeExports.jsx(Palette, { className: "w-5 h-5 text-purple-600" }), "Customization Options"] }), jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-gray-900 mb-3", children: "Color" }), colorSwatches.length > 0 ? (jsxRuntimeExports.jsx("div", { className: "flex flex-wrap gap-2", children: colorSwatches.map((color) => {
 	                                                            const isSelected = draft.fabricColor.toLowerCase() === color.hex.toLowerCase();
 	                                                            return (jsxRuntimeExports.jsxs("button", { type: "button", onClick: () => setDraft({ ...draft, fabricColor: color.hex, selectedColor: color.name }), disabled: isApplying, className: [
-	                                                                    'flex items-center gap-2 px-3 py-2 rounded-full border-2 text-sm transition-all',
+	                                                                    'flex items-center gap-2 px-3 py-2 rounded-full border-2 text-sm text-gray-900 transition-all',
 	                                                                    isSelected
 	                                                                        ? 'border-blue-500 bg-blue-50'
 	                                                                        : 'border-gray-200 hover:border-gray-300',
 	                                                                    isApplying ? 'opacity-60 cursor-not-allowed' : '',
-	                                                                ].join(' '), "aria-label": `Select color ${color.name}`, title: color.name, children: [jsxRuntimeExports.jsx("div", { className: "w-5 h-5 rounded-full border border-gray-200", style: { backgroundColor: color.hex } }), jsxRuntimeExports.jsx("span", { children: color.name }), formatModifierLabel(color.price) && (jsxRuntimeExports.jsx("span", { className: "text-xs font-semibold text-gray-500", children: formatModifierLabel(color.price) }))] }, color.name));
+	                                                                ].join(' '), "aria-label": `Select color ${color.name}`, title: color.name, children: [jsxRuntimeExports.jsx("div", { className: "w-5 h-5 rounded-full border border-gray-200", style: { backgroundColor: color.hex } }), jsxRuntimeExports.jsx("span", { className: "text-gray-900", children: color.name }), formatModifierLabel(color.price) && (jsxRuntimeExports.jsx("span", { className: "text-xs font-semibold text-gray-500", children: formatModifierLabel(color.price) }))] }, color.name));
 	                                                        }) })) : (jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-400", children: "No colors available for this product" }))] }), jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-gray-900 mb-3", children: "Material" }), materialOptions.length > 0 ? (jsxRuntimeExports.jsx("div", { className: "space-y-2", children: materialOptions.map((m) => {
 	                                                            const isSelected = draft.materialId === m.id;
 	                                                            return (jsxRuntimeExports.jsxs("button", { type: "button", onClick: () => setDraft({ ...draft, materialId: m.id, selectedMaterial: m.name }), disabled: isApplying, className: [
@@ -4311,11 +4359,11 @@
 	    const productMaterialNames = product.materials
 	        .filter((name) => allowDemoFallback || name.toLowerCase() !== 'custom');
 	    const colors = (colorNames.length > 0 ? colorNames : productColorNames)
-	        .map((name, index) => {
+	        .map((name) => {
 	        const existing = product.colors.find((color) => color.name.toLowerCase() === name.toLowerCase());
 	        const pricedColor = pricedColors.find((option) => option.name.toLowerCase() === name.toLowerCase());
 	        return {
-	            ...(existing ?? { name, hex: product.colors[index]?.hex ?? '#E5E7EB', available: true }),
+	            ...(existing ?? { name, hex: getColorHex(name), available: true }),
 	            price: pricedColor?.price,
 	        };
 	    })

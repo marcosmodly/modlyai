@@ -93,6 +93,7 @@ const COLOR_HEX_BY_NAME: Record<string, string> = {
   charcoal: '#374151',
   white: '#FFFFFF',
   black: '#111827',
+  matte_black: '#1A1A1A',
   brown: '#92400E',
   navy_blue: '#1E3A5F',
   navy: '#1E3A5F',
@@ -103,38 +104,87 @@ const COLOR_HEX_BY_NAME: Record<string, string> = {
   midnight_blue: '#1E3A8A',
   burgundy: '#7F1D1D',
   cream: '#FEFCE8',
+  ivory: '#FFFFF0',
   gold: '#D97706',
   walnut: '#7C3D12',
+  dark_walnut: '#431407',
   oak: '#A16207',
+  white_oak: '#FEF9C3',
+  warm_oak: '#A16207',
+  warmoak: '#A16207',
+  mahogany: '#4E2A1E',
+  cherry: '#6F2C22',
+  maple: '#D8B88A',
+  pine: '#DEC08B',
+  birch: '#E4CFA3',
+  ash: '#D6C6A5',
+  teak: '#B58A4A',
+  ebony: '#231710',
+  espresso: '#3C2415',
   natural: '#D4B896',
   caramel: '#B45309',
   cognac: '#9A3412',
   rustic_brown: '#78350F',
-  dark_walnut: '#431407',
   gray_wash: '#D1D5DB',
   smoked: '#6B7280',
   dusty_rose: '#FDA4AF',
   blush_pink: '#FBCFE8',
   clear: '#E0F2FE',
-  white_oak: '#FEF9C3',
   pebble: '#C4B8AE',
   slate: '#475569',
   sand: '#D4C5B9',
+  taupe: '#8B7D6B',
+  greige: '#B8AFA4',
   oat: '#D8CCB8',
   mist: '#CBD5E1',
-  warm_oak: '#A16207',
-  warmoak: '#A16207',
   blue: '#3B82F6',
   green: '#10B981',
+  red: '#DC2626',
+  orange: '#EA580C',
+  yellow: '#EAB308',
+  purple: '#7C3AED',
+  pink: '#EC4899',
+  silver: '#C0C0C0',
+  copper: '#B87333',
+  bronze: '#8C5E2A',
   terracotta: '#C2410C',
   graphite: '#4B5563',
   chrome: '#9CA3AF',
   brass: '#B45309',
 };
 
+// Resolves any valid CSS color keyword (e.g. "Crimson", "Teal", "SaddleBrown")
+// via the browser's own color parser, so COLOR_HEX_BY_NAME above only needs
+// to cover furniture-specific finish names that aren't real CSS keywords
+// (wood tones like "Oak"/"Walnut", "Matte Black", etc).
+const resolveCssColorHex = (name: string): string | null => {
+  if (typeof document === 'undefined') return null;
+
+  const probe = document.createElement('span');
+  probe.style.color = '';
+  probe.style.color = name;
+  if (!probe.style.color) return null;
+
+  probe.style.display = 'none';
+  document.body.appendChild(probe);
+  const computed = getComputedStyle(probe).color;
+  document.body.removeChild(probe);
+
+  const match = computed.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+  if (!match) return null;
+
+  const toHex = (value: string) => Number(value).toString(16).padStart(2, '0');
+  return `#${toHex(match[1])}${toHex(match[2])}${toHex(match[3])}`;
+};
+
 export const getColorHex = (colorName: string): string => {
   const normalized = colorName.toLowerCase().replace(/\s+/g, '_');
-  return COLOR_HEX_BY_NAME[normalized] ?? '#E5E7EB';
+  if (COLOR_HEX_BY_NAME[normalized]) return COLOR_HEX_BY_NAME[normalized];
+
+  const dictionaryMatch = Object.keys(COLOR_HEX_BY_NAME).find((key) => normalized.includes(key));
+  if (dictionaryMatch) return COLOR_HEX_BY_NAME[dictionaryMatch];
+
+  return resolveCssColorHex(colorName) ?? '#E5E7EB';
 };
 
 export const getMaterialDescription = (material: string): string => {
