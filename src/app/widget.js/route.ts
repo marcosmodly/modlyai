@@ -14,7 +14,14 @@ export async function GET() {
     status: 200,
     headers: {
       'Content-Type': 'application/javascript; charset=utf-8',
+      // Vercel's own edge network caches responses independently of the
+      // plain Cache-Control value using these CDN-specific headers - without
+      // them it was still injecting its own Last-Modified/cache behavior on
+      // top of what this route returned, observed via a mismatched
+      // Last-Modified timestamp this route never sets.
       'Cache-Control': 'no-cache, must-revalidate',
+      'CDN-Cache-Control': 'no-store',
+      'Vercel-CDN-Cache-Control': 'no-store',
       'Access-Control-Allow-Origin': '*',
     },
   })
