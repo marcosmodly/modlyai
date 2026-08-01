@@ -26,6 +26,7 @@ import {
   createCustomizationPdfFilename,
   generateCustomizationPdf,
 } from '../utils/customizationPdf';
+import { getRealProductUrl } from '../utils/productUrl';
 import FurnitureCustomizerPanel, {
   CustomizerDraft,
   DraftPriceBreakdown,
@@ -577,124 +578,101 @@ export function FurnitureCustomizerWidget({
     }
   }, [analyticsContext, configStorageKey, draft, price, selectedProduct, showToast]);
 
-  const encodeSharePayload = useCallback((payload: unknown) => {
-    const json = JSON.stringify(payload);
-    const b64 =
-      typeof window !== 'undefined' ? window.btoa(unescape(encodeURIComponent(json))) : '';
-    return b64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/g, '');
-  }, []);
+  // The real product page on the merchant's own store - the thing worth
+  // sharing, as opposed to the widget's own embed URL. Falls back to the
+  // current page only if the product has no real URL of its own.
+  const shareProductLink = useMemo(() => {
+    const realUrl = getRealProductUrl(selectedProduct);
+    if (realUrl) return realUrl;
+    return typeof window !== 'undefined' ? window.location.href : '';
+  }, [selectedProduct]);
 
-  const shareLink = useMemo(() => {
-    if (typeof window === 'undefined') return '';
-    const url = new URL(window.location.href);
-    url.searchParams.set(
-      'modlyConfig',
-      encodeSharePayload({ v: 1, productId: selectedProduct.id, draft, total: price.total })
+  const buildCustomizationPdfBlob = useCallback(() => {
+    const customization = getCustomizationForProduct(selectedProduct);
+    const selectedColor = getSelectedColorOption(selectedProduct, draft);
+    const selectedMaterial = customization.materials.find((material) =>
+      draft.selectedMaterial
+        ? material.name.toLowerCase() === draft.selectedMaterial.toLowerCase()
+        : material.id === draft.materialId
     );
-    return url.toString();
-  }, [draft, encodeSharePayload, price.total, selectedProduct.id]);
-
-  const copyShareLink = useCallback(async () => {
-    try {
-      if (typeof window === 'undefined') return;
-      if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(shareLink);
-      } else {
-        const textarea = document.createElement('textarea');
-        textarea.value = shareLink;
-        document.body.appendChild(textarea);
-        textarea.select();
-        document.execCommand('copy');
-        textarea.remove();
-      }
-      showToast('success', 'Link copied to clipboard');
-    } catch (copyError) {
-      console.error('Failed to copy share link:', copyError);
-      showToast('error', "Couldn't copy link. Try again.");
-    }
-  }, [shareLink, showToast]);
+    const selectedColorName =
+      draft.selectedColor ??
+      (customization.colors.length > 0
+        ? getColorName(selectedProduct, draft.fabricColor)
+        : undefined);
+    const selectedMaterialName =
+      draft.selectedMaterial ??
+      (customization.materials.length > 0
+        ? getMaterialOption(selectedProduct, draft.materialId)?.name
+        : undefined);
+    const selectedAddOns = customization.addOns.filter((addOn) =>
+      (draft.selectedAddOns ?? []).includes(addOn.name)
+    );
+    const generatedAt = new Date();
+    const blob = generateCustomizationPdf({
+      brandName: mergedConfig.widgetTitle || mergedConfig.storeName || 'ModlyAI',
+      generatedAt,
+      referenceId: savedItem?.id,
+      storeId: selectedProduct.storeId ?? mergedConfig.storeId,
+      widgetId: mergedConfig.widgetId,
+      product: {
+        name: selectedProduct.name,
+        category: selectedProduct.category,
+        productUrl: selectedProduct.productUrl,
+        imageUrl: getProductImageUrl(selectedProduct),
+        basePrice: selectedProduct.basePrice,
+        pricingMode: price.quoteRequired ? 'quote_required' : 'estimated',
+        estimatedTotal: price.quoteRequired ? undefined : price.total,
+      },
+      selectedCustomizations: {
+        color: selectedColorName
+          ? { label: 'Color', value: selectedColorName, price: selectedColor?.price }
+          : undefined,
+        material: selectedMaterialName
+          ? { label: 'Material', value: selectedMaterialName, price: selectedMaterial?.priceDelta }
+          : undefined,
+        shopifyOptions: getSelectedShopifyOptions(selectedProduct).map((option) => ({
+          label: option.name,
+          value: option.value,
+          price: option.price,
+        })),
+        dimensions: {
+          length: draft.depthIn,
+          width: draft.widthIn,
+          height: draft.heightIn,
+          unit: customization.dimensions.width?.unit ?? customization.dimensions.length?.unit ?? 'in',
+        },
+        dimensionPriceAdjustments: price.dimensionAdjustments,
+        addOns: selectedAddOns.map((addOn) => ({
+          label: 'Add-on',
+          value: addOn.name,
+          price: addOn.price,
+        })),
+        customerRequestText: draft.customerRequestText,
+      },
+      pricing: {
+        basePrice: price.base,
+        lineItems: price.lineItems.map((lineItem) => ({
+          label: lineItem.label === 'Dimensions' ? 'Dimension adjustment' : lineItem.label,
+          amount: lineItem.amount,
+        })),
+        customizationTotal: price.customizations,
+        estimatedTotal: price.quoteRequired ? undefined : price.total,
+        quoteRequired: price.quoteRequired,
+      },
+    });
+    return { blob, filename: createCustomizationPdfFilename(selectedProduct.name, generatedAt) };
+  }, [draft, mergedConfig, price, savedItem?.id, selectedProduct]);
 
   const exportAsPdf = useCallback(() => {
     if (typeof window === 'undefined') return;
 
     try {
-      const customization = getCustomizationForProduct(selectedProduct);
-      const selectedColor = getSelectedColorOption(selectedProduct, draft);
-      const selectedMaterial = customization.materials.find((material) =>
-        draft.selectedMaterial
-          ? material.name.toLowerCase() === draft.selectedMaterial.toLowerCase()
-          : material.id === draft.materialId
-      );
-      const selectedColorName =
-        draft.selectedColor ??
-        (customization.colors.length > 0
-          ? getColorName(selectedProduct, draft.fabricColor)
-          : undefined);
-      const selectedMaterialName =
-        draft.selectedMaterial ??
-        (customization.materials.length > 0
-          ? getMaterialOption(selectedProduct, draft.materialId)?.name
-          : undefined);
-      const selectedAddOns = customization.addOns.filter((addOn) =>
-        (draft.selectedAddOns ?? []).includes(addOn.name)
-      );
-      const generatedAt = new Date();
-      const blob = generateCustomizationPdf({
-        brandName: mergedConfig.widgetTitle || mergedConfig.storeName || 'ModlyAI',
-        generatedAt,
-        referenceId: savedItem?.id,
-        storeId: selectedProduct.storeId ?? mergedConfig.storeId,
-        widgetId: mergedConfig.widgetId,
-        product: {
-          name: selectedProduct.name,
-          category: selectedProduct.category,
-          productUrl: selectedProduct.productUrl,
-          imageUrl: getProductImageUrl(selectedProduct),
-          basePrice: selectedProduct.basePrice,
-          pricingMode: price.quoteRequired ? 'quote_required' : 'estimated',
-          estimatedTotal: price.quoteRequired ? undefined : price.total,
-        },
-        selectedCustomizations: {
-          color: selectedColorName
-            ? { label: 'Color', value: selectedColorName, price: selectedColor?.price }
-            : undefined,
-          material: selectedMaterialName
-            ? { label: 'Material', value: selectedMaterialName, price: selectedMaterial?.priceDelta }
-            : undefined,
-          shopifyOptions: getSelectedShopifyOptions(selectedProduct).map((option) => ({
-            label: option.name,
-            value: option.value,
-            price: option.price,
-          })),
-          dimensions: {
-            length: draft.depthIn,
-            width: draft.widthIn,
-            height: draft.heightIn,
-            unit: customization.dimensions.width?.unit ?? customization.dimensions.length?.unit ?? 'in',
-          },
-          dimensionPriceAdjustments: price.dimensionAdjustments,
-          addOns: selectedAddOns.map((addOn) => ({
-            label: 'Add-on',
-            value: addOn.name,
-            price: addOn.price,
-          })),
-          customerRequestText: draft.customerRequestText,
-        },
-        pricing: {
-          basePrice: price.base,
-          lineItems: price.lineItems.map((lineItem) => ({
-            label: lineItem.label === 'Dimensions' ? 'Dimension adjustment' : lineItem.label,
-            amount: lineItem.amount,
-          })),
-          customizationTotal: price.customizations,
-          estimatedTotal: price.quoteRequired ? undefined : price.total,
-          quoteRequired: price.quoteRequired,
-        },
-      });
+      const { blob, filename } = buildCustomizationPdfBlob();
       const blobUrl = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = blobUrl;
-      link.download = createCustomizationPdfFilename(selectedProduct.name, generatedAt);
+      link.download = filename;
       document.body.appendChild(link);
       link.click();
       link.remove();
@@ -716,7 +694,77 @@ export function FurnitureCustomizerWidget({
       console.error('Failed to export customization:', exportError);
       showToast('error', "Couldn't export PDF. Try again.");
     }
-  }, [analyticsContext, draft, mergedConfig, price, savedItem?.id, selectedProduct, showToast]);
+  }, [analyticsContext, buildCustomizationPdfBlob, price, selectedProduct, showToast]);
+
+  // "Share" used to copy a link back to whatever page the widget happened to
+  // be embedded on, with the customization encoded into a `modlyConfig` query
+  // param that nothing ever read back - opening the link did nothing special.
+  // This now actually shares something useful: the real product page link,
+  // and - where the platform supports sharing files (mainly mobile) - the
+  // same customization PDF as the Export PDF button generates, attached
+  // directly to the native share sheet.
+  const handleShare = useCallback(async () => {
+    if (typeof window === 'undefined') return;
+
+    let pdfFile: File | undefined;
+    try {
+      const { blob, filename } = buildCustomizationPdfBlob();
+      pdfFile = new File([blob], filename, { type: 'application/pdf' });
+    } catch (pdfError) {
+      console.error('Failed to prepare PDF for sharing:', pdfError);
+    }
+
+    const shareTitle = selectedProduct.name;
+    const shareText = `Check out my ${selectedProduct.name} customization${
+      price.quoteRequired ? '' : ` - est. $${price.total.toLocaleString()}`
+    }`;
+    const nav = navigator as Navigator & {
+      canShare?: (data?: { files?: File[] }) => boolean;
+      share?: (data: { title?: string; text?: string; url?: string; files?: File[] }) => Promise<void>;
+    };
+
+    if (typeof nav.share === 'function') {
+      const canShareFile = Boolean(pdfFile && nav.canShare?.({ files: [pdfFile] }));
+
+      try {
+        await nav.share(
+          canShareFile
+            ? { title: shareTitle, text: shareText, files: [pdfFile as File] }
+            : { title: shareTitle, text: shareText, url: shareProductLink }
+        );
+        trackWidgetEvent({
+          ...analyticsContext,
+          type: 'design_shared',
+          productId: selectedProduct.id,
+          productName: selectedProduct.name,
+          metadata: { source: 'customizer', sharedPdf: canShareFile },
+        });
+        return;
+      } catch (shareError) {
+        // AbortError just means the customer closed the native share sheet -
+        // not a failure worth falling back or showing an error for.
+        if ((shareError as DOMException)?.name === 'AbortError') return;
+        console.error('Native share failed, falling back to clipboard:', shareError);
+      }
+    }
+
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(shareProductLink);
+      } else {
+        const textarea = document.createElement('textarea');
+        textarea.value = shareProductLink;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        textarea.remove();
+      }
+      showToast('success', 'Product link copied to clipboard');
+    } catch (copyError) {
+      console.error('Failed to copy share link:', copyError);
+      showToast('error', "Couldn't share. Try again.");
+    }
+  }, [analyticsContext, buildCustomizationPdfBlob, price, selectedProduct, shareProductLink, showToast]);
 
   const handleNavigateToRoomPlanner = () => {
     // savedItem is only set once the customer has explicitly applied/saved
@@ -1073,7 +1121,7 @@ export function FurnitureCustomizerWidget({
           canUndo={canUndo}
           canRedo={canRedo}
           onSaveConfig={saveDraftConfig}
-          onShareLink={copyShareLink}
+          onShareLink={handleShare}
           onExportPdf={exportAsPdf}
           onViewFullRoomAnalysis={handleNavigateToRoomPlanner}
           onSuggestionsError={(message) => showToast('error', message)}
@@ -1105,7 +1153,7 @@ export function FurnitureCustomizerWidget({
               </button>
               <button
                 type="button"
-                onClick={copyShareLink}
+                onClick={handleShare}
                 className="min-h-12 rounded-lg border border-stone-300 bg-white px-5 py-3 text-sm font-semibold text-gray-800 transition hover:bg-stone-50"
               >
                 Share Design

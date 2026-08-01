@@ -27,6 +27,7 @@ import { getEnabledActions, getPrimaryColor, mergeConfig, WidgetConfig } from '.
 import { Storage } from '../utils/storage';
 import { WidgetProvider } from '../utils/WidgetContext';
 import { trackWidgetEvent } from '../utils/analytics';
+import { getRealProductUrl } from '../utils/productUrl';
 import CustomizedFurnitureList from './CustomizedFurnitureList';
 import { FinalizeQuoteModal } from './FinalizeQuoteModal';
 import ImageLightbox from './ImageLightbox';
@@ -427,31 +428,54 @@ export function FurnitureRoomPlannerWidget({
     if (typeof window !== 'undefined') window.print();
   };
 
+  const topMatches = () => (recommendations?.recommendations ?? []).slice(0, 5);
+
+  // Each match's real product link, not just its name - a name-only summary
+  // wasn't much of a "share" since the recipient had nothing to actually
+  // click through to.
   const buildShareText = () => {
     const dimText =
       savedDimensions
         ? `L ${savedDimensions.length.toFixed(1)}m x W ${savedDimensions.width.toFixed(1)}m x H ${savedDimensions.height.toFixed(1)}m`
         : 'Dimensions: (not provided)';
-    const items =
-      recommendations?.recommendations?.slice(0, 5).map((r) => r.item.name).join(', ') ||
-      'No matches yet';
-    return `Room Planner results\n${dimText}\nTop matches: ${items}`;
+    const matches = topMatches();
+    const items = matches.length
+      ? matches
+          .map((r) => {
+            const link = getRealProductUrl(r.item);
+            return link ? `${r.item.name} - ${link}` : r.item.name;
+          })
+          .join('\n')
+      : 'No matches yet';
+    return `Room Planner results\n${dimText}\nTop matches:\n${items}`;
   };
 
   const handleShare = async () => {
+    const text = buildShareText();
+    // Native share's `url` field only takes one link - use the first match
+    // that actually has a real product URL.
+    const firstRealLink = topMatches()
+      .map((r) => getRealProductUrl(r.item))
+      .find((link): link is string => Boolean(link));
+
     try {
-      const text = buildShareText();
       const nav = navigator as Navigator & {
         share?: (data: { title?: string; text?: string; url?: string }) => Promise<void>;
       };
       if (typeof nav.share === 'function') {
-        await nav.share({ title: 'Room Planner', text });
+        await nav.share({ title: 'Room Planner', text, url: firstRealLink });
         setShareMessage('Shared successfully.');
+        trackWidgetEvent({
+          ...analyticsContext,
+          type: 'design_shared',
+          metadata: { source: 'room_planner', recommendationCount: topMatches().length },
+        });
         return;
       }
       await navigator.clipboard.writeText(text);
       setShareMessage('Copied share summary to clipboard.');
     } catch (e) {
+      if ((e as DOMException)?.name === 'AbortError') return;
       console.warn('Share failed:', e);
       setShareMessage('Could not share automatically. Please copy the details manually.');
     }

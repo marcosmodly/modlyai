@@ -12,7 +12,8 @@ export type WidgetAnalyticsEventType =
   | 'room_planner_opened'
   | 'room_analyzed'
   | 'pdf_exported'
-  | 'configuration_saved';
+  | 'configuration_saved'
+  | 'design_shared';
 
 export interface WidgetAnalyticsPayload {
   storeId?: string;

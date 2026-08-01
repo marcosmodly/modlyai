@@ -13,6 +13,7 @@ const supportedEventTypes = new Set([
   'room_analyzed',
   'pdf_exported',
   'configuration_saved',
+  'design_shared',
 ])
 
 const sensitiveMetadataKeys = new Set([

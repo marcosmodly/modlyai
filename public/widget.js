@@ -2390,6 +2390,84 @@
 	    return context;
 	}
 
+	const PLACEHOLDER_HOSTS = new Set([
+	    'yourstore.com',
+	    'www.yourstore.com',
+	    'example.com',
+	    'www.example.com',
+	    'example.org',
+	    'www.example.org',
+	    'example.net',
+	    'www.example.net',
+	    'test.com',
+	    'www.test.com',
+	    'demo.com',
+	    'www.demo.com',
+	    'placeholder.com',
+	    'www.placeholder.com',
+	]);
+	const LOCAL_HOSTS = new Set([
+	    'localhost',
+	    '127.0.0.1',
+	    '0.0.0.0',
+	    '::1',
+	]);
+	function parseProductUrl(url) {
+	    const trimmed = url.trim();
+	    if (!trimmed)
+	        return null;
+	    try {
+	        return new URL(trimmed);
+	    }
+	    catch {
+	        try {
+	            return new URL(`https://${trimmed}`);
+	        }
+	        catch {
+	            return null;
+	        }
+	    }
+	}
+	function isRealProductUrl(url) {
+	    if (!url)
+	        return false;
+	    const parsed = parseProductUrl(url);
+	    if (!parsed)
+	        return false;
+	    if (!['http:', 'https:'].includes(parsed.protocol))
+	        return false;
+	    const hostname = parsed.hostname.toLowerCase();
+	    if (!hostname || LOCAL_HOSTS.has(hostname) || PLACEHOLDER_HOSTS.has(hostname))
+	        return false;
+	    if (hostname.endsWith('.yourstore.com'))
+	        return false;
+	    if (hostname.endsWith('.example.com') || hostname.endsWith('.example.org') || hostname.endsWith('.example.net')) {
+	        return false;
+	    }
+	    if (hostname.endsWith('.localhost'))
+	        return false;
+	    if (hostname.endsWith('.test') || hostname.endsWith('.example') || hostname.endsWith('.invalid'))
+	        return false;
+	    const fullUrl = parsed.href.toLowerCase();
+	    return ![
+	        'yourstore',
+	        'example',
+	        'placeholder',
+	        'demo-only',
+	        'fake-store',
+	        'test-store',
+	    ].some((marker) => fullUrl.includes(marker));
+	}
+	function getRealProductUrl(product) {
+	    const productUrl = product.productUrl?.trim();
+	    if (isRealProductUrl(productUrl))
+	        return productUrl;
+	    const url = product.url?.trim();
+	    if (isRealProductUrl(url))
+	        return url;
+	    return undefined;
+	}
+
 	const formatCurrency$3 = (value, prefix = '') => typeof value === 'number' && Number.isFinite(value)
 	    ? `${prefix}$${value.toLocaleString()}`
 	    : undefined;
@@ -3018,84 +3096,6 @@
 	                                    }, children: isSubmitting ? (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsxs("svg", { className: "h-5 w-5 animate-spin", xmlns: "http://www.w3.org/2000/svg", fill: "none", viewBox: "0 0 24 24", children: [jsxRuntimeExports.jsx("circle", { className: "opacity-25", cx: "12", cy: "12", r: "10", stroke: "currentColor", strokeWidth: "4" }), jsxRuntimeExports.jsx("path", { className: "opacity-75", fill: "currentColor", d: "M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" })] }), jsxRuntimeExports.jsx("span", { children: "Submitting..." })] })) : ('Submit Quote Request') })] })] }))] }) }));
 	}
 
-	const PLACEHOLDER_HOSTS = new Set([
-	    'yourstore.com',
-	    'www.yourstore.com',
-	    'example.com',
-	    'www.example.com',
-	    'example.org',
-	    'www.example.org',
-	    'example.net',
-	    'www.example.net',
-	    'test.com',
-	    'www.test.com',
-	    'demo.com',
-	    'www.demo.com',
-	    'placeholder.com',
-	    'www.placeholder.com',
-	]);
-	const LOCAL_HOSTS = new Set([
-	    'localhost',
-	    '127.0.0.1',
-	    '0.0.0.0',
-	    '::1',
-	]);
-	function parseProductUrl(url) {
-	    const trimmed = url.trim();
-	    if (!trimmed)
-	        return null;
-	    try {
-	        return new URL(trimmed);
-	    }
-	    catch {
-	        try {
-	            return new URL(`https://${trimmed}`);
-	        }
-	        catch {
-	            return null;
-	        }
-	    }
-	}
-	function isRealProductUrl(url) {
-	    if (!url)
-	        return false;
-	    const parsed = parseProductUrl(url);
-	    if (!parsed)
-	        return false;
-	    if (!['http:', 'https:'].includes(parsed.protocol))
-	        return false;
-	    const hostname = parsed.hostname.toLowerCase();
-	    if (!hostname || LOCAL_HOSTS.has(hostname) || PLACEHOLDER_HOSTS.has(hostname))
-	        return false;
-	    if (hostname.endsWith('.yourstore.com'))
-	        return false;
-	    if (hostname.endsWith('.example.com') || hostname.endsWith('.example.org') || hostname.endsWith('.example.net')) {
-	        return false;
-	    }
-	    if (hostname.endsWith('.localhost'))
-	        return false;
-	    if (hostname.endsWith('.test') || hostname.endsWith('.example') || hostname.endsWith('.invalid'))
-	        return false;
-	    const fullUrl = parsed.href.toLowerCase();
-	    return ![
-	        'yourstore',
-	        'example',
-	        'placeholder',
-	        'demo-only',
-	        'fake-store',
-	        'test-store',
-	    ].some((marker) => fullUrl.includes(marker));
-	}
-	function getRealProductUrl(product) {
-	    const productUrl = product.productUrl?.trim();
-	    if (isRealProductUrl(productUrl))
-	        return productUrl;
-	    const url = product.url?.trim();
-	    if (isRealProductUrl(url))
-	        return url;
-	    return undefined;
-	}
-
 	function getProductCatalogUrl$1(item) {
 	    return getRealProductUrl(item);
 	}
@@ -3502,27 +3502,50 @@
 	        if (typeof window !== 'undefined')
 	            window.print();
 	    };
+	    const topMatches = () => (recommendations?.recommendations ?? []).slice(0, 5);
+	    // Each match's real product link, not just its name - a name-only summary
+	    // wasn't much of a "share" since the recipient had nothing to actually
+	    // click through to.
 	    const buildShareText = () => {
 	        const dimText = savedDimensions
 	            ? `L ${savedDimensions.length.toFixed(1)}m x W ${savedDimensions.width.toFixed(1)}m x H ${savedDimensions.height.toFixed(1)}m`
 	            : 'Dimensions: (not provided)';
-	        const items = recommendations?.recommendations?.slice(0, 5).map((r) => r.item.name).join(', ') ||
-	            'No matches yet';
-	        return `Room Planner results\n${dimText}\nTop matches: ${items}`;
+	        const matches = topMatches();
+	        const items = matches.length
+	            ? matches
+	                .map((r) => {
+	                const link = getRealProductUrl(r.item);
+	                return link ? `${r.item.name} - ${link}` : r.item.name;
+	            })
+	                .join('\n')
+	            : 'No matches yet';
+	        return `Room Planner results\n${dimText}\nTop matches:\n${items}`;
 	    };
 	    const handleShare = async () => {
+	        const text = buildShareText();
+	        // Native share's `url` field only takes one link - use the first match
+	        // that actually has a real product URL.
+	        const firstRealLink = topMatches()
+	            .map((r) => getRealProductUrl(r.item))
+	            .find((link) => Boolean(link));
 	        try {
-	            const text = buildShareText();
 	            const nav = navigator;
 	            if (typeof nav.share === 'function') {
-	                await nav.share({ title: 'Room Planner', text });
+	                await nav.share({ title: 'Room Planner', text, url: firstRealLink });
 	                setShareMessage('Shared successfully.');
+	                trackWidgetEvent({
+	                    ...analyticsContext,
+	                    type: 'design_shared',
+	                    metadata: { source: 'room_planner', recommendationCount: topMatches().length },
+	                });
 	                return;
 	            }
 	            await navigator.clipboard.writeText(text);
 	            setShareMessage('Copied share summary to clipboard.');
 	        }
 	        catch (e) {
+	            if (e?.name === 'AbortError')
+	                return;
 	            console.warn('Share failed:', e);
 	            setShareMessage('Could not share automatically. Please copy the details manually.');
 	        }
@@ -4768,115 +4791,94 @@
 	            showToast('error', "Couldn't save. Try again.");
 	        }
 	    }, [analyticsContext, configStorageKey, draft, price, selectedProduct, showToast]);
-	    const encodeSharePayload = reactExports.useCallback((payload) => {
-	        const json = JSON.stringify(payload);
-	        const b64 = typeof window !== 'undefined' ? window.btoa(unescape(encodeURIComponent(json))) : '';
-	        return b64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/g, '');
-	    }, []);
-	    const shareLink = reactExports.useMemo(() => {
-	        if (typeof window === 'undefined')
-	            return '';
-	        const url = new URL(window.location.href);
-	        url.searchParams.set('modlyConfig', encodeSharePayload({ v: 1, productId: selectedProduct.id, draft, total: price.total }));
-	        return url.toString();
-	    }, [draft, encodeSharePayload, price.total, selectedProduct.id]);
-	    const copyShareLink = reactExports.useCallback(async () => {
-	        try {
-	            if (typeof window === 'undefined')
-	                return;
-	            if (navigator.clipboard?.writeText) {
-	                await navigator.clipboard.writeText(shareLink);
-	            }
-	            else {
-	                const textarea = document.createElement('textarea');
-	                textarea.value = shareLink;
-	                document.body.appendChild(textarea);
-	                textarea.select();
-	                document.execCommand('copy');
-	                textarea.remove();
-	            }
-	            showToast('success', 'Link copied to clipboard');
-	        }
-	        catch (copyError) {
-	            console.error('Failed to copy share link:', copyError);
-	            showToast('error', "Couldn't copy link. Try again.");
-	        }
-	    }, [shareLink, showToast]);
+	    // The real product page on the merchant's own store - the thing worth
+	    // sharing, as opposed to the widget's own embed URL. Falls back to the
+	    // current page only if the product has no real URL of its own.
+	    const shareProductLink = reactExports.useMemo(() => {
+	        const realUrl = getRealProductUrl(selectedProduct);
+	        if (realUrl)
+	            return realUrl;
+	        return typeof window !== 'undefined' ? window.location.href : '';
+	    }, [selectedProduct]);
+	    const buildCustomizationPdfBlob = reactExports.useCallback(() => {
+	        const customization = getCustomizationForProduct(selectedProduct);
+	        const selectedColor = getSelectedColorOption(selectedProduct, draft);
+	        const selectedMaterial = customization.materials.find((material) => draft.selectedMaterial
+	            ? material.name.toLowerCase() === draft.selectedMaterial.toLowerCase()
+	            : material.id === draft.materialId);
+	        const selectedColorName = draft.selectedColor ??
+	            (customization.colors.length > 0
+	                ? getColorName(selectedProduct, draft.fabricColor)
+	                : undefined);
+	        const selectedMaterialName = draft.selectedMaterial ??
+	            (customization.materials.length > 0
+	                ? getMaterialOption(selectedProduct, draft.materialId)?.name
+	                : undefined);
+	        const selectedAddOns = customization.addOns.filter((addOn) => (draft.selectedAddOns ?? []).includes(addOn.name));
+	        const generatedAt = new Date();
+	        const blob = generateCustomizationPdf({
+	            brandName: mergedConfig.widgetTitle || mergedConfig.storeName || 'ModlyAI',
+	            generatedAt,
+	            referenceId: savedItem?.id,
+	            storeId: selectedProduct.storeId ?? mergedConfig.storeId,
+	            widgetId: mergedConfig.widgetId,
+	            product: {
+	                name: selectedProduct.name,
+	                category: selectedProduct.category,
+	                productUrl: selectedProduct.productUrl,
+	                imageUrl: getProductImageUrl(selectedProduct),
+	                basePrice: selectedProduct.basePrice,
+	                pricingMode: price.quoteRequired ? 'quote_required' : 'estimated',
+	                estimatedTotal: price.quoteRequired ? undefined : price.total,
+	            },
+	            selectedCustomizations: {
+	                color: selectedColorName
+	                    ? { label: 'Color', value: selectedColorName, price: selectedColor?.price }
+	                    : undefined,
+	                material: selectedMaterialName
+	                    ? { label: 'Material', value: selectedMaterialName, price: selectedMaterial?.priceDelta }
+	                    : undefined,
+	                shopifyOptions: getSelectedShopifyOptions(selectedProduct).map((option) => ({
+	                    label: option.name,
+	                    value: option.value,
+	                    price: option.price,
+	                })),
+	                dimensions: {
+	                    length: draft.depthIn,
+	                    width: draft.widthIn,
+	                    height: draft.heightIn,
+	                    unit: customization.dimensions.width?.unit ?? customization.dimensions.length?.unit ?? 'in',
+	                },
+	                dimensionPriceAdjustments: price.dimensionAdjustments,
+	                addOns: selectedAddOns.map((addOn) => ({
+	                    label: 'Add-on',
+	                    value: addOn.name,
+	                    price: addOn.price,
+	                })),
+	                customerRequestText: draft.customerRequestText,
+	            },
+	            pricing: {
+	                basePrice: price.base,
+	                lineItems: price.lineItems.map((lineItem) => ({
+	                    label: lineItem.label === 'Dimensions' ? 'Dimension adjustment' : lineItem.label,
+	                    amount: lineItem.amount,
+	                })),
+	                customizationTotal: price.customizations,
+	                estimatedTotal: price.quoteRequired ? undefined : price.total,
+	                quoteRequired: price.quoteRequired,
+	            },
+	        });
+	        return { blob, filename: createCustomizationPdfFilename(selectedProduct.name, generatedAt) };
+	    }, [draft, mergedConfig, price, savedItem?.id, selectedProduct]);
 	    const exportAsPdf = reactExports.useCallback(() => {
 	        if (typeof window === 'undefined')
 	            return;
 	        try {
-	            const customization = getCustomizationForProduct(selectedProduct);
-	            const selectedColor = getSelectedColorOption(selectedProduct, draft);
-	            const selectedMaterial = customization.materials.find((material) => draft.selectedMaterial
-	                ? material.name.toLowerCase() === draft.selectedMaterial.toLowerCase()
-	                : material.id === draft.materialId);
-	            const selectedColorName = draft.selectedColor ??
-	                (customization.colors.length > 0
-	                    ? getColorName(selectedProduct, draft.fabricColor)
-	                    : undefined);
-	            const selectedMaterialName = draft.selectedMaterial ??
-	                (customization.materials.length > 0
-	                    ? getMaterialOption(selectedProduct, draft.materialId)?.name
-	                    : undefined);
-	            const selectedAddOns = customization.addOns.filter((addOn) => (draft.selectedAddOns ?? []).includes(addOn.name));
-	            const generatedAt = new Date();
-	            const blob = generateCustomizationPdf({
-	                brandName: mergedConfig.widgetTitle || mergedConfig.storeName || 'ModlyAI',
-	                generatedAt,
-	                referenceId: savedItem?.id,
-	                storeId: selectedProduct.storeId ?? mergedConfig.storeId,
-	                widgetId: mergedConfig.widgetId,
-	                product: {
-	                    name: selectedProduct.name,
-	                    category: selectedProduct.category,
-	                    productUrl: selectedProduct.productUrl,
-	                    imageUrl: getProductImageUrl(selectedProduct),
-	                    basePrice: selectedProduct.basePrice,
-	                    pricingMode: price.quoteRequired ? 'quote_required' : 'estimated',
-	                    estimatedTotal: price.quoteRequired ? undefined : price.total,
-	                },
-	                selectedCustomizations: {
-	                    color: selectedColorName
-	                        ? { label: 'Color', value: selectedColorName, price: selectedColor?.price }
-	                        : undefined,
-	                    material: selectedMaterialName
-	                        ? { label: 'Material', value: selectedMaterialName, price: selectedMaterial?.priceDelta }
-	                        : undefined,
-	                    shopifyOptions: getSelectedShopifyOptions(selectedProduct).map((option) => ({
-	                        label: option.name,
-	                        value: option.value,
-	                        price: option.price,
-	                    })),
-	                    dimensions: {
-	                        length: draft.depthIn,
-	                        width: draft.widthIn,
-	                        height: draft.heightIn,
-	                        unit: customization.dimensions.width?.unit ?? customization.dimensions.length?.unit ?? 'in',
-	                    },
-	                    dimensionPriceAdjustments: price.dimensionAdjustments,
-	                    addOns: selectedAddOns.map((addOn) => ({
-	                        label: 'Add-on',
-	                        value: addOn.name,
-	                        price: addOn.price,
-	                    })),
-	                    customerRequestText: draft.customerRequestText,
-	                },
-	                pricing: {
-	                    basePrice: price.base,
-	                    lineItems: price.lineItems.map((lineItem) => ({
-	                        label: lineItem.label === 'Dimensions' ? 'Dimension adjustment' : lineItem.label,
-	                        amount: lineItem.amount,
-	                    })),
-	                    customizationTotal: price.customizations,
-	                    estimatedTotal: price.quoteRequired ? undefined : price.total,
-	                    quoteRequired: price.quoteRequired,
-	                },
-	            });
+	            const { blob, filename } = buildCustomizationPdfBlob();
 	            const blobUrl = URL.createObjectURL(blob);
 	            const link = document.createElement('a');
 	            link.href = blobUrl;
-	            link.download = createCustomizationPdfFilename(selectedProduct.name, generatedAt);
+	            link.download = filename;
 	            document.body.appendChild(link);
 	            link.click();
 	            link.remove();
@@ -4899,7 +4901,70 @@
 	            console.error('Failed to export customization:', exportError);
 	            showToast('error', "Couldn't export PDF. Try again.");
 	        }
-	    }, [analyticsContext, draft, mergedConfig, price, savedItem?.id, selectedProduct, showToast]);
+	    }, [analyticsContext, buildCustomizationPdfBlob, price, selectedProduct, showToast]);
+	    // "Share" used to copy a link back to whatever page the widget happened to
+	    // be embedded on, with the customization encoded into a `modlyConfig` query
+	    // param that nothing ever read back - opening the link did nothing special.
+	    // This now actually shares something useful: the real product page link,
+	    // and - where the platform supports sharing files (mainly mobile) - the
+	    // same customization PDF as the Export PDF button generates, attached
+	    // directly to the native share sheet.
+	    const handleShare = reactExports.useCallback(async () => {
+	        if (typeof window === 'undefined')
+	            return;
+	        let pdfFile;
+	        try {
+	            const { blob, filename } = buildCustomizationPdfBlob();
+	            pdfFile = new File([blob], filename, { type: 'application/pdf' });
+	        }
+	        catch (pdfError) {
+	            console.error('Failed to prepare PDF for sharing:', pdfError);
+	        }
+	        const shareTitle = selectedProduct.name;
+	        const shareText = `Check out my ${selectedProduct.name} customization${price.quoteRequired ? '' : ` - est. $${price.total.toLocaleString()}`}`;
+	        const nav = navigator;
+	        if (typeof nav.share === 'function') {
+	            const canShareFile = Boolean(pdfFile && nav.canShare?.({ files: [pdfFile] }));
+	            try {
+	                await nav.share(canShareFile
+	                    ? { title: shareTitle, text: shareText, files: [pdfFile] }
+	                    : { title: shareTitle, text: shareText, url: shareProductLink });
+	                trackWidgetEvent({
+	                    ...analyticsContext,
+	                    type: 'design_shared',
+	                    productId: selectedProduct.id,
+	                    productName: selectedProduct.name,
+	                    metadata: { source: 'customizer', sharedPdf: canShareFile },
+	                });
+	                return;
+	            }
+	            catch (shareError) {
+	                // AbortError just means the customer closed the native share sheet -
+	                // not a failure worth falling back or showing an error for.
+	                if (shareError?.name === 'AbortError')
+	                    return;
+	                console.error('Native share failed, falling back to clipboard:', shareError);
+	            }
+	        }
+	        try {
+	            if (navigator.clipboard?.writeText) {
+	                await navigator.clipboard.writeText(shareProductLink);
+	            }
+	            else {
+	                const textarea = document.createElement('textarea');
+	                textarea.value = shareProductLink;
+	                document.body.appendChild(textarea);
+	                textarea.select();
+	                document.execCommand('copy');
+	                textarea.remove();
+	            }
+	            showToast('success', 'Product link copied to clipboard');
+	        }
+	        catch (copyError) {
+	            console.error('Failed to copy share link:', copyError);
+	            showToast('error', "Couldn't share. Try again.");
+	        }
+	    }, [analyticsContext, buildCustomizationPdfBlob, price, selectedProduct, shareProductLink, showToast]);
 	    const handleNavigateToRoomPlanner = () => {
 	        // savedItem is only set once the customer has explicitly applied/saved
 	        // this draft - if they click straight to Room Planner without doing
@@ -5182,7 +5247,7 @@
 	            throw quoteError;
 	        }
 	    };
-	    return (jsxRuntimeExports.jsxs(WidgetProvider, { apiClient: apiClient, storage: storage, config: mergedConfig, children: [jsxRuntimeExports.jsxs("div", { className: "furniture-widget-customizer min-h-screen bg-white", children: [jsxRuntimeExports.jsx(FurnitureCustomizerPanel, { products: availableProducts, draft: draft, setDraft: setDraftWithHistory, isApplying: isLoading, validationErrors: validationErrors, price: price, onApply: handleApply, onUndo: handleUndo, onRedo: handleRedo, canUndo: canUndo, canRedo: canRedo, onSaveConfig: saveDraftConfig, onShareLink: copyShareLink, onExportPdf: exportAsPdf, onViewFullRoomAnalysis: handleNavigateToRoomPlanner, onSuggestionsError: (message) => showToast('error', message), onRequestQuote: handleFinalize, showRequestQuote: enabledActions.requestQuote, primaryColor: primaryColor }), jsxRuntimeExports.jsx("section", { className: "py-8 bg-stone-50/70 border-t border-stone-200", children: jsxRuntimeExports.jsx("div", { className: "max-w-5xl mx-auto px-4", children: jsxRuntimeExports.jsxs("div", { className: "rounded-2xl border border-stone-200 bg-[#fffaf4] p-5 shadow-sm", children: [jsxRuntimeExports.jsxs("div", { className: "mb-5 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h2", { className: "text-xl font-bold text-gray-950", children: "Love Your Custom Design?" }), jsxRuntimeExports.jsx("p", { className: "mt-1 text-sm text-gray-600", children: "Save, share, export, or send this configuration to the store." })] }), jsxRuntimeExports.jsxs("p", { className: "text-sm font-semibold text-gray-900", children: ["Estimated total: ", price.quoteRequired ? 'Quote required' : `$${price.total.toLocaleString()}`] })] }), jsxRuntimeExports.jsxs("div", { className: "grid gap-3 sm:grid-cols-3", children: [jsxRuntimeExports.jsx("button", { type: "button", onClick: saveDraftConfig, className: "min-h-12 rounded-lg border border-stone-300 bg-white px-5 py-3 text-sm font-semibold text-gray-800 transition hover:bg-stone-50", children: "Save Configuration" }), jsxRuntimeExports.jsx("button", { type: "button", onClick: copyShareLink, className: "min-h-12 rounded-lg border border-stone-300 bg-white px-5 py-3 text-sm font-semibold text-gray-800 transition hover:bg-stone-50", children: "Share Design" }), jsxRuntimeExports.jsx("button", { type: "button", onClick: exportAsPdf, className: "min-h-12 rounded-lg border border-stone-300 bg-white px-5 py-3 text-sm font-semibold text-gray-800 transition hover:bg-stone-50", children: "Export PDF" })] })] }) }) })] }), jsxRuntimeExports.jsx(FinalizeQuoteModal, { isOpen: enabledActions.requestQuote && showFinalizeModal, onClose: () => setShowFinalizeModal(false), onProceed: handleProceedToQuote, item: savedItem }), jsxRuntimeExports.jsx(QuoteRequestForm, { isOpen: enabledActions.requestQuote && showQuoteForm, onClose: () => setShowQuoteForm(false), onSubmit: handleQuoteSubmit, item: savedItem }), jsxRuntimeExports.jsx(ActionToast, { toast: toast, onDismiss: dismissToast })] }));
+	    return (jsxRuntimeExports.jsxs(WidgetProvider, { apiClient: apiClient, storage: storage, config: mergedConfig, children: [jsxRuntimeExports.jsxs("div", { className: "furniture-widget-customizer min-h-screen bg-white", children: [jsxRuntimeExports.jsx(FurnitureCustomizerPanel, { products: availableProducts, draft: draft, setDraft: setDraftWithHistory, isApplying: isLoading, validationErrors: validationErrors, price: price, onApply: handleApply, onUndo: handleUndo, onRedo: handleRedo, canUndo: canUndo, canRedo: canRedo, onSaveConfig: saveDraftConfig, onShareLink: handleShare, onExportPdf: exportAsPdf, onViewFullRoomAnalysis: handleNavigateToRoomPlanner, onSuggestionsError: (message) => showToast('error', message), onRequestQuote: handleFinalize, showRequestQuote: enabledActions.requestQuote, primaryColor: primaryColor }), jsxRuntimeExports.jsx("section", { className: "py-8 bg-stone-50/70 border-t border-stone-200", children: jsxRuntimeExports.jsx("div", { className: "max-w-5xl mx-auto px-4", children: jsxRuntimeExports.jsxs("div", { className: "rounded-2xl border border-stone-200 bg-[#fffaf4] p-5 shadow-sm", children: [jsxRuntimeExports.jsxs("div", { className: "mb-5 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h2", { className: "text-xl font-bold text-gray-950", children: "Love Your Custom Design?" }), jsxRuntimeExports.jsx("p", { className: "mt-1 text-sm text-gray-600", children: "Save, share, export, or send this configuration to the store." })] }), jsxRuntimeExports.jsxs("p", { className: "text-sm font-semibold text-gray-900", children: ["Estimated total: ", price.quoteRequired ? 'Quote required' : `$${price.total.toLocaleString()}`] })] }), jsxRuntimeExports.jsxs("div", { className: "grid gap-3 sm:grid-cols-3", children: [jsxRuntimeExports.jsx("button", { type: "button", onClick: saveDraftConfig, className: "min-h-12 rounded-lg border border-stone-300 bg-white px-5 py-3 text-sm font-semibold text-gray-800 transition hover:bg-stone-50", children: "Save Configuration" }), jsxRuntimeExports.jsx("button", { type: "button", onClick: handleShare, className: "min-h-12 rounded-lg border border-stone-300 bg-white px-5 py-3 text-sm font-semibold text-gray-800 transition hover:bg-stone-50", children: "Share Design" }), jsxRuntimeExports.jsx("button", { type: "button", onClick: exportAsPdf, className: "min-h-12 rounded-lg border border-stone-300 bg-white px-5 py-3 text-sm font-semibold text-gray-800 transition hover:bg-stone-50", children: "Export PDF" })] })] }) }) })] }), jsxRuntimeExports.jsx(FinalizeQuoteModal, { isOpen: enabledActions.requestQuote && showFinalizeModal, onClose: () => setShowFinalizeModal(false), onProceed: handleProceedToQuote, item: savedItem }), jsxRuntimeExports.jsx(QuoteRequestForm, { isOpen: enabledActions.requestQuote && showQuoteForm, onClose: () => setShowQuoteForm(false), onSubmit: handleQuoteSubmit, item: savedItem }), jsxRuntimeExports.jsx(ActionToast, { toast: toast, onDismiss: dismissToast })] }));
 	}
 
 	function MessageBubble({ message, onCustomizeItem, onAddToRoomPlanner, onViewInCatalog, enabledActions, primaryColor, messageTextColor, analyticsContext }) {
