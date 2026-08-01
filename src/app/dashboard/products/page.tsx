@@ -1,19 +1,55 @@
 'use client'
 
-import { ImageOff, PackagePlus } from 'lucide-react'
+import { ImageOff, PackagePlus, Pencil, Trash2 } from 'lucide-react'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
+import { useState } from 'react'
 import NoStoreState from '@/components/dashboard/NoStoreState'
+import ProductEditModal from '@/components/dashboard/ProductEditModal'
 import { getBillingAccess } from '@/lib/billing/access'
 import { formatCatalogCountLabel } from '@/lib/catalog-source'
 import { formatLimit, getPlanLimits } from '@/lib/plans'
 import { useCatalogProducts } from '@/lib/use-catalog-products'
+
+async function safeJson(res: Response): Promise<{ error?: string; [key: string]: unknown }> {
+  try {
+    return await res.json()
+  } catch {
+    return { error: `Unexpected error (status ${res.status}). Please try again.` }
+  }
+}
 
 export default function ProductsPage() {
   const { data: session, status } = useSession()
   const storeId = session?.user?.storeId
 
   const catalog = useCatalogProducts(storeId)
+  const [editingProduct, setEditingProduct] = useState<Record<string, any> | null>(null)
+  const [deletingId, setDeletingId] = useState<string | null>(null)
+  const [deleteError, setDeleteError] = useState('')
+
+  const handleDelete = async (product: Record<string, any>) => {
+    const label = product.title || product.name || 'this product'
+    if (!window.confirm(`Delete "${label}"? This can't be undone.`)) return
+
+    setDeletingId(product.id)
+    setDeleteError('')
+
+    try {
+      const res = await fetch(`/api/products/${product.id}`, { method: 'DELETE' })
+      const result = await safeJson(res)
+
+      if (!res.ok) {
+        throw new Error(result?.error || 'Unable to delete product.')
+      }
+
+      catalog.refetch()
+    } catch (error) {
+      setDeleteError(error instanceof Error ? error.message : 'Unable to delete product.')
+    } finally {
+      setDeletingId(null)
+    }
+  }
 
   const products = [...(catalog.products ?? [])].sort((a: any, b: any) => {
     return String(a.title ?? '').localeCompare(String(b.title ?? ''))
@@ -59,6 +95,12 @@ export default function ProductsPage() {
       {productLimitReached ? (
         <section className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-900">
           Your plan allows {formatLimit(productLimit)} products. Upgrade to import more.
+        </section>
+      ) : null}
+
+      {deleteError ? (
+        <section className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-semibold text-red-700">
+          {deleteError}
         </section>
       ) : null}
 
@@ -124,11 +166,42 @@ export default function ProductsPage() {
                     <span className="rounded-full bg-stone-100 px-2 py-1 text-xs text-stone-600">SKU: {product.sku}</span>
                   </div>
                 ) : null}
+
+                <div className="mt-4 flex items-center gap-2 border-t border-stone-100 pt-4">
+                  <button
+                    type="button"
+                    onClick={() => setEditingProduct(product)}
+                    className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-stone-300 px-3 py-1.5 text-sm font-medium text-stone-700 transition hover:bg-stone-50"
+                  >
+                    <Pencil className="h-3.5 w-3.5" />
+                    Edit
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleDelete(product)}
+                    disabled={deletingId === product.id}
+                    className="inline-flex items-center justify-center gap-1.5 rounded-lg border border-red-200 px-3 py-1.5 text-sm font-medium text-red-600 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-60"
+                  >
+                    <Trash2 className="h-3.5 w-3.5" />
+                    {deletingId === product.id ? 'Deleting...' : 'Delete'}
+                  </button>
+                </div>
               </div>
             </article>
           ))}
         </section>
       )}
+
+      {editingProduct ? (
+        <ProductEditModal
+          product={editingProduct}
+          onClose={() => setEditingProduct(null)}
+          onSaved={() => {
+            setEditingProduct(null)
+            catalog.refetch()
+          }}
+        />
+      ) : null}
     </div>
   )
 }

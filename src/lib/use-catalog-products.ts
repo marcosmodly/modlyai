@@ -15,6 +15,7 @@ export function useCatalogProducts(storeId?: string | null) {
   const [data, setData] = useState<{ store: any; products: any[] } | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<Error | null>(null)
+  const [refetchToken, setRefetchToken] = useState(0)
 
   useEffect(() => {
     if (!storeId) {
@@ -53,7 +54,7 @@ export function useCatalogProducts(storeId?: string | null) {
     return () => {
       cancelled = true
     }
-  }, [storeId])
+  }, [storeId, refetchToken])
 
   const store = data?.store ?? null
   const rawProducts = data?.products
@@ -67,5 +68,6 @@ export function useCatalogProducts(storeId?: string | null) {
     store,
     isLoading,
     error,
+    refetch: () => setRefetchToken((token) => token + 1),
   }
 }
