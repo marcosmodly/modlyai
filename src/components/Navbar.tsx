@@ -16,22 +16,23 @@ export default function Navbar() {
   }
   
   // Determine if we're on a marketing page (homepage or other non-product pages)
-  const isMarketingPage = pathname === "/" || 
+  const isMarketingPage = pathname === "/" ||
                           pathname?.startsWith("/shop") ||
-                          pathname?.startsWith("/about") || 
+                          pathname?.startsWith("/about") ||
                           pathname?.startsWith("/pricing") ||
                           pathname?.startsWith("/faq") ||
-                          pathname?.startsWith("/contact");
+                          pathname?.startsWith("/contact") ||
+                          pathname?.startsWith("/request-pilot") ||
+                          pathname?.startsWith("/demo");
 
   const isConsumerMarketingPage = pathname?.startsWith("/shop");
-  
+
   // Determine if we're on a widget/demo page
   const isProductPage = pathname?.startsWith("/widget-demo") ||
                        pathname?.startsWith("/room-planner") ||
                        pathname?.startsWith("/customizer") ||
                        pathname?.startsWith("/catalog") ||
-                       pathname?.startsWith("/configurator") ||
-                       pathname?.startsWith("/demo");
+                       pathname?.startsWith("/configurator");
 
   const navLinkClass =
     "text-gray-600 hover:text-gray-900 transition-colors font-medium text-sm md:text-base";
@@ -78,7 +79,7 @@ export default function Navbar() {
                   Pricing
                 </Link>
                 <Link
-                  href="/contact"
+                  href="/request-pilot"
                   className={navLinkClass}
                 >
                   Request Pilot
@@ -169,7 +170,7 @@ export default function Navbar() {
                 <Link href="/pricing" className={mobileNavLinkClass} onClick={closeMobileMenu}>
                   Pricing
                 </Link>
-                <Link href="/contact" className={mobileNavLinkClass} onClick={closeMobileMenu}>
+                <Link href="/request-pilot" className={mobileNavLinkClass} onClick={closeMobileMenu}>
                   Request Pilot
                 </Link>
               </>

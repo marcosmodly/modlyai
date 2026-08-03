@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { FormEvent, useMemo, useState } from 'react';
-import { Calendar, Clock, CheckCircle, TrendingDown, TrendingUp, Users } from 'lucide-react';
+import { Calendar, Clock, CheckCircle, TrendingDown, Users } from 'lucide-react';
 
 export default function ContactPage() {
   const [formData, setFormData] = useState<{
@@ -90,8 +90,8 @@ export default function ContactPage() {
         <div className="max-w-4xl mx-auto px-4 text-center">
           <h1 className="text-5xl font-bold mb-6">See ModlyAI in Action</h1>
           <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-            Join a personalized 15-minute demo and discover how leading furniture retailers are reducing returns
-            by 40% with AI-powered room matching.
+            Join a personalized 15-minute demo and see how AI-powered room matching helps shoppers buy with more
+            confidence, using your own catalog and numbers.
           </p>
 
           <div className="flex flex-wrap justify-center gap-8 text-sm">
@@ -304,46 +304,18 @@ export default function ContactPage() {
               </div>
 
               <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 border border-blue-100">
-                <h4 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                  <TrendingUp className="w-5 h-5 text-blue-600" />
-                  Results Our Clients Are Seeing
+                <h4 className="font-semibold text-gray-900 mb-2 flex items-center gap-2">
+                  <TrendingDown className="w-5 h-5 text-blue-600" />
+                  See your own numbers, not ours
                 </h4>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="bg-white rounded-lg p-4 text-center">
-                    <div className="text-3xl font-bold text-green-600 mb-1">-40%</div>
-                    <div className="text-xs text-gray-600">Return Rate</div>
-                  </div>
-                  <div className="bg-white rounded-lg p-4 text-center">
-                    <div className="text-3xl font-bold text-blue-600 mb-1">+25%</div>
-                    <div className="text-xs text-gray-600">Conversion</div>
-                  </div>
-                  <div className="bg-white rounded-lg p-4 text-center">
-                    <div className="text-3xl font-bold text-purple-600 mb-1">$12K</div>
-                    <div className="text-xs text-gray-600">Saved/Month</div>
-                  </div>
-                  <div className="bg-white rounded-lg p-4 text-center">
-                    <div className="text-3xl font-bold text-amber-600 mb-1">5 min</div>
-                    <div className="text-xs text-gray-600">Setup Time</div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-gray-50 rounded-2xl p-6 border border-gray-200">
-                <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0">
-                    <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white font-semibold">
-                      JS
-                    </div>
-                  </div>
-                  <div>
-                    <p className="text-gray-700 italic mb-2">
-                      &quot;We saw a 35% drop in returns within the first month. The ROI was immediate and our customers love
-                      the confidence it gives them.&quot;
-                    </p>
-                    <p className="text-sm font-semibold text-gray-900">John Smith</p>
-                    <p className="text-xs text-gray-600">Owner, Urban Furniture Co.</p>
-                  </div>
-                </div>
+                <p className="text-gray-600 text-sm">
+                  Use the{' '}
+                  <Link href="/#roi-calculator" className="text-blue-600 underline underline-offset-2">
+                    ROI calculator
+                  </Link>{' '}
+                  to model fit-related return savings from your own sales, AOV, and return rate — no unverified
+                  industry stats required.
+                </p>
               </div>
             </div>
           </div>

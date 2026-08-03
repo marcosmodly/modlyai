@@ -62,14 +62,22 @@ export default function HeroB2B() {
         </p>
 
         <div
-          className="modly-hero-bar mt-9 flex flex-col gap-3 sm:flex-row"
+          className="modly-hero-bar mt-9 flex flex-col items-center gap-3 sm:flex-row"
           style={{ animationDelay: "220ms" }}
         >
+          <TrackedLink
+            href="/demo"
+            ctaId="hero-try-demo"
+            ctaText="See it work, no signup"
+            className="inline-flex items-center justify-center rounded-full bg-[#171411] px-7 py-3.5 text-sm font-semibold text-[#fffaf2] shadow-[0_12px_28px_rgba(0,0,0,0.20)] transition hover:bg-black"
+          >
+            See it work, no signup
+          </TrackedLink>
           <TrackedLink
             href="/auth/signup"
             ctaId="hero-get-started-free"
             ctaText="Get Started Free"
-            className="inline-flex items-center justify-center rounded-full bg-[#171411] px-7 py-3.5 text-sm font-semibold text-[#fffaf2] shadow-[0_12px_28px_rgba(0,0,0,0.20)] transition hover:bg-black"
+            className="inline-flex items-center justify-center rounded-full border border-[#d7cab9] bg-white px-7 py-3.5 text-sm font-semibold text-[#171411] transition hover:bg-[#faf3e8]"
           >
             Get Started Free
           </TrackedLink>
@@ -77,7 +85,7 @@ export default function HeroB2B() {
             href="/contact"
             ctaId="hero-book-demo"
             ctaText="Book a Demo"
-            className="inline-flex items-center justify-center rounded-full border border-[#d7cab9] bg-white px-7 py-3.5 text-sm font-semibold text-[#171411] transition hover:bg-[#faf3e8]"
+            className="inline-flex items-center justify-center px-3 py-3.5 text-sm font-semibold text-[#6b5a44] underline decoration-[#d7cab9] underline-offset-4 transition hover:text-[#171411]"
           >
             Book a Demo
           </TrackedLink>

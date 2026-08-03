@@ -10,7 +10,7 @@ const productLinks = [
   { href: "/how-it-works", label: "How It Works" },
   { href: "/faq", label: "FAQ" },
   { href: "/auth/signup", label: "Get Started" },
-  { href: "/contact", label: "Request Pilot" },
+  { href: "/request-pilot", label: "Request Pilot" },
 ] as const;
 
 const companyLinks = [
@@ -59,6 +59,18 @@ const socialLinks = [
     icon: (
       <svg viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4">
         <path d="M12 2C6.5 2 3 5.6 3 10.1c0 2.7 1.5 4.5 3.8 4.5.5 0 1-.3 1.1-.9.1-.4-.4-1.9-.4-2.4 0-1.4 1.6-2.6 3.4-2.6 2.5 0 3.7 1.4 3.7 3.3 0 2.7-1.2 5-3.2 5-1 0-1.8-.8-1.6-1.9.3-1.2.9-2.5.9-3.4 0-.8-.4-1.4-1.3-1.4-1 0-1.9 1.1-1.9 2.6 0 .9.3 1.5.3 1.5s-1.1 4.5-1.2 5.3c-.2 1-.1 2.3 0 3.1a10 10 0 0 0 4.4.9c5.5 0 9-4 9-9.4C21 5.9 17.5 2 12 2Z" />
+      </svg>
+    ),
+  },
+  {
+    // TODO: placeholder handle, matching the naming style of the other social
+    // links (modlyyai / ModlyyAI) — confirm/create the real company page and
+    // swap this URL before relying on it.
+    href: "https://www.linkedin.com/company/modlyai",
+    label: "LinkedIn",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4">
+        <path d="M6.94 5a1.94 1.94 0 1 1-3.88 0 1.94 1.94 0 0 1 3.88 0ZM3.4 8.75h3.48V21H3.4V8.75Zm6.2 0h3.34v1.68h.05c.47-.88 1.6-1.8 3.3-1.8 3.53 0 4.18 2.32 4.18 5.34V21h-3.48v-5.36c0-1.28-.02-2.93-1.79-2.93-1.79 0-2.06 1.4-2.06 2.84V21H9.6V8.75Z" />
       </svg>
     ),
   },

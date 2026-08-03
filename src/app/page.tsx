@@ -179,27 +179,6 @@ function BigStatement() {
   );
 }
 
-const originStats = [
-  {
-    value: "#1",
-    label: "reason for returns",
-    body: "Wrong size is the single most common reason shoppers return furniture bought online.",
-    source: "DHL 2025 Ecommerce Trends Report",
-  },
-  {
-    value: "~58%",
-    label: "of furniture returns",
-    body: "Tied directly to size and space mismatch: the piece did not fit the room or the doorway.",
-    source: "Industry furniture-return analysis, 2025",
-  },
-  {
-    value: "~44%",
-    label: "cite color or material",
-    body: "A screen rarely renders fabric, wood tone, or finish accurately, so what arrives looks different than expected.",
-    source: "YouGov consumer retail survey, 2025",
-  },
-] as const;
-
 function OriginSection() {
   return (
     <section className="relative overflow-hidden border-y border-[#e7ddd1] px-6 py-16 md:py-24">
@@ -219,16 +198,12 @@ function OriginSection() {
           <h2 className={sectionTitle}>The problem is well documented. We saw it firsthand.</h2>
         </div>
 
-        <div className="mt-10 grid gap-4 sm:grid-cols-3">
-          {originStats.map((stat, idx) => (
-            <Reveal key={stat.label} delayMs={idx * 90} className="rounded-2xl border border-[#e1d7ca] bg-white p-6">
-              <div className="text-3xl font-semibold tracking-[-0.02em] text-[#8a6238]">{stat.value}</div>
-              <div className="mt-1 text-sm font-semibold text-[#1e1a16]">{stat.label}</div>
-              <p className="mt-3 text-sm leading-6 text-[#665c52]">{stat.body}</p>
-              <p className="mt-3 text-xs text-[#a0937f]">{stat.source}</p>
-            </Reveal>
-          ))}
-        </div>
+        <Reveal className="mt-10 max-w-3xl rounded-2xl border border-[#e1d7ca] bg-white p-6 md:p-8">
+          <p className="text-lg leading-8 text-[#3c342b]">
+            Size and space mismatch is one of the most common reasons furniture gets returned, and it is the one a
+            product photo cannot resolve.
+          </p>
+        </Reveal>
 
         <div className="mt-12 grid gap-8 lg:grid-cols-2">
           <Reveal className="rounded-2xl border border-[#ded1c2] bg-white p-7">
@@ -253,6 +228,28 @@ function OriginSection() {
           </Reveal>
         </div>
 
+        <Reveal
+          delayMs={160}
+          className="mt-8 flex flex-col gap-5 rounded-2xl border border-[#ded1c2] bg-white p-7 sm:flex-row sm:items-center"
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/images/founder-king-joshua-marcos.jpg"
+            alt="King Joshua Marcos, founder of ModlyAI"
+            className="h-20 w-20 shrink-0 rounded-full border border-[#e1d7ca] object-cover"
+          />
+          <div>
+            <p className="text-base font-semibold text-[#171411]">King Joshua Marcos</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#8a714f]">Founder, ModlyAI</p>
+            <p className="mt-3 text-sm leading-6 text-[#3c342b]">
+              Trained in architectural design, where the same gap showed up on nearly every project: a client could
+              read a floor plan, look at a product photo, and still not tell whether a piece would work in their
+              room. ModlyAI is his attempt to close that gap directly on the product page, and he&apos;s building it
+              solo.
+            </p>
+          </div>
+        </Reveal>
+
         <p className="mt-8 text-right text-[11px] text-[#a0937f]">
           Room photo via{" "}
           <a
@@ -264,40 +261,6 @@ function OriginSection() {
             Vecteezy
           </a>
         </p>
-      </div>
-    </section>
-  );
-}
-
-const resultStats = [
-  { value: "-40%", label: "Return rate", tone: "text-[#3c6b3f]" },
-  { value: "+25%", label: "Conversion", tone: "text-[#244f85]" },
-  { value: "$12K", label: "Saved / month", tone: "text-[#7a4fb0]" },
-  { value: "5 min", label: "Setup time", tone: "text-[#b3611f]" },
-] as const;
-
-function ResultStats() {
-  return (
-    <section className="border-y border-[#e7ddd1] bg-[#171411] px-6 py-16 md:py-20">
-      <div className="mx-auto max-w-7xl">
-        <div className="max-w-2xl">
-          <div className="text-sm font-semibold uppercase tracking-[0.18em] text-[#c9a984]">Modeled results</div>
-          <h2 className="font-heading mt-3 text-3xl font-semibold tracking-[-0.01em] text-[#fffaf2] md:text-4xl">
-            What a catalog-grounded widget can move.
-          </h2>
-          <p className="mt-4 text-base leading-7 text-[#c9bfb2]">
-            Estimates based on the ROI calculator below and typical fit-related return patterns. Your results depend on
-            catalog size, traffic, and category mix.
-          </p>
-        </div>
-        <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {resultStats.map((stat, idx) => (
-            <Reveal key={stat.label} delayMs={idx * 90} className="rounded-2xl border border-white/10 bg-white/[0.03] p-6">
-              <div className={`text-4xl font-semibold tracking-[-0.02em] ${stat.tone}`}>{stat.value}</div>
-              <div className="mt-2 text-sm font-medium text-[#c9bfb2]">{stat.label}</div>
-            </Reveal>
-          ))}
-        </div>
       </div>
     </section>
   );
@@ -427,8 +390,6 @@ export default function Home() {
       </section>
 
       <PinnedRetailerGrid id="retailers" items={retailerCategories} />
-
-      <ResultStats />
 
       <TrustChecklist />
 
