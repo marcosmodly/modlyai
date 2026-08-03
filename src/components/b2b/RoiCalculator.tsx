@@ -220,15 +220,20 @@ export default function RoiCalculator() {
                 <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#756a5f]">{field.suffix}</span>
               )}
             </div>
-            {field.sourceHref && (
-              <a
-                href={field.sourceHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-1.5 block text-xs text-[#a0937f] underline decoration-dotted hover:text-[#8a714f]"
-              >
-                Source
-              </a>
+            {field.sourceLinks && field.sourceLinks.length > 0 && (
+              <div className="mt-1.5 flex flex-wrap gap-x-3 gap-y-1">
+                {field.sourceLinks.map((link) => (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs text-[#a0937f] underline decoration-dotted hover:text-[#8a714f]"
+                  >
+                    {link.label}
+                  </a>
+                ))}
+              </div>
             )}
           </label>
         ))}
