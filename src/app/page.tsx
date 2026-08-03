@@ -107,8 +107,9 @@ function ProductDemoSection() {
             </p>
             <div className="mt-7 grid gap-3">
               <CheckItem>Recommend only products from your catalog.</CheckItem>
-              <CheckItem>Help shoppers compare sizes, finishes, room style, and customization options.</CheckItem>
-              <CheckItem>Send high-intent shoppers to view in catalog, customize this, or request quote.</CheckItem>
+              <CheckItem>Help shoppers compare sizes, finishes, and room style.</CheckItem>
+              <CheckItem>Let shoppers change fabric, finish, or size and see the result in their own room.</CheckItem>
+              <CheckItem>Send the quote request through with the full spec attached, so you are not quoting blind.</CheckItem>
             </div>
           </div>
 

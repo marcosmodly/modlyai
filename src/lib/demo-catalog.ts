@@ -6,13 +6,35 @@ function dims(lengthIn: number, widthIn: number, heightIn: number) {
   return `${lengthIn}"L x ${widthIn}"W x ${heightIn}"H`;
 }
 
-export const DEMO_CATALOG: ChatCatalogProduct[] = [
+// Mirrors the real customizationOptions shape used by the widget's
+// FurnitureCustomizerWidget/Panel (widget/src/data/products.ts) — priced
+// color/material options plus an optional width range with a per-inch price.
+export type DemoPricedOption = { name: string; price: number };
+
+export type DemoCustomizationOptions = {
+  colors?: DemoPricedOption[];
+  materials?: DemoPricedOption[];
+  width?: { min: number; max: number; default: number; pricePerExtraInch: number };
+};
+
+export type DemoProduct = ChatCatalogProduct & {
+  id: string;
+  title: string;
+  price: number;
+  length: number;
+  width: number;
+  height: number;
+  customizationOptions?: DemoCustomizationOptions;
+};
+
+export const DEMO_CATALOG: DemoProduct[] = [
   // Sofas
   {
     id: "demo-sofa-modular-haven",
     title: "Modular Haven Sectional",
     category: "Sofas",
-    description: "Configurable L-shaped sectional with deep seating, built for family rooms and open-plan living.",
+    description:
+      "Configurable L-shaped sectional with deep seating, built for family rooms and open-plan living. Made to order in Ivory, Slate, or Olive, and in Linen, Velvet, or Performance Fabric, with width adjustable from 96\" to 132\".",
     price: 2499,
     sku: "MOD-SOF-001",
     length: 118,
@@ -22,13 +44,27 @@ export const DEMO_CATALOG: ChatCatalogProduct[] = [
     image: "/images/demo-products/modular-haven-sectional.png",
     colors: ["Ivory", "Slate", "Olive"],
     materials: ["Linen", "Velvet", "Performance Fabric"],
-    tags: ["sectional", "large", "living room"],
+    tags: ["sectional", "large", "living room", "made to order", "custom", "ivory", "slate", "olive", "linen", "velvet", "performance fabric"],
+    customizationOptions: {
+      colors: [
+        { name: "Ivory", price: 0 },
+        { name: "Slate", price: 50 },
+        { name: "Olive", price: 75 },
+      ],
+      materials: [
+        { name: "Linen", price: 0 },
+        { name: "Velvet", price: 120 },
+        { name: "Performance Fabric", price: 180 },
+      ],
+      width: { min: 96, max: 132, default: 118, pricePerExtraInch: 20 },
+    },
   },
   {
     id: "demo-sofa-harbor-linen",
     title: "Harbor Linen Sofa",
     category: "Sofas",
-    description: "Tailored three-seat sofa with stain-resistant upholstery and compact proportions.",
+    description:
+      "Tailored three-seat sofa with stain-resistant upholstery and compact proportions. Made to order in Sand, Navy, or Charcoal, and in Linen or Performance Fabric, with width adjustable from 80\" to 96\".",
     price: 1599,
     sku: "MOD-SOF-003",
     length: 88,
@@ -38,7 +74,19 @@ export const DEMO_CATALOG: ChatCatalogProduct[] = [
     image: "/images/demo-products/harbor-linen-sofa.png",
     colors: ["Sand", "Navy", "Charcoal"],
     materials: ["Linen", "Performance Fabric"],
-    tags: ["sofa", "compact", "three-seat"],
+    tags: ["sofa", "compact", "three-seat", "made to order", "custom", "sand", "navy", "charcoal", "linen", "performance fabric"],
+    customizationOptions: {
+      colors: [
+        { name: "Sand", price: 0 },
+        { name: "Navy", price: 45 },
+        { name: "Charcoal", price: 55 },
+      ],
+      materials: [
+        { name: "Linen", price: 0 },
+        { name: "Performance Fabric", price: 140 },
+      ],
+      width: { min: 80, max: 96, default: 88, pricePerExtraInch: 10 },
+    },
   },
   {
     id: "demo-sofa-harbor-loveseat",
@@ -94,7 +142,8 @@ export const DEMO_CATALOG: ChatCatalogProduct[] = [
     id: "demo-bed-cloud-storage-queen",
     title: "Cloud Storage Bed (Queen)",
     category: "Beds",
-    description: "Platform bed with concealed drawer storage and a soft upholstered headboard.",
+    description:
+      "Platform bed with concealed drawer storage and a soft upholstered headboard. Made to order in Mist, Oat, or Graphite, and in Performance Fabric or Oak Veneer, with width adjustable from 60\" to 78\".",
     price: 1899,
     sku: "MOD-BED-004-Q",
     length: 84,
@@ -104,7 +153,19 @@ export const DEMO_CATALOG: ChatCatalogProduct[] = [
     image: "/images/demo-products/cloud-storage-bed.png",
     colors: ["Mist", "Oat", "Graphite"],
     materials: ["Performance Fabric", "Oak Veneer"],
-    tags: ["bed", "storage", "queen"],
+    tags: ["bed", "storage", "queen", "made to order", "custom", "mist", "oat", "graphite", "performance fabric", "oak veneer"],
+    customizationOptions: {
+      colors: [
+        { name: "Mist", price: 0 },
+        { name: "Oat", price: 25 },
+        { name: "Graphite", price: 40 },
+      ],
+      materials: [
+        { name: "Performance Fabric", price: 0 },
+        { name: "Oak Veneer", price: 220 },
+      ],
+      width: { min: 60, max: 78, default: 66, pricePerExtraInch: 10 },
+    },
   },
   {
     id: "demo-bed-nordic-platform-queen",
@@ -176,7 +237,8 @@ export const DEMO_CATALOG: ChatCatalogProduct[] = [
     id: "demo-dining-walnut-gathering-set",
     title: "Walnut Gathering Dining Set",
     category: "Dining sets",
-    description: "Six-seat dining set with a rounded walnut table and upholstered side chairs.",
+    description:
+      "Six-seat dining set with a rounded walnut table and upholstered side chairs. Made to order in Walnut, Black, or Cream, and in Solid Wood, Boucle, or Brass accents, with table width adjustable from 36\" to 48\".",
     price: 3299,
     sku: "MOD-DIN-005",
     length: 96,
@@ -186,7 +248,20 @@ export const DEMO_CATALOG: ChatCatalogProduct[] = [
     image: "/images/demo-products/walnut-gathering-dining-set.png",
     colors: ["Walnut", "Black", "Cream"],
     materials: ["Solid Wood", "Boucle", "Brass"],
-    tags: ["dining", "seats 6", "table set"],
+    tags: ["dining", "seats 6", "table set", "made to order", "custom", "walnut", "black", "cream", "solid wood", "boucle", "brass"],
+    customizationOptions: {
+      colors: [
+        { name: "Walnut", price: 0 },
+        { name: "Black", price: 60 },
+        { name: "Cream", price: 45 },
+      ],
+      materials: [
+        { name: "Solid Wood", price: 0 },
+        { name: "Boucle", price: 180 },
+        { name: "Brass", price: 250 },
+      ],
+      width: { min: 36, max: 48, default: 42, pricePerExtraInch: 12 },
+    },
   },
   {
     id: "demo-dining-heritage-chair",
@@ -306,7 +381,8 @@ export const DEMO_CATALOG: ChatCatalogProduct[] = [
     id: "demo-storage-linden-sideboard-wide",
     title: "Linden Sideboard (Wide)",
     category: "Storage",
-    description: "Four-door sideboard with the most storage that still fits most standard dining walls.",
+    description:
+      "Four-door sideboard with the most storage that still fits most standard dining walls. Made to order in Walnut or White Oak, and in Solid Wood or Reclaimed Oak, with width adjustable from 60\" to 84\".",
     price: 1699,
     sku: "MOD-STO-020-W",
     length: 71,
@@ -315,8 +391,19 @@ export const DEMO_CATALOG: ChatCatalogProduct[] = [
     dimensions: dims(71, 19, 32),
     image: "/images/storage.png",
     colors: ["Walnut", "White Oak"],
-    materials: ["Solid Wood"],
-    tags: ["storage", "sideboard", "wide"],
+    materials: ["Solid Wood", "Reclaimed Oak"],
+    tags: ["storage", "sideboard", "wide", "made to order", "custom", "walnut", "white oak", "solid wood", "reclaimed oak"],
+    customizationOptions: {
+      colors: [
+        { name: "Walnut", price: 0 },
+        { name: "White Oak", price: 60 },
+      ],
+      materials: [
+        { name: "Solid Wood", price: 0 },
+        { name: "Reclaimed Oak", price: 150 },
+      ],
+      width: { min: 60, max: 84, default: 71, pricePerExtraInch: 15 },
+    },
   },
   {
     id: "demo-storage-linden-sideboard-xwide",
@@ -370,6 +457,6 @@ export const DEMO_ROOM_PHOTOS: DemoRoomPhoto[] = [
 export const DEMO_SUGGESTED_PROMPTS: string[] = [
   "Will the Modular Haven Sectional fit a 12 by 14 living room?",
   "What is the widest sideboard that fits a 2m wall?",
+  "Show me the Harbor Linen Sofa in a lighter fabric.",
   "Show me something similar but smaller.",
-  "I need a dining set that seats 6.",
 ];

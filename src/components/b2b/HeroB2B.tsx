@@ -50,15 +50,15 @@ export default function HeroB2B() {
         </div>
 
         <h1 className="modly-hero-headline-fade font-heading mt-7 max-w-3xl text-5xl font-semibold leading-[1.05] tracking-[-0.01em] text-[#171411] md:text-6xl">
-          See it in the room before they buy it.
+          See it in your room, built the way you want it.
         </h1>
 
         <p
           className="modly-hero-headline-fade mt-6 max-w-2xl text-lg leading-8 text-[#665c52] md:text-xl"
           style={{ animationDelay: "120ms" }}
         >
-          ModlyAI adds an AI room-matching widget to furniture stores, helping shoppers compare products, check fit,
-          and request customizations from your existing catalog.
+          ModlyAI answers fit questions on the product page, lets shoppers customize the piece and see the change in
+          their own room, then sends you the quote request with the exact spec attached.
         </p>
 
         <div

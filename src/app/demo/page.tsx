@@ -6,7 +6,7 @@ import TrackedLink from "@/components/b2b/TrackedLink";
 export const metadata: Metadata = {
   title: "Try the ModlyAI Demo — No Signup Required",
   description:
-    "See ModlyAI's AI room-matching widget working live against a sample furniture catalog. No signup, no calendar, just the widget.",
+    "See ModlyAI answer a fit question, place a piece in a room, customize it, and send a quote request with the full spec attached. No signup, no calendar.",
 };
 
 export default function DemoPage() {
@@ -19,12 +19,20 @@ export default function DemoPage() {
             See it work. No signup, no calendar.
           </h1>
           <p className="mt-4 text-base leading-7 text-[#665c52]">
-            This is the real ModlyAI assistant, answering only from the fictional catalog on this page. Ask about
-            fit, sizing, or a specific piece — or start from a suggested question below.
+            This is the real ModlyAI assistant, answering only from the fictional catalog on this page. Ask whether
+            something fits, then customize one of the made-to-order pieces and see the exact spec it would send a
+            retailer as a quote request.
           </p>
         </div>
 
-        <div className="mt-8">
+        <div className="mt-6 flex flex-wrap gap-2 text-xs font-semibold text-[#8a714f]">
+          <span className="rounded-full border border-[#e1d7ca] bg-white px-3 py-1.5">1. Ask about fit</span>
+          <span className="rounded-full border border-[#e1d7ca] bg-white px-3 py-1.5">2. Attach a room</span>
+          <span className="rounded-full border border-[#e1d7ca] bg-white px-3 py-1.5">3. Customize it</span>
+          <span className="rounded-full border border-[#e1d7ca] bg-white px-3 py-1.5">4. Send the quote</span>
+        </div>
+
+        <div className="mt-6">
           <DemoExperience />
         </div>
 
