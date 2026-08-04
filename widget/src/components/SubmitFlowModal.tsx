@@ -10,8 +10,19 @@ interface SubmitFlowModalProps {
   config: CustomizationConfig;
   product?: FurnitureItem;
   apiClient: ApiClient;
-  onSuccess: (data: { type: 'cart' | 'quote'; id: string }) => void;
+  onSuccess: (data: {
+    type: 'cart' | 'quote';
+    id: string;
+    specSheet?: SpecSheet;
+    customer?: { name: string; email: string; phone?: string; notes?: string };
+  }) => void;
   onClose: () => void;
+}
+
+function hasDimensionAdjustment(config: CustomizationConfig): boolean {
+  const adjustments = config.dimensionAdjustments;
+  if (!adjustments) return false;
+  return Object.values(adjustments).some((value) => typeof value === 'number' && value !== 0);
 }
 
 type FlowType = 'cart' | 'quote';
@@ -41,9 +52,14 @@ export function SubmitFlowModal({
     const validationResult = validateConfiguration(config);
     setValidation(validationResult);
 
-    // Determine flow type based on product pricing
+    // Determine flow type based on product pricing. A custom-built dimension
+    // (not the factory default) can't be added to cart at a fixed catalog price
+    // either, so it also requires a quote.
     const requiresQuote =
-      !product?.priceRange || product.stockStatus === 'custom_order' || product.source === 'shopify';
+      !product?.priceRange ||
+      product.stockStatus === 'custom_order' ||
+      product.source === 'shopify' ||
+      hasDimensionAdjustment(config);
     setFlowType(requiresQuote ? 'quote' : 'cart');
 
     // Generate spec sheet
@@ -115,7 +131,7 @@ export function SubmitFlowModal({
       const data = await response.json();
       setStep('success');
       setTimeout(() => {
-        onSuccess({ type: 'cart', id: data.cartItemId });
+        onSuccess({ type: 'cart', id: data.cartItemId, specSheet: specSheet ?? undefined });
       }, 1500);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to add to cart');
@@ -163,7 +179,17 @@ export function SubmitFlowModal({
 
       setStep('success');
       setTimeout(() => {
-        onSuccess({ type: 'quote', id: response.quoteId });
+        onSuccess({
+          type: 'quote',
+          id: response.quoteId,
+          specSheet: specSheet ?? undefined,
+          customer: {
+            name: customerName,
+            email: customerEmail,
+            phone: customerPhone || undefined,
+            notes: customerNotes || undefined,
+          },
+        });
       }, 1500);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to submit quote request');

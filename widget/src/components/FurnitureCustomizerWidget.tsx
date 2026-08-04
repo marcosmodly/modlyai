@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import {
   CustomizationConfig,
   CustomizedFurnitureItem,
@@ -40,6 +40,16 @@ interface FurnitureCustomizerWidgetProps {
   onNavigateToRoomPlanner?: () => void;
   selectedProduct?: Product | null;
   onSelectedProductChange?: (product: Product) => void;
+  /** Called after a quote request submits successfully. */
+  onQuoteSubmitted?: (data: { quoteRequest: QuoteRequest; response: any }) => void;
+}
+
+export interface FurnitureCustomizerHandle {
+  /** Saves the current draft (if not already saved) and marks it for the
+   * Room Planner to scroll to and highlight — the same thing the in-panel
+   * "View in Room Planner" button does, exposed so a host nav tab can
+   * trigger it too when navigating away from the customizer directly. */
+  saveDraftAndHighlight: () => void;
 }
 
 const createDraftForProduct = (product: Product): CustomizerDraft => ({
@@ -201,12 +211,11 @@ const calculateDimensionAdjustment = (
   };
 };
 
-export function FurnitureCustomizerWidget({
-  config = {},
-  onNavigateToRoomPlanner,
-  selectedProduct: sharedSelectedProduct,
-  onSelectedProductChange,
-}: FurnitureCustomizerWidgetProps) {
+export const FurnitureCustomizerWidget = forwardRef<FurnitureCustomizerHandle, FurnitureCustomizerWidgetProps>(
+  function FurnitureCustomizerWidget(
+    { config = {}, onNavigateToRoomPlanner, selectedProduct: sharedSelectedProduct, onSelectedProductChange, onQuoteSubmitted },
+    ref
+  ) {
   const mergedConfig = useMemo(() => mergeConfig(config), [config]);
   const apiClient = useMemo(() => new ApiClient(mergedConfig), [mergedConfig]);
   const storage = useMemo(() => new Storage(mergedConfig.storageKey), [mergedConfig.storageKey]);
@@ -767,19 +776,7 @@ export function FurnitureCustomizerWidget({
   }, [analyticsContext, buildCustomizationPdfBlob, price, selectedProduct, shareProductLink, showToast]);
 
   const handleNavigateToRoomPlanner = () => {
-    // savedItem is only set once the customer has explicitly applied/saved
-    // this draft - if they click straight to Room Planner without doing
-    // that first, save it now so there's always something to land on and
-    // highlight in My Customized Furniture, instead of just switching tabs
-    // with nothing to show for it.
-    const itemToHighlight = savedItem ?? saveCustomizedFurnitureForCurrentDraft();
-
-    if (typeof window !== 'undefined' && itemToHighlight?.id) {
-      // Lets Room Planner scroll to and highlight the item that was just
-      // applied here, instead of leaving the customer to scroll and hunt
-      // for it themselves among possibly several saved customizations.
-      sessionStorage.setItem('modly-highlight-customized-item', itemToHighlight.id);
-    }
+    saveDraftAndHighlight();
 
     if (onNavigateToRoomPlanner) {
       onNavigateToRoomPlanner();
@@ -942,6 +939,24 @@ export function FurnitureCustomizerWidget({
     [buildCustomizedFurniturePayload, storage]
   );
 
+  const saveDraftAndHighlight = useCallback(() => {
+    // savedItem is only set once the customer has explicitly applied/saved
+    // this draft - if they navigate to Room Planner without doing that
+    // first, save it now so there's always something to land on and
+    // highlight in My Customized Furniture, instead of just switching tabs
+    // with nothing to show for it.
+    const itemToHighlight = savedItem ?? saveCustomizedFurnitureForCurrentDraft();
+
+    if (typeof window !== 'undefined' && itemToHighlight?.id) {
+      // Lets Room Planner scroll to and highlight the item that was just
+      // applied here, instead of leaving the customer to scroll and hunt
+      // for it themselves among possibly several saved customizations.
+      sessionStorage.setItem('modly-highlight-customized-item', itemToHighlight.id);
+    }
+  }, [savedItem, saveCustomizedFurnitureForCurrentDraft]);
+
+  useImperativeHandle(ref, () => ({ saveDraftAndHighlight }), [saveDraftAndHighlight]);
+
   const handleCustomize = useCallback(
     async (customizationConfig: CustomizationConfig) => {
       if (!selectedProduct?.id) {
@@ -1099,6 +1114,7 @@ export function FurnitureCustomizerWidget({
     try {
       const response = await apiClient.submitQuoteRequest(quoteRequest);
       showToast('success', 'Quote sent — the store will follow up soon');
+      onQuoteSubmitted?.({ quoteRequest, response });
       return response;
     } catch (quoteError) {
       throw quoteError;
@@ -1188,4 +1204,7 @@ export function FurnitureCustomizerWidget({
       <ActionToast toast={toast} onDismiss={dismissToast} />
     </WidgetProvider>
   );
-}
+  }
+);
+
+FurnitureCustomizerWidget.displayName = 'FurnitureCustomizerWidget';

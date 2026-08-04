@@ -1,4 +1,4 @@
-import { RoomAnalysisResponse, CustomizationConfig } from '../types';
+import { RoomAnalysisResponse, CustomizationConfig, ChatCatalogPayload } from '../types';
 
 export interface WidgetConfig {
   apiBaseUrl?: string;
@@ -12,6 +12,9 @@ export interface WidgetConfig {
   titleColor?: string;
   messageTextColor?: string;
   welcomeMessage?: string;
+  // Inline catalog override: when set, the widget answers/analyzes/customizes
+  // using this catalog instead of looking one up server-side by storeId.
+  catalog?: ChatCatalogPayload;
   enabledActions?: {
     viewInCatalog?: boolean;
     customize?: boolean;
@@ -71,7 +74,7 @@ function hasText(value: unknown): value is string {
   return typeof value === 'string' && value.trim().length > 0;
 }
 
-export const defaultConfig: Required<Omit<WidgetConfig, 'apiBaseUrl' | 'storeId' | 'shop' | 'apiKey' | 'publicApiKey' | 'storeDomain' | 'configUrl' | 'widgetId' | 'onError' | 'onRoomAnalyzed' | 'onFurnitureCustomized' | 'theme'>> = {
+export const defaultConfig: Required<Omit<WidgetConfig, 'apiBaseUrl' | 'storeId' | 'shop' | 'apiKey' | 'publicApiKey' | 'storeDomain' | 'configUrl' | 'widgetId' | 'onError' | 'onRoomAnalyzed' | 'onFurnitureCustomized' | 'theme' | 'catalog'>> = {
   storeName: '',
   storeUrl: '',
   supportEmail: '',

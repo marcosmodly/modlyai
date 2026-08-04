@@ -61,11 +61,11 @@ export class PageContextExtractor {
         const url = new URL(context.currentUrl);
         const pathname = url.pathname.toLowerCase();
         
-        if (pathname.includes('/product/') || pathname.includes('/item/')) {
+        if (pathname.includes('/product/') || pathname.includes('/products/') || pathname.includes('/item/')) {
           context.pageType = 'product';
         } else if (pathname.includes('/catalog/') || pathname.includes('/shop/')) {
           context.pageType = 'catalog';
-        } else if (pathname.includes('/category/') || pathname.includes('/collection/')) {
+        } else if (pathname.includes('/category/') || pathname.includes('/collection/') || pathname.includes('/collections/')) {
           context.pageType = 'category';
         } else if (pathname === '/' || pathname === '/index') {
           context.pageType = 'home';
@@ -129,19 +129,18 @@ export class PageContextExtractor {
       }
     });
 
+    // Deliberately no attributeFilter: a filter built from attributes present
+    // only at observe()-time would miss any data-modly-* attribute added
+    // later (e.g. a client-rendered page setting page context after mount).
+    // The callback above re-derives the full context and diffs it, so extra
+    // invocations from unrelated attribute changes are harmless.
     observer.observe(document.body, {
       attributes: true,
-      attributeFilter: Array.from(document.body.attributes)
-        .map(attr => attr.name)
-        .filter(name => name.startsWith(this.DATA_ATTRIBUTE_PREFIX)),
       subtree: true,
     });
 
     observer.observe(document.documentElement, {
       attributes: true,
-      attributeFilter: Array.from(document.documentElement.attributes)
-        .map(attr => attr.name)
-        .filter(name => name.startsWith(this.DATA_ATTRIBUTE_PREFIX)),
     });
 
     return () => {

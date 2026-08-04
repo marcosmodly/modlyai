@@ -34,10 +34,20 @@ import ImageLightbox from './ImageLightbox';
 import { QuoteRequestForm } from './QuoteRequestForm';
 import RecommendationsList from './RecommendationsList';
 
+interface SampleRoomPhoto {
+  id: string;
+  label: string;
+  src: string;
+}
+
 interface FurnitureRoomPlannerWidgetProps {
   config?: WidgetConfig;
   onCustomizeItem?: (item: FurnitureItem) => void;
   onNavigateToCustomizer?: () => void;
+  /** Optional preset room photos offered alongside file upload (e.g. for demos). */
+  sampleRooms?: SampleRoomPhoto[];
+  /** Called after a quote request submits successfully. */
+  onQuoteSubmitted?: (data: { quoteRequest: QuoteRequest; response: any }) => void;
 }
 
 type UnitSystem = 'meters' | 'feet';
@@ -101,6 +111,8 @@ export function FurnitureRoomPlannerWidget({
   config = {},
   onCustomizeItem,
   onNavigateToCustomizer,
+  sampleRooms,
+  onQuoteSubmitted,
 }: FurnitureRoomPlannerWidgetProps) {
   const mergedConfig = useMemo(() => mergeConfig(config), [config]);
   const apiClient = useMemo(() => new ApiClient(mergedConfig), [mergedConfig]);
@@ -406,6 +418,7 @@ export function FurnitureRoomPlannerWidget({
     try {
       const response = await apiClient.submitQuoteRequest(quoteRequest);
       setQuoteSuccess(true);
+      onQuoteSubmitted?.({ quoteRequest, response });
 
       setTimeout(() => {
         setQuoteSuccess(false);
@@ -484,6 +497,17 @@ export function FurnitureRoomPlannerWidget({
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
     await handlePhotosChange(Array.from(e.target.files));
+  };
+
+  const handleSampleRoomClick = async (photo: SampleRoomPhoto) => {
+    try {
+      const response = await fetch(photo.src);
+      const blob = await response.blob();
+      const file = new File([blob], `${photo.id}.jpg`, { type: blob.type || 'image/jpeg' });
+      await handlePhotosChange([file]);
+    } catch (err) {
+      setError('Could not load that sample room photo.');
+    }
   };
 
   const handleDrop = async (e: React.DragEvent<HTMLDivElement>) => {
@@ -657,6 +681,25 @@ export function FurnitureRoomPlannerWidget({
                   <p className="mt-3 text-xs text-gray-500">
                     Use room details and catalog data to improve recommendations.
                   </p>
+                  {sampleRooms && sampleRooms.length > 0 && (
+                    <div className="mt-4">
+                      <p className="mb-2 text-xs font-semibold text-gray-600">Or try a sample room</p>
+                      <div className="grid grid-cols-3 gap-2">
+                        {sampleRooms.map((photo) => (
+                          <button
+                            key={photo.id}
+                            type="button"
+                            onClick={() => handleSampleRoomClick(photo)}
+                            className="overflow-hidden rounded-lg border border-stone-200 transition hover:border-blue-400"
+                            title={photo.label}
+                          >
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img src={photo.src} alt={photo.label} className="h-14 w-full object-cover" />
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 <div className="rounded-2xl border border-stone-200 bg-white p-5 shadow-sm">

@@ -26,6 +26,7 @@ export class AIService {
       this.stateManager.updateContext({
         pageType: newContext.pageType,
         productId: newContext.productId,
+        productName: newContext.productName,
         category: newContext.category,
         currentPage: newContext.currentUrl,
       });
@@ -99,10 +100,12 @@ export class AIService {
       context: {
         pageType: this.pageContext.pageType,
         productId: this.pageContext.productId,
+        productName: this.pageContext.productName,
         category: this.pageContext.category,
         currentPage: this.pageContext.currentUrl,
       },
       userPreferences: state.userPreferences,
+      catalog: this.config.catalog,
     };
 
     // Call API

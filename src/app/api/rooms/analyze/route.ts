@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { RoomAnalysisResponse, Recommendation, FurnitureItem, RoomDimensions, RoomPreferences } from '@/types';
-import { getCatalogForRequest } from '@/lib/store-catalog';
+import { getCatalogForRequest, getCatalogFromPayload } from '@/lib/store-catalog';
 import { checkRoomPlannerLimit, findStoreForUsage, incrementUsage } from '@/lib/usage-limits';
 import { publicWidgetOptionsResponse, withPublicWidgetCors } from '@/lib/public-widget-cors';
 
@@ -355,6 +355,9 @@ async function handlePOST(request: NextRequest) {
     const preferences = formData.get('preferences')
       ? JSON.parse(formData.get('preferences') as string) as RoomPreferences
       : undefined;
+    const catalogPayload = formData.get('catalog')
+      ? JSON.parse(formData.get('catalog') as string)
+      : undefined;
 
     if (!photos || photos.length === 0) {
       return NextResponse.json(
@@ -411,13 +414,17 @@ async function handlePOST(request: NextRequest) {
       }
     }
 
-    // Fetch catalog items
-    const catalogItems = await getCatalogItems(
-      storeId || undefined,
-      widgetId || undefined,
-      apiKey || undefined,
-      storeDomain || undefined
-    );
+    // Prefer the catalog sent inline by the widget, then fall back to the
+    // shared server catalog looked up by storeId.
+    const inlineCatalog = getCatalogFromPayload(catalogPayload);
+    const catalogItems = inlineCatalog
+      ? inlineCatalog.items
+      : await getCatalogItems(
+          storeId || undefined,
+          widgetId || undefined,
+          apiKey || undefined,
+          storeDomain || undefined
+        );
 
     // Analyze room with AI
     const result = await analyzeRoomWithAI(photos, dimensions, preferences, catalogItems);

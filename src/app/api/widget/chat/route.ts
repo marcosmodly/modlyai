@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { ChatCatalogPayload, ChatRequest, ChatResponse, ConversationMessage, FurnitureItem } from '@/types';
-import { getCatalogForRequest, catalogProductToFurnitureItem } from '@/lib/store-catalog';
-import { getCatalogSnapshot, type CatalogSource, type NormalizedCatalogProduct } from '@/lib/catalog-source';
+import { getCatalogForRequest, catalogProductToFurnitureItem, getCatalogFromPayload } from '@/lib/store-catalog';
+import { type CatalogSource, type NormalizedCatalogProduct } from '@/lib/catalog-source';
 import { checkAiChatLimit, findStoreForUsage, incrementUsage } from '@/lib/usage-limits';
 import { publicWidgetOptionsResponse, withPublicWidgetCors } from '@/lib/public-widget-cors';
 
@@ -26,19 +26,7 @@ async function getChatCatalog(storeId?: string, widgetId?: string, apiKey?: stri
 }
 
 function getChatCatalogFromRequest(catalog?: ChatCatalogPayload): ChatCatalog | null {
-  const products = Array.isArray(catalog?.products) ? catalog.products : [];
-  if (products.length === 0) return null;
-
-  const snapshot = getCatalogSnapshot(products, {
-    catalogSource: catalog?.source,
-  });
-
-  return {
-    products: snapshot.products,
-    items: snapshot.products.map(catalogProductToFurnitureItem),
-    source: snapshot.source,
-    count: snapshot.count,
-  };
+  return getCatalogFromPayload(catalog);
 }
 
 function getSourceLabel(source: CatalogSource) {
@@ -293,6 +281,10 @@ AVAILABLE ACTIONS:
 
 CURRENT PAGE CONTEXT:
 ${pageContext ? JSON.stringify(pageContext, null, 2) : 'No specific page context'}
+
+If CURRENT PAGE CONTEXT includes a productName and the user says "this", "this piece", "it", or otherwise
+doesn't name a specific catalog product, assume they mean that page-context product and answer directly
+using its catalog data instead of asking which product they mean.
 
 RESPONSE FORMAT (PLAIN TEXT ONLY):
 1: Use plain text only. Do not use markdown or formatting symbols like **, *, #, -, or bullet lists.

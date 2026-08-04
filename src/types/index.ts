@@ -204,6 +204,7 @@ export interface ConversationState {
   context?: {
     pageType?: string;
     productId?: string;
+    productName?: string;
     category?: string;
     currentPage?: string;
   };
@@ -254,6 +255,7 @@ export interface ChatRequest {
   context?: {
     pageType?: string;
     productId?: string;
+    productName?: string;
     category?: string;
     currentPage?: string;
   };

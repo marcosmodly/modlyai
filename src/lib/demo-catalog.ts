@@ -1,4 +1,5 @@
 import type { ChatCatalogProduct } from "@/types";
+import type { FurnitureItem } from "@widget/types";
 
 // Fictional catalog used only by the public /demo page. No affiliation with
 // real brands or SKUs — see DemoDisclaimer for the on-page notice.
@@ -460,3 +461,61 @@ export const DEMO_SUGGESTED_PROMPTS: string[] = [
   "Show me the Harbor Linen Sofa in a lighter fabric.",
   "Show me something similar but smaller.",
 ];
+
+const INCHES_TO_METERS = 0.0254;
+
+/**
+ * Converts a DemoProduct into the widget's FurnitureItem shape so it can be
+ * used as FurnitureAIWidget's `initialProduct` prop. Reshapes the flat
+ * `customizationOptions.width` (authored in inches, matches the demo copy)
+ * into the nested `customizationOptions.dimensions.width` the real
+ * FurnitureCustomizerPanel reads pricing and range from — the two shapes look
+ * similar but the panel only honors the nested one.
+ */
+export function demoProductToFurnitureItem(product: DemoProduct): FurnitureItem {
+  const options = product.customizationOptions;
+
+  return {
+    id: product.id,
+    name: product.title,
+    category: product.category ?? "Furniture",
+    dimensions: {
+      length: product.length * INCHES_TO_METERS,
+      width: product.width * INCHES_TO_METERS,
+      height: product.height * INCHES_TO_METERS,
+    },
+    materials: {
+      primary: product.materials?.[0] ?? "Custom",
+      secondary: product.materials?.[1],
+    },
+    colors: {
+      main: product.colors?.[0] ?? "Custom",
+      accent: product.colors?.[1],
+    },
+    styleTags: product.tags ?? [],
+    images: product.image ? [product.image] : [],
+    priceRange: { min: product.price, max: product.price },
+    stockStatus: options ? "custom_order" : undefined,
+    price: product.price,
+    customizationOptions: options
+      ? {
+          colors: options.colors,
+          materials: options.materials,
+          dimensions: options.width
+            ? {
+                width: {
+                  min: options.width.min,
+                  max: options.width.max,
+                  default: options.width.default,
+                  unit: "in",
+                  pricePerExtraUnit: options.width.pricePerExtraInch,
+                },
+              }
+            : undefined,
+        }
+      : undefined,
+  };
+}
+
+export const FEATURED_DEMO_PRODUCT: DemoProduct =
+  DEMO_CATALOG.find((product) => product.id === "demo-dining-walnut-gathering-set") ?? DEMO_CATALOG[0];

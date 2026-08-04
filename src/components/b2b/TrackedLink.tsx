@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import type { PropsWithChildren } from "react";
+import type { CSSProperties, PropsWithChildren } from "react";
 import { trackCtaClick } from "@/lib/analytics";
 
 type TrackedLinkProps = PropsWithChildren<{
@@ -10,6 +10,7 @@ type TrackedLinkProps = PropsWithChildren<{
   ctaText: string;
   location?: string;
   className?: string;
+  style?: CSSProperties;
 }>;
 
 export default function TrackedLink({
@@ -18,12 +19,14 @@ export default function TrackedLink({
   ctaText,
   location = "homepage",
   className,
+  style,
   children,
 }: TrackedLinkProps) {
   return (
     <Link
       href={href}
       className={className}
+      style={style}
       onClick={() =>
         trackCtaClick({
           ctaId,

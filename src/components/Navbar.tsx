@@ -61,11 +61,19 @@ export default function Navbar() {
             {isMarketingPage && (
               <>
                 <Link
-                  href={isConsumerMarketingPage ? "/widget-demo" : "/how-it-works"}
+                  href="/demo"
                   className={navLinkClass}
                 >
-                  {isConsumerMarketingPage ? "Try Demo" : "See How It Works"}
+                  {isConsumerMarketingPage ? "Try Demo" : "Demo"}
                 </Link>
+                {!isConsumerMarketingPage && (
+                  <Link
+                    href="/how-it-works"
+                    className={navLinkClass}
+                  >
+                    See How It Works
+                  </Link>
+                )}
                 <Link
                   href="/faq"
                   className={navLinkClass}
@@ -158,12 +166,17 @@ export default function Navbar() {
             {isMarketingPage && (
               <>
                 <Link
-                  href={isConsumerMarketingPage ? "/widget-demo" : "/how-it-works"}
+                  href="/demo"
                   className={mobileNavLinkClass}
                   onClick={closeMobileMenu}
                 >
-                  {isConsumerMarketingPage ? "Try Demo" : "See How It Works"}
+                  {isConsumerMarketingPage ? "Try Demo" : "Demo"}
                 </Link>
+                {!isConsumerMarketingPage && (
+                  <Link href="/how-it-works" className={mobileNavLinkClass} onClick={closeMobileMenu}>
+                    See How It Works
+                  </Link>
+                )}
                 <Link href="/faq" className={mobileNavLinkClass} onClick={closeMobileMenu}>
                   FAQ
                 </Link>

@@ -17,7 +17,7 @@ export default function ConfiguratorPage() {
           </p>
           
           <Link
-            href="/widget-demo"
+            href="/demo"
             className="inline-block px-8 py-4 bg-earth-forest text-white rounded-xl font-semibold text-lg hover:bg-earth-forest/90 transition-all duration-300 shadow-lg transform hover:-translate-y-0.5"
           >
             Try the Demo
@@ -185,7 +185,7 @@ export default function ConfiguratorPage() {
         {/* CTA */}
         <div className="text-center">
           <Link
-            href="/widget-demo"
+            href="/demo"
             className="inline-block px-8 py-4 bg-earth-forest text-white rounded-xl font-semibold text-lg hover:bg-earth-forest/90 transition-all duration-300 shadow-lg transform hover:-translate-y-0.5"
           >
             Try the Configurator Demo

@@ -1,4 +1,4 @@
-import { RoomAnalysisResponse } from '../types';
+import { RoomAnalysisResponse, ChatCatalogPayload } from '../types';
 export interface WidgetConfig {
     apiBaseUrl?: string;
     storeId?: string;
@@ -11,6 +11,7 @@ export interface WidgetConfig {
     titleColor?: string;
     messageTextColor?: string;
     welcomeMessage?: string;
+    catalog?: ChatCatalogPayload;
     enabledActions?: {
         viewInCatalog?: boolean;
         customize?: boolean;
@@ -63,7 +64,7 @@ export declare const DEFAULT_ENABLED_ACTIONS: {
     customize: boolean;
     requestQuote: boolean;
 };
-export declare const defaultConfig: Required<Omit<WidgetConfig, 'apiBaseUrl' | 'storeId' | 'shop' | 'apiKey' | 'publicApiKey' | 'storeDomain' | 'configUrl' | 'widgetId' | 'onError' | 'onRoomAnalyzed' | 'onFurnitureCustomized' | 'theme'>>;
+export declare const defaultConfig: Required<Omit<WidgetConfig, 'apiBaseUrl' | 'storeId' | 'shop' | 'apiKey' | 'publicApiKey' | 'storeDomain' | 'configUrl' | 'widgetId' | 'onError' | 'onRoomAnalyzed' | 'onFurnitureCustomized' | 'theme' | 'catalog'>>;
 export declare function mergeConfig(userConfig?: WidgetConfig): WidgetConfig;
 export declare function getWidgetTitle(config?: WidgetConfig): string;
 export declare function getPrimaryColor(config?: WidgetConfig): string;

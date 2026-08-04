@@ -1,4 +1,4 @@
-import require$$0, { useContext, createContext, forwardRef, createElement, useState, useEffect, useMemo, useRef, useCallback } from 'react';
+import require$$0, { useContext, createContext, forwardRef, createElement, useState, useEffect, useMemo, useRef, useCallback, useImperativeHandle } from 'react';
 
 var jsxRuntime = {exports: {}};
 
@@ -2299,6 +2299,9 @@ class ApiClient {
         if (preferences) {
             formData.append('preferences', JSON.stringify(preferences));
         }
+        if (this.config.catalog) {
+            formData.append('catalog', JSON.stringify(this.config.catalog));
+        }
         const response = await fetch(url, {
             method: 'POST',
             body: formData,
@@ -2708,6 +2711,84 @@ function useWidgetContext() {
     return context;
 }
 
+const PLACEHOLDER_HOSTS = new Set([
+    'yourstore.com',
+    'www.yourstore.com',
+    'example.com',
+    'www.example.com',
+    'example.org',
+    'www.example.org',
+    'example.net',
+    'www.example.net',
+    'test.com',
+    'www.test.com',
+    'demo.com',
+    'www.demo.com',
+    'placeholder.com',
+    'www.placeholder.com',
+]);
+const LOCAL_HOSTS = new Set([
+    'localhost',
+    '127.0.0.1',
+    '0.0.0.0',
+    '::1',
+]);
+function parseProductUrl(url) {
+    const trimmed = url.trim();
+    if (!trimmed)
+        return null;
+    try {
+        return new URL(trimmed);
+    }
+    catch {
+        try {
+            return new URL(`https://${trimmed}`);
+        }
+        catch {
+            return null;
+        }
+    }
+}
+function isRealProductUrl(url) {
+    if (!url)
+        return false;
+    const parsed = parseProductUrl(url);
+    if (!parsed)
+        return false;
+    if (!['http:', 'https:'].includes(parsed.protocol))
+        return false;
+    const hostname = parsed.hostname.toLowerCase();
+    if (!hostname || LOCAL_HOSTS.has(hostname) || PLACEHOLDER_HOSTS.has(hostname))
+        return false;
+    if (hostname.endsWith('.yourstore.com'))
+        return false;
+    if (hostname.endsWith('.example.com') || hostname.endsWith('.example.org') || hostname.endsWith('.example.net')) {
+        return false;
+    }
+    if (hostname.endsWith('.localhost'))
+        return false;
+    if (hostname.endsWith('.test') || hostname.endsWith('.example') || hostname.endsWith('.invalid'))
+        return false;
+    const fullUrl = parsed.href.toLowerCase();
+    return ![
+        'yourstore',
+        'example',
+        'placeholder',
+        'demo-only',
+        'fake-store',
+        'test-store',
+    ].some((marker) => fullUrl.includes(marker));
+}
+function getRealProductUrl(product) {
+    const productUrl = product.productUrl?.trim();
+    if (isRealProductUrl(productUrl))
+        return productUrl;
+    const url = product.url?.trim();
+    if (isRealProductUrl(url))
+        return url;
+    return undefined;
+}
+
 const formatCurrency$3 = (value, prefix = '') => typeof value === 'number' && Number.isFinite(value)
     ? `${prefix}$${value.toLocaleString()}`
     : undefined;
@@ -2726,11 +2807,21 @@ const uniqueByName = (values) => {
 function CustomizedFurnitureList({ items, onItemRemoved, onNavigateToCustomizer, onRequestQuote, highlightItemId, }) {
     const { storage } = useWidgetContext();
     const [removingId, setRemovingId] = useState(null);
+    const [pendingRemoveId, setPendingRemoveId] = useState(null);
     const [imageErrors, setImageErrors] = useState(() => new Set());
-    const handleRemove = async (id) => {
-        if (!confirm('Are you sure you want to remove this customized furniture item?')) {
+    // window.confirm() is a native modal dialog - many embedding contexts
+    // (sandboxed iframes, some in-app browsers) block or auto-dismiss it
+    // silently, which made Remove appear to do nothing. An inline
+    // arm-then-confirm step avoids native dialogs entirely.
+    const handleRemoveClick = (id) => {
+        if (pendingRemoveId !== id) {
+            setPendingRemoveId(id);
             return;
         }
+        void handleConfirmedRemove(id);
+    };
+    const handleConfirmedRemove = async (id) => {
+        setPendingRemoveId(null);
         setRemovingId(id);
         try {
             storage.removeCustomizedFurniture(id);
@@ -2781,7 +2872,7 @@ function CustomizedFurnitureList({ items, onItemRemoved, onNavigateToCustomizer,
                                                 const next = new Set(prev);
                                                 next.add(item.id);
                                                 return next;
-                                            }) })) : (jsxRuntimeExports.jsx("div", { className: "flex h-full w-full items-center justify-center bg-gradient-to-br from-gray-50 to-stone-100 text-gray-300", children: jsxRuntimeExports.jsx("svg", { className: "h-12 w-12", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 1.5, d: "M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" }) }) })) }), jsxRuntimeExports.jsx("span", { className: "absolute right-5 top-5 rounded-full bg-white/95 px-3 py-1 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-gray-200", children: "Custom" })] }), jsxRuntimeExports.jsxs("div", { className: "space-y-4 p-5", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h3", { className: "text-lg font-semibold leading-tight text-gray-950", children: productName }), jsxRuntimeExports.jsxs("div", { className: "mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-gray-500", children: [category && jsxRuntimeExports.jsx("span", { className: "capitalize", children: category }), category && jsxRuntimeExports.jsx("span", { "aria-hidden": "true", children: "/" }), jsxRuntimeExports.jsxs("span", { children: ["Saved ", new Date(item.savedAt).toLocaleDateString()] })] })] }), dimensionRows.length > 0 && (jsxRuntimeExports.jsxs("div", { className: "rounded-xl border border-gray-200 bg-gray-50 p-3", children: [jsxRuntimeExports.jsx("p", { className: "mb-2 text-xs font-semibold uppercase text-gray-500", children: "Dimensions" }), jsxRuntimeExports.jsx("div", { className: "grid grid-cols-3 gap-2", children: dimensionRows.map(([label, value]) => (jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("p", { className: "text-[11px] text-gray-500", children: label }), jsxRuntimeExports.jsx("p", { className: "text-sm font-semibold text-gray-950", children: value })] }, label))) })] })), (selectedColor || selectedMaterial || addOns.length > 0) && (jsxRuntimeExports.jsxs("div", { className: "space-y-3", children: [selectedColor && (jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("p", { className: "mb-2 text-xs font-semibold uppercase text-gray-500", children: "Color" }), jsxRuntimeExports.jsx("span", { className: "inline-flex rounded-full border border-emerald-100 bg-emerald-50 px-3 py-1 text-sm font-medium text-emerald-900", children: selectedColor })] })), selectedMaterial && (jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("p", { className: "mb-2 text-xs font-semibold uppercase text-gray-500", children: "Material" }), jsxRuntimeExports.jsx("span", { className: "inline-flex rounded-full border border-stone-200 bg-stone-50 px-3 py-1 text-sm font-medium text-stone-900", children: selectedMaterial })] })), addOns.length > 0 && (jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("p", { className: "mb-2 text-xs font-semibold uppercase text-gray-500", children: "Add-ons" }), jsxRuntimeExports.jsx("div", { className: "flex flex-wrap gap-2", children: addOns.map((addOn) => (jsxRuntimeExports.jsx("span", { className: "rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-900", children: addOn.name }, addOn.name))) })] }))] })), shopifyOptions.length > 0 && (jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("p", { className: "mb-2 text-xs font-semibold uppercase text-gray-500", children: "Options" }), jsxRuntimeExports.jsx("div", { className: "space-y-2 rounded-xl border border-gray-200 p-3", children: shopifyOptions.map((option) => (jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between gap-3 text-sm", children: [jsxRuntimeExports.jsx("span", { className: "text-gray-500", children: option.name }), jsxRuntimeExports.jsx("span", { className: "text-right font-semibold text-gray-950", children: option.value })] }, `${option.name}-${option.value}`))) })] })), (basePrice || customizationPrice || estimatedTotal || item.pricingMode === 'quote_required') && (jsxRuntimeExports.jsxs("div", { className: "space-y-2 rounded-xl border border-gray-200 bg-gray-50 p-3 text-sm", children: [basePrice && (jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between gap-3", children: [jsxRuntimeExports.jsx("span", { className: "text-gray-500", children: "Base price" }), jsxRuntimeExports.jsx("span", { className: "font-semibold text-gray-950", children: basePrice })] })), customizationPrice && (jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between gap-3", children: [jsxRuntimeExports.jsx("span", { className: "text-gray-500", children: "Customizations" }), jsxRuntimeExports.jsx("span", { className: "font-semibold text-gray-950", children: customizationPrice })] })), jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between gap-3 border-t border-gray-200 pt-2", children: [jsxRuntimeExports.jsx("span", { className: "font-semibold text-gray-700", children: "Estimated total" }), jsxRuntimeExports.jsx("span", { className: "font-bold text-gray-950", children: item.pricingMode === 'quote_required' ? 'Quote required' : estimatedTotal ?? 'Quote required' })] })] })), item.customerRequestText?.trim() && (jsxRuntimeExports.jsxs("div", { className: "rounded-xl border border-amber-200 bg-amber-50 p-3", children: [jsxRuntimeExports.jsx("p", { className: "mb-1 text-xs font-semibold uppercase text-amber-800", children: "Request" }), jsxRuntimeExports.jsx("p", { className: "line-clamp-3 text-sm text-amber-950", children: item.customerRequestText })] })), jsxRuntimeExports.jsxs("div", { className: "space-y-2 border-t border-gray-100 pt-4", children: [onRequestQuote && (jsxRuntimeExports.jsx("button", { type: "button", onClick: () => onRequestQuote(item), className: "w-full rounded-xl bg-gray-950 px-4 py-3 text-sm font-semibold text-white transition hover:bg-gray-800", children: "Request Quote" })), jsxRuntimeExports.jsxs("div", { className: "flex gap-2", children: [item.productUrl && (jsxRuntimeExports.jsx("a", { href: item.productUrl, target: "_blank", rel: "noreferrer", className: "flex-1 rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-center text-sm font-semibold text-gray-700 transition hover:bg-gray-50", children: "View in Catalog" })), jsxRuntimeExports.jsx("button", { type: "button", onClick: () => handleRemove(item.id), disabled: removingId === item.id, className: "flex-1 rounded-xl border border-red-200 bg-white px-4 py-2.5 text-sm font-semibold text-red-600 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50", children: removingId === item.id ? 'Removing...' : 'Remove' })] })] })] })] }, item.id));
+                                            }) })) : (jsxRuntimeExports.jsx("div", { className: "flex h-full w-full items-center justify-center bg-gradient-to-br from-gray-50 to-stone-100 text-gray-300", children: jsxRuntimeExports.jsx("svg", { className: "h-12 w-12", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 1.5, d: "M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" }) }) })) }), jsxRuntimeExports.jsx("span", { className: "absolute right-5 top-5 rounded-full bg-white/95 px-3 py-1 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-gray-200", children: "Custom" })] }), jsxRuntimeExports.jsxs("div", { className: "space-y-4 p-5", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h3", { className: "text-lg font-semibold leading-tight text-gray-950", children: productName }), jsxRuntimeExports.jsxs("div", { className: "mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-gray-500", children: [category && jsxRuntimeExports.jsx("span", { className: "capitalize", children: category }), category && jsxRuntimeExports.jsx("span", { "aria-hidden": "true", children: "/" }), jsxRuntimeExports.jsxs("span", { children: ["Saved ", new Date(item.savedAt).toLocaleDateString()] })] })] }), dimensionRows.length > 0 && (jsxRuntimeExports.jsxs("div", { className: "rounded-xl border border-gray-200 bg-gray-50 p-3", children: [jsxRuntimeExports.jsx("p", { className: "mb-2 text-xs font-semibold uppercase text-gray-500", children: "Dimensions" }), jsxRuntimeExports.jsx("div", { className: "grid grid-cols-3 gap-2", children: dimensionRows.map(([label, value]) => (jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("p", { className: "text-[11px] text-gray-500", children: label }), jsxRuntimeExports.jsx("p", { className: "text-sm font-semibold text-gray-950", children: value })] }, label))) })] })), (selectedColor || selectedMaterial || addOns.length > 0) && (jsxRuntimeExports.jsxs("div", { className: "space-y-3", children: [selectedColor && (jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("p", { className: "mb-2 text-xs font-semibold uppercase text-gray-500", children: "Color" }), jsxRuntimeExports.jsx("span", { className: "inline-flex rounded-full border border-emerald-100 bg-emerald-50 px-3 py-1 text-sm font-medium text-emerald-900", children: selectedColor })] })), selectedMaterial && (jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("p", { className: "mb-2 text-xs font-semibold uppercase text-gray-500", children: "Material" }), jsxRuntimeExports.jsx("span", { className: "inline-flex rounded-full border border-stone-200 bg-stone-50 px-3 py-1 text-sm font-medium text-stone-900", children: selectedMaterial })] })), addOns.length > 0 && (jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("p", { className: "mb-2 text-xs font-semibold uppercase text-gray-500", children: "Add-ons" }), jsxRuntimeExports.jsx("div", { className: "flex flex-wrap gap-2", children: addOns.map((addOn) => (jsxRuntimeExports.jsx("span", { className: "rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-900", children: addOn.name }, addOn.name))) })] }))] })), shopifyOptions.length > 0 && (jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("p", { className: "mb-2 text-xs font-semibold uppercase text-gray-500", children: "Options" }), jsxRuntimeExports.jsx("div", { className: "space-y-2 rounded-xl border border-gray-200 p-3", children: shopifyOptions.map((option) => (jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between gap-3 text-sm", children: [jsxRuntimeExports.jsx("span", { className: "text-gray-500", children: option.name }), jsxRuntimeExports.jsx("span", { className: "text-right font-semibold text-gray-950", children: option.value })] }, `${option.name}-${option.value}`))) })] })), (basePrice || customizationPrice || estimatedTotal || item.pricingMode === 'quote_required') && (jsxRuntimeExports.jsxs("div", { className: "space-y-2 rounded-xl border border-gray-200 bg-gray-50 p-3 text-sm", children: [basePrice && (jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between gap-3", children: [jsxRuntimeExports.jsx("span", { className: "text-gray-500", children: "Base price" }), jsxRuntimeExports.jsx("span", { className: "font-semibold text-gray-950", children: basePrice })] })), customizationPrice && (jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between gap-3", children: [jsxRuntimeExports.jsx("span", { className: "text-gray-500", children: "Customizations" }), jsxRuntimeExports.jsx("span", { className: "font-semibold text-gray-950", children: customizationPrice })] })), jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between gap-3 border-t border-gray-200 pt-2", children: [jsxRuntimeExports.jsx("span", { className: "font-semibold text-gray-700", children: "Estimated total" }), jsxRuntimeExports.jsx("span", { className: "font-bold text-gray-950", children: item.pricingMode === 'quote_required' ? 'Quote required' : estimatedTotal ?? 'Quote required' })] })] })), item.customerRequestText?.trim() && (jsxRuntimeExports.jsxs("div", { className: "rounded-xl border border-amber-200 bg-amber-50 p-3", children: [jsxRuntimeExports.jsx("p", { className: "mb-1 text-xs font-semibold uppercase text-amber-800", children: "Request" }), jsxRuntimeExports.jsx("p", { className: "line-clamp-3 text-sm text-amber-950", children: item.customerRequestText })] })), jsxRuntimeExports.jsxs("div", { className: "space-y-2 border-t border-gray-100 pt-4", children: [onRequestQuote && (jsxRuntimeExports.jsx("button", { type: "button", onClick: () => onRequestQuote(item), className: "w-full rounded-xl bg-gray-950 px-4 py-3 text-sm font-semibold text-white transition hover:bg-gray-800", children: "Request Quote" })), jsxRuntimeExports.jsxs("div", { className: "flex gap-2", children: [item.productUrl && (jsxRuntimeExports.jsx("a", { href: item.productUrl, target: "_blank", rel: "noreferrer", className: "flex-1 rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-center text-sm font-semibold text-gray-700 transition hover:bg-gray-50", children: "View in Catalog" })), pendingRemoveId === item.id ? (jsxRuntimeExports.jsxs("div", { className: "flex flex-1 gap-2", children: [jsxRuntimeExports.jsx("button", { type: "button", onClick: () => void handleConfirmedRemove(item.id), disabled: removingId === item.id, className: "flex-1 rounded-xl bg-red-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50", children: removingId === item.id ? 'Removing...' : 'Confirm remove' }), jsxRuntimeExports.jsx("button", { type: "button", onClick: () => setPendingRemoveId(null), className: "rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm font-semibold text-gray-700 transition hover:bg-gray-50", children: "Cancel" })] })) : (jsxRuntimeExports.jsx("button", { type: "button", onClick: () => handleRemoveClick(item.id), className: "flex-1 rounded-xl border border-red-200 bg-white px-4 py-2.5 text-sm font-semibold text-red-600 transition hover:bg-red-50", children: "Remove" }))] })] })] })] }, item.id));
                 }) })] }));
 }
 
@@ -2822,17 +2913,30 @@ function useWebsiteColors() {
                     body = doc.body;
                     root = doc.documentElement;
                 }
+                // A property that's unset (e.g. background-color on <html> when only
+                // <body> carries one) computes to a fully transparent color rather than
+                // an empty string. Treat that the same as "not set" so callers fall
+                // through to their next source instead of a bogus transparent value.
+                const isTransparent = (value) => {
+                    if (value === 'transparent')
+                        return true;
+                    const alphaMatch = value.match(/^rgba?\(([^)]+)\)$/i);
+                    if (!alphaMatch)
+                        return false;
+                    const parts = alphaMatch[1].split(',').map((p) => p.trim());
+                    return parts.length === 4 && parseFloat(parts[3]) === 0;
+                };
                 // Helper to get computed color value from CSS variables or computed styles
                 const getComputedColor = (element, property, fallback) => {
                     try {
                         const computed = window.getComputedStyle(element);
                         // Try CSS custom properties first
                         const cssVar = computed.getPropertyValue(`--${property}`).trim();
-                        if (cssVar)
+                        if (cssVar && !isTransparent(cssVar))
                             return cssVar;
                         // Try direct property
                         const direct = computed.getPropertyValue(property).trim();
-                        if (direct)
+                        if (direct && !isTransparent(direct))
                             return direct;
                         return fallback || '';
                     }
@@ -2840,7 +2944,9 @@ function useWebsiteColors() {
                         return fallback || '';
                     }
                 };
-                // Helper to convert any color format to hex
+                // Helper to convert any color format to hex. Returns '' for transparent
+                // colors so callers fall through to their next source instead of
+                // treating "unset" as black.
                 const toHex = (color) => {
                     if (!color || color.trim() === '')
                         return '';
@@ -2851,8 +2957,10 @@ function useWebsiteColors() {
                             : color;
                     }
                     // Handle rgb/rgba
-                    const rgbMatch = color.match(/\d+/g);
+                    const rgbMatch = color.match(/[\d.]+/g);
                     if (rgbMatch && rgbMatch.length >= 3) {
+                        if (rgbMatch.length >= 4 && parseFloat(rgbMatch[3]) === 0)
+                            return '';
                         const r = parseInt(rgbMatch[0]).toString(16).padStart(2, '0');
                         const g = parseInt(rgbMatch[1]).toString(16).padStart(2, '0');
                         const b = parseInt(rgbMatch[2]).toString(16).padStart(2, '0');
@@ -3051,6 +3159,23 @@ function FinalizeQuoteModal({ isOpen, onClose, onProceed, item, recommendation, 
                                                             ].map(([label, value]) => (jsxRuntimeExports.jsxs("div", { className: "rounded-xl bg-stone-50 px-3 py-2", children: [jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500", children: label }), jsxRuntimeExports.jsx("p", { className: "mt-0.5 font-semibold text-gray-950", children: value || 'N/A' })] }, label))) })] }), placementText && (jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("p", { className: "font-semibold text-gray-900", children: "Placement" }), jsxRuntimeExports.jsx("p", { className: "mt-1 leading-6 text-gray-700", children: placementText })] }))] })] }), (materialChips.length > 0 || roomColorChips.length > 0) && (jsxRuntimeExports.jsxs("section", { className: "rounded-2xl border border-stone-200 bg-white p-5 shadow-sm", children: [jsxRuntimeExports.jsx("h4", { className: "text-sm font-bold text-gray-950", children: "Materials and colors" }), materialChips.length > 0 && (jsxRuntimeExports.jsxs("div", { className: "mt-4", children: [jsxRuntimeExports.jsx("p", { className: "text-xs font-semibold uppercase text-gray-500", children: "Materials" }), jsxRuntimeExports.jsx("div", { className: "mt-2 flex flex-wrap gap-2", children: materialChips.map((material) => (jsxRuntimeExports.jsx("span", { className: "rounded-full border border-stone-200 bg-stone-50 px-3 py-1 text-sm font-medium text-gray-800", children: material }, material))) })] })), roomColorChips.length > 0 && (jsxRuntimeExports.jsxs("div", { className: "mt-4", children: [jsxRuntimeExports.jsx("p", { className: "text-xs font-semibold uppercase text-gray-500", children: "Color scheme" }), jsxRuntimeExports.jsx("div", { className: "mt-2 flex flex-wrap gap-2", children: roomColorChips.map((color) => (jsxRuntimeExports.jsx("span", { className: "rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-950", children: color }, color))) })] }))] })), displayItem.aiNotes && (jsxRuntimeExports.jsxs("section", { className: "rounded-2xl border border-indigo-100 bg-indigo-50/70 p-5", children: [jsxRuntimeExports.jsx("p", { className: "text-sm font-bold text-indigo-950", children: "AI recommendation note" }), jsxRuntimeExports.jsx("p", { className: "mt-2 text-sm leading-6 text-gray-800", children: displayItem.aiNotes })] }))] })), inlineError && (jsxRuntimeExports.jsx("div", { className: "mt-5 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-700", children: inlineError }))] }), jsxRuntimeExports.jsxs("div", { className: "sticky bottom-0 flex flex-col-reverse gap-3 border-t border-stone-200 bg-[#fffaf4]/95 px-6 py-4 backdrop-blur sm:flex-row sm:justify-end", children: [jsxRuntimeExports.jsx("button", { type: "button", onClick: onClose, className: "rounded-xl border border-stone-200 bg-white px-6 py-3 text-sm font-semibold text-gray-700 transition hover:bg-stone-50", children: "Back" }), jsxRuntimeExports.jsx("button", { type: "button", onClick: handleProceed, className: "inline-flex items-center justify-center rounded-xl px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-900/20 transition hover:brightness-105", style: {
                                 backgroundImage: `linear-gradient(135deg, ${websiteColors.primary}, #7c3aed)`,
                             }, children: "Continue to quote form" })] })] }) }));
+}
+
+// Full-size image viewer opened by clicking a product/room photo thumbnail
+// elsewhere in the widget. Deliberately opacity-only (no animated transform) -
+// an animated transform on a position:fixed ancestor breaks any fixed-position
+// descendant opened from inside a scrolling tab panel, the same bug already
+// fixed once for the request-quote modal (see widget/src/styles/widget.css).
+function ImageLightbox({ src, alt, onClose }) {
+    useEffect(() => {
+        const handleKeyDown = (event) => {
+            if (event.key === 'Escape')
+                onClose();
+        };
+        document.addEventListener('keydown', handleKeyDown);
+        return () => document.removeEventListener('keydown', handleKeyDown);
+    }, [onClose]);
+    return (jsxRuntimeExports.jsxs("div", { className: "fixed inset-0 z-[70] flex items-center justify-center bg-black/80 p-4", onClick: onClose, role: "dialog", "aria-modal": "true", "aria-label": alt || 'Image preview', children: [jsxRuntimeExports.jsx("button", { type: "button", onClick: onClose, className: "absolute right-4 top-4 rounded-full bg-white/10 p-2 text-white transition hover:bg-white/20", "aria-label": "Close image preview", children: jsxRuntimeExports.jsx(X, { className: "h-6 w-6" }) }), jsxRuntimeExports.jsx("img", { src: src, alt: alt || '', onClick: (event) => event.stopPropagation(), className: "max-h-full max-w-full rounded-lg object-contain shadow-2xl" })] }));
 }
 
 const getCustomizationChoiceName = (value) => typeof value === 'string' ? value : value?.name;
@@ -3319,84 +3444,6 @@ function QuoteRequestForm({ isOpen, onClose, onSubmit, item, recommendation, sto
                                     }, children: isSubmitting ? (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsxs("svg", { className: "h-5 w-5 animate-spin", xmlns: "http://www.w3.org/2000/svg", fill: "none", viewBox: "0 0 24 24", children: [jsxRuntimeExports.jsx("circle", { className: "opacity-25", cx: "12", cy: "12", r: "10", stroke: "currentColor", strokeWidth: "4" }), jsxRuntimeExports.jsx("path", { className: "opacity-75", fill: "currentColor", d: "M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" })] }), jsxRuntimeExports.jsx("span", { children: "Submitting..." })] })) : ('Submit Quote Request') })] })] }))] }) }));
 }
 
-const PLACEHOLDER_HOSTS = new Set([
-    'yourstore.com',
-    'www.yourstore.com',
-    'example.com',
-    'www.example.com',
-    'example.org',
-    'www.example.org',
-    'example.net',
-    'www.example.net',
-    'test.com',
-    'www.test.com',
-    'demo.com',
-    'www.demo.com',
-    'placeholder.com',
-    'www.placeholder.com',
-]);
-const LOCAL_HOSTS = new Set([
-    'localhost',
-    '127.0.0.1',
-    '0.0.0.0',
-    '::1',
-]);
-function parseProductUrl(url) {
-    const trimmed = url.trim();
-    if (!trimmed)
-        return null;
-    try {
-        return new URL(trimmed);
-    }
-    catch {
-        try {
-            return new URL(`https://${trimmed}`);
-        }
-        catch {
-            return null;
-        }
-    }
-}
-function isRealProductUrl(url) {
-    if (!url)
-        return false;
-    const parsed = parseProductUrl(url);
-    if (!parsed)
-        return false;
-    if (!['http:', 'https:'].includes(parsed.protocol))
-        return false;
-    const hostname = parsed.hostname.toLowerCase();
-    if (!hostname || LOCAL_HOSTS.has(hostname) || PLACEHOLDER_HOSTS.has(hostname))
-        return false;
-    if (hostname.endsWith('.yourstore.com'))
-        return false;
-    if (hostname.endsWith('.example.com') || hostname.endsWith('.example.org') || hostname.endsWith('.example.net')) {
-        return false;
-    }
-    if (hostname.endsWith('.localhost'))
-        return false;
-    if (hostname.endsWith('.test') || hostname.endsWith('.example') || hostname.endsWith('.invalid'))
-        return false;
-    const fullUrl = parsed.href.toLowerCase();
-    return ![
-        'yourstore',
-        'example',
-        'placeholder',
-        'demo-only',
-        'fake-store',
-        'test-store',
-    ].some((marker) => fullUrl.includes(marker));
-}
-function getRealProductUrl(product) {
-    const productUrl = product.productUrl?.trim();
-    if (isRealProductUrl(productUrl))
-        return productUrl;
-    const url = product.url?.trim();
-    if (isRealProductUrl(url))
-        return url;
-    return undefined;
-}
-
 function getProductCatalogUrl$1(item) {
     return getRealProductUrl(item);
 }
@@ -3425,6 +3472,7 @@ function getDimensionLabel(item) {
 function RecommendationsList({ recommendations, onCustomize, onFinalize, enabledActions, primaryColor, analyticsContext }) {
     const actions = enabledActions ?? { viewInCatalog: true, customize: true, requestQuote: true };
     const primaryTextColor = primaryColor ? getReadableTextColor(primaryColor) : undefined;
+    const [lightbox, setLightbox] = useState(null);
     if (recommendations.length === 0) {
         return (jsxRuntimeExports.jsx("div", { className: "text-center py-12 text-gray-500", children: jsxRuntimeExports.jsx("p", { className: "text-lg", children: "No recommendations available yet." }) }));
     }
@@ -3451,7 +3499,7 @@ function RecommendationsList({ recommendations, onCustomize, onFinalize, enabled
                         });
                         window.open(catalogUrl, '_blank', 'noopener,noreferrer');
                     };
-                    return (jsxRuntimeExports.jsxs("div", { className: "overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-sm transition-shadow hover:shadow-md", children: [jsxRuntimeExports.jsx("div", { className: "aspect-[4/3] bg-stone-100", children: imageUrl ? (jsxRuntimeExports.jsx("img", { src: imageUrl, alt: rec.item.name, className: "h-full w-full object-cover" })) : (jsxRuntimeExports.jsx("div", { className: "flex h-full w-full items-center justify-center bg-gradient-to-br from-stone-100 to-stone-50 text-stone-400", children: jsxRuntimeExports.jsx(Image, { className: "h-10 w-10" }) })) }), jsxRuntimeExports.jsxs("div", { className: "p-5", children: [jsxRuntimeExports.jsxs("div", { className: "mb-3 flex items-start justify-between gap-3", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h3", { className: "text-xl font-semibold leading-tight text-gray-950", children: rec.item.name }), jsxRuntimeExports.jsxs("p", { className: "mt-1 text-sm text-gray-500", children: [rec.item.category, " ", rec.item.subCategory && `- ${rec.item.subCategory}`] })] }), rec.matchScore && (jsxRuntimeExports.jsxs("span", { className: "shrink-0 text-sm px-2 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-medium", children: [Math.round(rec.matchScore * 100), "% match"] }))] }), jsxRuntimeExports.jsxs("div", { className: "mb-4 flex flex-wrap items-center gap-2", children: [jsxRuntimeExports.jsx("span", { className: "rounded-full bg-stone-100 px-3 py-1 text-sm font-semibold text-gray-900", children: priceLabel }), dimensionLabel && (jsxRuntimeExports.jsxs("span", { className: "inline-flex items-center gap-1 rounded-full border border-stone-200 px-3 py-1 text-xs font-medium text-gray-600", children: [jsxRuntimeExports.jsx(Ruler, { className: "h-3.5 w-3.5" }), dimensionLabel] }))] }), rec.item.styleTags && rec.item.styleTags.length > 0 && (jsxRuntimeExports.jsx("div", { className: "mb-4 flex flex-wrap gap-2", children: rec.item.styleTags.map((tag, i) => (jsxRuntimeExports.jsx("span", { className: "text-xs px-2 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-100 font-medium", children: tag }, i))) })), rec.placement && (jsxRuntimeExports.jsxs("div", { className: "mb-4 rounded-xl border border-stone-200 bg-stone-50 p-3", children: [jsxRuntimeExports.jsx("h4", { className: "text-sm font-semibold mb-2 text-gray-800", children: "Placement notes" }), rec.placement.coordinates && (jsxRuntimeExports.jsxs("div", { className: "mb-2 text-xs text-gray-800", children: [jsxRuntimeExports.jsx("span", { className: "font-semibold", children: "Position: " }), "(", rec.placement.coordinates.x.toFixed(2), "m, ", rec.placement.coordinates.y.toFixed(2), "m)", jsxRuntimeExports.jsx("span", { className: "ml-2 text-gray-500", children: "from southwest corner" })] })), rec.placement.distanceFromWalls && (jsxRuntimeExports.jsxs("div", { className: "mb-2 text-xs space-y-1 text-gray-800", children: [jsxRuntimeExports.jsx("div", { className: "font-semibold mb-1", children: "Distance from walls:" }), jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-2 gap-1", children: [rec.placement.distanceFromWalls.north !== undefined && (jsxRuntimeExports.jsxs("div", { children: ["North: ", jsxRuntimeExports.jsxs("strong", { children: [rec.placement.distanceFromWalls.north.toFixed(2), "m"] })] })), rec.placement.distanceFromWalls.south !== undefined && (jsxRuntimeExports.jsxs("div", { children: ["South: ", jsxRuntimeExports.jsxs("strong", { children: [rec.placement.distanceFromWalls.south.toFixed(2), "m"] })] })), rec.placement.distanceFromWalls.east !== undefined && (jsxRuntimeExports.jsxs("div", { children: ["East: ", jsxRuntimeExports.jsxs("strong", { children: [rec.placement.distanceFromWalls.east.toFixed(2), "m"] })] })), rec.placement.distanceFromWalls.west !== undefined && (jsxRuntimeExports.jsxs("div", { children: ["West: ", jsxRuntimeExports.jsxs("strong", { children: [rec.placement.distanceFromWalls.west.toFixed(2), "m"] })] }))] })] })), rec.placement.rotation !== undefined && rec.placement.rotation !== 0 && (jsxRuntimeExports.jsxs("div", { className: "mb-2 text-xs text-gray-800", children: [jsxRuntimeExports.jsx("span", { className: "font-semibold", children: "Rotation: " }), rec.placement.rotation, " deg"] })), (rec.placement.wall || rec.placement.position) && (jsxRuntimeExports.jsxs("div", { className: "mb-2 text-xs text-gray-800", children: [jsxRuntimeExports.jsx("span", { className: "font-semibold", children: "Location: " }), rec.placement.position || (rec.placement.wall ? `Against ${rec.placement.wall} wall` : 'Centered')] })), jsxRuntimeExports.jsx("p", { className: "text-sm mt-2 pt-2 border-t border-gray-200 text-gray-800", children: rec.placement.reasoning })] })), jsxRuntimeExports.jsxs("div", { className: "rounded-xl border border-blue-100 bg-blue-50/70 p-3", children: [jsxRuntimeExports.jsx("h4", { className: "text-sm font-semibold mb-1 text-blue-950", children: "Why it fits" }), jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-800", children: rec.reasoning })] }), jsxRuntimeExports.jsxs("div", { className: "mt-4 space-y-2 border-t border-stone-200 pt-4", children: [actions.customize && onCustomize && (jsxRuntimeExports.jsxs("button", { type: "button", onClick: () => onCustomize(rec.item), className: "w-full py-2.5 px-4 rounded-lg font-semibold text-sm transition-all duration-200 border border-blue-200 bg-blue-50 hover:bg-blue-100 text-blue-700 flex items-center justify-center gap-2", style: primaryColor ? { borderColor: primaryColor, color: primaryColor } : undefined, children: [jsxRuntimeExports.jsx(Pencil, { className: "w-4 h-4" }), "Customize this"] })), actions.viewInCatalog && catalogUrl ? (jsxRuntimeExports.jsxs("button", { type: "button", onClick: handleViewInCatalogClick, className: "w-full py-2.5 px-4 rounded-lg font-semibold text-sm transition-all duration-200 border border-gray-300 bg-white hover:bg-gray-50 text-gray-700 flex items-center justify-center gap-2", children: [jsxRuntimeExports.jsx(ExternalLink, { className: "w-4 h-4" }), "View in Catalog"] })) : actions.viewInCatalog ? (jsxRuntimeExports.jsx("button", { type: "button", disabled: true, className: "w-full py-2.5 px-4 rounded-lg font-medium text-sm transition-all duration-200 border border-gray-200 bg-gray-50 text-gray-400 flex items-center justify-center gap-2 cursor-not-allowed", children: "Catalog link unavailable" })) : null, actions.requestQuote && onFinalize && (jsxRuntimeExports.jsxs("button", { type: "button", onClick: (event) => {
+                    return (jsxRuntimeExports.jsxs("div", { className: "overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-sm transition-shadow hover:shadow-md", children: [jsxRuntimeExports.jsx("div", { className: "aspect-[4/3] bg-stone-100", children: imageUrl ? (jsxRuntimeExports.jsxs("button", { type: "button", onClick: () => setLightbox({ src: imageUrl, alt: rec.item.name }), className: "group relative h-full w-full cursor-zoom-in", "aria-label": `View full-size photo of ${rec.item.name}`, children: [jsxRuntimeExports.jsx("img", { src: imageUrl, alt: rec.item.name, className: "h-full w-full object-cover" }), jsxRuntimeExports.jsx("span", { className: "absolute inset-0 flex items-center justify-center bg-black/0 opacity-0 transition group-hover:bg-black/20 group-hover:opacity-100", children: jsxRuntimeExports.jsx(Maximize2, { className: "h-6 w-6 text-white drop-shadow" }) })] })) : (jsxRuntimeExports.jsx("div", { className: "flex h-full w-full items-center justify-center bg-gradient-to-br from-stone-100 to-stone-50 text-stone-400", children: jsxRuntimeExports.jsx(Image, { className: "h-10 w-10" }) })) }), jsxRuntimeExports.jsxs("div", { className: "p-5", children: [jsxRuntimeExports.jsxs("div", { className: "mb-3 flex items-start justify-between gap-3", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h3", { className: "text-xl font-semibold leading-tight text-gray-950", children: rec.item.name }), jsxRuntimeExports.jsxs("p", { className: "mt-1 text-sm text-gray-500", children: [rec.item.category, " ", rec.item.subCategory && `- ${rec.item.subCategory}`] })] }), rec.matchScore && (jsxRuntimeExports.jsxs("span", { className: "shrink-0 text-sm px-2 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-medium", children: [Math.round(rec.matchScore * 100), "% match"] }))] }), jsxRuntimeExports.jsxs("div", { className: "mb-4 flex flex-wrap items-center gap-2", children: [jsxRuntimeExports.jsx("span", { className: "rounded-full bg-stone-100 px-3 py-1 text-sm font-semibold text-gray-900", children: priceLabel }), dimensionLabel && (jsxRuntimeExports.jsxs("span", { className: "inline-flex items-center gap-1 rounded-full border border-stone-200 px-3 py-1 text-xs font-medium text-gray-600", children: [jsxRuntimeExports.jsx(Ruler, { className: "h-3.5 w-3.5" }), dimensionLabel] }))] }), rec.item.styleTags && rec.item.styleTags.length > 0 && (jsxRuntimeExports.jsx("div", { className: "mb-4 flex flex-wrap gap-2", children: rec.item.styleTags.map((tag, i) => (jsxRuntimeExports.jsx("span", { className: "text-xs px-2 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-100 font-medium", children: tag }, i))) })), rec.placement && (jsxRuntimeExports.jsxs("div", { className: "mb-4 rounded-xl border border-stone-200 bg-stone-50 p-3", children: [jsxRuntimeExports.jsx("h4", { className: "text-sm font-semibold mb-2 text-gray-800", children: "Placement notes" }), rec.placement.coordinates && (jsxRuntimeExports.jsxs("div", { className: "mb-2 text-xs text-gray-800", children: [jsxRuntimeExports.jsx("span", { className: "font-semibold", children: "Position: " }), "(", rec.placement.coordinates.x.toFixed(2), "m, ", rec.placement.coordinates.y.toFixed(2), "m)", jsxRuntimeExports.jsx("span", { className: "ml-2 text-gray-500", children: "from southwest corner" })] })), rec.placement.distanceFromWalls && (jsxRuntimeExports.jsxs("div", { className: "mb-2 text-xs space-y-1 text-gray-800", children: [jsxRuntimeExports.jsx("div", { className: "font-semibold mb-1", children: "Distance from walls:" }), jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-2 gap-1", children: [rec.placement.distanceFromWalls.north !== undefined && (jsxRuntimeExports.jsxs("div", { children: ["North: ", jsxRuntimeExports.jsxs("strong", { children: [rec.placement.distanceFromWalls.north.toFixed(2), "m"] })] })), rec.placement.distanceFromWalls.south !== undefined && (jsxRuntimeExports.jsxs("div", { children: ["South: ", jsxRuntimeExports.jsxs("strong", { children: [rec.placement.distanceFromWalls.south.toFixed(2), "m"] })] })), rec.placement.distanceFromWalls.east !== undefined && (jsxRuntimeExports.jsxs("div", { children: ["East: ", jsxRuntimeExports.jsxs("strong", { children: [rec.placement.distanceFromWalls.east.toFixed(2), "m"] })] })), rec.placement.distanceFromWalls.west !== undefined && (jsxRuntimeExports.jsxs("div", { children: ["West: ", jsxRuntimeExports.jsxs("strong", { children: [rec.placement.distanceFromWalls.west.toFixed(2), "m"] })] }))] })] })), rec.placement.rotation !== undefined && rec.placement.rotation !== 0 && (jsxRuntimeExports.jsxs("div", { className: "mb-2 text-xs text-gray-800", children: [jsxRuntimeExports.jsx("span", { className: "font-semibold", children: "Rotation: " }), rec.placement.rotation, " deg"] })), (rec.placement.wall || rec.placement.position) && (jsxRuntimeExports.jsxs("div", { className: "mb-2 text-xs text-gray-800", children: [jsxRuntimeExports.jsx("span", { className: "font-semibold", children: "Location: " }), rec.placement.position || (rec.placement.wall ? `Against ${rec.placement.wall} wall` : 'Centered')] })), jsxRuntimeExports.jsx("p", { className: "text-sm mt-2 pt-2 border-t border-gray-200 text-gray-800", children: rec.placement.reasoning })] })), jsxRuntimeExports.jsxs("div", { className: "rounded-xl border border-blue-100 bg-blue-50/70 p-3", children: [jsxRuntimeExports.jsx("h4", { className: "text-sm font-semibold mb-1 text-blue-950", children: "Why it fits" }), jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-800", children: rec.reasoning })] }), jsxRuntimeExports.jsxs("div", { className: "mt-4 space-y-2 border-t border-stone-200 pt-4", children: [actions.customize && onCustomize && (jsxRuntimeExports.jsxs("button", { type: "button", onClick: () => onCustomize(rec.item), className: "w-full py-2.5 px-4 rounded-lg font-semibold text-sm transition-all duration-200 border border-blue-200 bg-blue-50 hover:bg-blue-100 text-blue-700 flex items-center justify-center gap-2", style: primaryColor ? { borderColor: primaryColor, color: primaryColor } : undefined, children: [jsxRuntimeExports.jsx(Pencil, { className: "w-4 h-4" }), "Customize this"] })), actions.viewInCatalog && catalogUrl ? (jsxRuntimeExports.jsxs("button", { type: "button", onClick: handleViewInCatalogClick, className: "w-full py-2.5 px-4 rounded-lg font-semibold text-sm transition-all duration-200 border border-gray-300 bg-white hover:bg-gray-50 text-gray-700 flex items-center justify-center gap-2", children: [jsxRuntimeExports.jsx(ExternalLink, { className: "w-4 h-4" }), "View in Catalog"] })) : actions.viewInCatalog ? (jsxRuntimeExports.jsx("button", { type: "button", disabled: true, className: "w-full py-2.5 px-4 rounded-lg font-medium text-sm transition-all duration-200 border border-gray-200 bg-gray-50 text-gray-400 flex items-center justify-center gap-2 cursor-not-allowed", children: "Catalog link unavailable" })) : null, actions.requestQuote && onFinalize && (jsxRuntimeExports.jsxs("button", { type: "button", onClick: (event) => {
                                                     event.preventDefault();
                                                     event.stopPropagation();
                                                     onFinalize(rec);
@@ -3459,7 +3507,7 @@ function RecommendationsList({ recommendations, onCustomize, onFinalize, enabled
                                                     backgroundColor: primaryColor || '#10B981',
                                                     color: primaryColor ? primaryTextColor : '#ffffff',
                                                 }, children: [jsxRuntimeExports.jsx(MessageSquareQuote, { className: "h-4 w-4" }), "Request Quote"] }))] })] })] }, rec.item.id || index));
-                }) })] }));
+                }) }), lightbox && (jsxRuntimeExports.jsx(ImageLightbox, { src: lightbox.src, alt: lightbox.alt, onClose: () => setLightbox(null) }))] }));
 }
 
 const STORAGE_KEY$1 = 'modly-room-planner-state';
@@ -3505,7 +3553,7 @@ function parseDimensionToMeters(value, unitSystem) {
         return 0;
     return unitSystem === 'meters' ? numericValue : numericValue / FEET_PER_METER;
 }
-function FurnitureRoomPlannerWidget({ config = {}, onCustomizeItem, onNavigateToCustomizer, }) {
+function FurnitureRoomPlannerWidget({ config = {}, onCustomizeItem, onNavigateToCustomizer, sampleRooms, onQuoteSubmitted, }) {
     const mergedConfig = useMemo(() => mergeConfig(config), [config]);
     const apiClient = useMemo(() => new ApiClient(mergedConfig), [mergedConfig]);
     const storage = useMemo(() => new Storage(mergedConfig.storageKey), [mergedConfig.storageKey]);
@@ -3540,6 +3588,7 @@ function FurnitureRoomPlannerWidget({ config = {}, onCustomizeItem, onNavigateTo
     const [selectedRecommendation, setSelectedRecommendation] = useState(null);
     const [selectedCustomizedItem, setSelectedCustomizedItem] = useState(null);
     const [highlightItemId, setHighlightItemId] = useState(null);
+    const [lightboxImage, setLightboxImage] = useState(null);
     const fileInputRef = useRef(null);
     const resultsRef = useRef(null);
     const lastScrolledRequestRef = useRef(0);
@@ -3780,6 +3829,7 @@ function FurnitureRoomPlannerWidget({ config = {}, onCustomizeItem, onNavigateTo
         try {
             const response = await apiClient.submitQuoteRequest(quoteRequest);
             setQuoteSuccess(true);
+            onQuoteSubmitted?.({ quoteRequest, response });
             setTimeout(() => {
                 setQuoteSuccess(false);
             }, 5000);
@@ -3801,27 +3851,50 @@ function FurnitureRoomPlannerWidget({ config = {}, onCustomizeItem, onNavigateTo
         if (typeof window !== 'undefined')
             window.print();
     };
+    const topMatches = () => (recommendations?.recommendations ?? []).slice(0, 5);
+    // Each match's real product link, not just its name - a name-only summary
+    // wasn't much of a "share" since the recipient had nothing to actually
+    // click through to.
     const buildShareText = () => {
         const dimText = savedDimensions
             ? `L ${savedDimensions.length.toFixed(1)}m x W ${savedDimensions.width.toFixed(1)}m x H ${savedDimensions.height.toFixed(1)}m`
             : 'Dimensions: (not provided)';
-        const items = recommendations?.recommendations?.slice(0, 5).map((r) => r.item.name).join(', ') ||
-            'No matches yet';
-        return `Room Planner results\n${dimText}\nTop matches: ${items}`;
+        const matches = topMatches();
+        const items = matches.length
+            ? matches
+                .map((r) => {
+                const link = getRealProductUrl(r.item);
+                return link ? `${r.item.name} - ${link}` : r.item.name;
+            })
+                .join('\n')
+            : 'No matches yet';
+        return `Room Planner results\n${dimText}\nTop matches:\n${items}`;
     };
     const handleShare = async () => {
+        const text = buildShareText();
+        // Native share's `url` field only takes one link - use the first match
+        // that actually has a real product URL.
+        const firstRealLink = topMatches()
+            .map((r) => getRealProductUrl(r.item))
+            .find((link) => Boolean(link));
         try {
-            const text = buildShareText();
             const nav = navigator;
             if (typeof nav.share === 'function') {
-                await nav.share({ title: 'Room Planner', text });
+                await nav.share({ title: 'Room Planner', text, url: firstRealLink });
                 setShareMessage('Shared successfully.');
+                trackWidgetEvent({
+                    ...analyticsContext,
+                    type: 'design_shared',
+                    metadata: { source: 'room_planner', recommendationCount: topMatches().length },
+                });
                 return;
             }
             await navigator.clipboard.writeText(text);
             setShareMessage('Copied share summary to clipboard.');
         }
         catch (e) {
+            if (e?.name === 'AbortError')
+                return;
             console.warn('Share failed:', e);
             setShareMessage('Could not share automatically. Please copy the details manually.');
         }
@@ -3830,6 +3903,17 @@ function FurnitureRoomPlannerWidget({ config = {}, onCustomizeItem, onNavigateTo
         if (!e.target.files)
             return;
         await handlePhotosChange(Array.from(e.target.files));
+    };
+    const handleSampleRoomClick = async (photo) => {
+        try {
+            const response = await fetch(photo.src);
+            const blob = await response.blob();
+            const file = new File([blob], `${photo.id}.jpg`, { type: blob.type || 'image/jpeg' });
+            await handlePhotosChange([file]);
+        }
+        catch (err) {
+            setError('Could not load that sample room photo.');
+        }
     };
     const handleDrop = async (e) => {
         e.preventDefault();
@@ -3908,7 +3992,7 @@ function FurnitureRoomPlannerWidget({ config = {}, onCustomizeItem, onNavigateTo
                                                                                     : 'Drag your photo here' }), jsxRuntimeExports.jsx("p", { className: "mt-1 text-sm text-gray-500", children: "JPG or PNG. For best results, use a clear photo with good lighting." })] }), jsxRuntimeExports.jsx("button", { type: "button", onClick: (e) => {
                                                                             e.stopPropagation();
                                                                             fileInputRef.current?.click();
-                                                                        }, className: "rounded-lg bg-blue-600 px-6 py-3 font-semibold text-white shadow-sm transition hover:bg-blue-700", style: { backgroundColor: primaryColor }, children: "Choose Room Photo" })] }) }), jsxRuntimeExports.jsx("p", { className: "mt-3 text-xs text-gray-500", children: "Use room details and catalog data to improve recommendations." })] }), jsxRuntimeExports.jsxs("div", { className: "rounded-2xl border border-stone-200 bg-white p-5 shadow-sm", children: [jsxRuntimeExports.jsxs("div", { className: "mb-3 flex items-center justify-between gap-3", children: [jsxRuntimeExports.jsx("h2", { className: "text-lg font-semibold text-gray-950", children: "Room preview" }), jsxRuntimeExports.jsx("span", { className: "text-sm text-gray-500", children: uploadedPhotos[0] ? 'Photo loaded' : 'Awaiting upload' })] }), jsxRuntimeExports.jsx("div", { className: "flex aspect-video w-full items-center justify-center overflow-hidden rounded-xl border border-stone-200 bg-stone-50", children: uploadedPhotos[0] ? (jsxRuntimeExports.jsx("img", { src: uploadedPhotos[0], alt: "Uploaded room preview", className: "aspect-video w-full rounded-xl object-cover" })) : (jsxRuntimeExports.jsxs("div", { className: "px-6 text-center text-gray-500", children: [jsxRuntimeExports.jsx("div", { className: "mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-white shadow-sm", children: jsxRuntimeExports.jsx(Camera, { className: "h-7 w-7 text-blue-500" }) }), jsxRuntimeExports.jsx("p", { className: "text-sm font-semibold text-gray-800", children: "Your uploaded room photo will appear here." }), jsxRuntimeExports.jsx("p", { className: "mt-2 text-xs leading-5 text-gray-500", children: "Tip: Take the photo from a corner or doorway to capture more of the room." })] })) })] })] }), jsxRuntimeExports.jsxs("div", { className: "mt-6 grid grid-cols-1 gap-5 lg:grid-cols-12", children: [jsxRuntimeExports.jsxs("div", { className: "rounded-2xl border border-stone-200 bg-white p-5 shadow-sm lg:col-span-4", children: [jsxRuntimeExports.jsxs("div", { className: "mb-5 flex items-start gap-3", children: [jsxRuntimeExports.jsx("div", { className: "flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600", children: jsxRuntimeExports.jsx(Ruler, { className: "h-5 w-5" }) }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h3", { className: "text-lg font-bold text-gray-950", children: "Room Details" }), jsxRuntimeExports.jsx("p", { className: "mt-1 text-sm text-gray-500", children: "Optional, but improves fit recommendations." })] })] }), jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-gray-700 mb-2", children: "Room Type" }), jsxRuntimeExports.jsxs("select", { value: roomType, onChange: (e) => setRoomType(e.target.value), className: "w-full rounded-lg border border-stone-300 bg-white px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500", children: [jsxRuntimeExports.jsx("option", { value: "living", children: "Living Room" }), jsxRuntimeExports.jsx("option", { value: "bedroom", children: "Bedroom" }), jsxRuntimeExports.jsx("option", { value: "dining", children: "Dining Room" }), jsxRuntimeExports.jsx("option", { value: "office", children: "Office" }), jsxRuntimeExports.jsx("option", { value: "kitchen", children: "Kitchen" }), jsxRuntimeExports.jsx("option", { value: "other", children: "Other" })] })] }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsxs("div", { className: "mb-3 flex items-center justify-between gap-3", children: [jsxRuntimeExports.jsx("label", { className: "text-sm font-medium text-gray-700", children: "Room Dimensions" }), jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 text-xs font-medium text-gray-600", children: [jsxRuntimeExports.jsx("span", { children: "Meters" }), jsxRuntimeExports.jsx("button", { type: "button", onClick: handleUnitToggle, className: `relative inline-flex h-6 w-11 items-center rounded-full transition ${unitSystem === 'feet' ? 'bg-blue-600' : 'bg-stone-200'}`, "aria-label": "Toggle meters or feet", children: jsxRuntimeExports.jsx("span", { className: `inline-block h-4 w-4 transform rounded-full bg-white transition ${unitSystem === 'feet' ? 'translate-x-6' : 'translate-x-1'}` }) }), jsxRuntimeExports.jsx("span", { children: "Feet" })] })] }), jsxRuntimeExports.jsx("div", { className: "mb-3 grid grid-cols-3 gap-2", children: roomSizePresets.map((preset) => (jsxRuntimeExports.jsx("button", { type: "button", onClick: () => applyRoomPreset(preset), className: "rounded-full border border-stone-300 bg-stone-50 px-3 py-2 text-xs font-semibold text-gray-700 transition hover:border-blue-300 hover:bg-blue-50 hover:text-blue-800", children: preset.label }, preset.id))) }), jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-2 gap-3", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("label", { className: "block text-xs font-medium text-gray-600 mb-1", children: "Length" }), jsxRuntimeExports.jsx("input", { type: "number", placeholder: unitSystem === 'meters' ? '4.6' : '15.1', value: lengthValue, onChange: (e) => setLengthValue(e.target.value), className: "w-full rounded-lg border border-stone-300 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" })] }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("label", { className: "block text-xs font-medium text-gray-600 mb-1", children: "Width" }), jsxRuntimeExports.jsx("input", { type: "number", placeholder: unitSystem === 'meters' ? '3.8' : '12.5', value: widthValue, onChange: (e) => setWidthValue(e.target.value), className: "w-full rounded-lg border border-stone-300 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" })] })] }), jsxRuntimeExports.jsxs("div", { className: "mt-3", children: [jsxRuntimeExports.jsx("label", { className: "block text-xs font-medium text-gray-600 mb-1", children: "Ceiling Height" }), jsxRuntimeExports.jsx("input", { type: "number", placeholder: unitSystem === 'meters' ? '2.6' : '8.5', value: heightValue, onChange: (e) => setHeightValue(e.target.value), className: "w-full rounded-lg border border-stone-300 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" })] })] })] })] }), jsxRuntimeExports.jsxs("div", { className: "rounded-2xl border border-stone-200 bg-white p-5 shadow-sm lg:col-span-4", children: [jsxRuntimeExports.jsxs("div", { className: "mb-5 flex items-start gap-3", children: [jsxRuntimeExports.jsx("div", { className: "flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-amber-50 text-amber-700", children: jsxRuntimeExports.jsx(Sofa, { className: "h-5 w-5" }) }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h3", { className: "text-lg font-bold text-gray-950", children: "Preferences" }), jsxRuntimeExports.jsx("p", { className: "mt-1 text-sm text-gray-500", children: "Guide matches toward the showroom look you want." })] })] }), jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-gray-700 mb-3", children: "Preferred Styles" }), jsxRuntimeExports.jsx("div", { className: "grid grid-cols-2 gap-3", children: styleOptions.map((styleOption) => {
+                                                                        }, className: "rounded-lg bg-blue-600 px-6 py-3 font-semibold text-white shadow-sm transition hover:bg-blue-700", style: { backgroundColor: primaryColor }, children: "Choose Room Photo" })] }) }), jsxRuntimeExports.jsx("p", { className: "mt-3 text-xs text-gray-500", children: "Use room details and catalog data to improve recommendations." }), sampleRooms && sampleRooms.length > 0 && (jsxRuntimeExports.jsxs("div", { className: "mt-4", children: [jsxRuntimeExports.jsx("p", { className: "mb-2 text-xs font-semibold text-gray-600", children: "Or try a sample room" }), jsxRuntimeExports.jsx("div", { className: "grid grid-cols-3 gap-2", children: sampleRooms.map((photo) => (jsxRuntimeExports.jsx("button", { type: "button", onClick: () => handleSampleRoomClick(photo), className: "overflow-hidden rounded-lg border border-stone-200 transition hover:border-blue-400", title: photo.label, children: jsxRuntimeExports.jsx("img", { src: photo.src, alt: photo.label, className: "h-14 w-full object-cover" }) }, photo.id))) })] }))] }), jsxRuntimeExports.jsxs("div", { className: "rounded-2xl border border-stone-200 bg-white p-5 shadow-sm", children: [jsxRuntimeExports.jsxs("div", { className: "mb-3 flex items-center justify-between gap-3", children: [jsxRuntimeExports.jsx("h2", { className: "text-lg font-semibold text-gray-950", children: "Room preview" }), jsxRuntimeExports.jsx("span", { className: "text-sm text-gray-500", children: uploadedPhotos[0] ? 'Photo loaded' : 'Awaiting upload' })] }), jsxRuntimeExports.jsx("div", { className: "flex aspect-video w-full items-center justify-center overflow-hidden rounded-xl border border-stone-200 bg-stone-50", children: uploadedPhotos[0] ? (jsxRuntimeExports.jsxs("button", { type: "button", onClick: () => setLightboxImage(uploadedPhotos[0]), className: "group relative aspect-video w-full cursor-zoom-in", "aria-label": "View full-size room photo", children: [jsxRuntimeExports.jsx("img", { src: uploadedPhotos[0], alt: "Uploaded room preview", className: "h-full w-full rounded-xl object-cover" }), jsxRuntimeExports.jsx("span", { className: "absolute inset-0 flex items-center justify-center rounded-xl bg-black/0 opacity-0 transition group-hover:bg-black/20 group-hover:opacity-100", children: jsxRuntimeExports.jsx(Maximize2, { className: "h-6 w-6 text-white drop-shadow" }) })] })) : (jsxRuntimeExports.jsxs("div", { className: "px-6 text-center text-gray-500", children: [jsxRuntimeExports.jsx("div", { className: "mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-white shadow-sm", children: jsxRuntimeExports.jsx(Camera, { className: "h-7 w-7 text-blue-500" }) }), jsxRuntimeExports.jsx("p", { className: "text-sm font-semibold text-gray-800", children: "Your uploaded room photo will appear here." }), jsxRuntimeExports.jsx("p", { className: "mt-2 text-xs leading-5 text-gray-500", children: "Tip: Take the photo from a corner or doorway to capture more of the room." })] })) })] })] }), jsxRuntimeExports.jsxs("div", { className: "mt-6 grid grid-cols-1 gap-5 lg:grid-cols-12", children: [jsxRuntimeExports.jsxs("div", { className: "rounded-2xl border border-stone-200 bg-white p-5 shadow-sm lg:col-span-4", children: [jsxRuntimeExports.jsxs("div", { className: "mb-5 flex items-start gap-3", children: [jsxRuntimeExports.jsx("div", { className: "flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600", children: jsxRuntimeExports.jsx(Ruler, { className: "h-5 w-5" }) }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h3", { className: "text-lg font-bold text-gray-950", children: "Room Details" }), jsxRuntimeExports.jsx("p", { className: "mt-1 text-sm text-gray-500", children: "Optional, but improves fit recommendations." })] })] }), jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-gray-700 mb-2", children: "Room Type" }), jsxRuntimeExports.jsxs("select", { value: roomType, onChange: (e) => setRoomType(e.target.value), className: "w-full rounded-lg border border-stone-300 bg-white px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500", children: [jsxRuntimeExports.jsx("option", { value: "living", children: "Living Room" }), jsxRuntimeExports.jsx("option", { value: "bedroom", children: "Bedroom" }), jsxRuntimeExports.jsx("option", { value: "dining", children: "Dining Room" }), jsxRuntimeExports.jsx("option", { value: "office", children: "Office" }), jsxRuntimeExports.jsx("option", { value: "kitchen", children: "Kitchen" }), jsxRuntimeExports.jsx("option", { value: "other", children: "Other" })] })] }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsxs("div", { className: "mb-3 flex items-center justify-between gap-3", children: [jsxRuntimeExports.jsx("label", { className: "text-sm font-medium text-gray-700", children: "Room Dimensions" }), jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 text-xs font-medium text-gray-600", children: [jsxRuntimeExports.jsx("span", { children: "Meters" }), jsxRuntimeExports.jsx("button", { type: "button", onClick: handleUnitToggle, className: `relative inline-flex h-6 w-11 items-center rounded-full transition ${unitSystem === 'feet' ? 'bg-blue-600' : 'bg-stone-200'}`, "aria-label": "Toggle meters or feet", children: jsxRuntimeExports.jsx("span", { className: `inline-block h-4 w-4 transform rounded-full bg-white transition ${unitSystem === 'feet' ? 'translate-x-6' : 'translate-x-1'}` }) }), jsxRuntimeExports.jsx("span", { children: "Feet" })] })] }), jsxRuntimeExports.jsx("div", { className: "mb-3 grid grid-cols-3 gap-2", children: roomSizePresets.map((preset) => (jsxRuntimeExports.jsx("button", { type: "button", onClick: () => applyRoomPreset(preset), className: "rounded-full border border-stone-300 bg-stone-50 px-3 py-2 text-xs font-semibold text-gray-700 transition hover:border-blue-300 hover:bg-blue-50 hover:text-blue-800", children: preset.label }, preset.id))) }), jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-2 gap-3", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("label", { className: "block text-xs font-medium text-gray-600 mb-1", children: "Length" }), jsxRuntimeExports.jsx("input", { type: "number", placeholder: unitSystem === 'meters' ? '4.6' : '15.1', value: lengthValue, onChange: (e) => setLengthValue(e.target.value), className: "w-full rounded-lg border border-stone-300 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" })] }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("label", { className: "block text-xs font-medium text-gray-600 mb-1", children: "Width" }), jsxRuntimeExports.jsx("input", { type: "number", placeholder: unitSystem === 'meters' ? '3.8' : '12.5', value: widthValue, onChange: (e) => setWidthValue(e.target.value), className: "w-full rounded-lg border border-stone-300 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" })] })] }), jsxRuntimeExports.jsxs("div", { className: "mt-3", children: [jsxRuntimeExports.jsx("label", { className: "block text-xs font-medium text-gray-600 mb-1", children: "Ceiling Height" }), jsxRuntimeExports.jsx("input", { type: "number", placeholder: unitSystem === 'meters' ? '2.6' : '8.5', value: heightValue, onChange: (e) => setHeightValue(e.target.value), className: "w-full rounded-lg border border-stone-300 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" })] })] })] })] }), jsxRuntimeExports.jsxs("div", { className: "rounded-2xl border border-stone-200 bg-white p-5 shadow-sm lg:col-span-4", children: [jsxRuntimeExports.jsxs("div", { className: "mb-5 flex items-start gap-3", children: [jsxRuntimeExports.jsx("div", { className: "flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-amber-50 text-amber-700", children: jsxRuntimeExports.jsx(Sofa, { className: "h-5 w-5" }) }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h3", { className: "text-lg font-bold text-gray-950", children: "Preferences" }), jsxRuntimeExports.jsx("p", { className: "mt-1 text-sm text-gray-500", children: "Guide matches toward the showroom look you want." })] })] }), jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-gray-700 mb-3", children: "Preferred Styles" }), jsxRuntimeExports.jsx("div", { className: "grid grid-cols-2 gap-3", children: styleOptions.map((styleOption) => {
                                                                                 const isSelected = selectedStyles.includes(styleOption.id);
                                                                                 const StyleIcon = styleOption.Icon;
                                                                                 return (jsxRuntimeExports.jsxs("button", { type: "button", onClick: () => toggleStyle(styleOption.id), className: [
@@ -3937,7 +4021,7 @@ function FurnitureRoomPlannerWidget({ config = {}, onCustomizeItem, onNavigateTo
                     setShowQuoteForm(false);
                     setSelectedRecommendation(null);
                     setSelectedCustomizedItem(null);
-                }, item: selectedCustomizedItem, onSubmit: handleQuoteSubmit, recommendation: selectedRecommendation, storeId: mergedConfig.storeId, widgetId: mergedConfig.widgetId, roomDimensions: savedDimensions, roomAnalysis: recommendations?.roomAnalysis }), quoteSuccess && (jsxRuntimeExports.jsxs("div", { className: "fixed bottom-6 right-6 bg-emerald-600 text-white px-6 py-4 rounded-xl shadow-2xl flex items-center gap-3 z-50", children: [jsxRuntimeExports.jsx(Sparkles, { className: "w-6 h-6" }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("p", { className: "font-semibold", children: "Quote Request Submitted!" }), jsxRuntimeExports.jsx("p", { className: "text-sm text-white/90", children: "Quote request sent. The store will follow up with pricing and next steps." })] })] }))] }));
+                }, item: selectedCustomizedItem, onSubmit: handleQuoteSubmit, recommendation: selectedRecommendation, storeId: mergedConfig.storeId, widgetId: mergedConfig.widgetId, roomDimensions: savedDimensions, roomAnalysis: recommendations?.roomAnalysis }), quoteSuccess && (jsxRuntimeExports.jsxs("div", { className: "fixed bottom-6 right-6 bg-emerald-600 text-white px-6 py-4 rounded-xl shadow-2xl flex items-center gap-3 z-50", children: [jsxRuntimeExports.jsx(Sparkles, { className: "w-6 h-6" }), jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("p", { className: "font-semibold", children: "Quote Request Submitted!" }), jsxRuntimeExports.jsx("p", { className: "text-sm text-white/90", children: "Quote request sent. The store will follow up with pricing and next steps." })] })] })), lightboxImage && (jsxRuntimeExports.jsx(ImageLightbox, { src: lightboxImage, alt: "Uploaded room preview", onClose: () => setLightboxImage(null) }))] }));
 }
 
 const FALLBACK_COLOR_HEX = ['#9CA3AF', '#1F2937', '#D4B896', '#D4C5B9', '#6B7280', '#C2410C'];
@@ -3948,6 +4032,7 @@ const COLOR_HEX_BY_NAME = {
     charcoal: '#374151',
     white: '#FFFFFF',
     black: '#111827',
+    matte_black: '#1A1A1A',
     brown: '#92400E',
     navy_blue: '#1E3A5F',
     navy: '#1E3A5F',
@@ -3958,37 +4043,84 @@ const COLOR_HEX_BY_NAME = {
     midnight_blue: '#1E3A8A',
     burgundy: '#7F1D1D',
     cream: '#FEFCE8',
+    ivory: '#FFFFF0',
     gold: '#D97706',
     walnut: '#7C3D12',
+    dark_walnut: '#431407',
     oak: '#A16207',
+    white_oak: '#FEF9C3',
+    warm_oak: '#A16207',
+    warmoak: '#A16207',
+    mahogany: '#4E2A1E',
+    cherry: '#6F2C22',
+    maple: '#D8B88A',
+    pine: '#DEC08B',
+    birch: '#E4CFA3',
+    ash: '#D6C6A5',
+    teak: '#B58A4A',
+    ebony: '#231710',
+    espresso: '#3C2415',
     natural: '#D4B896',
     caramel: '#B45309',
     cognac: '#9A3412',
     rustic_brown: '#78350F',
-    dark_walnut: '#431407',
     gray_wash: '#D1D5DB',
     smoked: '#6B7280',
     dusty_rose: '#FDA4AF',
     blush_pink: '#FBCFE8',
     clear: '#E0F2FE',
-    white_oak: '#FEF9C3',
     pebble: '#C4B8AE',
     slate: '#475569',
     sand: '#D4C5B9',
+    taupe: '#8B7D6B',
+    greige: '#B8AFA4',
     oat: '#D8CCB8',
     mist: '#CBD5E1',
-    warm_oak: '#A16207',
-    warmoak: '#A16207',
     blue: '#3B82F6',
     green: '#10B981',
+    red: '#DC2626',
+    orange: '#EA580C',
+    yellow: '#EAB308',
+    purple: '#7C3AED',
+    pink: '#EC4899',
+    silver: '#C0C0C0',
+    copper: '#B87333',
+    bronze: '#8C5E2A',
     terracotta: '#C2410C',
     graphite: '#4B5563',
     chrome: '#9CA3AF',
     brass: '#B45309',
 };
+// Resolves any valid CSS color keyword (e.g. "Crimson", "Teal", "SaddleBrown")
+// via the browser's own color parser, so COLOR_HEX_BY_NAME above only needs
+// to cover furniture-specific finish names that aren't real CSS keywords
+// (wood tones like "Oak"/"Walnut", "Matte Black", etc).
+const resolveCssColorHex = (name) => {
+    if (typeof document === 'undefined')
+        return null;
+    const probe = document.createElement('span');
+    probe.style.color = '';
+    probe.style.color = name;
+    if (!probe.style.color)
+        return null;
+    probe.style.display = 'none';
+    document.body.appendChild(probe);
+    const computed = getComputedStyle(probe).color;
+    document.body.removeChild(probe);
+    const match = computed.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+    if (!match)
+        return null;
+    const toHex = (value) => Number(value).toString(16).padStart(2, '0');
+    return `#${toHex(match[1])}${toHex(match[2])}${toHex(match[3])}`;
+};
 const getColorHex = (colorName) => {
     const normalized = colorName.toLowerCase().replace(/\s+/g, '_');
-    return COLOR_HEX_BY_NAME[normalized] ?? '#E5E7EB';
+    if (COLOR_HEX_BY_NAME[normalized])
+        return COLOR_HEX_BY_NAME[normalized];
+    const dictionaryMatch = Object.keys(COLOR_HEX_BY_NAME).find((key) => normalized.includes(key));
+    if (dictionaryMatch)
+        return COLOR_HEX_BY_NAME[dictionaryMatch];
+    return resolveCssColorHex(colorName) ?? '#E5E7EB';
 };
 const getMaterialDescription = (material) => {
     const descriptions = {
@@ -4901,6 +5033,7 @@ function FurnitureCustomizerPanel({ products, draft, setDraft, isApplying, valid
     const [analyzing, setAnalyzing] = useState(false);
     const [aiSuggestionsOpen, setAiSuggestionsOpen] = useState(false);
     const [productImageErrors, setProductImageErrors] = useState(() => new Set());
+    const [lightboxImage, setLightboxImage] = useState(null);
     const roomPlannerSuggestions = useMemo(() => {
         if (!roomPlannerRecommendations)
             return null;
@@ -5033,19 +5166,19 @@ function FurnitureCustomizerPanel({ products, draft, setDraft, isApplying, valid
                                                         heightIn: getProductCustomization(nextProduct).dimensions.height?.default,
                                                         selectedAddOns: [],
                                                     });
-                                                }, disabled: isApplying, className: "w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 mb-6 disabled:opacity-60", children: products.map((p) => (jsxRuntimeExports.jsx("option", { value: p.id, children: p.name }, p.id))) }), jsxRuntimeExports.jsx("div", { className: "aspect-square bg-purple-50 rounded-lg mb-6 flex flex-col items-center justify-center border border-purple-200 text-center px-4 overflow-hidden", children: selectedProduct && getProductImageUrl$1(selectedProduct) && !productImageErrors.has(selectedProduct.id) ? (jsxRuntimeExports.jsx("img", { src: getProductImageUrl$1(selectedProduct), alt: selectedProduct.name, className: "h-full w-full object-cover", onError: () => setProductImageErrors((prev) => {
-                                                        const next = new Set(prev);
-                                                        next.add(selectedProduct.id);
-                                                        return next;
-                                                    }) })) : (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsx(Layers, { className: "w-12 h-12 text-purple-400 mb-2" }), jsxRuntimeExports.jsx("p", { className: "text-sm text-purple-600 font-medium", children: selectedProduct?.customizer.thumbnailLabel ?? 'Sectional' }), jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500", children: "Instantly updates with your selections" })] })) }), jsxRuntimeExports.jsxs("div", { className: "space-y-3 text-sm border-t border-gray-200 pt-4", children: [jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-gray-600", children: [jsxRuntimeExports.jsx("span", { children: "Base Price:" }), jsxRuntimeExports.jsx("span", { className: "font-medium text-gray-900", children: price.base > 0 ? `$${price.base.toLocaleString()}` : 'Quote required' })] }), jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-gray-600", children: [jsxRuntimeExports.jsx("span", { children: "Base Size:" }), jsxRuntimeExports.jsxs("span", { className: "font-medium text-gray-900", children: [selectedProduct?.dimensions.width, selectedProduct?.dimensions.unit, " W"] })] }), jsxRuntimeExports.jsxs("div", { className: "text-gray-600", children: [jsxRuntimeExports.jsx("span", { className: "block mb-1", children: "Materials:" }), jsxRuntimeExports.jsx("span", { className: "font-medium text-gray-900", children: selectedProduct?.materials.join(', ') || 'Custom' })] }), jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-gray-600", children: [jsxRuntimeExports.jsx("span", { children: "Customizations:" }), jsxRuntimeExports.jsxs("span", { className: "font-medium text-purple-600", children: ["+$", price.customizations.toLocaleString()] })] }), jsxRuntimeExports.jsxs("div", { className: "border-t border-gray-200 pt-3 flex justify-between", children: [jsxRuntimeExports.jsx("span", { className: "font-bold text-gray-900", children: "Total:" }), jsxRuntimeExports.jsx("span", { className: "font-bold text-lg text-gray-900", children: price.quoteRequired ? 'Quote required' : `$${price.total.toLocaleString()}` })] })] }), jsxRuntimeExports.jsxs("div", { className: "mt-6 grid grid-cols-3 gap-2", children: [jsxRuntimeExports.jsx("button", { type: "button", onClick: onSaveConfig, disabled: isApplying, className: "px-3 py-2 border border-gray-200 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gray-50 transition disabled:opacity-50", children: "Save" }), jsxRuntimeExports.jsxs("button", { type: "button", onClick: onShareLink, disabled: isApplying, className: "px-3 py-2 border border-gray-200 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gray-50 transition disabled:opacity-50 inline-flex items-center justify-center gap-2", children: [jsxRuntimeExports.jsx(Link2, { className: "w-4 h-4" }), "Share"] }), jsxRuntimeExports.jsxs("button", { type: "button", onClick: onExportPdf, disabled: isApplying, className: "px-3 py-2 border border-gray-200 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gray-50 transition disabled:opacity-50 inline-flex items-center justify-center gap-2", children: [jsxRuntimeExports.jsx(FileDown, { className: "w-4 h-4" }), "PDF"] })] })] }) }), jsxRuntimeExports.jsx("div", { className: "self-stretch lg:col-start-4 lg:col-span-4 lg:row-start-1", children: jsxRuntimeExports.jsxs("div", { className: "bg-white rounded-2xl border border-gray-200 p-6 shadow-lg h-full", children: [jsxRuntimeExports.jsxs("h3", { className: "text-lg font-bold text-gray-900 mb-6 flex items-center gap-2", children: [jsxRuntimeExports.jsx(Palette, { className: "w-5 h-5 text-purple-600" }), "Customization Options"] }), jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-gray-900 mb-3", children: "Color" }), colorSwatches.length > 0 ? (jsxRuntimeExports.jsx("div", { className: "flex flex-wrap gap-2", children: colorSwatches.map((color) => {
+                                                }, disabled: isApplying, className: "w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 mb-6 disabled:opacity-60", children: products.map((p) => (jsxRuntimeExports.jsx("option", { value: p.id, children: p.name }, p.id))) }), jsxRuntimeExports.jsx("div", { className: "relative aspect-square bg-purple-50 rounded-lg mb-6 flex flex-col items-center justify-center border border-purple-200 text-center px-4 overflow-hidden", children: selectedProduct && getProductImageUrl$1(selectedProduct) && !productImageErrors.has(selectedProduct.id) ? (jsxRuntimeExports.jsxs("button", { type: "button", onClick: () => setLightboxImage(getProductImageUrl$1(selectedProduct) ?? null), className: "group relative h-full w-full cursor-zoom-in", "aria-label": `View full-size photo of ${selectedProduct.name}`, children: [jsxRuntimeExports.jsx("img", { src: getProductImageUrl$1(selectedProduct), alt: selectedProduct.name, className: "h-full w-full object-cover", onError: () => setProductImageErrors((prev) => {
+                                                                const next = new Set(prev);
+                                                                next.add(selectedProduct.id);
+                                                                return next;
+                                                            }) }), jsxRuntimeExports.jsx("span", { className: "absolute inset-0 flex items-center justify-center bg-black/0 opacity-0 transition group-hover:bg-black/20 group-hover:opacity-100", children: jsxRuntimeExports.jsx(Maximize2, { className: "h-6 w-6 text-white drop-shadow" }) })] })) : (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsx(Layers, { className: "w-12 h-12 text-purple-400 mb-2" }), jsxRuntimeExports.jsx("p", { className: "text-sm text-purple-600 font-medium", children: selectedProduct?.customizer.thumbnailLabel ?? 'Sectional' }), jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500", children: "Instantly updates with your selections" })] })) }), jsxRuntimeExports.jsxs("div", { className: "space-y-3 text-sm border-t border-gray-200 pt-4", children: [jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-gray-600", children: [jsxRuntimeExports.jsx("span", { children: "Base Price:" }), jsxRuntimeExports.jsx("span", { className: "font-medium text-gray-900", children: price.base > 0 ? `$${price.base.toLocaleString()}` : 'Quote required' })] }), jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-gray-600", children: [jsxRuntimeExports.jsx("span", { children: "Base Size:" }), jsxRuntimeExports.jsxs("span", { className: "font-medium text-gray-900", children: [selectedProduct?.dimensions.width, selectedProduct?.dimensions.unit, " W"] })] }), jsxRuntimeExports.jsxs("div", { className: "text-gray-600", children: [jsxRuntimeExports.jsx("span", { className: "block mb-1", children: "Materials:" }), jsxRuntimeExports.jsx("span", { className: "font-medium text-gray-900", children: selectedProduct?.materials.join(', ') || 'Custom' })] }), jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-gray-600", children: [jsxRuntimeExports.jsx("span", { children: "Customizations:" }), jsxRuntimeExports.jsxs("span", { className: "font-medium text-purple-600", children: ["+$", price.customizations.toLocaleString()] })] }), jsxRuntimeExports.jsxs("div", { className: "border-t border-gray-200 pt-3 flex justify-between", children: [jsxRuntimeExports.jsx("span", { className: "font-bold text-gray-900", children: "Total:" }), jsxRuntimeExports.jsx("span", { className: "font-bold text-lg text-gray-900", children: price.quoteRequired ? 'Quote required' : `$${price.total.toLocaleString()}` })] })] }), jsxRuntimeExports.jsxs("div", { className: "mt-6 grid grid-cols-3 gap-2", children: [jsxRuntimeExports.jsx("button", { type: "button", onClick: onSaveConfig, disabled: isApplying, className: "px-3 py-2 border border-gray-200 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gray-50 transition disabled:opacity-50", children: "Save" }), jsxRuntimeExports.jsxs("button", { type: "button", onClick: onShareLink, disabled: isApplying, className: "px-3 py-2 border border-gray-200 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gray-50 transition disabled:opacity-50 inline-flex items-center justify-center gap-2", children: [jsxRuntimeExports.jsx(Link2, { className: "w-4 h-4" }), "Share"] }), jsxRuntimeExports.jsxs("button", { type: "button", onClick: onExportPdf, disabled: isApplying, className: "px-3 py-2 border border-gray-200 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gray-50 transition disabled:opacity-50 inline-flex items-center justify-center gap-2", children: [jsxRuntimeExports.jsx(FileDown, { className: "w-4 h-4" }), "PDF"] })] })] }) }), jsxRuntimeExports.jsx("div", { className: "self-stretch lg:col-start-4 lg:col-span-4 lg:row-start-1", children: jsxRuntimeExports.jsxs("div", { className: "bg-white rounded-2xl border border-gray-200 p-6 shadow-lg h-full", children: [jsxRuntimeExports.jsxs("h3", { className: "text-lg font-bold text-gray-900 mb-6 flex items-center gap-2", children: [jsxRuntimeExports.jsx(Palette, { className: "w-5 h-5 text-purple-600" }), "Customization Options"] }), jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-gray-900 mb-3", children: "Color" }), colorSwatches.length > 0 ? (jsxRuntimeExports.jsx("div", { className: "flex flex-wrap gap-2", children: colorSwatches.map((color) => {
                                                             const isSelected = draft.fabricColor.toLowerCase() === color.hex.toLowerCase();
                                                             return (jsxRuntimeExports.jsxs("button", { type: "button", onClick: () => setDraft({ ...draft, fabricColor: color.hex, selectedColor: color.name }), disabled: isApplying, className: [
-                                                                    'flex items-center gap-2 px-3 py-2 rounded-full border-2 text-sm transition-all',
+                                                                    'flex items-center gap-2 px-3 py-2 rounded-full border-2 text-sm text-gray-900 transition-all',
                                                                     isSelected
                                                                         ? 'border-blue-500 bg-blue-50'
                                                                         : 'border-gray-200 hover:border-gray-300',
                                                                     isApplying ? 'opacity-60 cursor-not-allowed' : '',
-                                                                ].join(' '), "aria-label": `Select color ${color.name}`, title: color.name, children: [jsxRuntimeExports.jsx("div", { className: "w-5 h-5 rounded-full border border-gray-200", style: { backgroundColor: color.hex } }), jsxRuntimeExports.jsx("span", { children: color.name }), formatModifierLabel(color.price) && (jsxRuntimeExports.jsx("span", { className: "text-xs font-semibold text-gray-500", children: formatModifierLabel(color.price) }))] }, color.name));
+                                                                ].join(' '), "aria-label": `Select color ${color.name}`, title: color.name, children: [jsxRuntimeExports.jsx("div", { className: "w-5 h-5 rounded-full border border-gray-200", style: { backgroundColor: color.hex } }), jsxRuntimeExports.jsx("span", { className: "text-gray-900", children: color.name }), formatModifierLabel(color.price) && (jsxRuntimeExports.jsx("span", { className: "text-xs font-semibold text-gray-500", children: formatModifierLabel(color.price) }))] }, color.name));
                                                         }) })) : (jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-400", children: "No colors available for this product" }))] }), jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-gray-900 mb-3", children: "Material" }), materialOptions.length > 0 ? (jsxRuntimeExports.jsx("div", { className: "space-y-2", children: materialOptions.map((m) => {
                                                             const isSelected = draft.materialId === m.id;
                                                             return (jsxRuntimeExports.jsxs("button", { type: "button", onClick: () => setDraft({ ...draft, materialId: m.id, selectedMaterial: m.name }), disabled: isApplying, className: [
@@ -5105,7 +5238,7 @@ function FurnitureCustomizerPanel({ products, draft, setDraft, isApplying, valid
                                                                 ? 'bg-green-100 text-green-700'
                                                                 : rec.type === 'customization'
                                                                     ? 'bg-blue-100 text-blue-700'
-                                                                    : 'bg-orange-100 text-orange-700'}`, children: rec.type }), jsxRuntimeExports.jsx("p", { className: "text-sm font-medium text-gray-900 mt-1.5", children: rec.suggestion }), jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500 mt-0.5", children: getShortReason(rec.reason) })] }, i))) }), hasMoreSuggestions && (jsxRuntimeExports.jsx("button", { type: "button", onClick: handleViewFullRoomAnalysis, className: "w-full rounded-lg border border-blue-200 bg-blue-50 px-3 py-2 text-sm font-medium text-blue-700 transition hover:bg-blue-100", children: "View full room analysis" })), aiSuggestions.warning && (jsxRuntimeExports.jsx("div", { className: "bg-yellow-50 border border-yellow-200 rounded-lg p-2.5", children: jsxRuntimeExports.jsxs("p", { className: "text-xs text-yellow-800", children: ["\u26A0\uFE0F ", aiSuggestions.warning] }) })), roomPlannerPhoto && (jsxRuntimeExports.jsx("button", { onClick: handleAnalyzeWithRoomPlannerPhoto, className: "w-full text-sm text-blue-600 hover:underline text-center mt-2", children: "Re-analyze with updated details" }))] }))] }) })] }))] }));
+                                                                    : 'bg-orange-100 text-orange-700'}`, children: rec.type }), jsxRuntimeExports.jsx("p", { className: "text-sm font-medium text-gray-900 mt-1.5", children: rec.suggestion }), jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500 mt-0.5", children: getShortReason(rec.reason) })] }, i))) }), hasMoreSuggestions && (jsxRuntimeExports.jsx("button", { type: "button", onClick: handleViewFullRoomAnalysis, className: "w-full rounded-lg border border-blue-200 bg-blue-50 px-3 py-2 text-sm font-medium text-blue-700 transition hover:bg-blue-100", children: "View full room analysis" })), aiSuggestions.warning && (jsxRuntimeExports.jsx("div", { className: "bg-yellow-50 border border-yellow-200 rounded-lg p-2.5", children: jsxRuntimeExports.jsxs("p", { className: "text-xs text-yellow-800", children: ["\u26A0\uFE0F ", aiSuggestions.warning] }) })), roomPlannerPhoto && (jsxRuntimeExports.jsx("button", { onClick: handleAnalyzeWithRoomPlannerPhoto, className: "w-full text-sm text-blue-600 hover:underline text-center mt-2", children: "Re-analyze with updated details" }))] }))] }) })] })), lightboxImage && (jsxRuntimeExports.jsx(ImageLightbox, { src: lightboxImage, alt: selectedProduct?.name, onClose: () => setLightboxImage(null) }))] }));
 }
 
 const TOAST_STYLES = {
@@ -5153,11 +5286,11 @@ const getCustomizationForProduct = (product) => {
     const productMaterialNames = product.materials
         .filter((name) => allowDemoFallback || name.toLowerCase() !== 'custom');
     const colors = (colorNames.length > 0 ? colorNames : productColorNames)
-        .map((name, index) => {
+        .map((name) => {
         const existing = product.colors.find((color) => color.name.toLowerCase() === name.toLowerCase());
         const pricedColor = pricedColors.find((option) => option.name.toLowerCase() === name.toLowerCase());
         return {
-            ...(existing ?? { name, hex: product.colors[index]?.hex ?? '#E5E7EB', available: true }),
+            ...(existing ?? { name, hex: getColorHex(name), available: true }),
             price: pricedColor?.price,
         };
     })
@@ -5241,7 +5374,7 @@ const calculateDimensionAdjustment = (selected, dimension) => {
         quoteRequired: false,
     };
 };
-function FurnitureCustomizerWidget({ config = {}, onNavigateToRoomPlanner, selectedProduct: sharedSelectedProduct, onSelectedProductChange, }) {
+const FurnitureCustomizerWidget = forwardRef(function FurnitureCustomizerWidget({ config = {}, onNavigateToRoomPlanner, selectedProduct: sharedSelectedProduct, onSelectedProductChange, onQuoteSubmitted }, ref) {
     const mergedConfig = useMemo(() => mergeConfig(config), [config]);
     const apiClient = useMemo(() => new ApiClient(mergedConfig), [mergedConfig]);
     const storage = useMemo(() => new Storage(mergedConfig.storageKey), [mergedConfig.storageKey]);
@@ -5542,115 +5675,94 @@ function FurnitureCustomizerWidget({ config = {}, onNavigateToRoomPlanner, selec
             showToast('error', "Couldn't save. Try again.");
         }
     }, [analyticsContext, configStorageKey, draft, price, selectedProduct, showToast]);
-    const encodeSharePayload = useCallback((payload) => {
-        const json = JSON.stringify(payload);
-        const b64 = typeof window !== 'undefined' ? window.btoa(unescape(encodeURIComponent(json))) : '';
-        return b64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/g, '');
-    }, []);
-    const shareLink = useMemo(() => {
-        if (typeof window === 'undefined')
-            return '';
-        const url = new URL(window.location.href);
-        url.searchParams.set('modlyConfig', encodeSharePayload({ v: 1, productId: selectedProduct.id, draft, total: price.total }));
-        return url.toString();
-    }, [draft, encodeSharePayload, price.total, selectedProduct.id]);
-    const copyShareLink = useCallback(async () => {
-        try {
-            if (typeof window === 'undefined')
-                return;
-            if (navigator.clipboard?.writeText) {
-                await navigator.clipboard.writeText(shareLink);
-            }
-            else {
-                const textarea = document.createElement('textarea');
-                textarea.value = shareLink;
-                document.body.appendChild(textarea);
-                textarea.select();
-                document.execCommand('copy');
-                textarea.remove();
-            }
-            showToast('success', 'Link copied to clipboard');
-        }
-        catch (copyError) {
-            console.error('Failed to copy share link:', copyError);
-            showToast('error', "Couldn't copy link. Try again.");
-        }
-    }, [shareLink, showToast]);
+    // The real product page on the merchant's own store - the thing worth
+    // sharing, as opposed to the widget's own embed URL. Falls back to the
+    // current page only if the product has no real URL of its own.
+    const shareProductLink = useMemo(() => {
+        const realUrl = getRealProductUrl(selectedProduct);
+        if (realUrl)
+            return realUrl;
+        return typeof window !== 'undefined' ? window.location.href : '';
+    }, [selectedProduct]);
+    const buildCustomizationPdfBlob = useCallback(() => {
+        const customization = getCustomizationForProduct(selectedProduct);
+        const selectedColor = getSelectedColorOption(selectedProduct, draft);
+        const selectedMaterial = customization.materials.find((material) => draft.selectedMaterial
+            ? material.name.toLowerCase() === draft.selectedMaterial.toLowerCase()
+            : material.id === draft.materialId);
+        const selectedColorName = draft.selectedColor ??
+            (customization.colors.length > 0
+                ? getColorName(selectedProduct, draft.fabricColor)
+                : undefined);
+        const selectedMaterialName = draft.selectedMaterial ??
+            (customization.materials.length > 0
+                ? getMaterialOption(selectedProduct, draft.materialId)?.name
+                : undefined);
+        const selectedAddOns = customization.addOns.filter((addOn) => (draft.selectedAddOns ?? []).includes(addOn.name));
+        const generatedAt = new Date();
+        const blob = generateCustomizationPdf({
+            brandName: mergedConfig.widgetTitle || mergedConfig.storeName || 'ModlyAI',
+            generatedAt,
+            referenceId: savedItem?.id,
+            storeId: selectedProduct.storeId ?? mergedConfig.storeId,
+            widgetId: mergedConfig.widgetId,
+            product: {
+                name: selectedProduct.name,
+                category: selectedProduct.category,
+                productUrl: selectedProduct.productUrl,
+                imageUrl: getProductImageUrl(selectedProduct),
+                basePrice: selectedProduct.basePrice,
+                pricingMode: price.quoteRequired ? 'quote_required' : 'estimated',
+                estimatedTotal: price.quoteRequired ? undefined : price.total,
+            },
+            selectedCustomizations: {
+                color: selectedColorName
+                    ? { label: 'Color', value: selectedColorName, price: selectedColor?.price }
+                    : undefined,
+                material: selectedMaterialName
+                    ? { label: 'Material', value: selectedMaterialName, price: selectedMaterial?.priceDelta }
+                    : undefined,
+                shopifyOptions: getSelectedShopifyOptions(selectedProduct).map((option) => ({
+                    label: option.name,
+                    value: option.value,
+                    price: option.price,
+                })),
+                dimensions: {
+                    length: draft.depthIn,
+                    width: draft.widthIn,
+                    height: draft.heightIn,
+                    unit: customization.dimensions.width?.unit ?? customization.dimensions.length?.unit ?? 'in',
+                },
+                dimensionPriceAdjustments: price.dimensionAdjustments,
+                addOns: selectedAddOns.map((addOn) => ({
+                    label: 'Add-on',
+                    value: addOn.name,
+                    price: addOn.price,
+                })),
+                customerRequestText: draft.customerRequestText,
+            },
+            pricing: {
+                basePrice: price.base,
+                lineItems: price.lineItems.map((lineItem) => ({
+                    label: lineItem.label === 'Dimensions' ? 'Dimension adjustment' : lineItem.label,
+                    amount: lineItem.amount,
+                })),
+                customizationTotal: price.customizations,
+                estimatedTotal: price.quoteRequired ? undefined : price.total,
+                quoteRequired: price.quoteRequired,
+            },
+        });
+        return { blob, filename: createCustomizationPdfFilename(selectedProduct.name, generatedAt) };
+    }, [draft, mergedConfig, price, savedItem?.id, selectedProduct]);
     const exportAsPdf = useCallback(() => {
         if (typeof window === 'undefined')
             return;
         try {
-            const customization = getCustomizationForProduct(selectedProduct);
-            const selectedColor = getSelectedColorOption(selectedProduct, draft);
-            const selectedMaterial = customization.materials.find((material) => draft.selectedMaterial
-                ? material.name.toLowerCase() === draft.selectedMaterial.toLowerCase()
-                : material.id === draft.materialId);
-            const selectedColorName = draft.selectedColor ??
-                (customization.colors.length > 0
-                    ? getColorName(selectedProduct, draft.fabricColor)
-                    : undefined);
-            const selectedMaterialName = draft.selectedMaterial ??
-                (customization.materials.length > 0
-                    ? getMaterialOption(selectedProduct, draft.materialId)?.name
-                    : undefined);
-            const selectedAddOns = customization.addOns.filter((addOn) => (draft.selectedAddOns ?? []).includes(addOn.name));
-            const generatedAt = new Date();
-            const blob = generateCustomizationPdf({
-                brandName: mergedConfig.widgetTitle || mergedConfig.storeName || 'ModlyAI',
-                generatedAt,
-                referenceId: savedItem?.id,
-                storeId: selectedProduct.storeId ?? mergedConfig.storeId,
-                widgetId: mergedConfig.widgetId,
-                product: {
-                    name: selectedProduct.name,
-                    category: selectedProduct.category,
-                    productUrl: selectedProduct.productUrl,
-                    imageUrl: getProductImageUrl(selectedProduct),
-                    basePrice: selectedProduct.basePrice,
-                    pricingMode: price.quoteRequired ? 'quote_required' : 'estimated',
-                    estimatedTotal: price.quoteRequired ? undefined : price.total,
-                },
-                selectedCustomizations: {
-                    color: selectedColorName
-                        ? { label: 'Color', value: selectedColorName, price: selectedColor?.price }
-                        : undefined,
-                    material: selectedMaterialName
-                        ? { label: 'Material', value: selectedMaterialName, price: selectedMaterial?.priceDelta }
-                        : undefined,
-                    shopifyOptions: getSelectedShopifyOptions(selectedProduct).map((option) => ({
-                        label: option.name,
-                        value: option.value,
-                        price: option.price,
-                    })),
-                    dimensions: {
-                        length: draft.depthIn,
-                        width: draft.widthIn,
-                        height: draft.heightIn,
-                        unit: customization.dimensions.width?.unit ?? customization.dimensions.length?.unit ?? 'in',
-                    },
-                    dimensionPriceAdjustments: price.dimensionAdjustments,
-                    addOns: selectedAddOns.map((addOn) => ({
-                        label: 'Add-on',
-                        value: addOn.name,
-                        price: addOn.price,
-                    })),
-                    customerRequestText: draft.customerRequestText,
-                },
-                pricing: {
-                    basePrice: price.base,
-                    lineItems: price.lineItems.map((lineItem) => ({
-                        label: lineItem.label === 'Dimensions' ? 'Dimension adjustment' : lineItem.label,
-                        amount: lineItem.amount,
-                    })),
-                    customizationTotal: price.customizations,
-                    estimatedTotal: price.quoteRequired ? undefined : price.total,
-                    quoteRequired: price.quoteRequired,
-                },
-            });
+            const { blob, filename } = buildCustomizationPdfBlob();
             const blobUrl = URL.createObjectURL(blob);
             const link = document.createElement('a');
             link.href = blobUrl;
-            link.download = createCustomizationPdfFilename(selectedProduct.name, generatedAt);
+            link.download = filename;
             document.body.appendChild(link);
             link.click();
             link.remove();
@@ -5673,14 +5785,72 @@ function FurnitureCustomizerWidget({ config = {}, onNavigateToRoomPlanner, selec
             console.error('Failed to export customization:', exportError);
             showToast('error', "Couldn't export PDF. Try again.");
         }
-    }, [analyticsContext, draft, mergedConfig, price, savedItem?.id, selectedProduct, showToast]);
-    const handleNavigateToRoomPlanner = () => {
-        if (typeof window !== 'undefined' && savedItem?.id) {
-            // Lets Room Planner scroll to and highlight the item that was just
-            // applied here, instead of leaving the customer to scroll and hunt
-            // for it themselves among possibly several saved customizations.
-            sessionStorage.setItem('modly-highlight-customized-item', savedItem.id);
+    }, [analyticsContext, buildCustomizationPdfBlob, price, selectedProduct, showToast]);
+    // "Share" used to copy a link back to whatever page the widget happened to
+    // be embedded on, with the customization encoded into a `modlyConfig` query
+    // param that nothing ever read back - opening the link did nothing special.
+    // This now actually shares something useful: the real product page link,
+    // and - where the platform supports sharing files (mainly mobile) - the
+    // same customization PDF as the Export PDF button generates, attached
+    // directly to the native share sheet.
+    const handleShare = useCallback(async () => {
+        if (typeof window === 'undefined')
+            return;
+        let pdfFile;
+        try {
+            const { blob, filename } = buildCustomizationPdfBlob();
+            pdfFile = new File([blob], filename, { type: 'application/pdf' });
         }
+        catch (pdfError) {
+            console.error('Failed to prepare PDF for sharing:', pdfError);
+        }
+        const shareTitle = selectedProduct.name;
+        const shareText = `Check out my ${selectedProduct.name} customization${price.quoteRequired ? '' : ` - est. $${price.total.toLocaleString()}`}`;
+        const nav = navigator;
+        if (typeof nav.share === 'function') {
+            const canShareFile = Boolean(pdfFile && nav.canShare?.({ files: [pdfFile] }));
+            try {
+                await nav.share(canShareFile
+                    ? { title: shareTitle, text: shareText, files: [pdfFile] }
+                    : { title: shareTitle, text: shareText, url: shareProductLink });
+                trackWidgetEvent({
+                    ...analyticsContext,
+                    type: 'design_shared',
+                    productId: selectedProduct.id,
+                    productName: selectedProduct.name,
+                    metadata: { source: 'customizer', sharedPdf: canShareFile },
+                });
+                return;
+            }
+            catch (shareError) {
+                // AbortError just means the customer closed the native share sheet -
+                // not a failure worth falling back or showing an error for.
+                if (shareError?.name === 'AbortError')
+                    return;
+                console.error('Native share failed, falling back to clipboard:', shareError);
+            }
+        }
+        try {
+            if (navigator.clipboard?.writeText) {
+                await navigator.clipboard.writeText(shareProductLink);
+            }
+            else {
+                const textarea = document.createElement('textarea');
+                textarea.value = shareProductLink;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                textarea.remove();
+            }
+            showToast('success', 'Product link copied to clipboard');
+        }
+        catch (copyError) {
+            console.error('Failed to copy share link:', copyError);
+            showToast('error', "Couldn't share. Try again.");
+        }
+    }, [analyticsContext, buildCustomizationPdfBlob, price, selectedProduct, shareProductLink, showToast]);
+    const handleNavigateToRoomPlanner = () => {
+        saveDraftAndHighlight();
         if (onNavigateToRoomPlanner) {
             onNavigateToRoomPlanner();
         }
@@ -5812,6 +5982,21 @@ function FurnitureCustomizerWidget({ config = {}, onNavigateToRoomPlanner, selec
         setSavedItem(saved);
         return saved;
     }, [buildCustomizedFurniturePayload, storage]);
+    const saveDraftAndHighlight = useCallback(() => {
+        // savedItem is only set once the customer has explicitly applied/saved
+        // this draft - if they navigate to Room Planner without doing that
+        // first, save it now so there's always something to land on and
+        // highlight in My Customized Furniture, instead of just switching tabs
+        // with nothing to show for it.
+        const itemToHighlight = savedItem ?? saveCustomizedFurnitureForCurrentDraft();
+        if (typeof window !== 'undefined' && itemToHighlight?.id) {
+            // Lets Room Planner scroll to and highlight the item that was just
+            // applied here, instead of leaving the customer to scroll and hunt
+            // for it themselves among possibly several saved customizations.
+            sessionStorage.setItem('modly-highlight-customized-item', itemToHighlight.id);
+        }
+    }, [savedItem, saveCustomizedFurnitureForCurrentDraft]);
+    useImperativeHandle(ref, () => ({ saveDraftAndHighlight }), [saveDraftAndHighlight]);
     const handleCustomize = useCallback(async (customizationConfig) => {
         if (!selectedProduct?.id) {
             showToast('error', 'Please select a product first.');
@@ -5944,14 +6129,16 @@ function FurnitureCustomizerWidget({ config = {}, onNavigateToRoomPlanner, selec
         try {
             const response = await apiClient.submitQuoteRequest(quoteRequest);
             showToast('success', 'Quote sent — the store will follow up soon');
+            onQuoteSubmitted?.({ quoteRequest, response });
             return response;
         }
         catch (quoteError) {
             throw quoteError;
         }
     };
-    return (jsxRuntimeExports.jsxs(WidgetProvider, { apiClient: apiClient, storage: storage, config: mergedConfig, children: [jsxRuntimeExports.jsxs("div", { className: "furniture-widget-customizer min-h-screen bg-white", children: [jsxRuntimeExports.jsx(FurnitureCustomizerPanel, { products: availableProducts, draft: draft, setDraft: setDraftWithHistory, isApplying: isLoading, validationErrors: validationErrors, price: price, onApply: handleApply, onUndo: handleUndo, onRedo: handleRedo, canUndo: canUndo, canRedo: canRedo, onSaveConfig: saveDraftConfig, onShareLink: copyShareLink, onExportPdf: exportAsPdf, onViewFullRoomAnalysis: handleNavigateToRoomPlanner, onSuggestionsError: (message) => showToast('error', message), onRequestQuote: handleFinalize, showRequestQuote: enabledActions.requestQuote, primaryColor: primaryColor }), jsxRuntimeExports.jsx("section", { className: "py-8 bg-stone-50/70 border-t border-stone-200", children: jsxRuntimeExports.jsx("div", { className: "max-w-5xl mx-auto px-4", children: jsxRuntimeExports.jsxs("div", { className: "rounded-2xl border border-stone-200 bg-[#fffaf4] p-5 shadow-sm", children: [jsxRuntimeExports.jsxs("div", { className: "mb-5 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h2", { className: "text-xl font-bold text-gray-950", children: "Love Your Custom Design?" }), jsxRuntimeExports.jsx("p", { className: "mt-1 text-sm text-gray-600", children: "Save, share, export, or send this configuration to the store." })] }), jsxRuntimeExports.jsxs("p", { className: "text-sm font-semibold text-gray-900", children: ["Estimated total: ", price.quoteRequired ? 'Quote required' : `$${price.total.toLocaleString()}`] })] }), jsxRuntimeExports.jsxs("div", { className: "grid gap-3 sm:grid-cols-3", children: [jsxRuntimeExports.jsx("button", { type: "button", onClick: saveDraftConfig, className: "min-h-12 rounded-lg border border-stone-300 bg-white px-5 py-3 text-sm font-semibold text-gray-800 transition hover:bg-stone-50", children: "Save Configuration" }), jsxRuntimeExports.jsx("button", { type: "button", onClick: copyShareLink, className: "min-h-12 rounded-lg border border-stone-300 bg-white px-5 py-3 text-sm font-semibold text-gray-800 transition hover:bg-stone-50", children: "Share Design" }), jsxRuntimeExports.jsx("button", { type: "button", onClick: exportAsPdf, className: "min-h-12 rounded-lg border border-stone-300 bg-white px-5 py-3 text-sm font-semibold text-gray-800 transition hover:bg-stone-50", children: "Export PDF" })] })] }) }) })] }), jsxRuntimeExports.jsx(FinalizeQuoteModal, { isOpen: enabledActions.requestQuote && showFinalizeModal, onClose: () => setShowFinalizeModal(false), onProceed: handleProceedToQuote, item: savedItem }), jsxRuntimeExports.jsx(QuoteRequestForm, { isOpen: enabledActions.requestQuote && showQuoteForm, onClose: () => setShowQuoteForm(false), onSubmit: handleQuoteSubmit, item: savedItem }), jsxRuntimeExports.jsx(ActionToast, { toast: toast, onDismiss: dismissToast })] }));
-}
+    return (jsxRuntimeExports.jsxs(WidgetProvider, { apiClient: apiClient, storage: storage, config: mergedConfig, children: [jsxRuntimeExports.jsxs("div", { className: "furniture-widget-customizer min-h-screen bg-white", children: [jsxRuntimeExports.jsx(FurnitureCustomizerPanel, { products: availableProducts, draft: draft, setDraft: setDraftWithHistory, isApplying: isLoading, validationErrors: validationErrors, price: price, onApply: handleApply, onUndo: handleUndo, onRedo: handleRedo, canUndo: canUndo, canRedo: canRedo, onSaveConfig: saveDraftConfig, onShareLink: handleShare, onExportPdf: exportAsPdf, onViewFullRoomAnalysis: handleNavigateToRoomPlanner, onSuggestionsError: (message) => showToast('error', message), onRequestQuote: handleFinalize, showRequestQuote: enabledActions.requestQuote, primaryColor: primaryColor }), jsxRuntimeExports.jsx("section", { className: "py-8 bg-stone-50/70 border-t border-stone-200", children: jsxRuntimeExports.jsx("div", { className: "max-w-5xl mx-auto px-4", children: jsxRuntimeExports.jsxs("div", { className: "rounded-2xl border border-stone-200 bg-[#fffaf4] p-5 shadow-sm", children: [jsxRuntimeExports.jsxs("div", { className: "mb-5 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between", children: [jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h2", { className: "text-xl font-bold text-gray-950", children: "Love Your Custom Design?" }), jsxRuntimeExports.jsx("p", { className: "mt-1 text-sm text-gray-600", children: "Save, share, export, or send this configuration to the store." })] }), jsxRuntimeExports.jsxs("p", { className: "text-sm font-semibold text-gray-900", children: ["Estimated total: ", price.quoteRequired ? 'Quote required' : `$${price.total.toLocaleString()}`] })] }), jsxRuntimeExports.jsxs("div", { className: "grid gap-3 sm:grid-cols-3", children: [jsxRuntimeExports.jsx("button", { type: "button", onClick: saveDraftConfig, className: "min-h-12 rounded-lg border border-stone-300 bg-white px-5 py-3 text-sm font-semibold text-gray-800 transition hover:bg-stone-50", children: "Save Configuration" }), jsxRuntimeExports.jsx("button", { type: "button", onClick: handleShare, className: "min-h-12 rounded-lg border border-stone-300 bg-white px-5 py-3 text-sm font-semibold text-gray-800 transition hover:bg-stone-50", children: "Share Design" }), jsxRuntimeExports.jsx("button", { type: "button", onClick: exportAsPdf, className: "min-h-12 rounded-lg border border-stone-300 bg-white px-5 py-3 text-sm font-semibold text-gray-800 transition hover:bg-stone-50", children: "Export PDF" })] })] }) }) })] }), jsxRuntimeExports.jsx(FinalizeQuoteModal, { isOpen: enabledActions.requestQuote && showFinalizeModal, onClose: () => setShowFinalizeModal(false), onProceed: handleProceedToQuote, item: savedItem }), jsxRuntimeExports.jsx(QuoteRequestForm, { isOpen: enabledActions.requestQuote && showQuoteForm, onClose: () => setShowQuoteForm(false), onSubmit: handleQuoteSubmit, item: savedItem }), jsxRuntimeExports.jsx(ActionToast, { toast: toast, onDismiss: dismissToast })] }));
+});
+FurnitureCustomizerWidget.displayName = 'FurnitureCustomizerWidget';
 
 function MessageBubble({ message, onCustomizeItem, onAddToRoomPlanner, onViewInCatalog, enabledActions, primaryColor, messageTextColor, analyticsContext }) {
     const isUser = message.role === 'user';
@@ -5997,11 +6184,11 @@ function RecommendationCard({ recommendation, onCustomize, onAddToRoomPlanner, o
                                 : ''] })), recommendation.reasoning && (jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500 mb-2 leading-relaxed", children: recommendation.reasoning })), jsxRuntimeExports.jsxs("div", { className: "mt-2.5 flex gap-2", children: [enabledActions.viewInCatalog && catalogUrl ? (jsxRuntimeExports.jsx("button", { type: "button", onClick: handleViewInCatalogClick, className: "flex-1 py-1.5 px-3 bg-gray-100 text-gray-700 text-xs font-medium rounded-full hover:bg-gray-200 transition-colors flex items-center justify-center gap-1", children: "View" })) : enabledActions.viewInCatalog ? (jsxRuntimeExports.jsx("button", { type: "button", disabled: true, className: "flex-1 py-1.5 px-3 bg-gray-100 text-gray-400 text-xs font-medium rounded-full cursor-not-allowed flex items-center justify-center gap-1", children: "Catalog link unavailable" })) : null, enabledActions.customize && onCustomize && (jsxRuntimeExports.jsx("button", { type: "button", onClick: () => onCustomize(item), className: "flex-1 py-1.5 px-3 text-xs font-medium rounded-full transition-colors flex items-center justify-center gap-1", style: { backgroundColor: accentColor, color: accentTextColor }, children: "Customize" }))] })] })] }));
 }
 
-function ConversationInterface({ aiService, onCustomizeItem, onAddToRoomPlanner, onOpenRoomPlanner, onOpenCustomizer, onShowCatalog, onViewInCatalog, enabledActions, primaryColor, messageTextColor, analyticsContext, }) {
+function ConversationInterface({ aiService, onCustomizeItem, onAddToRoomPlanner, onOpenRoomPlanner, onOpenCustomizer, onShowCatalog, onViewInCatalog, enabledActions, primaryColor, messageTextColor, analyticsContext, suggestedPrompts, }) {
     const [input, setInput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [messages, setMessages] = useState([]);
-    const messagesEndRef = useRef(null);
+    const messagesContainerRef = useRef(null);
     const inputRef = useRef(null);
     const fallbackMessage = "Sorry, I couldn't reach ModlyAI right now. Please try again.";
     const primaryTextColor = primaryColor ? getReadableTextColor(primaryColor) : undefined;
@@ -6009,14 +6196,22 @@ function ConversationInterface({ aiService, onCustomizeItem, onAddToRoomPlanner,
     useEffect(() => {
         setMessages(aiService.getMessages());
     }, [aiService]);
-    // Scroll to bottom when messages change
+    // Scroll to bottom when messages change. Setting scrollTop directly (rather
+    // than Element.scrollIntoView, which walks and adjusts every scrollable
+    // ancestor up to the document to center the target) keeps this contained
+    // to the message list itself instead of dragging the host page's own
+    // scroll position along with it.
     useEffect(() => {
-        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+        const container = messagesContainerRef.current;
+        if (container) {
+            container.scrollTop = container.scrollHeight;
+        }
     }, [messages]);
-    const handleSend = async () => {
-        if (!input.trim() || isLoading)
+    const handleSend = async (overrideText) => {
+        const textToSend = overrideText ?? input;
+        if (!textToSend.trim() || isLoading)
             return;
-        const userMessage = input.trim();
+        const userMessage = textToSend.trim();
         const hasExistingUserMessage = messages.some((message) => message.role === 'user');
         setInput('');
         setIsLoading(true);
@@ -6116,7 +6311,7 @@ function ConversationInterface({ aiService, onCustomizeItem, onAddToRoomPlanner,
             handleSend();
         }
     };
-    return (jsxRuntimeExports.jsxs("div", { className: "flex flex-col h-full bg-white", children: [jsxRuntimeExports.jsxs("div", { className: "flex-1 overflow-y-auto p-4 space-y-2", children: [messages.length === 0 ? (jsxRuntimeExports.jsx("div", { className: "text-center text-gray-500 py-8", children: jsxRuntimeExports.jsx("p", { children: "Start a conversation to get help with your furniture needs." }) })) : (messages.map((message) => (jsxRuntimeExports.jsx(MessageBubble, { message: message, onCustomizeItem: onCustomizeItem, onAddToRoomPlanner: onAddToRoomPlanner, onViewInCatalog: onViewInCatalog, enabledActions: enabledActions, primaryColor: primaryColor, messageTextColor: messageTextColor, analyticsContext: analyticsContext }, message.id)))), jsxRuntimeExports.jsx("div", { ref: messagesEndRef })] }), jsxRuntimeExports.jsxs("div", { className: "border-t border-gray-200 p-4 bg-gray-50", children: [jsxRuntimeExports.jsxs("div", { className: "flex gap-2", children: [jsxRuntimeExports.jsx("textarea", { ref: inputRef, value: input, onChange: (e) => setInput(e.target.value), onKeyDown: handleKeyPress, placeholder: "Type your message...", className: "flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none", rows: 1, style: { minHeight: '40px', maxHeight: '120px' }, disabled: isLoading }), jsxRuntimeExports.jsx("button", { type: "button", onClick: handleSend, disabled: !input.trim() || isLoading, className: "px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium", style: primaryColor ? { backgroundColor: primaryColor, color: primaryTextColor } : undefined, children: isLoading ? (jsxRuntimeExports.jsxs("svg", { className: "animate-spin h-5 w-5", xmlns: "http://www.w3.org/2000/svg", fill: "none", viewBox: "0 0 24 24", children: [jsxRuntimeExports.jsx("circle", { className: "opacity-25", cx: "12", cy: "12", r: "10", stroke: "currentColor", strokeWidth: "4" }), jsxRuntimeExports.jsx("path", { className: "opacity-75", fill: "currentColor", d: "M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" })] })) : ('Send') })] }), jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500 mt-2 text-center", children: "Press Enter to send, Shift+Enter for new line" })] })] }));
+    return (jsxRuntimeExports.jsxs("div", { className: "flex flex-col h-full bg-white", children: [jsxRuntimeExports.jsx("div", { ref: messagesContainerRef, className: "flex-1 overflow-y-auto p-4 space-y-2", children: messages.length === 0 ? (jsxRuntimeExports.jsx("div", { className: "text-center text-gray-500 py-8", children: jsxRuntimeExports.jsx("p", { children: "Start a conversation to get help with your furniture needs." }) })) : (messages.map((message) => (jsxRuntimeExports.jsx(MessageBubble, { message: message, onCustomizeItem: onCustomizeItem, onAddToRoomPlanner: onAddToRoomPlanner, onViewInCatalog: onViewInCatalog, enabledActions: enabledActions, primaryColor: primaryColor, messageTextColor: messageTextColor, analyticsContext: analyticsContext }, message.id)))) }), jsxRuntimeExports.jsxs("div", { className: "border-t border-gray-200 p-4 bg-gray-50", children: [suggestedPrompts && suggestedPrompts.length > 0 && !messages.some((m) => m.role === 'user') && !isLoading && (jsxRuntimeExports.jsx("div", { className: "mb-3 flex flex-wrap gap-2", children: suggestedPrompts.map((prompt) => (jsxRuntimeExports.jsx("button", { type: "button", onClick: () => handleSend(prompt), className: "rounded-full border border-gray-300 bg-white px-3 py-1.5 text-xs font-medium text-gray-700 transition hover:bg-gray-100", children: prompt }, prompt))) })), jsxRuntimeExports.jsxs("div", { className: "flex gap-2", children: [jsxRuntimeExports.jsx("textarea", { ref: inputRef, value: input, onChange: (e) => setInput(e.target.value), onKeyDown: handleKeyPress, placeholder: "Type your message...", className: "flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none", rows: 1, style: { minHeight: '40px', maxHeight: '120px' }, disabled: isLoading }), jsxRuntimeExports.jsx("button", { type: "button", onClick: () => handleSend(), disabled: !input.trim() || isLoading, className: "px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium", style: primaryColor ? { backgroundColor: primaryColor, color: primaryTextColor } : undefined, children: isLoading ? (jsxRuntimeExports.jsxs("svg", { className: "animate-spin h-5 w-5", xmlns: "http://www.w3.org/2000/svg", fill: "none", viewBox: "0 0 24 24", children: [jsxRuntimeExports.jsx("circle", { className: "opacity-25", cx: "12", cy: "12", r: "10", stroke: "currentColor", strokeWidth: "4" }), jsxRuntimeExports.jsx("path", { className: "opacity-75", fill: "currentColor", d: "M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" })] })) : ('Send') })] }), jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500 mt-2 text-center", children: "Press Enter to send, Shift+Enter for new line" })] })] }));
 }
 
 /**
@@ -6696,6 +6891,12 @@ function SpecSheetPreview({ specSheet, onClose }) {
                                                 : 'Contact for Pricing' })] }) })] }), specSheet.customerNotes && (jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h4", { className: "text-sm font-semibold text-gray-700 mb-2", children: "Customer Notes" }), jsxRuntimeExports.jsx("div", { className: "bg-gray-50 rounded p-3", children: jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-700 italic", children: specSheet.customerNotes }) })] }))] })] }));
 }
 
+function hasDimensionAdjustment(config) {
+    const adjustments = config.dimensionAdjustments;
+    if (!adjustments)
+        return false;
+    return Object.values(adjustments).some((value) => typeof value === 'number' && value !== 0);
+}
 function SubmitFlowModal({ config, product, apiClient, onSuccess, onClose, }) {
     const [step, setStep] = useState('validate');
     const [flowType, setFlowType] = useState('quote');
@@ -6711,8 +6912,13 @@ function SubmitFlowModal({ config, product, apiClient, onSuccess, onClose, }) {
         // Validate configuration
         const validationResult = validateConfiguration(config);
         setValidation(validationResult);
-        // Determine flow type based on product pricing
-        const requiresQuote = !product?.priceRange || product.stockStatus === 'custom_order' || product.source === 'shopify';
+        // Determine flow type based on product pricing. A custom-built dimension
+        // (not the factory default) can't be added to cart at a fixed catalog price
+        // either, so it also requires a quote.
+        const requiresQuote = !product?.priceRange ||
+            product.stockStatus === 'custom_order' ||
+            product.source === 'shopify' ||
+            hasDimensionAdjustment(config);
         setFlowType(requiresQuote ? 'quote' : 'cart');
         // Generate spec sheet
         const sheet = generateSpecSheet(config, {
@@ -6774,7 +6980,7 @@ function SubmitFlowModal({ config, product, apiClient, onSuccess, onClose, }) {
             const data = await response.json();
             setStep('success');
             setTimeout(() => {
-                onSuccess({ type: 'cart', id: data.cartItemId });
+                onSuccess({ type: 'cart', id: data.cartItemId, specSheet: specSheet ?? undefined });
             }, 1500);
         }
         catch (err) {
@@ -6818,7 +7024,17 @@ function SubmitFlowModal({ config, product, apiClient, onSuccess, onClose, }) {
             });
             setStep('success');
             setTimeout(() => {
-                onSuccess({ type: 'quote', id: response.quoteId });
+                onSuccess({
+                    type: 'quote',
+                    id: response.quoteId,
+                    specSheet: specSheet ?? undefined,
+                    customer: {
+                        name: customerName,
+                        email: customerEmail,
+                        phone: customerPhone || undefined,
+                        notes: customerNotes || undefined,
+                    },
+                });
             }, 1500);
         }
         catch (err) {
@@ -6972,13 +7188,13 @@ class PageContextExtractor {
             if (!context.pageType && context.currentUrl) {
                 const url = new URL(context.currentUrl);
                 const pathname = url.pathname.toLowerCase();
-                if (pathname.includes('/product/') || pathname.includes('/item/')) {
+                if (pathname.includes('/product/') || pathname.includes('/products/') || pathname.includes('/item/')) {
                     context.pageType = 'product';
                 }
                 else if (pathname.includes('/catalog/') || pathname.includes('/shop/')) {
                     context.pageType = 'catalog';
                 }
-                else if (pathname.includes('/category/') || pathname.includes('/collection/')) {
+                else if (pathname.includes('/category/') || pathname.includes('/collection/') || pathname.includes('/collections/')) {
                     context.pageType = 'category';
                 }
                 else if (pathname === '/' || pathname === '/index') {
@@ -7035,18 +7251,17 @@ class PageContextExtractor {
                 callback(newContext);
             }
         });
+        // Deliberately no attributeFilter: a filter built from attributes present
+        // only at observe()-time would miss any data-modly-* attribute added
+        // later (e.g. a client-rendered page setting page context after mount).
+        // The callback above re-derives the full context and diffs it, so extra
+        // invocations from unrelated attribute changes are harmless.
         observer.observe(document.body, {
             attributes: true,
-            attributeFilter: Array.from(document.body.attributes)
-                .map(attr => attr.name)
-                .filter(name => name.startsWith(this.DATA_ATTRIBUTE_PREFIX)),
             subtree: true,
         });
         observer.observe(document.documentElement, {
             attributes: true,
-            attributeFilter: Array.from(document.documentElement.attributes)
-                .map(attr => attr.name)
-                .filter(name => name.startsWith(this.DATA_ATTRIBUTE_PREFIX)),
         });
         return () => {
             clearInterval(intervalId);
@@ -7070,6 +7285,7 @@ class AIService {
             this.stateManager.updateContext({
                 pageType: newContext.pageType,
                 productId: newContext.productId,
+                productName: newContext.productName,
                 category: newContext.category,
                 currentPage: newContext.currentUrl,
             });
@@ -7130,10 +7346,12 @@ class AIService {
             context: {
                 pageType: this.pageContext.pageType,
                 productId: this.pageContext.productId,
+                productName: this.pageContext.productName,
                 category: this.pageContext.category,
                 currentPage: this.pageContext.currentUrl,
             },
             userPreferences: state.userPreferences,
+            catalog: this.config.catalog,
         };
         // Call API
         try {
@@ -7209,11 +7427,30 @@ class AIService {
     }
 }
 
-function FurnitureAIWidget({ config = {}, defaultTab, widgetTitle }) {
+function FurnitureAIWidget({ config = {}, defaultTab, widgetTitle, hideNav, initialProduct, sampleRooms, suggestedPrompts, onQuoteSubmitted, }) {
     const mergedConfig = useMemo(() => mergeConfig(config), [config]);
-    const apiClient = useMemo(() => new ApiClient(mergedConfig), [mergedConfig]);
+    // apiClient/aiService only need rebuilding when something that actually
+    // affects API behavior changes - purely cosmetic fields (colors, theme)
+    // shouldn't tear down and reconstruct the conversation state, page-context
+    // observer, etc. on every render. A host that passes a fresh `config`
+    // object literal on every render (e.g. a theme switcher re-rendering its
+    // parent) would otherwise reset the chat every time a color changes.
+    const serviceConfigKey = JSON.stringify({
+        apiBaseUrl: mergedConfig.apiBaseUrl,
+        storeId: mergedConfig.storeId,
+        widgetId: mergedConfig.widgetId,
+        apiKey: mergedConfig.apiKey,
+        publicApiKey: mergedConfig.publicApiKey,
+        storeDomain: mergedConfig.storeDomain,
+        apiEndpoints: mergedConfig.apiEndpoints,
+        catalog: mergedConfig.catalog,
+        storageKey: mergedConfig.storageKey,
+        welcomeMessage: mergedConfig.welcomeMessage,
+        access: mergedConfig.access,
+    });
+    const apiClient = useMemo(() => new ApiClient(mergedConfig), [serviceConfigKey]);
     const storage = useMemo(() => new Storage(mergedConfig.storageKey), [mergedConfig.storageKey]);
-    const aiService = useMemo(() => new AIService(apiClient, mergedConfig), [apiClient, mergedConfig]);
+    const aiService = useMemo(() => new AIService(apiClient, mergedConfig), [apiClient, serviceConfigKey]);
     const enabledActions = useMemo(() => getEnabledActions(mergedConfig), [mergedConfig]);
     const analyticsContext = useMemo(() => ({
         apiBaseUrl: mergedConfig.apiBaseUrl,
@@ -7230,7 +7467,7 @@ function FurnitureAIWidget({ config = {}, defaultTab, widgetTitle }) {
         DEFAULT_WIDGET_TITLE;
     const isAccessActive = mergedConfig.access ? mergedConfig.access.active !== false : true;
     const [viewMode, setViewMode] = useState(defaultTab || 'conversation');
-    const [selectedProduct, setSelectedProduct] = useState(null);
+    const [selectedProduct, setSelectedProduct] = useState(initialProduct ? productFromFurnitureItem(initialProduct) : null);
     const [saveNotification, setSaveNotification] = useState(null);
     const [selectedCatalogItem, setSelectedCatalogItem] = useState(null);
     const [isCatalogModalOpen, setIsCatalogModalOpen] = useState(false);
@@ -7341,6 +7578,17 @@ function FurnitureAIWidget({ config = {}, defaultTab, widgetTitle }) {
     const handleOpenRoomPlanner = () => {
         setViewMode('room-planner');
     };
+    const customizerRef = useRef(null);
+    // The customizer's own "View in Room Planner" button already saves and
+    // highlights the current draft before calling handleOpenRoomPlanner. The
+    // persistent nav tab bypasses that button, so it needs to trigger the same
+    // save-and-highlight itself when leaving the customizer view directly.
+    const handleRoomPlannerTabClick = () => {
+        if (viewMode === 'customizer') {
+            customizerRef.current?.saveDraftAndHighlight();
+        }
+        handleOpenRoomPlanner();
+    };
     const handleOpenCustomizer = () => {
         if (!enabledActions.customize)
             return;
@@ -7387,23 +7635,23 @@ function FurnitureAIWidget({ config = {}, defaultTab, widgetTitle }) {
     };
     const handleSubmitSuccess = (data) => {
         setShowSubmitModal(false);
-        setSubmitConfig(null);
         setSaveNotification(data.type === 'cart'
             ? `Added to cart! (ID: ${data.id})`
             : `Quote request submitted! (ID: ${data.id})`);
         setTimeout(() => setSaveNotification(null), 5000);
+        setSubmitConfig(null);
     };
     const handleCloseSubmitModal = () => {
         setShowSubmitModal(false);
         setSubmitConfig(null);
     };
-    return (jsxRuntimeExports.jsxs("div", { className: "furniture-widget-ai h-full flex flex-col", style: { ['--modly-panel-accent']: primaryColor }, children: [jsxRuntimeExports.jsxs("div", { className: "modly-widget-header border-b border-transparent px-5 py-3.5 pr-16 flex items-center gap-4", style: { backgroundColor: primaryColor }, children: [jsxRuntimeExports.jsx("h1", { className: "modly-widget-title text-base font-semibold shrink-0", style: { color: titleColor }, children: displayTitle === DEFAULT_WIDGET_TITLE ? (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsx("span", { children: "Modly" }), jsxRuntimeExports.jsx("span", { children: "AI" })] })) : (jsxRuntimeExports.jsx("span", { children: displayTitle })) }), jsxRuntimeExports.jsxs("div", { className: "modly-widget-tabs flex min-w-0 flex-1 items-center gap-1 overflow-x-auto rounded-full p-1", style: { backgroundColor: 'rgba(255,255,255,0.14)' }, role: "tablist", children: [jsxRuntimeExports.jsx("button", { type: "button", role: "tab", "aria-selected": viewMode === 'conversation', onClick: handleBackToConversation, className: "rounded-full px-3.5 py-1.5 text-xs font-semibold transition-colors", style: viewMode === 'conversation'
+    return (jsxRuntimeExports.jsxs("div", { className: "furniture-widget-ai h-full flex flex-col", style: { ['--modly-panel-accent']: primaryColor }, children: [jsxRuntimeExports.jsxs("div", { className: "modly-widget-header border-b border-transparent px-5 py-3.5 pr-16 flex items-center gap-4", style: { backgroundColor: primaryColor }, children: [jsxRuntimeExports.jsx("h1", { className: "modly-widget-title text-base font-semibold shrink-0", style: { color: titleColor }, children: displayTitle === DEFAULT_WIDGET_TITLE ? (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsx("span", { children: "Modly" }), jsxRuntimeExports.jsx("span", { children: "AI" })] })) : (jsxRuntimeExports.jsx("span", { children: displayTitle })) }), !hideNav && (jsxRuntimeExports.jsxs("div", { className: "modly-widget-tabs flex min-w-0 flex-1 items-center gap-1 overflow-x-auto rounded-full p-1", style: { backgroundColor: 'rgba(255,255,255,0.14)' }, role: "tablist", children: [jsxRuntimeExports.jsx("button", { type: "button", role: "tab", "aria-selected": viewMode === 'conversation', onClick: handleBackToConversation, className: "rounded-full px-3.5 py-1.5 text-xs font-semibold transition-colors", style: viewMode === 'conversation'
                                     ? { backgroundColor: 'rgba(255,255,255,0.92)', color: primaryColor }
-                                    : { color: titleColor, opacity: 0.85 }, children: "Chat" }), jsxRuntimeExports.jsx("button", { type: "button", role: "tab", "aria-selected": viewMode === 'room-planner', onClick: handleOpenRoomPlanner, className: "rounded-full px-3.5 py-1.5 text-xs font-semibold transition-colors", style: viewMode === 'room-planner'
+                                    : { color: titleColor, opacity: 0.85 }, children: "AI Chat" }), jsxRuntimeExports.jsx("button", { type: "button", role: "tab", "aria-selected": viewMode === 'room-planner', onClick: handleRoomPlannerTabClick, className: "rounded-full px-3.5 py-1.5 text-xs font-semibold transition-colors", style: viewMode === 'room-planner'
                                     ? { backgroundColor: 'rgba(255,255,255,0.92)', color: primaryColor }
-                                    : { color: titleColor, opacity: 0.85 }, children: "Room planner" }), enabledActions.customize && (jsxRuntimeExports.jsx("button", { type: "button", role: "tab", "aria-selected": viewMode === 'customizer', onClick: handleOpenCustomizer, className: "rounded-full px-3.5 py-1.5 text-xs font-semibold transition-colors", style: viewMode === 'customizer'
+                                    : { color: titleColor, opacity: 0.85 }, children: "Room Planner" }), enabledActions.customize && (jsxRuntimeExports.jsx("button", { type: "button", role: "tab", "aria-selected": viewMode === 'customizer', onClick: handleOpenCustomizer, className: "rounded-full px-3.5 py-1.5 text-xs font-semibold transition-colors", style: viewMode === 'customizer'
                                     ? { backgroundColor: 'rgba(255,255,255,0.92)', color: primaryColor }
-                                    : { color: titleColor, opacity: 0.85 }, children: "Customize" }))] })] }), jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-hidden", children: !isAccessActive ? (jsxRuntimeExports.jsxs("div", { className: "h-full flex flex-col items-center justify-center gap-3 px-8 text-center", children: [jsxRuntimeExports.jsx("div", { className: "flex h-12 w-12 items-center justify-center rounded-full bg-amber-100 text-amber-700", children: jsxRuntimeExports.jsx("svg", { className: "h-6 w-6", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M12 9v3.75m0 3.75h.007M21 12a9 9 0 11-18 0 9 9 0 0118 0z" }) }) }), jsxRuntimeExports.jsx("h2", { className: "text-lg font-semibold text-gray-900", children: "This assistant is temporarily unavailable" }), jsxRuntimeExports.jsx("p", { className: "max-w-sm text-sm text-gray-600", children: "This store's ModlyAI plan has ended. Please check back soon, or contact the store directly for help." })] })) : (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [viewMode === 'conversation' && (jsxRuntimeExports.jsxs("div", { className: "modly-panel-fade h-full flex flex-col", children: [saveNotification && (jsxRuntimeExports.jsx("div", { className: "bg-green-500 text-white px-4 py-2 text-sm text-center flex-shrink-0", children: saveNotification })), jsxRuntimeExports.jsx("div", { className: "flex-1 min-h-0", children: jsxRuntimeExports.jsx(ConversationInterface, { aiService: aiService, onCustomizeItem: handleCustomizeItem, onAddToRoomPlanner: handleAddToRoomPlanner, onOpenRoomPlanner: handleOpenRoomPlanner, onOpenCustomizer: handleOpenCustomizer, onShowCatalog: handleShowCatalog, onViewInCatalog: handleViewInCatalog, enabledActions: enabledActions, primaryColor: primaryColor, messageTextColor: messageTextColor, analyticsContext: analyticsContext }) })] }, "conversation")), viewMode === 'room-planner' && (jsxRuntimeExports.jsx("div", { className: "modly-panel-fade h-full overflow-y-auto", children: jsxRuntimeExports.jsx(FurnitureRoomPlannerWidget, { config: mergedConfig, onCustomizeItem: enabledActions.customize ? handleCustomizeItem : undefined, onNavigateToCustomizer: enabledActions.customize ? handleOpenCustomizer : undefined }) }, "room-planner")), viewMode === 'customizer' && (jsxRuntimeExports.jsx("div", { className: "modly-panel-fade h-full overflow-y-auto", children: enabledActions.customize && (jsxRuntimeExports.jsx(FurnitureCustomizerWidget, { config: mergedConfig, onNavigateToRoomPlanner: handleOpenRoomPlanner, selectedProduct: selectedProduct, onSelectedProductChange: setSelectedProduct })) }, "customizer"))] })) }), showSubmitModal && submitConfig && (jsxRuntimeExports.jsx(SubmitFlowModal, { config: submitConfig.config, product: submitConfig.product, apiClient: apiClient, onSuccess: handleSubmitSuccess, onClose: handleCloseSubmitModal })), isCatalogModalOpen && selectedCatalogItem && (jsxRuntimeExports.jsx("div", { className: "fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4", children: jsxRuntimeExports.jsxs("div", { className: "bg-white rounded-lg shadow-xl max-w-md w-full p-6", children: [jsxRuntimeExports.jsx("h2", { className: "text-2xl font-bold text-gray-900 mb-4", children: selectedCatalogItem.name }), jsxRuntimeExports.jsxs("div", { className: "space-y-3 mb-6", children: [selectedCatalogItem.dimensions && (jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h3", { className: "text-sm font-semibold text-gray-700 mb-1", children: "Dimensions" }), jsxRuntimeExports.jsxs("p", { className: "text-sm text-gray-600", children: [selectedCatalogItem.dimensions.length, "\" L \u00D7 ", selectedCatalogItem.dimensions.width, "\" W \u00D7 ", selectedCatalogItem.dimensions.height, "\" H"] })] })), selectedCatalogItem.materials && (jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h3", { className: "text-sm font-semibold text-gray-700 mb-1", children: "Materials" }), jsxRuntimeExports.jsxs("p", { className: "text-sm text-gray-600", children: [selectedCatalogItem.materials.primary, selectedCatalogItem.materials.secondary && `, ${selectedCatalogItem.materials.secondary}`] })] })), selectedCatalogItem.colors && (jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h3", { className: "text-sm font-semibold text-gray-700 mb-1", children: "Colors" }), jsxRuntimeExports.jsxs("p", { className: "text-sm text-gray-600", children: [selectedCatalogItem.colors.main, selectedCatalogItem.colors.accent && ` / ${selectedCatalogItem.colors.accent}`] })] })), jsxRuntimeExports.jsx("div", { className: "bg-blue-50 border border-blue-200 rounded-lg p-4 mt-4", children: jsxRuntimeExports.jsxs("p", { className: "text-sm text-blue-900", children: [jsxRuntimeExports.jsx("strong", { children: "Catalog coming soon." }), " You can customize this item instead."] }) })] }), jsxRuntimeExports.jsxs("div", { className: "flex gap-3", children: [enabledActions.customize && (jsxRuntimeExports.jsx("button", { type: "button", onClick: handleCustomizeFromCatalog, className: "flex-1 text-white px-4 py-2 rounded-lg transition-colors font-medium", style: { backgroundColor: primaryColor, color: primaryTextColor }, children: "Customize This" })), jsxRuntimeExports.jsx("button", { type: "button", onClick: handleCloseCatalogModal, className: "flex-1 bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors font-medium", children: "Close" })] })] }) }))] }));
+                                    : { color: titleColor, opacity: 0.85 }, children: "Customizer" }))] }))] }), jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-hidden", children: !isAccessActive ? (jsxRuntimeExports.jsxs("div", { className: "h-full flex flex-col items-center justify-center gap-3 px-8 text-center", children: [jsxRuntimeExports.jsx("div", { className: "flex h-12 w-12 items-center justify-center rounded-full bg-amber-100 text-amber-700", children: jsxRuntimeExports.jsx("svg", { className: "h-6 w-6", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M12 9v3.75m0 3.75h.007M21 12a9 9 0 11-18 0 9 9 0 0118 0z" }) }) }), jsxRuntimeExports.jsx("h2", { className: "text-lg font-semibold text-gray-900", children: "This assistant is temporarily unavailable" }), jsxRuntimeExports.jsx("p", { className: "max-w-sm text-sm text-gray-600", children: "This store's ModlyAI plan has ended. Please check back soon, or contact the store directly for help." })] })) : (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [viewMode === 'conversation' && (jsxRuntimeExports.jsxs("div", { className: "modly-panel-fade h-full flex flex-col", children: [saveNotification && (jsxRuntimeExports.jsx("div", { className: "bg-green-500 text-white px-4 py-2 text-sm text-center flex-shrink-0", children: saveNotification })), jsxRuntimeExports.jsx("div", { className: "flex-1 min-h-0", children: jsxRuntimeExports.jsx(ConversationInterface, { aiService: aiService, onCustomizeItem: handleCustomizeItem, onAddToRoomPlanner: handleAddToRoomPlanner, onOpenRoomPlanner: handleOpenRoomPlanner, onOpenCustomizer: handleOpenCustomizer, onShowCatalog: handleShowCatalog, onViewInCatalog: handleViewInCatalog, enabledActions: enabledActions, primaryColor: primaryColor, messageTextColor: messageTextColor, analyticsContext: analyticsContext, suggestedPrompts: suggestedPrompts }) })] }, "conversation")), viewMode === 'room-planner' && (jsxRuntimeExports.jsx("div", { className: "modly-panel-fade h-full overflow-y-auto", children: jsxRuntimeExports.jsx(FurnitureRoomPlannerWidget, { config: mergedConfig, onCustomizeItem: enabledActions.customize ? handleCustomizeItem : undefined, onNavigateToCustomizer: enabledActions.customize ? handleOpenCustomizer : undefined, sampleRooms: sampleRooms, onQuoteSubmitted: onQuoteSubmitted }) }, "room-planner")), viewMode === 'customizer' && (jsxRuntimeExports.jsx("div", { className: "modly-panel-fade h-full overflow-y-auto", children: enabledActions.customize && (jsxRuntimeExports.jsx(FurnitureCustomizerWidget, { ref: customizerRef, config: mergedConfig, onNavigateToRoomPlanner: handleOpenRoomPlanner, selectedProduct: selectedProduct, onSelectedProductChange: setSelectedProduct, onQuoteSubmitted: onQuoteSubmitted })) }, "customizer"))] })) }), showSubmitModal && submitConfig && (jsxRuntimeExports.jsx(SubmitFlowModal, { config: submitConfig.config, product: submitConfig.product, apiClient: apiClient, onSuccess: handleSubmitSuccess, onClose: handleCloseSubmitModal })), isCatalogModalOpen && selectedCatalogItem && (jsxRuntimeExports.jsx("div", { className: "fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4", children: jsxRuntimeExports.jsxs("div", { className: "bg-white rounded-lg shadow-xl max-w-md w-full p-6", children: [jsxRuntimeExports.jsx("h2", { className: "text-2xl font-bold text-gray-900 mb-4", children: selectedCatalogItem.name }), jsxRuntimeExports.jsxs("div", { className: "space-y-3 mb-6", children: [selectedCatalogItem.dimensions && (jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h3", { className: "text-sm font-semibold text-gray-700 mb-1", children: "Dimensions" }), jsxRuntimeExports.jsxs("p", { className: "text-sm text-gray-600", children: [selectedCatalogItem.dimensions.length, "\" L \u00D7 ", selectedCatalogItem.dimensions.width, "\" W \u00D7 ", selectedCatalogItem.dimensions.height, "\" H"] })] })), selectedCatalogItem.materials && (jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h3", { className: "text-sm font-semibold text-gray-700 mb-1", children: "Materials" }), jsxRuntimeExports.jsxs("p", { className: "text-sm text-gray-600", children: [selectedCatalogItem.materials.primary, selectedCatalogItem.materials.secondary && `, ${selectedCatalogItem.materials.secondary}`] })] })), selectedCatalogItem.colors && (jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h3", { className: "text-sm font-semibold text-gray-700 mb-1", children: "Colors" }), jsxRuntimeExports.jsxs("p", { className: "text-sm text-gray-600", children: [selectedCatalogItem.colors.main, selectedCatalogItem.colors.accent && ` / ${selectedCatalogItem.colors.accent}`] })] })), jsxRuntimeExports.jsx("div", { className: "bg-blue-50 border border-blue-200 rounded-lg p-4 mt-4", children: jsxRuntimeExports.jsxs("p", { className: "text-sm text-blue-900", children: [jsxRuntimeExports.jsx("strong", { children: "Catalog coming soon." }), " You can customize this item instead."] }) })] }), jsxRuntimeExports.jsxs("div", { className: "flex gap-3", children: [enabledActions.customize && (jsxRuntimeExports.jsx("button", { type: "button", onClick: handleCustomizeFromCatalog, className: "flex-1 text-white px-4 py-2 rounded-lg transition-colors font-medium", style: { backgroundColor: primaryColor, color: primaryTextColor }, children: "Customize This" })), jsxRuntimeExports.jsx("button", { type: "button", onClick: handleCloseCatalogModal, className: "flex-1 bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors font-medium", children: "Close" })] })] }) }))] }));
 }
 
 const menuOptions = [
@@ -7582,5 +7830,5 @@ function FurnitureAIWidgetButton({ config = {}, defaultTab = 'room-planner', but
                 }, children: jsxRuntimeExports.jsxs("div", { className: "modly-widget-modal-panel bg-white rounded-lg shadow-2xl w-full max-w-6xl h-[90vh] overflow-hidden flex flex-col relative", children: [jsxRuntimeExports.jsx("button", { onClick: () => setIsOpen(false), className: "modly-widget-modal-close absolute top-4 right-4 z-10 bg-gray-100 hover:bg-gray-200 rounded-full p-2 transition-colors", "aria-label": "Close modal", children: jsxRuntimeExports.jsx("svg", { className: "w-6 h-6 text-gray-600", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: jsxRuntimeExports.jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M6 18L18 6M6 6l12 12" }) }) }), jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-hidden", children: jsxRuntimeExports.jsx(FurnitureAIWidget, { config: config, defaultTab: entryTab === 'conversation' ? undefined : entryTab, widgetTitle: displayTitle }) })] }) }))] }));
 }
 
-export { FurnitureAIWidget, FurnitureAIWidgetButton, FurnitureCustomizerWidget, FurnitureRoomPlannerWidget };
+export { FurnitureAIWidget, FurnitureAIWidgetButton, FurnitureCustomizerWidget, FurnitureRoomPlannerWidget, SpecSheetPreview };
 //# sourceMappingURL=index.esm.js.map

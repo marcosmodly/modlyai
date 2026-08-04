@@ -1,9 +1,9 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { WidgetConfig } from '../utils/config';
-import { FurnitureItem, CustomizedFurnitureItem, CustomizationConfig } from '../types';
+import { FurnitureItem, CustomizedFurnitureItem, CustomizationConfig, QuoteRequest } from '../types';
 import { Product, productFromFurnitureItem } from '../data/products';
 import { FurnitureRoomPlannerWidget } from './FurnitureRoomPlannerWidget';
-import { FurnitureCustomizerWidget } from './FurnitureCustomizerWidget';
+import { FurnitureCustomizerWidget, FurnitureCustomizerHandle } from './FurnitureCustomizerWidget';
 import { ConversationInterface } from './ConversationInterface';
 import { SubmitFlowModal } from './SubmitFlowModal';
 import { AIService } from '../utils/aiService';
@@ -12,20 +12,68 @@ import { Storage } from '../utils/storage';
 import { DEFAULT_WIDGET_TITLE, getEnabledActions, getPrimaryColor, getReadableTextColor, mergeConfig } from '../utils/config';
 import { getRealProductUrl } from '../utils/productUrl';
 import { trackWidgetEvent } from '../utils/analytics';
+import { SpecSheet } from '../utils/specSheetGenerator';
 
 type ViewMode = 'conversation' | 'room-planner' | 'customizer';
+
+interface SampleRoomPhoto {
+  id: string;
+  label: string;
+  src: string;
+}
 
 interface FurnitureAIWidgetProps {
   config?: WidgetConfig;
   defaultTab?: 'room-planner' | 'customizer';
   widgetTitle?: string;
+  /** Hide the persistent Chat/Room planner/Customize tab strip. View transitions
+   * still happen (driven by chat actions), they're just not visitor-clickable. */
+  hideNav?: boolean;
+  /** Seeds the customizer's selected product so a generic "open_customizer" chat
+   * action (no explicit item) lands on this product instead of blank. */
+  initialProduct?: FurnitureItem;
+  /** Sample room photos offered in the room planner alongside file upload. */
+  sampleRooms?: SampleRoomPhoto[];
+  /** Suggested prompt chips shown before the visitor sends their first message. */
+  suggestedPrompts?: string[];
+  /** Called after a quote request submits successfully (from the room planner
+   * or customizer's own quote form — the actual live submission paths). */
+  onQuoteSubmitted?: (data: { quoteRequest: QuoteRequest; response: any }) => void;
 }
 
-export function FurnitureAIWidget({ config = {}, defaultTab, widgetTitle }: FurnitureAIWidgetProps) {
+export function FurnitureAIWidget({
+  config = {},
+  defaultTab,
+  widgetTitle,
+  hideNav,
+  initialProduct,
+  sampleRooms,
+  suggestedPrompts,
+  onQuoteSubmitted,
+}: FurnitureAIWidgetProps) {
   const mergedConfig = useMemo(() => mergeConfig(config), [config]);
-  const apiClient = useMemo(() => new ApiClient(mergedConfig), [mergedConfig]);
+  // apiClient/aiService only need rebuilding when something that actually
+  // affects API behavior changes - purely cosmetic fields (colors, theme)
+  // shouldn't tear down and reconstruct the conversation state, page-context
+  // observer, etc. on every render. A host that passes a fresh `config`
+  // object literal on every render (e.g. a theme switcher re-rendering its
+  // parent) would otherwise reset the chat every time a color changes.
+  const serviceConfigKey = JSON.stringify({
+    apiBaseUrl: mergedConfig.apiBaseUrl,
+    storeId: mergedConfig.storeId,
+    widgetId: mergedConfig.widgetId,
+    apiKey: mergedConfig.apiKey,
+    publicApiKey: mergedConfig.publicApiKey,
+    storeDomain: mergedConfig.storeDomain,
+    apiEndpoints: mergedConfig.apiEndpoints,
+    catalog: mergedConfig.catalog,
+    storageKey: mergedConfig.storageKey,
+    welcomeMessage: mergedConfig.welcomeMessage,
+    access: mergedConfig.access,
+  });
+  const apiClient = useMemo(() => new ApiClient(mergedConfig), [serviceConfigKey]);
   const storage = useMemo(() => new Storage(mergedConfig.storageKey), [mergedConfig.storageKey]);
-  const aiService = useMemo(() => new AIService(apiClient, mergedConfig), [apiClient, mergedConfig]);
+  const aiService = useMemo(() => new AIService(apiClient, mergedConfig), [apiClient, serviceConfigKey]);
   const enabledActions = useMemo(() => getEnabledActions(mergedConfig), [mergedConfig]);
   const analyticsContext = useMemo(
     () => ({
@@ -47,7 +95,9 @@ export function FurnitureAIWidget({ config = {}, defaultTab, widgetTitle }: Furn
   const isAccessActive = mergedConfig.access ? mergedConfig.access.active !== false : true;
 
   const [viewMode, setViewMode] = useState<ViewMode>(defaultTab || 'conversation');
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(
+    initialProduct ? productFromFurnitureItem(initialProduct) : null
+  );
   const [saveNotification, setSaveNotification] = useState<string | null>(null);
   const [selectedCatalogItem, setSelectedCatalogItem] = useState<FurnitureItem | null>(null);
   const [isCatalogModalOpen, setIsCatalogModalOpen] = useState(false);
@@ -165,6 +215,19 @@ export function FurnitureAIWidget({ config = {}, defaultTab, widgetTitle }: Furn
     setViewMode('room-planner');
   };
 
+  const customizerRef = useRef<FurnitureCustomizerHandle>(null);
+
+  // The customizer's own "View in Room Planner" button already saves and
+  // highlights the current draft before calling handleOpenRoomPlanner. The
+  // persistent nav tab bypasses that button, so it needs to trigger the same
+  // save-and-highlight itself when leaving the customizer view directly.
+  const handleRoomPlannerTabClick = () => {
+    if (viewMode === 'customizer') {
+      customizerRef.current?.saveDraftAndHighlight();
+    }
+    handleOpenRoomPlanner();
+  };
+
   const handleOpenCustomizer = () => {
     if (!enabledActions.customize) return;
     trackWidgetEvent({
@@ -220,15 +283,20 @@ export function FurnitureAIWidget({ config = {}, defaultTab, widgetTitle }: Furn
     setShowSubmitModal(true);
   };
 
-  const handleSubmitSuccess = (data: { type: 'cart' | 'quote'; id: string }) => {
+  const handleSubmitSuccess = (data: {
+    type: 'cart' | 'quote';
+    id: string;
+    specSheet?: SpecSheet;
+    customer?: { name: string; email: string; phone?: string; notes?: string };
+  }) => {
     setShowSubmitModal(false);
-    setSubmitConfig(null);
     setSaveNotification(
-      data.type === 'cart' 
-        ? `Added to cart! (ID: ${data.id})` 
+      data.type === 'cart'
+        ? `Added to cart! (ID: ${data.id})`
         : `Quote request submitted! (ID: ${data.id})`
     );
     setTimeout(() => setSaveNotification(null), 5000);
+    setSubmitConfig(null);
   };
 
   const handleCloseSubmitModal = () => {
@@ -255,56 +323,58 @@ export function FurnitureAIWidget({ config = {}, defaultTab, widgetTitle }: Furn
         </h1>
 
         {/* Persistent pill tab switcher, visible in every mode */}
-        <div
-          className="modly-widget-tabs flex min-w-0 flex-1 items-center gap-1 overflow-x-auto rounded-full p-1"
-          style={{ backgroundColor: 'rgba(255,255,255,0.14)' }}
-          role="tablist"
-        >
-          <button
-            type="button"
-            role="tab"
-            aria-selected={viewMode === 'conversation'}
-            onClick={handleBackToConversation}
-            className="rounded-full px-3.5 py-1.5 text-xs font-semibold transition-colors"
-            style={
-              viewMode === 'conversation'
-                ? { backgroundColor: 'rgba(255,255,255,0.92)', color: primaryColor }
-                : { color: titleColor, opacity: 0.85 }
-            }
+        {!hideNav && (
+          <div
+            className="modly-widget-tabs flex min-w-0 flex-1 items-center gap-1 overflow-x-auto rounded-full p-1"
+            style={{ backgroundColor: 'rgba(255,255,255,0.14)' }}
+            role="tablist"
           >
-            Chat
-          </button>
-          <button
-            type="button"
-            role="tab"
-            aria-selected={viewMode === 'room-planner'}
-            onClick={handleOpenRoomPlanner}
-            className="rounded-full px-3.5 py-1.5 text-xs font-semibold transition-colors"
-            style={
-              viewMode === 'room-planner'
-                ? { backgroundColor: 'rgba(255,255,255,0.92)', color: primaryColor }
-                : { color: titleColor, opacity: 0.85 }
-            }
-          >
-            Room planner
-          </button>
-          {enabledActions.customize && (
             <button
               type="button"
               role="tab"
-              aria-selected={viewMode === 'customizer'}
-              onClick={handleOpenCustomizer}
+              aria-selected={viewMode === 'conversation'}
+              onClick={handleBackToConversation}
               className="rounded-full px-3.5 py-1.5 text-xs font-semibold transition-colors"
               style={
-                viewMode === 'customizer'
+                viewMode === 'conversation'
                   ? { backgroundColor: 'rgba(255,255,255,0.92)', color: primaryColor }
                   : { color: titleColor, opacity: 0.85 }
               }
             >
-              Customize
+              AI Chat
             </button>
-          )}
-        </div>
+            <button
+              type="button"
+              role="tab"
+              aria-selected={viewMode === 'room-planner'}
+              onClick={handleRoomPlannerTabClick}
+              className="rounded-full px-3.5 py-1.5 text-xs font-semibold transition-colors"
+              style={
+                viewMode === 'room-planner'
+                  ? { backgroundColor: 'rgba(255,255,255,0.92)', color: primaryColor }
+                  : { color: titleColor, opacity: 0.85 }
+              }
+            >
+              Room Planner
+            </button>
+            {enabledActions.customize && (
+              <button
+                type="button"
+                role="tab"
+                aria-selected={viewMode === 'customizer'}
+                onClick={handleOpenCustomizer}
+                className="rounded-full px-3.5 py-1.5 text-xs font-semibold transition-colors"
+                style={
+                  viewMode === 'customizer'
+                    ? { backgroundColor: 'rgba(255,255,255,0.92)', color: primaryColor }
+                    : { color: titleColor, opacity: 0.85 }
+                }
+              >
+                Customizer
+              </button>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Content Area */}
@@ -343,27 +413,32 @@ export function FurnitureAIWidget({ config = {}, defaultTab, widgetTitle }: Furn
                 primaryColor={primaryColor}
                 messageTextColor={messageTextColor}
                 analyticsContext={analyticsContext}
+                suggestedPrompts={suggestedPrompts}
               />
             </div>
           </div>
         )}
         {viewMode === 'room-planner' && (
           <div key="room-planner" className="modly-panel-fade h-full overflow-y-auto">
-            <FurnitureRoomPlannerWidget 
-              config={mergedConfig} 
+            <FurnitureRoomPlannerWidget
+              config={mergedConfig}
               onCustomizeItem={enabledActions.customize ? handleCustomizeItem : undefined}
               onNavigateToCustomizer={enabledActions.customize ? handleOpenCustomizer : undefined}
+              sampleRooms={sampleRooms}
+              onQuoteSubmitted={onQuoteSubmitted}
             />
           </div>
         )}
         {viewMode === 'customizer' && (
           <div key="customizer" className="modly-panel-fade h-full overflow-y-auto">
             {enabledActions.customize && (
-              <FurnitureCustomizerWidget 
-                config={mergedConfig} 
+              <FurnitureCustomizerWidget
+                ref={customizerRef}
+                config={mergedConfig}
                 onNavigateToRoomPlanner={handleOpenRoomPlanner}
                 selectedProduct={selectedProduct}
                 onSelectedProductChange={setSelectedProduct}
+                onQuoteSubmitted={onQuoteSubmitted}
               />
             )}
           </div>

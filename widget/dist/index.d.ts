@@ -236,6 +236,7 @@ interface ConversationState {
     context?: {
         pageType?: string;
         productId?: string;
+        productName?: string;
         category?: string;
         currentPage?: string;
     };
@@ -284,6 +285,7 @@ interface ChatRequest {
     context?: {
         pageType?: string;
         productId?: string;
+        productName?: string;
         category?: string;
         currentPage?: string;
     };
@@ -435,6 +437,7 @@ interface WidgetConfig {
     titleColor?: string;
     messageTextColor?: string;
     welcomeMessage?: string;
+    catalog?: ChatCatalogPayload;
     enabledActions?: {
         viewInCatalog?: boolean;
         customize?: boolean;
@@ -478,12 +481,24 @@ interface WidgetConfig {
     };
 }
 
+interface SampleRoomPhoto$1 {
+    id: string;
+    label: string;
+    src: string;
+}
 interface FurnitureRoomPlannerWidgetProps {
     config?: WidgetConfig;
     onCustomizeItem?: (item: FurnitureItem) => void;
     onNavigateToCustomizer?: () => void;
+    /** Optional preset room photos offered alongside file upload (e.g. for demos). */
+    sampleRooms?: SampleRoomPhoto$1[];
+    /** Called after a quote request submits successfully. */
+    onQuoteSubmitted?: (data: {
+        quoteRequest: QuoteRequest;
+        response: any;
+    }) => void;
 }
-declare function FurnitureRoomPlannerWidget({ config, onCustomizeItem, onNavigateToCustomizer, }: FurnitureRoomPlannerWidgetProps): react_jsx_runtime.JSX.Element;
+declare function FurnitureRoomPlannerWidget({ config, onCustomizeItem, onNavigateToCustomizer, sampleRooms, onQuoteSubmitted, }: FurnitureRoomPlannerWidgetProps): react_jsx_runtime.JSX.Element;
 
 interface ProductColor {
     name: string;
@@ -578,15 +593,48 @@ interface FurnitureCustomizerWidgetProps {
     onNavigateToRoomPlanner?: () => void;
     selectedProduct?: Product | null;
     onSelectedProductChange?: (product: Product) => void;
+    /** Called after a quote request submits successfully. */
+    onQuoteSubmitted?: (data: {
+        quoteRequest: QuoteRequest;
+        response: any;
+    }) => void;
 }
-declare function FurnitureCustomizerWidget({ config, onNavigateToRoomPlanner, selectedProduct: sharedSelectedProduct, onSelectedProductChange, }: FurnitureCustomizerWidgetProps): react_jsx_runtime.JSX.Element;
+interface FurnitureCustomizerHandle {
+    /** Saves the current draft (if not already saved) and marks it for the
+     * Room Planner to scroll to and highlight — the same thing the in-panel
+     * "View in Room Planner" button does, exposed so a host nav tab can
+     * trigger it too when navigating away from the customizer directly. */
+    saveDraftAndHighlight: () => void;
+}
+declare const FurnitureCustomizerWidget: React.ForwardRefExoticComponent<FurnitureCustomizerWidgetProps & React.RefAttributes<FurnitureCustomizerHandle>>;
 
+interface SampleRoomPhoto {
+    id: string;
+    label: string;
+    src: string;
+}
 interface FurnitureAIWidgetProps {
     config?: WidgetConfig;
     defaultTab?: 'room-planner' | 'customizer';
     widgetTitle?: string;
+    /** Hide the persistent Chat/Room planner/Customize tab strip. View transitions
+     * still happen (driven by chat actions), they're just not visitor-clickable. */
+    hideNav?: boolean;
+    /** Seeds the customizer's selected product so a generic "open_customizer" chat
+     * action (no explicit item) lands on this product instead of blank. */
+    initialProduct?: FurnitureItem;
+    /** Sample room photos offered in the room planner alongside file upload. */
+    sampleRooms?: SampleRoomPhoto[];
+    /** Suggested prompt chips shown before the visitor sends their first message. */
+    suggestedPrompts?: string[];
+    /** Called after a quote request submits successfully (from the room planner
+     * or customizer's own quote form — the actual live submission paths). */
+    onQuoteSubmitted?: (data: {
+        quoteRequest: QuoteRequest;
+        response: any;
+    }) => void;
 }
-declare function FurnitureAIWidget({ config, defaultTab, widgetTitle }: FurnitureAIWidgetProps): react_jsx_runtime.JSX.Element;
+declare function FurnitureAIWidget({ config, defaultTab, widgetTitle, hideNav, initialProduct, sampleRooms, suggestedPrompts, onQuoteSubmitted, }: FurnitureAIWidgetProps): react_jsx_runtime.JSX.Element;
 
 interface FurnitureAIWidgetButtonProps {
     config?: WidgetConfig;
@@ -598,5 +646,46 @@ interface FurnitureAIWidgetButtonProps {
 }
 declare function FurnitureAIWidgetButton({ config, defaultTab, buttonText, buttonPosition, buttonStyle, className }: FurnitureAIWidgetButtonProps): react_jsx_runtime.JSX.Element;
 
-export { FurnitureAIWidget, FurnitureAIWidgetButton, FurnitureCustomizerWidget, FurnitureRoomPlannerWidget };
-export type { ChatCatalogPayload, ChatCatalogProduct, ChatRequest, ChatResponse, ConversationMessage, ConversationState, CustomizationConfig, CustomizedFurnitureItem, FurnitureItem, MessageRole, MessageType, QuoteRequest, QuoteRequestResponse, Recommendation, RoomAnalysisRequest, RoomAnalysisResponse, RoomDimensions, RoomPreferences, SelectedPricedCustomization, SelectedShopifyOption, WidgetConfig };
+interface SpecSheet {
+    specId: string;
+    generatedAt: string;
+    product: {
+        name: string;
+        baseItemId?: string;
+        category: string;
+    };
+    configuration: {
+        dimensions?: {
+            length?: number;
+            width?: number;
+            height?: number;
+        };
+        materials: {
+            primary?: string;
+            secondary?: string;
+            legs?: string;
+            upholstery?: string;
+            [key: string]: string | undefined;
+        };
+        colors: {
+            primary: string;
+            secondary?: string;
+            accent?: string;
+        };
+        customizations: string[];
+    };
+    pricing: {
+        estimatedCost?: number;
+        requiresQuote: boolean;
+    };
+    customerNotes?: string;
+}
+
+interface SpecSheetPreviewProps {
+    specSheet: SpecSheet;
+    onClose?: () => void;
+}
+declare function SpecSheetPreview({ specSheet, onClose }: SpecSheetPreviewProps): react_jsx_runtime.JSX.Element;
+
+export { FurnitureAIWidget, FurnitureAIWidgetButton, FurnitureCustomizerWidget, FurnitureRoomPlannerWidget, SpecSheetPreview };
+export type { ChatCatalogPayload, ChatCatalogProduct, ChatRequest, ChatResponse, ConversationMessage, ConversationState, CustomizationConfig, CustomizedFurnitureItem, FurnitureItem, MessageRole, MessageType, QuoteRequest, QuoteRequestResponse, Recommendation, RoomAnalysisRequest, RoomAnalysisResponse, RoomDimensions, RoomPreferences, SelectedPricedCustomization, SelectedShopifyOption, SpecSheet, WidgetConfig };

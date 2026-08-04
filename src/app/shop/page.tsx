@@ -20,7 +20,7 @@ export default function Shop() {
           </p>
           <div className="flex justify-center flex-wrap gap-4">
             <Link
-              href="/widget-demo"
+              href="/demo"
               className="px-10 py-5 bg-gradient-ai text-white rounded-lg font-semibold text-lg hover:shadow-glow-hover transition-all duration-300 glow-soft-hover"
             >
               Try Demo
@@ -104,7 +104,7 @@ export default function Shop() {
           </p>
 
           <Link
-            href="/widget-demo"
+            href="/demo"
             className="inline-block px-10 py-5 bg-gradient-ai text-white rounded-lg font-semibold text-lg hover:shadow-glow-hover transition-all duration-300 glow-soft-hover"
           >
             Try Demo

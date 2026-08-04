@@ -40,13 +40,23 @@ export default function CustomizedFurnitureList({
 }: CustomizedFurnitureListProps) {
   const { storage } = useWidgetContext();
   const [removingId, setRemovingId] = useState<string | null>(null);
+  const [pendingRemoveId, setPendingRemoveId] = useState<string | null>(null);
   const [imageErrors, setImageErrors] = useState<Set<string>>(() => new Set());
 
-  const handleRemove = async (id: string) => {
-    if (!confirm('Are you sure you want to remove this customized furniture item?')) {
+  // window.confirm() is a native modal dialog - many embedding contexts
+  // (sandboxed iframes, some in-app browsers) block or auto-dismiss it
+  // silently, which made Remove appear to do nothing. An inline
+  // arm-then-confirm step avoids native dialogs entirely.
+  const handleRemoveClick = (id: string) => {
+    if (pendingRemoveId !== id) {
+      setPendingRemoveId(id);
       return;
     }
+    void handleConfirmedRemove(id);
+  };
 
+  const handleConfirmedRemove = async (id: string) => {
+    setPendingRemoveId(null);
     setRemovingId(id);
     try {
       storage.removeCustomizedFurniture(id);
@@ -285,14 +295,33 @@ export default function CustomizedFurnitureList({
                         View in Catalog
                       </a>
                     )}
-                    <button
-                      type="button"
-                      onClick={() => handleRemove(item.id)}
-                      disabled={removingId === item.id}
-                      className="flex-1 rounded-xl border border-red-200 bg-white px-4 py-2.5 text-sm font-semibold text-red-600 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50"
-                    >
-                      {removingId === item.id ? 'Removing...' : 'Remove'}
-                    </button>
+                    {pendingRemoveId === item.id ? (
+                      <div className="flex flex-1 gap-2">
+                        <button
+                          type="button"
+                          onClick={() => void handleConfirmedRemove(item.id)}
+                          disabled={removingId === item.id}
+                          className="flex-1 rounded-xl bg-red-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50"
+                        >
+                          {removingId === item.id ? 'Removing...' : 'Confirm remove'}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setPendingRemoveId(null)}
+                          className="rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm font-semibold text-gray-700 transition hover:bg-gray-50"
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveClick(item.id)}
+                        className="flex-1 rounded-xl border border-red-200 bg-white px-4 py-2.5 text-sm font-semibold text-red-600 transition hover:bg-red-50"
+                      >
+                        Remove
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>

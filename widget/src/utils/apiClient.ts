@@ -254,6 +254,9 @@ export class ApiClient {
     if (preferences) {
       formData.append('preferences', JSON.stringify(preferences));
     }
+    if (this.config.catalog) {
+      formData.append('catalog', JSON.stringify(this.config.catalog));
+    }
 
     const response = await fetch(url, {
       method: 'POST',

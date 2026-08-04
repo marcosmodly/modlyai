@@ -47,38 +47,53 @@ export function useWebsiteColors(): WebsiteColors {
           root = doc.documentElement;
         }
 
+        // A property that's unset (e.g. background-color on <html> when only
+        // <body> carries one) computes to a fully transparent color rather than
+        // an empty string. Treat that the same as "not set" so callers fall
+        // through to their next source instead of a bogus transparent value.
+        const isTransparent = (value: string): boolean => {
+          if (value === 'transparent') return true;
+          const alphaMatch = value.match(/^rgba?\(([^)]+)\)$/i);
+          if (!alphaMatch) return false;
+          const parts = alphaMatch[1].split(',').map((p) => p.trim());
+          return parts.length === 4 && parseFloat(parts[3]) === 0;
+        };
+
         // Helper to get computed color value from CSS variables or computed styles
         const getComputedColor = (element: HTMLElement, property: string, fallback?: string): string => {
           try {
             const computed = window.getComputedStyle(element);
             // Try CSS custom properties first
             const cssVar = computed.getPropertyValue(`--${property}`).trim();
-            if (cssVar) return cssVar;
-            
+            if (cssVar && !isTransparent(cssVar)) return cssVar;
+
             // Try direct property
             const direct = computed.getPropertyValue(property).trim();
-            if (direct) return direct;
-            
+            if (direct && !isTransparent(direct)) return direct;
+
             return fallback || '';
           } catch (e) {
             return fallback || '';
           }
         };
 
-        // Helper to convert any color format to hex
+        // Helper to convert any color format to hex. Returns '' for transparent
+        // colors so callers fall through to their next source instead of
+        // treating "unset" as black.
         const toHex = (color: string): string => {
           if (!color || color.trim() === '') return '';
-          
+
           // Already hex
           if (color.startsWith('#')) {
-            return color.length === 4 
+            return color.length === 4
               ? `#${color[1]}${color[1]}${color[2]}${color[2]}${color[3]}${color[3]}`
               : color;
           }
-          
+
           // Handle rgb/rgba
-          const rgbMatch = color.match(/\d+/g);
+          const rgbMatch = color.match(/[\d.]+/g);
           if (rgbMatch && rgbMatch.length >= 3) {
+            if (rgbMatch.length >= 4 && parseFloat(rgbMatch[3]) === 0) return '';
             const r = parseInt(rgbMatch[0]).toString(16).padStart(2, '0');
             const g = parseInt(rgbMatch[1]).toString(16).padStart(2, '0');
             const b = parseInt(rgbMatch[2]).toString(16).padStart(2, '0');

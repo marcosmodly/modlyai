@@ -228,6 +228,33 @@ export function catalogProductToFurnitureItem(product: NormalizedCatalogProduct)
   return productToFurnitureItem(product)
 }
 
+export type CatalogFromPayload = {
+  products: NormalizedCatalogProduct[]
+  items: FurnitureItem[]
+  source: CatalogSnapshot<NormalizedCatalogProduct>['source']
+  count: number
+}
+
+/**
+ * Builds a catalog snapshot from an inline payload sent by the widget itself
+ * (WidgetConfig.catalog), instead of looking one up server-side by storeId.
+ * Shared by the chat and room-analysis routes so both can be catalog-scoped
+ * without a store.
+ */
+export function getCatalogFromPayload(catalog?: { source?: string; products?: unknown[] }): CatalogFromPayload | null {
+  const products = Array.isArray(catalog?.products) ? catalog!.products : []
+  if (products.length === 0) return null
+
+  const snapshot = getCatalogSnapshot(products, { catalogSource: catalog?.source })
+
+  return {
+    products: snapshot.products,
+    items: snapshot.products.map(catalogProductToFurnitureItem),
+    source: snapshot.source,
+    count: snapshot.count,
+  }
+}
+
 function parseCsvProducts(csvText: string): Array<{ name: string; price: number; imageUrl?: string }> {
   const lines = csvText
     .split(/\r?\n/)
