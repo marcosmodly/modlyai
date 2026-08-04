@@ -139,6 +139,13 @@ export default function WidgetConfigPage() {
           </div>
 
           <div className="rounded-2xl border border-stone-200 bg-stone-50 p-4">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-stone-500">Button Position</p>
+            <p className="mt-3 font-medium capitalize text-stone-900">
+              {(config.theme.buttonPosition || 'bottom-right').replace('-', ' ')}
+            </p>
+          </div>
+
+          <div className="rounded-2xl border border-stone-200 bg-stone-50 p-4">
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-stone-500">Features Enabled</p>
             <p className="mt-3 font-medium text-stone-900">{enabledFeatures.join(', ') || 'None'}</p>
           </div>

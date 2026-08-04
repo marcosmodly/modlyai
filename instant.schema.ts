@@ -115,6 +115,7 @@ const _schema = i.schema({
       userId: i.any().optional(),
       welcomeMessage: i.string().optional(),
       widgetId: i.any().optional(),
+      widgetButtonPosition: i.string().optional(),
       widgetButtonStyle: i.string().optional(),
       widgetLogoUrl: i.string().optional(),
       widgetTitle: i.string().optional(),

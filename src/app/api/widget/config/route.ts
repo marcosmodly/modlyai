@@ -69,6 +69,15 @@ function getPrimaryColor(value: unknown) {
   return typeof value === 'string' && /^#[0-9a-f]{6}$/i.test(value) ? value : DEFAULT_PRIMARY_COLOR
 }
 
+const BUTTON_POSITIONS = ['bottom-right', 'bottom-left', 'top-right', 'top-left'] as const
+type ButtonPosition = (typeof BUTTON_POSITIONS)[number]
+
+function getButtonPosition(value: unknown): ButtonPosition {
+  return typeof value === 'string' && (BUTTON_POSITIONS as readonly string[]).includes(value)
+    ? (value as ButtonPosition)
+    : 'bottom-right'
+}
+
 function getOptionalColor(value: unknown) {
   return typeof value === 'string' && /^#[0-9a-f]{6}$/i.test(value) ? value : undefined
 }
@@ -165,6 +174,7 @@ async function handleGET(req: Request) {
     const titleColor = getOptionalColor((store as any).titleColor)
     const messageTextColor = getOptionalColor((store as any).messageTextColor)
     const buttonStyle = (store as any).widgetButtonStyle === 'logo' ? 'logo' : 'text'
+    const buttonPosition = getButtonPosition((store as any).widgetButtonPosition)
     const logoUrl = readField(store, 'widgetLogoUrl')
     const welcomeMessage = readText(store.welcomeMessage, DEFAULT_WELCOME_MESSAGE)
     const enabledActions = getEnabledActions(store)
@@ -177,7 +187,7 @@ async function handleGET(req: Request) {
         titleColor,
         messageTextColor,
         buttonText: widgetTitle,
-        buttonPosition: 'bottom-right',
+        buttonPosition,
         buttonStyle,
         logoUrl,
       },

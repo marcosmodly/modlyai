@@ -81,6 +81,7 @@ export default async function SettingsPage() {
           titleColor: store.titleColor,
           messageTextColor: store.messageTextColor,
           widgetButtonStyle: store.widgetButtonStyle,
+          widgetButtonPosition: store.widgetButtonPosition,
           widgetLogoUrl: store.widgetLogoUrl,
           welcomeMessage: store.welcomeMessage,
           enableViewInCatalog: store.enableViewInCatalog,

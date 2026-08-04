@@ -59,6 +59,14 @@ export async function PATCH(request: NextRequest, { params }: Params) {
       updatePayload.widgetButtonStyle = body.widgetButtonStyle
     }
     if (typeof body.widgetLogoUrl === 'string') updatePayload.widgetLogoUrl = body.widgetLogoUrl.trim()
+    if (
+      body.widgetButtonPosition === 'bottom-right' ||
+      body.widgetButtonPosition === 'bottom-left' ||
+      body.widgetButtonPosition === 'top-right' ||
+      body.widgetButtonPosition === 'top-left'
+    ) {
+      updatePayload.widgetButtonPosition = body.widgetButtonPosition
+    }
     if (typeof body.welcomeMessage === 'string') updatePayload.welcomeMessage = body.welcomeMessage.trim()
     if (typeof body.quoteEmail === 'string') updatePayload.quoteEmail = body.quoteEmail.trim()
     if (typeof body.enableViewInCatalog === 'boolean') {

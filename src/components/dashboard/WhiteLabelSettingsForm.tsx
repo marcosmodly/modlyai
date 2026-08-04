@@ -15,6 +15,15 @@ const DEFAULT_MESSAGE_TEXT_COLOR = '#1F2937'
 const DEFAULT_WELCOME_MESSAGE =
   "Hello! I'm your furniture assistant. I can help you choose the right products, plan your room, or customize items from this store's catalog."
 
+const BUTTON_POSITIONS = ['bottom-right', 'bottom-left', 'top-right', 'top-left'] as const
+type ButtonPosition = (typeof BUTTON_POSITIONS)[number]
+const BUTTON_POSITION_LABELS: Record<ButtonPosition, string> = {
+  'bottom-right': 'Bottom right',
+  'bottom-left': 'Bottom left',
+  'top-right': 'Top right',
+  'top-left': 'Top left',
+}
+
 type EnabledActions = {
   viewInCatalog: boolean
   customize: boolean
@@ -32,6 +41,7 @@ type SettingsStore = {
   titleColor?: string
   messageTextColor?: string
   widgetButtonStyle?: string
+  widgetButtonPosition?: string
   widgetLogoUrl?: string
   welcomeMessage?: string
   enableViewInCatalog?: boolean
@@ -50,6 +60,7 @@ type FormState = {
   titleColor: string
   messageTextColor: string
   widgetButtonStyle: 'text' | 'logo'
+  widgetButtonPosition: ButtonPosition
   widgetLogoUrl: string
   welcomeMessage: string
   enabledActions: EnabledActions
@@ -66,6 +77,9 @@ function buildInitialState(store: SettingsStore, fallbackStoreName?: string): Fo
     titleColor: isHexColor(store.titleColor) ? store.titleColor : DEFAULT_TITLE_COLOR,
     messageTextColor: isHexColor(store.messageTextColor) ? store.messageTextColor : DEFAULT_MESSAGE_TEXT_COLOR,
     widgetButtonStyle: store.widgetButtonStyle === 'logo' ? 'logo' : 'text',
+    widgetButtonPosition: (BUTTON_POSITIONS as readonly string[]).includes(store.widgetButtonPosition || '')
+      ? (store.widgetButtonPosition as ButtonPosition)
+      : 'bottom-right',
     widgetLogoUrl: store.widgetLogoUrl || '',
     welcomeMessage: store.welcomeMessage || DEFAULT_WELCOME_MESSAGE,
     enabledActions: {
@@ -204,6 +218,7 @@ export default function WhiteLabelSettingsForm({
         titleColor: form.titleColor,
         messageTextColor: form.messageTextColor,
         widgetButtonStyle: form.widgetButtonStyle,
+        widgetButtonPosition: form.widgetButtonPosition,
         widgetLogoUrl: form.widgetLogoUrl,
         welcomeMessage: form.welcomeMessage,
         quoteEmail: form.quoteEmail,
@@ -398,6 +413,28 @@ export default function WhiteLabelSettingsForm({
                   <span className="mt-1 block text-xs font-normal text-stone-500">Your own logo image</span>
                 </button>
               </div>
+            </Field>
+
+            <Field label="Button position">
+              <div className="grid grid-cols-2 gap-3">
+                {BUTTON_POSITIONS.map((position) => (
+                  <button
+                    key={position}
+                    type="button"
+                    onClick={() => updateField('widgetButtonPosition', position)}
+                    className={`rounded-2xl border-2 px-4 py-3 text-left text-sm font-medium transition ${
+                      form.widgetButtonPosition === position
+                        ? 'border-blue-500 bg-blue-50 text-stone-900'
+                        : 'border-stone-200 bg-stone-50 text-stone-600 hover:border-stone-300'
+                    }`}
+                  >
+                    {BUTTON_POSITION_LABELS[position]}
+                  </button>
+                ))}
+              </div>
+              <p className="mt-2 text-xs text-stone-500">
+                Move the launcher if another widget already sits in this corner of your site.
+              </p>
             </Field>
 
             {form.widgetButtonStyle === 'logo' && (
