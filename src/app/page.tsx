@@ -102,8 +102,9 @@ function ProductDemoSection() {
             <div className={sectionLabel}>Visual product demo</div>
             <h2 className={sectionTitle}>A storefront experience shoppers can trust.</h2>
             <p className={sectionCopy}>
-              Instead of pushing shoppers into a generic chatbot, ModlyAI appears where furniture decisions happen: on the
-              product page, beside dimensions, materials, catalog alternatives, and quote actions.
+              Instead of a generic chatbot, ModlyAI is a launcher grounded in the page a shopper is on. It knows the
+              product, dimensions, materials, catalog alternatives, and quote actions for whatever they are looking at,
+              so it can answer like it is standing beside the listing, not guessing from a script.
             </p>
             <div className="mt-7 grid gap-3">
               <CheckItem>Recommend only products from your catalog.</CheckItem>
