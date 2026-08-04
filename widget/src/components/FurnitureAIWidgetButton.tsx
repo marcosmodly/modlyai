@@ -153,6 +153,7 @@ export function FurnitureAIWidgetButton({
   };
   const isRightAligned = buttonPosition === 'bottom-right' || buttonPosition === 'top-right';
   const isBottomAligned = buttonPosition === 'bottom-right' || buttonPosition === 'bottom-left';
+  const alignClass = isRightAligned ? 'items-end' : 'items-start';
 
   const primaryColor = getPrimaryColor(config);
   const textColor = getReadableTextColor(primaryColor);
@@ -193,13 +194,13 @@ export function FurnitureAIWidgetButton({
   return (
     <>
       <div
-        className={`modly-widget-shell ${showLogo ? 'modly-widget-shell--logo' : 'modly-widget-shell--text'} fixed ${positionClasses[buttonPosition]} z-50 flex flex-col items-end gap-2`}
+        className={`modly-widget-shell ${showLogo ? 'modly-widget-shell--logo' : 'modly-widget-shell--text'} fixed ${positionClasses[buttonPosition]} z-50 flex flex-col ${alignClass} gap-2`}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
         {/* Expand menu: three options, stacked vertically above the button */}
         <div
-          className={`flex flex-col items-end gap-2 ${isBottomAligned ? 'order-1' : 'order-2'}`}
+          className={`flex flex-col ${alignClass} gap-2 ${isBottomAligned ? 'order-1' : 'order-2'}`}
           aria-hidden={!menuOpen}
         >
           {menuOptions.map(({ tab, label, Icon }, index) => (
@@ -225,7 +226,7 @@ export function FurnitureAIWidgetButton({
         <button
           onClick={handleMainButtonClick}
           style={finalButtonStyle}
-          className={`modly-widget-button ${showLogo ? 'modly-widget-button--logo' : 'modly-widget-button--text'} order-${isBottomAligned ? '2' : '1'} cursor-pointer rounded-full inline-flex items-center justify-center gap-2 ${transitionClass} ${className}`}
+          className={`modly-widget-button ${showLogo ? 'modly-widget-button--logo' : 'modly-widget-button--text'} ${isBottomAligned ? 'order-2' : 'order-1'} cursor-pointer rounded-full inline-flex items-center justify-center gap-2 ${transitionClass} ${className}`}
           onMouseOver={(e) => {
             if (isTouchDevice) return;
             e.currentTarget.style.transform = 'translateY(-2px)';

@@ -7797,7 +7797,9 @@ function FurnitureAIWidgetButton({ config = {}, defaultTab = 'room-planner', but
         'top-right': 'top-6 right-6',
         'top-left': 'top-6 left-6',
     };
+    const isRightAligned = buttonPosition === 'bottom-right' || buttonPosition === 'top-right';
     const isBottomAligned = buttonPosition === 'bottom-right' || buttonPosition === 'bottom-left';
+    const alignClass = isRightAligned ? 'items-end' : 'items-start';
     const primaryColor = getPrimaryColor(config);
     const textColor = getReadableTextColor(primaryColor);
     const isDarkPrimary = isDarkColor(primaryColor);
@@ -7831,12 +7833,12 @@ function FurnitureAIWidgetButton({ config = {}, defaultTab = 'room-planner', but
         return baseStyle;
     }, [primaryColor, textColor, isDarkPrimary, buttonStyle, showLogo]);
     const transitionClass = prefersReducedMotion ? '' : 'transition-all duration-200 ease-out';
-    return (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsxs("div", { className: `modly-widget-shell ${showLogo ? 'modly-widget-shell--logo' : 'modly-widget-shell--text'} fixed ${positionClasses[buttonPosition]} z-50 flex flex-col items-end gap-2`, onMouseEnter: handleMouseEnter, onMouseLeave: handleMouseLeave, children: [jsxRuntimeExports.jsx("div", { className: `flex flex-col items-end gap-2 ${isBottomAligned ? 'order-1' : 'order-2'}`, "aria-hidden": !menuOpen, children: menuOptions.map(({ tab, label, Icon }, index) => (jsxRuntimeExports.jsxs("button", { type: "button", onClick: () => openWidget(tab, `widget_menu_${tab}`), className: `modly-widget-menu-item flex items-center gap-2 rounded-full bg-white px-4 py-2.5 text-sm font-semibold text-gray-800 shadow-[0_10px_24px_rgba(15,23,42,0.16)] ${transitionClass}`, style: {
+    return (jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [jsxRuntimeExports.jsxs("div", { className: `modly-widget-shell ${showLogo ? 'modly-widget-shell--logo' : 'modly-widget-shell--text'} fixed ${positionClasses[buttonPosition]} z-50 flex flex-col ${alignClass} gap-2`, onMouseEnter: handleMouseEnter, onMouseLeave: handleMouseLeave, children: [jsxRuntimeExports.jsx("div", { className: `flex flex-col ${alignClass} gap-2 ${isBottomAligned ? 'order-1' : 'order-2'}`, "aria-hidden": !menuOpen, children: menuOptions.map(({ tab, label, Icon }, index) => (jsxRuntimeExports.jsxs("button", { type: "button", onClick: () => openWidget(tab, `widget_menu_${tab}`), className: `modly-widget-menu-item flex items-center gap-2 rounded-full bg-white px-4 py-2.5 text-sm font-semibold text-gray-800 shadow-[0_10px_24px_rgba(15,23,42,0.16)] ${transitionClass}`, style: {
                                 opacity: menuOpen ? 1 : 0,
                                 transform: menuOpen ? 'translateY(0) scale(1)' : 'translateY(8px) scale(0.94)',
                                 pointerEvents: menuOpen ? 'auto' : 'none',
                                 transitionDelay: menuOpen ? `${index * 55}ms` : '0ms',
-                            }, children: [jsxRuntimeExports.jsx(Icon, { "aria-hidden": "true", className: "h-4 w-4 shrink-0", strokeWidth: 2, style: { color: primaryColor } }), jsxRuntimeExports.jsx("span", { className: "whitespace-nowrap", children: label })] }, tab))) }), jsxRuntimeExports.jsx("button", { onClick: handleMainButtonClick, style: finalButtonStyle, className: `modly-widget-button ${showLogo ? 'modly-widget-button--logo' : 'modly-widget-button--text'} order-${isBottomAligned ? '2' : '1'} cursor-pointer rounded-full inline-flex items-center justify-center gap-2 ${transitionClass} ${className}`, onMouseOver: (e) => {
+                            }, children: [jsxRuntimeExports.jsx(Icon, { "aria-hidden": "true", className: "h-4 w-4 shrink-0", strokeWidth: 2, style: { color: primaryColor } }), jsxRuntimeExports.jsx("span", { className: "whitespace-nowrap", children: label })] }, tab))) }), jsxRuntimeExports.jsx("button", { onClick: handleMainButtonClick, style: finalButtonStyle, className: `modly-widget-button ${showLogo ? 'modly-widget-button--logo' : 'modly-widget-button--text'} ${isBottomAligned ? 'order-2' : 'order-1'} cursor-pointer rounded-full inline-flex items-center justify-center gap-2 ${transitionClass} ${className}`, onMouseOver: (e) => {
                             if (isTouchDevice)
                                 return;
                             e.currentTarget.style.transform = 'translateY(-2px)';
