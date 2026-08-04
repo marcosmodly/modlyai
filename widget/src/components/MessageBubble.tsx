@@ -21,9 +21,10 @@ interface MessageBubbleProps {
     storeId?: string;
     widgetId?: string;
   };
+  storeDomain?: string;
 }
 
-export function MessageBubble({ message, onCustomizeItem, onAddToRoomPlanner, onViewInCatalog, enabledActions, primaryColor, messageTextColor, analyticsContext }: MessageBubbleProps) {
+export function MessageBubble({ message, onCustomizeItem, onAddToRoomPlanner, onViewInCatalog, enabledActions, primaryColor, messageTextColor, analyticsContext, storeDomain }: MessageBubbleProps) {
   const isUser = message.role === 'user';
   const isThinking = message.type === 'thinking';
   const actions = enabledActions ?? { viewInCatalog: true, customize: true, requestQuote: true };
@@ -64,6 +65,7 @@ export function MessageBubble({ message, onCustomizeItem, onAddToRoomPlanner, on
                     enabledActions={actions}
                     primaryColor={primaryColor}
                     analyticsContext={analyticsContext}
+                    storeDomain={storeDomain}
                   />
                 ))}
               </div>
@@ -85,21 +87,22 @@ export function MessageBubble({ message, onCustomizeItem, onAddToRoomPlanner, on
   );
 }
 
-function getProductCatalogUrl(item: FurnitureItem) {
-  return getRealProductUrl(item);
+function getProductCatalogUrl(item: FurnitureItem, storeDomain?: string) {
+  return getRealProductUrl(item, storeDomain);
 }
 
-function RecommendationCard({ 
-  recommendation, 
-  onCustomize, 
+function RecommendationCard({
+  recommendation,
+  onCustomize,
   onAddToRoomPlanner,
   onViewInCatalog,
   enabledActions,
   primaryColor,
   analyticsContext,
-}: { 
-  recommendation: Recommendation; 
-  onCustomize?: (item: any) => void; 
+  storeDomain,
+}: {
+  recommendation: Recommendation;
+  onCustomize?: (item: any) => void;
   onAddToRoomPlanner?: (item: any) => void;
   onViewInCatalog?: (item: FurnitureItem) => void;
   enabledActions: {
@@ -113,9 +116,10 @@ function RecommendationCard({
     storeId?: string;
     widgetId?: string;
   };
+  storeDomain?: string;
 }) {
   const item = recommendation.item;
-  const catalogUrl = getProductCatalogUrl(item);
+  const catalogUrl = getProductCatalogUrl(item, storeDomain);
   const accentColor = primaryColor || '#3B82F6';
   const accentTextColor = getReadableTextColor(accentColor);
   const thumbnail = (item as any).images?.[0] || (item as any).imageUrl || (item as any).image;

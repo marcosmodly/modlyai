@@ -115,6 +115,8 @@ export default function ProductEditModal({
   const [productStatus, setProductStatus] = useState<string>(product?.status || 'active')
   const [imageUrl, setImageUrl] = useState<string>(product?.imageUrl ?? product?.image ?? '')
   const [description, setDescription] = useState<string>(product?.description ?? '')
+  const [productUrl, setProductUrl] = useState<string>(product?.productUrl ?? product?.url ?? '')
+  const [sku, setSku] = useState<string>(product?.sku ?? '')
   const [colors, setColors] = useState<string>(joinOptionNames(options?.colors) || (product?.colors ?? ''))
   const [materials, setMaterials] = useState<string>(joinOptionNames(options?.materials) || (product?.materials ?? ''))
   const [width, setWidth] = useState<DimensionField>(dimensionFromOptions(options, 'width'))
@@ -154,6 +156,8 @@ export default function ProductEditModal({
           description,
           imageUrl,
           status: productStatus,
+          productUrl: productUrl.trim(),
+          sku: sku.trim(),
           ...(priceValue !== undefined ? { price: priceValue } : {}),
           colors: splitCommaList(colors),
           materials: splitCommaList(materials),
@@ -253,6 +257,34 @@ export default function ProductEditModal({
               className={`${inputClass} mt-2`}
             />
           </label>
+
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <label className="block">
+              <span className={labelClass}>Product page URL (optional)</span>
+              <input
+                type="text"
+                value={productUrl}
+                onChange={(event) => setProductUrl(event.target.value)}
+                className={`${inputClass} mt-2`}
+                placeholder="https://yourstore.com/products/example"
+              />
+              <p className="mt-1.5 text-xs text-stone-500">
+                Where shoppers go when they tap &ldquo;View in catalog&rdquo;. Leave blank and we&apos;ll send them to your store search instead.
+              </p>
+            </label>
+            <label className="block">
+              <span className={labelClass}>SKU (optional)</span>
+              <input
+                type="text"
+                value={sku}
+                onChange={(event) => setSku(event.target.value)}
+                className={`${inputClass} mt-2`}
+              />
+              <p className="mt-1.5 text-xs text-stone-500">
+                Helps match this product if you later connect Shopify or re-import a CSV.
+              </p>
+            </label>
+          </div>
 
           <div className="border-t border-stone-200 pt-5">
             <p className="text-sm font-semibold text-stone-800">Customization options</p>

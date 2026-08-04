@@ -11,6 +11,8 @@ type UploadResult = {
   count?: number
   error?: string
   message?: string
+  warning?: string
+  missingProductUrlCount?: number
 }
 
 type StoreSummary = {
@@ -612,6 +614,14 @@ export default function IntegrationsClient({
             lengthMin, lengthMax, lengthDefault, heightMin, heightMax, heightDefault, colorPricing,
             materialPricing, dimensionPricePerInch
           </code>
+          <p className="mt-3 text-sm text-stone-600">
+            <strong className="font-semibold text-stone-800">productUrl</strong> or{' '}
+            <strong className="font-semibold text-stone-800">url</strong> (best - an absolute link to the
+            product, used as-is), or <strong className="font-semibold text-stone-800">handle</strong> (good -
+            combined with your store domain to build the link; Shopify&apos;s own product CSV export
+            includes this column by default). Without either, &ldquo;View in catalog&rdquo; falls back to
+            your store&apos;s search, or disappears if no store domain is configured.
+          </p>
           <div className="mt-4 flex flex-wrap items-center gap-3">
             <a
               href="/sample-customization-catalog.csv"
@@ -666,12 +676,17 @@ export default function IntegrationsClient({
             }`}
           >
             {uploadResult.success ? (
-              <p className="text-sm font-medium text-emerald-700">
-                Successfully imported {uploadResult.count} products.
-                <a href="/dashboard/products" className="ml-2 underline">
-                  View products
-                </a>
-              </p>
+              <>
+                <p className="text-sm font-medium text-emerald-700">
+                  Successfully imported {uploadResult.count} products.
+                  <a href="/dashboard/products" className="ml-2 underline">
+                    View products
+                  </a>
+                </p>
+                {uploadResult.warning ? (
+                  <p className="mt-2 text-sm text-amber-700">{uploadResult.warning}</p>
+                ) : null}
+              </>
             ) : (
               <p className="text-sm text-red-700">{uploadResult.message || uploadResult.error}</p>
             )}

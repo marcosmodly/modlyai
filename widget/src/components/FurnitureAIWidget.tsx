@@ -245,7 +245,7 @@ export function FurnitureAIWidget({
   };
 
   const handleViewInCatalog = (item: FurnitureItem) => {
-    const catalogUrl = getRealProductUrl(item);
+    const catalogUrl = getRealProductUrl(item, mergedConfig.storeDomain || mergedConfig.storeUrl);
     trackWidgetEvent({
       ...analyticsContext,
       type: 'view_in_catalog_clicked',
@@ -413,6 +413,7 @@ export function FurnitureAIWidget({
                 primaryColor={primaryColor}
                 messageTextColor={messageTextColor}
                 analyticsContext={analyticsContext}
+                storeDomain={mergedConfig.storeDomain || mergedConfig.storeUrl}
                 suggestedPrompts={suggestedPrompts}
               />
             </div>

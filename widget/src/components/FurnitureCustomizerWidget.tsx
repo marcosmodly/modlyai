@@ -591,10 +591,10 @@ export const FurnitureCustomizerWidget = forwardRef<FurnitureCustomizerHandle, F
   // sharing, as opposed to the widget's own embed URL. Falls back to the
   // current page only if the product has no real URL of its own.
   const shareProductLink = useMemo(() => {
-    const realUrl = getRealProductUrl(selectedProduct);
+    const realUrl = getRealProductUrl(selectedProduct, mergedConfig.storeDomain || mergedConfig.storeUrl);
     if (realUrl) return realUrl;
     return typeof window !== 'undefined' ? window.location.href : '';
-  }, [selectedProduct]);
+  }, [selectedProduct, mergedConfig.storeDomain, mergedConfig.storeUrl]);
 
   const buildCustomizationPdfBlob = useCallback(() => {
     const customization = getCustomizationForProduct(selectedProduct);

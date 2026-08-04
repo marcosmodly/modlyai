@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { authOptions } from '@/lib/auth-options'
 import { getCurrentStoreForUser } from '@/lib/current-store'
 import { adminDb, adminDbLenient as db } from '@/lib/instant-admin'
+import { isRealProductUrl } from '@widget/utils/productUrl'
 
 type Params = { params: { id: string } }
 
@@ -103,6 +104,19 @@ export async function PATCH(request: NextRequest, { params }: Params) {
 
     if (typeof body.status === 'string') {
       updates.status = body.status.trim()
+    }
+
+    if (typeof body.productUrl === 'string') {
+      const productUrl = body.productUrl.trim()
+      if (productUrl && !isRealProductUrl(productUrl)) {
+        return NextResponse.json({ error: 'Product page URL must be a valid link to your store.' }, { status: 400 })
+      }
+      updates.productUrl = productUrl
+      updates.url = productUrl
+    }
+
+    if (typeof body.sku === 'string') {
+      updates.sku = body.sku.trim()
     }
 
     const existingOptions =

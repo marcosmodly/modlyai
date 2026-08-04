@@ -25,6 +25,7 @@ interface ConversationInterfaceProps {
     storeId?: string;
     widgetId?: string;
   };
+  storeDomain?: string;
   /** Suggested prompt chips shown before the visitor sends their first message. */
   suggestedPrompts?: string[];
 }
@@ -41,6 +42,7 @@ export function ConversationInterface({
   primaryColor,
   messageTextColor,
   analyticsContext,
+  storeDomain,
   suggestedPrompts,
 }: ConversationInterfaceProps) {
   const [input, setInput] = useState('');
@@ -199,6 +201,7 @@ export function ConversationInterface({
               primaryColor={primaryColor}
               messageTextColor={messageTextColor}
               analyticsContext={analyticsContext}
+              storeDomain={storeDomain}
             />
           ))
         )}

@@ -65,12 +65,45 @@ export function isRealProductUrl(url?: string | null): boolean {
   ].some((marker) => fullUrl.includes(marker))
 }
 
-export function getRealProductUrl(product: { productUrl?: string; url?: string }): string | undefined {
+function normalizeDomain(storeDomain?: string): string | undefined {
+  if (!storeDomain) return undefined
+  const trimmed = storeDomain.trim()
+  if (!trimmed) return undefined
+
+  try {
+    const url = trimmed.includes('://') ? new URL(trimmed) : new URL(`https://${trimmed}`)
+    return url.hostname || undefined
+  } catch {
+    return undefined
+  }
+}
+
+export function getRealProductUrl(
+  product: { productUrl?: string; url?: string; handle?: string; name?: string },
+  storeDomain?: string,
+): string | undefined {
   const productUrl = product.productUrl?.trim()
   if (isRealProductUrl(productUrl)) return productUrl
 
   const url = product.url?.trim()
   if (isRealProductUrl(url)) return url
+
+  const domain = normalizeDomain(storeDomain)
+  if (!domain) return undefined
+
+  // Tier 2 - build from handle, same shape shopify/sync already uses
+  const handle = product.handle?.trim()
+  if (handle) {
+    const built = `https://${domain}/products/${handle}`
+    if (isRealProductUrl(built)) return built
+  }
+
+  // Tier 3 - fall back to the store's own search
+  const name = product.name?.trim()
+  if (name) {
+    const search = `https://${domain}/search?q=${encodeURIComponent(name)}`
+    if (isRealProductUrl(search)) return search
+  }
 
   return undefined
 }

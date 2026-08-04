@@ -36,6 +36,24 @@ function isActiveProduct(product: any) {
   return status !== 'archived' && status !== 'inactive' && status !== 'draft'
 }
 
+const PLACEHOLDER_DOMAINS = new Set([
+  'yourstore.com',
+  'example.com',
+  'example.org',
+  'example.net',
+  'test.com',
+  'demo.com',
+  'placeholder.com',
+])
+
+function usableStoreDomain(domain?: string | null) {
+  const trimmed = String(domain || '').trim().toLowerCase()
+  if (!trimmed) return ''
+  if (PLACEHOLDER_DOMAINS.has(trimmed)) return ''
+  if (trimmed.includes('localhost') || trimmed.includes('127.0.0.1')) return ''
+  return trimmed
+}
+
 export async function POST(req: Request) {
   try {
     const formData = await req.formData()
@@ -59,6 +77,7 @@ export async function POST(req: Request) {
     }
 
     const usageStore = await findStoreForUsage({ storeId })
+    const storeDomain = usableStoreDomain((usageStore as any)?.domain)
     const existingResult = await db.query({
       products: {
         $: { where: { storeId } },
@@ -70,11 +89,16 @@ export async function POST(req: Request) {
     let createdCount = 0
     let updatedCount = 0
     let skippedCount = 0
+    let missingProductUrlCount = 0
 
     const now = new Date().toISOString()
     const productWrites = records.map((row: CsvRow) => {
-      const productUrl = readCsvString(row, 'productUrl', 'url')
+      const rawProductUrl = readCsvString(row, 'productUrl', 'url')
       const handle = readCsvString(row, 'handle')
+      // Reuse the same handle -> URL shape as shopify/sync/route.ts so the two
+      // import paths cannot drift.
+      const productUrl = rawProductUrl || (handle && storeDomain ? `https://${storeDomain}/products/${handle}` : '')
+      if (!productUrl) missingProductUrlCount += 1
       const identityInput = {
         storeId,
         sku: row.sku || '',
@@ -195,6 +219,12 @@ export async function POST(req: Request) {
       updated: updatedCount,
       skipped: skippedCount,
       totalProcessed: records.length,
+      missingProductUrlCount,
+      ...(missingProductUrlCount > 0
+        ? {
+            warning: `${missingProductUrlCount} of ${records.length} product${records.length === 1 ? '' : 's'} ${missingProductUrlCount === 1 ? 'has' : 'have'} no product URL, so "View in catalog" will not appear for ${missingProductUrlCount === 1 ? 'it' : 'them'}. Add a productUrl column, or a handle column if you exported this from Shopify.`,
+          }
+        : {}),
     })
   } catch (error: any) {
     console.error('=== CSV UPLOAD ERROR ===')

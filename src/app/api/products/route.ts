@@ -5,6 +5,7 @@ import { getCurrentStoreForUser } from '@/lib/current-store';
 import { adminDb, adminDbLenient as db, id } from '@/lib/instant-admin';
 import { getCatalogForRequest } from '@/lib/store-catalog';
 import { checkProductLimit } from '@/lib/usage-limits';
+import { isRealProductUrl } from '@widget/utils/productUrl';
 
 export async function GET(request: NextRequest) {
   const apiKey = request.nextUrl.searchParams.get('apiKey');
@@ -120,6 +121,12 @@ export async function POST(request: NextRequest) {
     const imageUrl = typeof body.imageUrl === 'string' ? body.imageUrl.trim() : '';
     const productId = id();
 
+    const productUrl = typeof body.productUrl === 'string' ? body.productUrl.trim() : '';
+    if (productUrl && !isRealProductUrl(productUrl)) {
+      return NextResponse.json({ error: 'Product page URL must be a valid link to your store.' }, { status: 400 });
+    }
+    const sku = typeof body.sku === 'string' ? body.sku.trim() : '';
+
     const productWrite = {
       storeId: store.id,
       name,
@@ -136,6 +143,9 @@ export async function POST(request: NextRequest) {
       width: width?.default,
       length: length?.default,
       height: height?.default,
+      productUrl,
+      url: productUrl,
+      sku,
       createdAt: now,
       updatedAt: now,
     };
