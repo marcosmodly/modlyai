@@ -82,7 +82,7 @@ export default function HeroB2B() {
             Get Started Free
           </TrackedLink>
           <TrackedLink
-            href="/contact"
+            href="/request-pilot"
             ctaId="hero-book-demo"
             ctaText="Book a Demo"
             className="inline-flex items-center justify-center px-3 py-3.5 text-sm font-semibold text-[#6b5a44] underline decoration-[#d7cab9] underline-offset-4 transition hover:text-[#171411]"

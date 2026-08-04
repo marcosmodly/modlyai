@@ -435,7 +435,7 @@ export default function Home() {
               Get Started Free
             </TrackedLink>
             <TrackedLink
-              href="/contact"
+              href="/request-pilot"
               ctaId="footer-book-demo"
               ctaText="Book a Demo"
               className="inline-flex items-center justify-center rounded-lg border border-white/20 bg-white/5 px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-white/10"
