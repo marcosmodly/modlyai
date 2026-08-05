@@ -34,7 +34,6 @@ export async function GET() {
     id: store.id,
     name: store.name ?? null,
     catalogSource: (store as Record<string, unknown>).catalogSource ?? null,
-    platform: (store as Record<string, unknown>).platform ?? null,
     subscriptionPlan: store.subscriptionPlan ?? null,
     subscriptionStatus: store.subscriptionStatus ?? null,
     currentPeriodEnd: store.currentPeriodEnd ?? null,

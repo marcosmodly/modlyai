@@ -23,9 +23,10 @@ interface MessageBubbleProps {
   };
   storeDomain?: string;
   platform?: string;
+  productUrlTemplate?: string;
 }
 
-export function MessageBubble({ message, onCustomizeItem, onAddToRoomPlanner, onViewInCatalog, enabledActions, primaryColor, messageTextColor, analyticsContext, storeDomain, platform }: MessageBubbleProps) {
+export function MessageBubble({ message, onCustomizeItem, onAddToRoomPlanner, onViewInCatalog, enabledActions, primaryColor, messageTextColor, analyticsContext, storeDomain, platform, productUrlTemplate }: MessageBubbleProps) {
   const isUser = message.role === 'user';
   const isThinking = message.type === 'thinking';
   const actions = enabledActions ?? { viewInCatalog: true, customize: true, requestQuote: true };
@@ -68,6 +69,7 @@ export function MessageBubble({ message, onCustomizeItem, onAddToRoomPlanner, on
                     analyticsContext={analyticsContext}
                     storeDomain={storeDomain}
                     platform={platform}
+                    productUrlTemplate={productUrlTemplate}
                   />
                 ))}
               </div>
@@ -89,8 +91,8 @@ export function MessageBubble({ message, onCustomizeItem, onAddToRoomPlanner, on
   );
 }
 
-function getProductCatalogUrl(item: FurnitureItem, storeDomain?: string, platform?: string) {
-  return getRealProductUrl(item, storeDomain, platform);
+function getProductCatalogUrl(item: FurnitureItem, storeDomain?: string, platform?: string, productUrlTemplate?: string) {
+  return getRealProductUrl(item, storeDomain, platform, productUrlTemplate);
 }
 
 function RecommendationCard({
@@ -103,6 +105,7 @@ function RecommendationCard({
   analyticsContext,
   storeDomain,
   platform,
+  productUrlTemplate,
 }: {
   recommendation: Recommendation;
   onCustomize?: (item: any) => void;
@@ -121,9 +124,10 @@ function RecommendationCard({
   };
   storeDomain?: string;
   platform?: string;
+  productUrlTemplate?: string;
 }) {
   const item = recommendation.item;
-  const catalogUrl = getProductCatalogUrl(item, storeDomain, platform);
+  const catalogUrl = getProductCatalogUrl(item, storeDomain, platform, productUrlTemplate);
   const accentColor = primaryColor || '#3B82F6';
   const accentTextColor = getReadableTextColor(accentColor);
   const thumbnail = (item as any).images?.[0] || (item as any).imageUrl || (item as any).image;

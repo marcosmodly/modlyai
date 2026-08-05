@@ -23,10 +23,11 @@ interface RecommendationsListProps {
   };
   storeDomain?: string;
   platform?: string;
+  productUrlTemplate?: string;
 }
 
-function getProductCatalogUrl(item: FurnitureItem, storeDomain?: string, platform?: string) {
-  return getRealProductUrl(item, storeDomain, platform);
+function getProductCatalogUrl(item: FurnitureItem, storeDomain?: string, platform?: string, productUrlTemplate?: string) {
+  return getRealProductUrl(item, storeDomain, platform, productUrlTemplate);
 }
 
 function getProductImageUrl(item: FurnitureItem) {
@@ -56,7 +57,7 @@ function getDimensionLabel(item: FurnitureItem) {
   return `${length}m L x ${width}m W x ${height}m H`;
 }
 
-export default function RecommendationsList({ recommendations, onCustomize, onFinalize, enabledActions, primaryColor, analyticsContext, storeDomain, platform }: RecommendationsListProps) {
+export default function RecommendationsList({ recommendations, onCustomize, onFinalize, enabledActions, primaryColor, analyticsContext, storeDomain, platform, productUrlTemplate }: RecommendationsListProps) {
   const actions = enabledActions ?? { viewInCatalog: true, customize: true, requestQuote: true };
   const primaryTextColor = primaryColor ? getReadableTextColor(primaryColor) : undefined;
   const [lightbox, setLightbox] = useState<{ src: string; alt?: string } | null>(null);
@@ -81,7 +82,7 @@ export default function RecommendationsList({ recommendations, onCustomize, onFi
       </div>
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         {recommendations.map((rec, index) => {
-          const catalogUrl = getProductCatalogUrl(rec.item, storeDomain, platform);
+          const catalogUrl = getProductCatalogUrl(rec.item, storeDomain, platform, productUrlTemplate);
           const imageUrl = getProductImageUrl(rec.item);
           const dimensionLabel = getDimensionLabel(rec.item);
           const priceLabel = getPriceLabel(rec.item);

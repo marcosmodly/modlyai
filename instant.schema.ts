@@ -75,6 +75,7 @@ const _schema = i.schema({
       apiKey: i.any().optional(),
       cancelAtPeriodEnd: i.any().optional(),
       catalogSource: i.any().optional(),
+      productUrlTemplate: i.any().optional(),
       createdAt: i.any().optional(),
       credentials: i.any().optional(),
       currentPeriodEnd: i.string().optional(),

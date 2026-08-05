@@ -80,6 +80,10 @@ export async function POST(req: Request) {
     const usageStore = await findStoreForUsage({ storeId })
     const storeDomain = usableStoreDomain((usageStore as any)?.domain)
     const storePlatform = resolveStorePlatform(usageStore)
+    const storeProductUrlTemplate =
+      typeof (usageStore as any)?.productUrlTemplate === 'string'
+        ? (usageStore as any).productUrlTemplate.trim()
+        : undefined
     const existingResult = await db.query({
       products: {
         $: { where: { storeId } },
@@ -98,8 +102,12 @@ export async function POST(req: Request) {
       const rawProductUrl = readCsvString(row, 'productUrl', 'url')
       const handle = readCsvString(row, 'handle')
       // Platform-specific URL shape - returns undefined (not a guess) when
-      // the store's platform isn't known, same as the widget's fallback.
-      const builtUrl = handle && storeDomain ? buildProductUrl(storeDomain, handle, storePlatform) : undefined
+      // the store's platform isn't known, same as the widget's fallback. A
+      // merchant-supplied template is a full URL pattern and doesn't need a
+      // store domain; the platform-specific shapes do.
+      const builtUrl = handle
+        ? buildProductUrl(storeDomain || '', handle, storePlatform, storeProductUrlTemplate)
+        : undefined
       const productUrl = rawProductUrl || builtUrl || ''
       if (!productUrl) missingProductUrlCount += 1
       const identityInput = {
@@ -208,7 +216,6 @@ export async function POST(req: Request) {
     await db.transact([
       db.tx.stores[storeId].update({
         catalogSource: 'csv',
-        platform: 'csv',
         productCount: existingActiveCount + createdCount,
         lastSyncedAt: now,
         updatedAt: now,

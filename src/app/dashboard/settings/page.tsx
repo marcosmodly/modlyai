@@ -75,6 +75,7 @@ export default async function SettingsPage() {
           name: store.name,
           storeUrl: store.storeUrl,
           url: store.url,
+          productUrlTemplate: store.productUrlTemplate,
           supportEmail: store.supportEmail,
           widgetTitle: store.widgetTitle,
           primaryColor: store.primaryColor,

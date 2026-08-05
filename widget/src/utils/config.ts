@@ -25,6 +25,7 @@ export interface WidgetConfig {
   publicApiKey?: string;
   storeDomain?: string;
   platform?: string;
+  productUrlTemplate?: string;
   configUrl?: string; // NEW: URL to fetch config from server
   widgetId?: string; // NEW: Widget instance ID
   apiEndpoints?: {
@@ -75,7 +76,7 @@ function hasText(value: unknown): value is string {
   return typeof value === 'string' && value.trim().length > 0;
 }
 
-export const defaultConfig: Required<Omit<WidgetConfig, 'apiBaseUrl' | 'storeId' | 'shop' | 'apiKey' | 'publicApiKey' | 'storeDomain' | 'platform' | 'configUrl' | 'widgetId' | 'onError' | 'onRoomAnalyzed' | 'onFurnitureCustomized' | 'theme' | 'catalog'>> = {
+export const defaultConfig: Required<Omit<WidgetConfig, 'apiBaseUrl' | 'storeId' | 'shop' | 'apiKey' | 'publicApiKey' | 'storeDomain' | 'platform' | 'productUrlTemplate' | 'configUrl' | 'widgetId' | 'onError' | 'onRoomAnalyzed' | 'onFurnitureCustomized' | 'theme' | 'catalog'>> = {
   storeName: '',
   storeUrl: '',
   supportEmail: '',

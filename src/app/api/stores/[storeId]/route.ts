@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { authOptions } from '@/lib/auth-options'
 import { adminDb } from '@/lib/instant-admin'
 import { findStoreById, getStoreAnalytics } from '@/lib/store-catalog'
+import { isRealProductUrl } from '@widget/utils/productUrl'
 
 type Params = { params: { storeId: string } }
 
@@ -50,6 +51,25 @@ export async function PATCH(request: NextRequest, { params }: Params) {
     }
 
     if (typeof body.storeUrl === 'string') updatePayload.storeUrl = body.storeUrl.trim()
+    if (typeof body.productUrlTemplate === 'string') {
+      const trimmedTemplate = body.productUrlTemplate.trim()
+      if (trimmedTemplate) {
+        if (!trimmedTemplate.includes('{handle}')) {
+          return NextResponse.json(
+            { error: 'Product page URL pattern must include {handle}.' },
+            { status: 400 }
+          )
+        }
+        const sampleUrl = trimmedTemplate.split('{handle}').join(encodeURIComponent('sample-product'))
+        if (!isRealProductUrl(sampleUrl)) {
+          return NextResponse.json(
+            { error: 'Product page URL pattern must be a valid URL.' },
+            { status: 400 }
+          )
+        }
+      }
+      updatePayload.productUrlTemplate = trimmedTemplate
+    }
     if (typeof body.supportEmail === 'string') updatePayload.supportEmail = body.supportEmail.trim()
     if (typeof body.widgetTitle === 'string') updatePayload.widgetTitle = body.widgetTitle.trim()
     if (typeof body.primaryColor === 'string') updatePayload.primaryColor = body.primaryColor.trim()

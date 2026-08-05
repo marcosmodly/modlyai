@@ -33,6 +33,7 @@ type WidgetStore = CurrentStore & {
   domain?: unknown
   catalogSource?: unknown
   platform?: unknown
+  productUrlTemplate?: unknown
 }
 
 type WidgetProduct = Record<string, unknown>
@@ -217,6 +218,7 @@ async function handleGET(req: Request) {
       apiKey: readText(store.apiKey),
       storeDomain: storeUrl || null,
       platform: resolveStorePlatform(store),
+      productUrlTemplate: readText(store.productUrlTemplate) || undefined,
       store: {
         id: store.id,
         name: storeName,

@@ -35,6 +35,7 @@ type SettingsStore = {
   name?: string
   storeUrl?: string
   url?: string
+  productUrlTemplate?: string
   supportEmail?: string
   widgetTitle?: string
   primaryColor?: string
@@ -54,6 +55,7 @@ type SettingsStore = {
 type FormState = {
   storeName: string
   storeUrl: string
+  productUrlTemplate: string
   supportEmail: string
   widgetTitle: string
   primaryColor: string
@@ -71,6 +73,7 @@ function buildInitialState(store: SettingsStore, fallbackStoreName?: string): Fo
   return {
     storeName: store.name || fallbackStoreName || '',
     storeUrl: store.storeUrl || store.url || '',
+    productUrlTemplate: store.productUrlTemplate || '',
     supportEmail: store.supportEmail || '',
     widgetTitle: store.widgetTitle || DEFAULT_WIDGET_TITLE,
     primaryColor: isHexColor(store.primaryColor) ? store.primaryColor : DEFAULT_PRIMARY_COLOR,
@@ -204,6 +207,13 @@ export default function WhiteLabelSettingsForm({
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+
+    if (form.productUrlTemplate.trim() && !form.productUrlTemplate.includes('{handle}')) {
+      setStatus('error')
+      setMessage('Product page URL pattern must include {handle}.')
+      return
+    }
+
     setStatus('saving')
     setMessage('')
 
@@ -212,6 +222,7 @@ export default function WhiteLabelSettingsForm({
       const payload = {
         storeName: form.storeName,
         storeUrl: form.storeUrl,
+        productUrlTemplate: form.productUrlTemplate,
         supportEmail: form.supportEmail,
         widgetTitle: form.widgetTitle,
         primaryColor: form.primaryColor,
@@ -296,6 +307,20 @@ export default function WhiteLabelSettingsForm({
               className={inputClass}
               placeholder="https://example.com"
             />
+          </Field>
+          <Field label="Product page URL pattern (optional)">
+            <input
+              type="text"
+              value={form.productUrlTemplate}
+              onChange={(event) => updateField('productUrlTemplate', event.target.value)}
+              className={inputClass}
+              placeholder="https://mystore.com/shop/{handle}"
+            />
+            <p className="mt-2 text-xs text-stone-500">
+              How your product URLs are built. Use {'{handle}'} where the product handle or slug goes - for
+              example https://mystore.com/shop/{'{handle}'}. Leave blank on Shopify or WooCommerce, we detect
+              those automatically.
+            </p>
           </Field>
           <Field label="Support email">
             <input

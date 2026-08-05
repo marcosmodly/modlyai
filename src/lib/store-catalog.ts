@@ -7,6 +7,7 @@ import {
 } from '@/lib/catalog-source'
 import { generatePublicApiKey, resolveWidgetId } from '@/lib/store-public-identity'
 import { checkProductLimit } from '@/lib/usage-limits'
+import { resolveStorePlatform } from '@/lib/platformUrls'
 
 export type CatalogSource = 'shopify' | 'woocommerce' | 'csv' | 'custom'
 
@@ -51,6 +52,7 @@ export interface Store {
   quoteEmail?: string
   domain?: string
   platform?: string
+  productUrlTemplate?: string
   subscriptionPlan?: string
   subscriptionStatus?: string
   trialStartedAt?: string
@@ -161,7 +163,8 @@ function mapStore(store: any): Store {
         : undefined,
     quoteEmail: store.quoteEmail ? String(store.quoteEmail) : undefined,
     domain: store.domain ? String(store.domain) : undefined,
-    platform: store.platform ? String(store.platform) : undefined,
+    platform: resolveStorePlatform(store),
+    productUrlTemplate: store.productUrlTemplate ? String(store.productUrlTemplate) : undefined,
     subscriptionPlan: store.subscriptionPlan ? String(store.subscriptionPlan) : undefined,
     subscriptionStatus: store.subscriptionStatus ? String(store.subscriptionStatus) : undefined,
     trialStartedAt: store.trialStartedAt ? String(store.trialStartedAt) : undefined,
@@ -517,7 +520,6 @@ export async function replaceStoreProducts(
     adminDb.tx.stores[storeId].link({ events: eventId }),
     adminDb.tx.stores[storeId].update({
       catalogSource: 'csv',
-      platform: 'csv',
       productCount: products.length,
       lastSyncedAt: now,
     }),

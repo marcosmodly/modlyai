@@ -1,6 +1,17 @@
 export type Platform = 'shopify' | 'woocommerce' | 'custom' | 'unknown'
 
-export function buildProductUrl(domain: string, handle: string, platform?: string): string | undefined {
+export function buildProductUrl(
+  domain: string,
+  handle: string,
+  platform?: string,
+  productUrlTemplate?: string
+): string | undefined {
+  if (productUrlTemplate?.includes('{handle}')) {
+    return productUrlTemplate.split('{handle}').join(encodeURIComponent(handle))
+  }
+
+  if (!domain) return undefined
+
   switch (platform) {
     case 'shopify':
       return `https://${domain}/products/${handle}`
@@ -16,12 +27,10 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 }
 
 // No store-creation flow writes a real 'shopify' | 'woocommerce' value to
-// store.platform today - the only writer is the CSV import path, which sets
-// it to 'csv' as a catalog-source marker (duplicating catalogSource), not a
-// website-platform marker. So this infers the platform from connection
-// state that actually gets written (Shopify OAuth credentials, WooCommerce
-// site URL) and only trusts an explicit store.platform when it names a real
-// platform - never 'csv'.
+// store.platform today, so this infers the platform from connection state
+// that actually gets written (Shopify OAuth credentials, WooCommerce site
+// URL) and only trusts an explicit store.platform when it names a real
+// platform.
 export function resolveStorePlatform(store: unknown): Platform {
   if (!isRecord(store)) return 'unknown'
 

@@ -455,7 +455,7 @@ export function FurnitureRoomPlannerWidget({
     const items = matches.length
       ? matches
           .map((r) => {
-            const link = getRealProductUrl(r.item, mergedConfig.storeDomain || mergedConfig.storeUrl, mergedConfig.platform);
+            const link = getRealProductUrl(r.item, mergedConfig.storeDomain || mergedConfig.storeUrl, mergedConfig.platform, mergedConfig.productUrlTemplate);
             return link ? `${r.item.name} - ${link}` : r.item.name;
           })
           .join('\n')
@@ -468,7 +468,7 @@ export function FurnitureRoomPlannerWidget({
     // Native share's `url` field only takes one link - use the first match
     // that actually has a real product URL.
     const firstRealLink = topMatches()
-      .map((r) => getRealProductUrl(r.item, mergedConfig.storeDomain || mergedConfig.storeUrl, mergedConfig.platform))
+      .map((r) => getRealProductUrl(r.item, mergedConfig.storeDomain || mergedConfig.storeUrl, mergedConfig.platform, mergedConfig.productUrlTemplate))
       .find((link): link is string => Boolean(link));
 
     try {
@@ -1104,6 +1104,7 @@ export function FurnitureRoomPlannerWidget({
                   analyticsContext={analyticsContext}
                   storeDomain={mergedConfig.storeDomain || mergedConfig.storeUrl}
                   platform={mergedConfig.platform}
+                  productUrlTemplate={mergedConfig.productUrlTemplate}
                 />
 
                 {enabledActions.requestQuote && recommendations.recommendations && recommendations.recommendations.length > 0 && (

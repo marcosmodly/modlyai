@@ -1,6 +1,17 @@
 export type Platform = 'shopify' | 'woocommerce' | 'custom' | 'unknown';
 
-export function buildProductUrl(domain: string, handle: string, platform?: string): string | undefined {
+export function buildProductUrl(
+  domain: string,
+  handle: string,
+  platform?: string,
+  productUrlTemplate?: string
+): string | undefined {
+  if (productUrlTemplate?.includes('{handle}')) {
+    return productUrlTemplate.split('{handle}').join(encodeURIComponent(handle));
+  }
+
+  if (!domain) return undefined;
+
   switch (platform) {
     case 'shopify':
       return `https://${domain}/products/${handle}`;

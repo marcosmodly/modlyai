@@ -245,7 +245,7 @@ export function FurnitureAIWidget({
   };
 
   const handleViewInCatalog = (item: FurnitureItem) => {
-    const catalogUrl = getRealProductUrl(item, mergedConfig.storeDomain || mergedConfig.storeUrl, mergedConfig.platform);
+    const catalogUrl = getRealProductUrl(item, mergedConfig.storeDomain || mergedConfig.storeUrl, mergedConfig.platform, mergedConfig.productUrlTemplate);
     trackWidgetEvent({
       ...analyticsContext,
       type: 'view_in_catalog_clicked',
@@ -415,6 +415,7 @@ export function FurnitureAIWidget({
                 analyticsContext={analyticsContext}
                 storeDomain={mergedConfig.storeDomain || mergedConfig.storeUrl}
                 platform={mergedConfig.platform}
+                productUrlTemplate={mergedConfig.productUrlTemplate}
                 suggestedPrompts={suggestedPrompts}
               />
             </div>

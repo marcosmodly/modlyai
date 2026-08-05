@@ -27,6 +27,7 @@ interface ConversationInterfaceProps {
   };
   storeDomain?: string;
   platform?: string;
+  productUrlTemplate?: string;
   /** Suggested prompt chips shown before the visitor sends their first message. */
   suggestedPrompts?: string[];
 }
@@ -45,6 +46,7 @@ export function ConversationInterface({
   analyticsContext,
   storeDomain,
   platform,
+  productUrlTemplate,
   suggestedPrompts,
 }: ConversationInterfaceProps) {
   const [input, setInput] = useState('');
@@ -205,6 +207,7 @@ export function ConversationInterface({
               analyticsContext={analyticsContext}
               storeDomain={storeDomain}
               platform={platform}
+              productUrlTemplate={productUrlTemplate}
             />
           ))
         )}
