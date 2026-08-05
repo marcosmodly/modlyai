@@ -27,6 +27,7 @@ import {
   generateCustomizationPdf,
 } from '../utils/customizationPdf';
 import { getRealProductUrl } from '../utils/productUrl';
+import { CUSTOMIZER_DIMENSION_UNIT, inchesToMeters, metersToInches } from '../utils/units';
 import FurnitureCustomizerPanel, {
   CustomizerDraft,
   DraftPriceBreakdown,
@@ -60,7 +61,9 @@ const createDraftForProduct = (product: Product): CustomizerDraft => ({
   selectedMaterial: getCustomizationForProduct(product).materials[0]?.name,
   widthIn: getCustomizationForProduct(product).dimensions.width?.default ?? product.customizer.defaultWidthIn,
   depthIn: getCustomizationForProduct(product).dimensions.length?.default ?? product.customizer.defaultDepthIn,
-  heightIn: getCustomizationForProduct(product).dimensions.height?.default,
+  heightIn:
+    getCustomizationForProduct(product).dimensions.height?.default ??
+    Number(metersToInches(product.dimensions.height).toFixed(1)),
   addons: { throwPillows: false, ottoman: false },
   selectedAddOns: [],
   rotationDeg: 0,
@@ -649,7 +652,7 @@ export const FurnitureCustomizerWidget = forwardRef<FurnitureCustomizerHandle, F
           length: draft.depthIn,
           width: draft.widthIn,
           height: draft.heightIn,
-          unit: customization.dimensions.width?.unit ?? customization.dimensions.length?.unit ?? 'in',
+          unit: customization.dimensions.width?.unit ?? customization.dimensions.length?.unit ?? CUSTOMIZER_DIMENSION_UNIT,
         },
         dimensionPriceAdjustments: price.dimensionAdjustments,
         addOns: selectedAddOns.map((addOn) => ({
@@ -790,13 +793,19 @@ export const FurnitureCustomizerWidget = forwardRef<FurnitureCustomizerHandle, F
     const currentMaterial = customization.materials.length > 0
       ? getMaterialOption(selectedProduct, draft.materialId)
       : undefined;
+    // These bases are all in inches, the customizer's canonical unit -
+    // width/length fall back to the product's own inch defaults, and height
+    // (which has no inch default of its own) falls back to the product's
+    // metric dimension converted to inches, so the deltas below never mix
+    // meters and inches.
     const baseWidth = customization.dimensions.width?.default ?? selectedProduct.customizer.defaultWidthIn;
     const baseLength = customization.dimensions.length?.default ?? selectedProduct.customizer.defaultDepthIn;
-    const baseHeight = customization.dimensions.height?.default ?? selectedProduct.dimensions.height;
+    const baseHeight =
+      customization.dimensions.height?.default ??
+      Number(metersToInches(selectedProduct.dimensions.height).toFixed(1));
     const widthDeltaIn = draft.widthIn - baseWidth;
     const depthDeltaIn = draft.depthIn - baseLength;
     const heightDeltaIn = (draft.heightIn ?? baseHeight) - baseHeight;
-    const inchToMeters = 0.0254;
     const selectedAddOns = customization.addOns.filter((addOn) =>
       (draft.selectedAddOns ?? []).includes(addOn.name)
     );
@@ -821,10 +830,13 @@ export const FurnitureCustomizerWidget = forwardRef<FurnitureCustomizerHandle, F
         ...(selectedProduct.materials[1] ? { legs: selectedProduct.materials[1] } : {}),
       },
       ornamentDetails,
+      // dimensionAdjustments is always in meters, matching
+      // selectedProduct.dimensions - convert the inch deltas explicitly here
+      // rather than mixing units further down the pipeline.
       dimensionAdjustments: {
-        width: Number((widthDeltaIn * inchToMeters).toFixed(3)),
-        length: Number((depthDeltaIn * inchToMeters).toFixed(3)),
-        height: Number((heightDeltaIn * inchToMeters).toFixed(3)),
+        width: Number(inchesToMeters(widthDeltaIn).toFixed(3)),
+        length: Number(inchesToMeters(depthDeltaIn).toFixed(3)),
+        height: Number(inchesToMeters(heightDeltaIn).toFixed(3)),
       },
       aiNotes: `Configurator snapshot · ${selectedProduct.name} · Total $${price.total.toLocaleString()}`,
     };
@@ -857,14 +869,22 @@ export const FurnitureCustomizerWidget = forwardRef<FurnitureCustomizerHandle, F
           ? getMaterialOption(selectedProduct, draft.materialId)?.name
           : undefined);
       const selectedShopifyOptions = getSelectedShopifyOptions(selectedProduct);
+      // Bases are in inches (the customizer's canonical unit); height falls
+      // back to the product's metric dimension converted to inches, since
+      // there's no per-product inch default for height the way there is for
+      // width/length.
       const baseWidth = customization.dimensions.width?.default ?? selectedProduct.customizer.defaultWidthIn;
       const baseLength = customization.dimensions.length?.default ?? selectedProduct.customizer.defaultDepthIn;
-      const baseHeight = customization.dimensions.height?.default ?? selectedProduct.dimensions.height;
-      const inchToMeters = 0.0254;
+      const baseHeight =
+        customization.dimensions.height?.default ??
+        Number(metersToInches(selectedProduct.dimensions.height).toFixed(1));
+      // dimensionAdjustments is always in meters, matching
+      // selectedProduct.dimensions below - convert explicitly rather than
+      // combining an inch-derived delta with a meters base.
       const dimensionAdjustments = customizedData?.dimensionAdjustments ?? {
-        width: Number(((draft.widthIn - baseWidth) * inchToMeters).toFixed(3)),
-        length: Number(((draft.depthIn - baseLength) * inchToMeters).toFixed(3)),
-        height: Number((((draft.heightIn ?? baseHeight) - baseHeight) * inchToMeters).toFixed(3)),
+        width: Number(inchesToMeters(draft.widthIn - baseWidth).toFixed(3)),
+        length: Number(inchesToMeters(draft.depthIn - baseLength).toFixed(3)),
+        height: Number(inchesToMeters((draft.heightIn ?? baseHeight) - baseHeight).toFixed(3)),
       };
       const dimensions = customizedData?.dimensions ?? {
         length: Number((selectedProduct.dimensions.length + (dimensionAdjustments.length ?? 0)).toFixed(3)),
@@ -913,7 +933,7 @@ export const FurnitureCustomizerWidget = forwardRef<FurnitureCustomizerHandle, F
           width: draft.widthIn,
           length: draft.depthIn,
           height: draft.heightIn,
-          unit: customization.dimensions.width?.unit ?? customization.dimensions.length?.unit ?? 'in',
+          unit: customization.dimensions.width?.unit ?? customization.dimensions.length?.unit ?? CUSTOMIZER_DIMENSION_UNIT,
         },
         dimensionPriceAdjustments: price.dimensionAdjustments,
         selectedAddOns,

@@ -19,6 +19,7 @@ import {
   Product,
 } from '../data/products';
 import { RoomAnalysisResponse } from '../types';
+import { metersToInches } from '../utils/units';
 import ImageLightbox from './ImageLightbox';
 
 export type CustomizerDraft = {
@@ -343,7 +344,9 @@ export default function FurnitureCustomizerPanel({
   const baseDimensions = {
     width: customization.dimensions.width?.default ?? selectedProduct?.customizer.defaultWidthIn ?? 36,
     length: customization.dimensions.length?.default ?? selectedProduct?.customizer.defaultDepthIn ?? 60,
-    height: customization.dimensions.height?.default ?? selectedProduct?.dimensions.height ?? 30,
+    height:
+      customization.dimensions.height?.default ??
+      (selectedProduct ? Number(metersToInches(selectedProduct.dimensions.height).toFixed(1)) : 30),
   };
   const widthMin = customization.dimensions.width?.min ?? baseDimensions.width;
   const widthMax = customization.dimensions.width?.max ?? baseDimensions.width;
@@ -555,7 +558,9 @@ export default function FurnitureCustomizerPanel({
                     depthIn:
                       getProductCustomization(nextProduct).dimensions.length?.default ??
                       nextProduct.customizer.defaultDepthIn,
-                    heightIn: getProductCustomization(nextProduct).dimensions.height?.default,
+                    heightIn:
+                      getProductCustomization(nextProduct).dimensions.height?.default ??
+                      Number(metersToInches(nextProduct.dimensions.height).toFixed(1)),
                     selectedAddOns: [],
                   });
                 }}

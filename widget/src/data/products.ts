@@ -256,9 +256,19 @@ const clampRange = (base: number, delta: number, minimum: number): [number, numb
   return [min, max];
 };
 
-const twentyPercentRange = (base: number, minimum: number): [number, number] => {
-  const min = Math.max(minimum, Math.round(base * 0.8));
-  const max = Math.max(min + 1, Math.round(base * 1.2));
+// Builds a +/-20%-ish slider range around `base`, widened to at least
+// `minimumSpan` inches so small products don't get a degenerate sliver of a
+// range. `minimumSpan` is a span, not a floor on the min bound - unlike an
+// absolute floor, this can never push the range's min above `base` itself,
+// which would make the slider unable to represent the product's own size.
+const twentyPercentRange = (base: number, minimumSpan: number): [number, number] => {
+  const naturalSpan = Math.round(base * 1.2) - Math.round(base * 0.8);
+  const span = Math.max(minimumSpan, naturalSpan);
+  // Clamped against `base` itself (not just a bare floor) so a tiny or
+  // zero base can never end up above its own min - that would recreate the
+  // "slider min sits above the product's actual size" bug this replaced.
+  const min = Math.max(0, Math.min(base, Math.round(base - span / 2)));
+  const max = Math.max(base, min + 1, Math.round(base + span / 2));
   return [min, max];
 };
 
@@ -607,10 +617,13 @@ export function productFromFurnitureItem(item: FurnitureItem): Product {
     )
   );
 
-  const widthIn = Math.max(18, Math.round(metersToInches(item.dimensions.width || 0.9)));
-  const depthIn = Math.max(
-    18,
-    Math.round(metersToInches(item.dimensions.depth || item.dimensions.length || 0.9))
+  // True product dimensions, rounded but not floored - defaultWidthIn/
+  // defaultDepthIn below feed the quote, PDF, and room planner, so they must
+  // match the product's real size. The 18in floor only belongs on the slider
+  // range (see twentyPercentRange), not on the value itself.
+  const widthIn = Math.round(metersToInches(item.dimensions.width || 0.9));
+  const depthIn = Math.round(
+    metersToInches(item.dimensions.depth || item.dimensions.length || 0.9)
   );
 
   return {
@@ -716,14 +729,23 @@ export function productFromCatalogProduct(product: any, index = 0): Product {
       thumbnail: image,
     },
     tags: Array.isArray(product?.tags) ? product.tags : [],
-    customizer: {
-      type: normalizeProductType(String(product?.category ?? 'Furniture')),
-      thumbnailLabel: String(product?.category ?? 'Furniture'),
-      defaultWidthIn: Math.max(18, Math.round(widthIn || 36)),
-      defaultDepthIn: Math.max(18, Math.round(lengthIn || 36)),
-      widthRangeIn: twentyPercentRange(Math.max(18, Math.round(widthIn || 36)), 18),
-      depthRangeIn: twentyPercentRange(Math.max(18, Math.round(lengthIn || 36)), 18),
-      materialOptions: productMaterialOptions(materials),
-    },
+    customizer: (() => {
+      // True product dimensions (36in placeholder only when no width/length
+      // was supplied at all) - not floored to 18in. defaultWidthIn/
+      // defaultDepthIn feed the quote, PDF, and room planner, so they must
+      // match the product's real size; the 18in floor only belongs on the
+      // slider range (see twentyPercentRange), not on the value itself.
+      const trueWidthIn = Math.round(widthIn || 36);
+      const trueDepthIn = Math.round(lengthIn || 36);
+      return {
+        type: normalizeProductType(String(product?.category ?? 'Furniture')),
+        thumbnailLabel: String(product?.category ?? 'Furniture'),
+        defaultWidthIn: trueWidthIn,
+        defaultDepthIn: trueDepthIn,
+        widthRangeIn: twentyPercentRange(trueWidthIn, 18),
+        depthRangeIn: twentyPercentRange(trueDepthIn, 18),
+        materialOptions: productMaterialOptions(materials),
+      };
+    })(),
   };
 }

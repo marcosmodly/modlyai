@@ -7,6 +7,7 @@ import {
   RoomDimensions,
 } from '../types';
 import { useWebsiteColors } from '../utils/useWebsiteColors';
+import { CANONICAL_DIMENSION_UNIT } from '../utils/units';
 
 interface QuoteSubmitResult {
   success?: boolean;
@@ -48,7 +49,7 @@ const formatDimensions = (
     | undefined
 ) => {
   if (!dimensions) return undefined;
-  const unit = dimensions.unit || 'm';
+  const unit = dimensions.unit || CANONICAL_DIMENSION_UNIT;
   const rows = [
     dimensions.length !== undefined ? `Length: ${dimensions.length} ${unit}` : undefined,
     dimensions.width !== undefined ? `Width: ${dimensions.width} ${unit}` : undefined,

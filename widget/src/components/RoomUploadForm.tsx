@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { RoomDimensions, RoomPreferences } from '../types';
+import { metersToInches, inchesToMeters } from '../utils/units';
 
 interface RoomUploadFormProps {
   onUpload: (photos: File[], dimensions: RoomDimensions, preferences?: RoomPreferences) => void;
@@ -17,8 +18,6 @@ type UnitSystem = 'meters' | 'feet';
 // Conversion functions
 const metersToFeet = (meters: number): number => meters * 3.28084;
 const feetToMeters = (feet: number): number => feet / 3.28084;
-const metersToInches = (meters: number): number => meters * 39.3701;
-const inchesToMeters = (inches: number): number => inches / 39.3701;
 
 // Convert feet and inches to meters
 const feetInchesToMeters = (feet: number, inches: number): number => {

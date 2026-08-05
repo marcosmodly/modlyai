@@ -3211,6 +3211,21 @@ function ImageLightbox({ src, alt, onClose }) {
     return (jsxRuntimeExports.jsxs("div", { className: "fixed inset-0 z-[70] flex items-center justify-center bg-black/80 p-4", onClick: onClose, role: "dialog", "aria-modal": "true", "aria-label": alt || 'Image preview', children: [jsxRuntimeExports.jsx("button", { type: "button", onClick: onClose, className: "absolute right-4 top-4 rounded-full bg-white/10 p-2 text-white transition hover:bg-white/20", "aria-label": "Close image preview", children: jsxRuntimeExports.jsx(X, { className: "h-6 w-6" }) }), jsxRuntimeExports.jsx("img", { src: src, alt: alt || '', onClick: (event) => event.stopPropagation(), className: "max-h-full max-w-full rounded-lg object-contain shadow-2xl" })] }));
 }
 
+// Shared length-unit conversion for the customizer, which works in inches
+// (widthIn/depthIn/heightIn), and product/room data, which is stored in
+// meters. Keep all inch<->meter conversion behind these named helpers so the
+// two units never get combined inline (e.g. a meters value plus an
+// inches-derived delta).
+const INCHES_PER_METER = 39.3701;
+const metersToInches$1 = (meters) => meters * INCHES_PER_METER;
+const inchesToMeters$1 = (inches) => inches / INCHES_PER_METER;
+// The unit the customizer's draft dimensions (widthIn/depthIn/heightIn) and
+// selectedDimensions are always expressed in.
+const CUSTOMIZER_DIMENSION_UNIT = 'in';
+// The unit selectedProduct.dimensions and CustomizedFurnitureItem.dimensions
+// are always expressed in.
+const CANONICAL_DIMENSION_UNIT = 'm';
+
 const getCustomizationChoiceName = (value) => typeof value === 'string' ? value : value?.name;
 const formatCurrency$1 = (value) => typeof value === 'number' && Number.isFinite(value) ? `$${value.toLocaleString()}` : undefined;
 const formatChoice = (value) => {
@@ -3223,7 +3238,7 @@ const formatChoice = (value) => {
 const formatDimensions$1 = (dimensions) => {
     if (!dimensions)
         return undefined;
-    const unit = dimensions.unit || 'm';
+    const unit = dimensions.unit || CANONICAL_DIMENSION_UNIT;
     const rows = [
         dimensions.length !== undefined ? `Length: ${dimensions.length} ${unit}` : undefined,
         dimensions.width !== undefined ? `Width: ${dimensions.width} ${unit}` : undefined,
@@ -4210,9 +4225,19 @@ const resolveColorHex = (colorName, index) => {
 };
 const metersToInches = (value) => Number((value / 0.0254).toFixed(1));
 const inchesToMeters = (value) => Number((value * 0.0254).toFixed(3));
-const twentyPercentRange = (base, minimum) => {
-    const min = Math.max(minimum, Math.round(base * 0.8));
-    const max = Math.max(min + 1, Math.round(base * 1.2));
+// Builds a +/-20%-ish slider range around `base`, widened to at least
+// `minimumSpan` inches so small products don't get a degenerate sliver of a
+// range. `minimumSpan` is a span, not a floor on the min bound - unlike an
+// absolute floor, this can never push the range's min above `base` itself,
+// which would make the slider unable to represent the product's own size.
+const twentyPercentRange = (base, minimumSpan) => {
+    const naturalSpan = Math.round(base * 1.2) - Math.round(base * 0.8);
+    const span = Math.max(minimumSpan, naturalSpan);
+    // Clamped against `base` itself (not just a bare floor) so a tiny or
+    // zero base can never end up above its own min - that would recreate the
+    // "slider min sits above the product's actual size" bug this replaced.
+    const min = Math.max(0, Math.min(base, Math.round(base - span / 2)));
+    const max = Math.max(base, min + 1, Math.round(base + span / 2));
     return [min, max];
 };
 const normalizeProductType = (category) => {
@@ -4460,8 +4485,12 @@ function productFromFurnitureItem(item) {
             ? [rawItem.colors.main, rawItem.colors.accent]
             : []),
     ].filter((value) => Boolean(value))));
-    const widthIn = Math.max(18, Math.round(metersToInches(item.dimensions.width || 0.9)));
-    const depthIn = Math.max(18, Math.round(metersToInches(item.dimensions.depth || item.dimensions.length || 0.9)));
+    // True product dimensions, rounded but not floored - defaultWidthIn/
+    // defaultDepthIn below feed the quote, PDF, and room planner, so they must
+    // match the product's real size. The 18in floor only belongs on the slider
+    // range (see twentyPercentRange), not on the value itself.
+    const widthIn = Math.round(metersToInches(item.dimensions.width || 0.9));
+    const depthIn = Math.round(metersToInches(item.dimensions.depth || item.dimensions.length || 0.9));
     return {
         id: item.id,
         name: item.name,
@@ -4560,15 +4589,24 @@ function productFromCatalogProduct(product, index = 0) {
             thumbnail: image,
         },
         tags: Array.isArray(product?.tags) ? product.tags : [],
-        customizer: {
-            type: normalizeProductType(String(product?.category ?? 'Furniture')),
-            thumbnailLabel: String(product?.category ?? 'Furniture'),
-            defaultWidthIn: Math.max(18, Math.round(widthIn || 36)),
-            defaultDepthIn: Math.max(18, Math.round(lengthIn || 36)),
-            widthRangeIn: twentyPercentRange(Math.max(18, Math.round(widthIn || 36)), 18),
-            depthRangeIn: twentyPercentRange(Math.max(18, Math.round(lengthIn || 36)), 18),
-            materialOptions: productMaterialOptions(materials),
-        },
+        customizer: (() => {
+            // True product dimensions (36in placeholder only when no width/length
+            // was supplied at all) - not floored to 18in. defaultWidthIn/
+            // defaultDepthIn feed the quote, PDF, and room planner, so they must
+            // match the product's real size; the 18in floor only belongs on the
+            // slider range (see twentyPercentRange), not on the value itself.
+            const trueWidthIn = Math.round(widthIn || 36);
+            const trueDepthIn = Math.round(lengthIn || 36);
+            return {
+                type: normalizeProductType(String(product?.category ?? 'Furniture')),
+                thumbnailLabel: String(product?.category ?? 'Furniture'),
+                defaultWidthIn: trueWidthIn,
+                defaultDepthIn: trueDepthIn,
+                widthRangeIn: twentyPercentRange(trueWidthIn, 18),
+                depthRangeIn: twentyPercentRange(trueDepthIn, 18),
+                materialOptions: productMaterialOptions(materials),
+            };
+        })(),
     };
 }
 
@@ -4603,7 +4641,7 @@ const formatPriceModifier = (value) => {
 const formatDimensions = (dimensions) => {
     if (!dimensions)
         return [];
-    const unit = dimensions.unit || 'in';
+    const unit = dimensions.unit || CUSTOMIZER_DIMENSION_UNIT;
     return [
         dimensions.length !== undefined ? { label: 'Length', value: `${dimensions.length} ${unit}` } : undefined,
         dimensions.width !== undefined ? { label: 'Width', value: `${dimensions.width} ${unit}` } : undefined,
@@ -5050,7 +5088,8 @@ function FurnitureCustomizerPanel({ products, draft, setDraft, isApplying, valid
     const baseDimensions = {
         width: customization.dimensions.width?.default ?? selectedProduct?.customizer.defaultWidthIn ?? 36,
         length: customization.dimensions.length?.default ?? selectedProduct?.customizer.defaultDepthIn ?? 60,
-        height: customization.dimensions.height?.default ?? selectedProduct?.dimensions.height ?? 30,
+        height: customization.dimensions.height?.default ??
+            (selectedProduct ? Number(metersToInches$1(selectedProduct.dimensions.height).toFixed(1)) : 30),
     };
     const widthMin = customization.dimensions.width?.min ?? baseDimensions.width;
     const widthMax = customization.dimensions.width?.max ?? baseDimensions.width;
@@ -5196,7 +5235,8 @@ function FurnitureCustomizerPanel({ products, draft, setDraft, isApplying, valid
                                                             nextProduct.customizer.defaultWidthIn,
                                                         depthIn: getProductCustomization(nextProduct).dimensions.length?.default ??
                                                             nextProduct.customizer.defaultDepthIn,
-                                                        heightIn: getProductCustomization(nextProduct).dimensions.height?.default,
+                                                        heightIn: getProductCustomization(nextProduct).dimensions.height?.default ??
+                                                            Number(metersToInches$1(nextProduct.dimensions.height).toFixed(1)),
                                                         selectedAddOns: [],
                                                     });
                                                 }, disabled: isApplying, className: "w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 mb-6 disabled:opacity-60", children: products.map((p) => (jsxRuntimeExports.jsx("option", { value: p.id, children: p.name }, p.id))) }), jsxRuntimeExports.jsx("div", { className: "relative aspect-square bg-purple-50 rounded-lg mb-6 flex flex-col items-center justify-center border border-purple-200 text-center px-4 overflow-hidden", children: selectedProduct && getProductImageUrl$1(selectedProduct) && !productImageErrors.has(selectedProduct.id) ? (jsxRuntimeExports.jsxs("button", { type: "button", onClick: () => setLightboxImage(getProductImageUrl$1(selectedProduct) ?? null), className: "group relative h-full w-full cursor-zoom-in", "aria-label": `View full-size photo of ${selectedProduct.name}`, children: [jsxRuntimeExports.jsx("img", { src: getProductImageUrl$1(selectedProduct), alt: selectedProduct.name, className: "h-full w-full object-cover", onError: () => setProductImageErrors((prev) => {
@@ -5293,7 +5333,8 @@ const createDraftForProduct = (product) => ({
     selectedMaterial: getCustomizationForProduct(product).materials[0]?.name,
     widthIn: getCustomizationForProduct(product).dimensions.width?.default ?? product.customizer.defaultWidthIn,
     depthIn: getCustomizationForProduct(product).dimensions.length?.default ?? product.customizer.defaultDepthIn,
-    heightIn: getCustomizationForProduct(product).dimensions.height?.default,
+    heightIn: getCustomizationForProduct(product).dimensions.height?.default ??
+        Number(metersToInches$1(product.dimensions.height).toFixed(1)),
     addons: { throwPillows: false, ottoman: false },
     selectedAddOns: [],
     rotationDeg: 0,
@@ -5764,7 +5805,7 @@ const FurnitureCustomizerWidget = require$$0.forwardRef(function FurnitureCustom
                     length: draft.depthIn,
                     width: draft.widthIn,
                     height: draft.heightIn,
-                    unit: customization.dimensions.width?.unit ?? customization.dimensions.length?.unit ?? 'in',
+                    unit: customization.dimensions.width?.unit ?? customization.dimensions.length?.unit ?? CUSTOMIZER_DIMENSION_UNIT,
                 },
                 dimensionPriceAdjustments: price.dimensionAdjustments,
                 addOns: selectedAddOns.map((addOn) => ({
@@ -5896,13 +5937,18 @@ const FurnitureCustomizerWidget = require$$0.forwardRef(function FurnitureCustom
         const currentMaterial = customization.materials.length > 0
             ? getMaterialOption(selectedProduct, draft.materialId)
             : undefined;
+        // These bases are all in inches, the customizer's canonical unit -
+        // width/length fall back to the product's own inch defaults, and height
+        // (which has no inch default of its own) falls back to the product's
+        // metric dimension converted to inches, so the deltas below never mix
+        // meters and inches.
         const baseWidth = customization.dimensions.width?.default ?? selectedProduct.customizer.defaultWidthIn;
         const baseLength = customization.dimensions.length?.default ?? selectedProduct.customizer.defaultDepthIn;
-        const baseHeight = customization.dimensions.height?.default ?? selectedProduct.dimensions.height;
+        const baseHeight = customization.dimensions.height?.default ??
+            Number(metersToInches$1(selectedProduct.dimensions.height).toFixed(1));
         const widthDeltaIn = draft.widthIn - baseWidth;
         const depthDeltaIn = draft.depthIn - baseLength;
         const heightDeltaIn = (draft.heightIn ?? baseHeight) - baseHeight;
-        const inchToMeters = 0.0254;
         const selectedAddOns = customization.addOns.filter((addOn) => (draft.selectedAddOns ?? []).includes(addOn.name));
         const ornamentDetails = selectedAddOns.map((addOn) => addOn.name);
         return {
@@ -5924,10 +5970,13 @@ const FurnitureCustomizerWidget = require$$0.forwardRef(function FurnitureCustom
                 ...(selectedProduct.materials[1] ? { legs: selectedProduct.materials[1] } : {}),
             },
             ornamentDetails,
+            // dimensionAdjustments is always in meters, matching
+            // selectedProduct.dimensions - convert the inch deltas explicitly here
+            // rather than mixing units further down the pipeline.
             dimensionAdjustments: {
-                width: Number((widthDeltaIn * inchToMeters).toFixed(3)),
-                length: Number((depthDeltaIn * inchToMeters).toFixed(3)),
-                height: Number((heightDeltaIn * inchToMeters).toFixed(3)),
+                width: Number(inchesToMeters$1(widthDeltaIn).toFixed(3)),
+                length: Number(inchesToMeters$1(depthDeltaIn).toFixed(3)),
+                height: Number(inchesToMeters$1(heightDeltaIn).toFixed(3)),
             },
             aiNotes: `Configurator snapshot · ${selectedProduct.name} · Total $${price.total.toLocaleString()}`,
         };
@@ -5948,14 +5997,21 @@ const FurnitureCustomizerWidget = require$$0.forwardRef(function FurnitureCustom
                 ? getMaterialOption(selectedProduct, draft.materialId)?.name
                 : undefined);
         const selectedShopifyOptions = getSelectedShopifyOptions(selectedProduct);
+        // Bases are in inches (the customizer's canonical unit); height falls
+        // back to the product's metric dimension converted to inches, since
+        // there's no per-product inch default for height the way there is for
+        // width/length.
         const baseWidth = customization.dimensions.width?.default ?? selectedProduct.customizer.defaultWidthIn;
         const baseLength = customization.dimensions.length?.default ?? selectedProduct.customizer.defaultDepthIn;
-        const baseHeight = customization.dimensions.height?.default ?? selectedProduct.dimensions.height;
-        const inchToMeters = 0.0254;
+        const baseHeight = customization.dimensions.height?.default ??
+            Number(metersToInches$1(selectedProduct.dimensions.height).toFixed(1));
+        // dimensionAdjustments is always in meters, matching
+        // selectedProduct.dimensions below - convert explicitly rather than
+        // combining an inch-derived delta with a meters base.
         const dimensionAdjustments = customizedData?.dimensionAdjustments ?? {
-            width: Number(((draft.widthIn - baseWidth) * inchToMeters).toFixed(3)),
-            length: Number(((draft.depthIn - baseLength) * inchToMeters).toFixed(3)),
-            height: Number((((draft.heightIn ?? baseHeight) - baseHeight) * inchToMeters).toFixed(3)),
+            width: Number(inchesToMeters$1(draft.widthIn - baseWidth).toFixed(3)),
+            length: Number(inchesToMeters$1(draft.depthIn - baseLength).toFixed(3)),
+            height: Number(inchesToMeters$1((draft.heightIn ?? baseHeight) - baseHeight).toFixed(3)),
         };
         const dimensions = customizedData?.dimensions ?? {
             length: Number((selectedProduct.dimensions.length + (dimensionAdjustments.length ?? 0)).toFixed(3)),
@@ -6000,7 +6056,7 @@ const FurnitureCustomizerWidget = require$$0.forwardRef(function FurnitureCustom
                 width: draft.widthIn,
                 length: draft.depthIn,
                 height: draft.heightIn,
-                unit: customization.dimensions.width?.unit ?? customization.dimensions.length?.unit ?? 'in',
+                unit: customization.dimensions.width?.unit ?? customization.dimensions.length?.unit ?? CUSTOMIZER_DIMENSION_UNIT,
             },
             dimensionPriceAdjustments: price.dimensionAdjustments,
             selectedAddOns,

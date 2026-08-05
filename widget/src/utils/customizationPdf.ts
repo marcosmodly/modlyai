@@ -1,3 +1,5 @@
+import { CUSTOMIZER_DIMENSION_UNIT } from './units';
+
 export interface CustomizationPdfRow {
   label: string;
   value: string;
@@ -93,7 +95,7 @@ export const formatDimensions = (
   dimensions: CustomizationPdfInput['selectedCustomizations']['dimensions']
 ): CustomizationPdfRow[] => {
   if (!dimensions) return [];
-  const unit = dimensions.unit || 'in';
+  const unit = dimensions.unit || CUSTOMIZER_DIMENSION_UNIT;
   return [
     dimensions.length !== undefined ? { label: 'Length', value: `${dimensions.length} ${unit}` } : undefined,
     dimensions.width !== undefined ? { label: 'Width', value: `${dimensions.width} ${unit}` } : undefined,
