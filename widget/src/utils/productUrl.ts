@@ -1,3 +1,5 @@
+import { buildProductUrl, buildSearchUrl } from './platformUrls'
+
 const PLACEHOLDER_HOSTS = new Set([
   'yourstore.com',
   'www.yourstore.com',
@@ -81,6 +83,7 @@ function normalizeDomain(storeDomain?: string): string | undefined {
 export function getRealProductUrl(
   product: { productUrl?: string; url?: string; handle?: string; name?: string },
   storeDomain?: string,
+  platform?: string,
 ): string | undefined {
   const productUrl = product.productUrl?.trim()
   if (isRealProductUrl(productUrl)) return productUrl
@@ -91,18 +94,20 @@ export function getRealProductUrl(
   const domain = normalizeDomain(storeDomain)
   if (!domain) return undefined
 
-  // Tier 2 - build from handle, same shape shopify/sync already uses
+  // Tier 2 - build from handle, platform-specific URL shape. Returns
+  // undefined for unknown platforms rather than guessing a shape that
+  // might 404 on the merchant's storefront.
   const handle = product.handle?.trim()
   if (handle) {
-    const built = `https://${domain}/products/${handle}`
-    if (isRealProductUrl(built)) return built
+    const built = buildProductUrl(domain, handle, platform)
+    if (built && isRealProductUrl(built)) return built
   }
 
   // Tier 3 - fall back to the store's own search
   const name = product.name?.trim()
   if (name) {
-    const search = `https://${domain}/search?q=${encodeURIComponent(name)}`
-    if (isRealProductUrl(search)) return search
+    const search = buildSearchUrl(domain, name, platform)
+    if (search && isRealProductUrl(search)) return search
   }
 
   return undefined

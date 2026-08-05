@@ -15,7 +15,8 @@ interface RecommendationsListProps {
         widgetId?: string;
     };
     storeDomain?: string;
+    platform?: string;
 }
-export default function RecommendationsList({ recommendations, onCustomize, onFinalize, enabledActions, primaryColor, analyticsContext, storeDomain }: RecommendationsListProps): import("react/jsx-runtime").JSX.Element;
+export default function RecommendationsList({ recommendations, onCustomize, onFinalize, enabledActions, primaryColor, analyticsContext, storeDomain, platform }: RecommendationsListProps): import("react/jsx-runtime").JSX.Element;
 export {};
 //# sourceMappingURL=RecommendationsList.d.ts.map

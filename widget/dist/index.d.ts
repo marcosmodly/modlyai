@@ -447,6 +447,7 @@ interface WidgetConfig {
     apiKey?: string;
     publicApiKey?: string;
     storeDomain?: string;
+    platform?: string;
     configUrl?: string;
     widgetId?: string;
     apiEndpoints?: {

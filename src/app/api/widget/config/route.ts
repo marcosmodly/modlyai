@@ -4,6 +4,7 @@ import { normalizeStorePublicIdentity, type CurrentStore } from '@/lib/current-s
 import { adminDb } from '@/lib/instant-admin'
 import { publicWidgetOptionsResponse, withPublicWidgetCors } from '@/lib/public-widget-cors'
 import { getBillingAccess } from '@/lib/billing/access'
+import { resolveStorePlatform } from '@/lib/platformUrls'
 
 export const dynamic = 'force-dynamic'
 
@@ -215,6 +216,7 @@ async function handleGET(req: Request) {
       publicApiKey: readText(store.apiKey),
       apiKey: readText(store.apiKey),
       storeDomain: storeUrl || null,
+      platform: resolveStorePlatform(store),
       store: {
         id: store.id,
         name: storeName,

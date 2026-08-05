@@ -64,6 +64,35 @@ function shouldWarnInDevelopment() {
   return ['localhost', '127.0.0.1'].includes(window.location.hostname);
 }
 
+// Only pushes when a host tag manager already initialized dataLayer as an
+// array - never creates it ourselves. Wrapped defensively because other tags
+// on the merchant's site can proxy or freeze dataLayer, and a failure here
+// must never break the widget.
+function pushToDataLayer(payload: {
+  storeId: string;
+  sessionId: string;
+  type: WidgetAnalyticsEventType;
+  productId?: string;
+  productName?: string;
+}) {
+  if (typeof window === 'undefined') return;
+
+  try {
+    const dataLayer = (window as any).dataLayer;
+    if (!Array.isArray(dataLayer)) return;
+
+    dataLayer.push({
+      event: `modly_${payload.type}`,
+      modly_store_id: payload.storeId,
+      modly_session_id: payload.sessionId,
+      modly_product_id: payload.productId,
+      modly_product_name: payload.productName,
+    });
+  } catch {
+    // Ignore - a hostile or broken dataLayer on the merchant's site must not break the widget.
+  }
+}
+
 export function trackWidgetEvent({
   storeId,
   widgetId,
@@ -76,15 +105,25 @@ export function trackWidgetEvent({
 }: WidgetAnalyticsPayload) {
   if (!storeId || typeof window === 'undefined') return;
 
+  const resolvedSessionId = sessionId || getWidgetSessionId();
+
   const payload = {
     storeId,
     widgetId,
-    sessionId: sessionId || getWidgetSessionId(),
+    sessionId: resolvedSessionId,
     type,
     productId,
     productName,
     metadata,
   };
+
+  pushToDataLayer({
+    storeId,
+    sessionId: resolvedSessionId,
+    type,
+    productId,
+    productName,
+  });
 
   window.setTimeout(() => {
     try {

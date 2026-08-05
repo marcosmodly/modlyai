@@ -8,6 +8,7 @@ import {
 } from '@/lib/product-dedupe'
 import { buildCustomizationOptionsFromFlatFields } from '@/lib/product-customization'
 import { checkProductLimit, findStoreForUsage } from '@/lib/usage-limits'
+import { buildProductUrl, resolveStorePlatform } from '@/lib/platformUrls'
 
 type CsvRow = Record<string, string | undefined>
 
@@ -78,6 +79,7 @@ export async function POST(req: Request) {
 
     const usageStore = await findStoreForUsage({ storeId })
     const storeDomain = usableStoreDomain((usageStore as any)?.domain)
+    const storePlatform = resolveStorePlatform(usageStore)
     const existingResult = await db.query({
       products: {
         $: { where: { storeId } },
@@ -95,9 +97,10 @@ export async function POST(req: Request) {
     const productWrites = records.map((row: CsvRow) => {
       const rawProductUrl = readCsvString(row, 'productUrl', 'url')
       const handle = readCsvString(row, 'handle')
-      // Reuse the same handle -> URL shape as shopify/sync/route.ts so the two
-      // import paths cannot drift.
-      const productUrl = rawProductUrl || (handle && storeDomain ? `https://${storeDomain}/products/${handle}` : '')
+      // Platform-specific URL shape - returns undefined (not a guess) when
+      // the store's platform isn't known, same as the widget's fallback.
+      const builtUrl = handle && storeDomain ? buildProductUrl(storeDomain, handle, storePlatform) : undefined
+      const productUrl = rawProductUrl || builtUrl || ''
       if (!productUrl) missingProductUrlCount += 1
       const identityInput = {
         storeId,

@@ -21,6 +21,7 @@ export interface WidgetConfig {
     apiKey?: string;
     publicApiKey?: string;
     storeDomain?: string;
+    platform?: string;
     configUrl?: string;
     widgetId?: string;
     apiEndpoints?: {
@@ -64,7 +65,7 @@ export declare const DEFAULT_ENABLED_ACTIONS: {
     customize: boolean;
     requestQuote: boolean;
 };
-export declare const defaultConfig: Required<Omit<WidgetConfig, 'apiBaseUrl' | 'storeId' | 'shop' | 'apiKey' | 'publicApiKey' | 'storeDomain' | 'configUrl' | 'widgetId' | 'onError' | 'onRoomAnalyzed' | 'onFurnitureCustomized' | 'theme' | 'catalog'>>;
+export declare const defaultConfig: Required<Omit<WidgetConfig, 'apiBaseUrl' | 'storeId' | 'shop' | 'apiKey' | 'publicApiKey' | 'storeDomain' | 'platform' | 'configUrl' | 'widgetId' | 'onError' | 'onRoomAnalyzed' | 'onFurnitureCustomized' | 'theme' | 'catalog'>>;
 export declare function mergeConfig(userConfig?: WidgetConfig): WidgetConfig;
 export declare function getWidgetTitle(config?: WidgetConfig): string;
 export declare function getPrimaryColor(config?: WidgetConfig): string;

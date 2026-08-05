@@ -17,7 +17,8 @@ interface MessageBubbleProps {
         widgetId?: string;
     };
     storeDomain?: string;
+    platform?: string;
 }
-export declare function MessageBubble({ message, onCustomizeItem, onAddToRoomPlanner, onViewInCatalog, enabledActions, primaryColor, messageTextColor, analyticsContext, storeDomain }: MessageBubbleProps): import("react/jsx-runtime").JSX.Element;
+export declare function MessageBubble({ message, onCustomizeItem, onAddToRoomPlanner, onViewInCatalog, enabledActions, primaryColor, messageTextColor, analyticsContext, storeDomain, platform }: MessageBubbleProps): import("react/jsx-runtime").JSX.Element;
 export {};
 //# sourceMappingURL=MessageBubble.d.ts.map

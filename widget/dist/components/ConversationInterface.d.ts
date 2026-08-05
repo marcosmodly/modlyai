@@ -21,9 +21,10 @@ interface ConversationInterfaceProps {
         widgetId?: string;
     };
     storeDomain?: string;
+    platform?: string;
     /** Suggested prompt chips shown before the visitor sends their first message. */
     suggestedPrompts?: string[];
 }
-export declare function ConversationInterface({ aiService, onCustomizeItem, onAddToRoomPlanner, onOpenRoomPlanner, onOpenCustomizer, onShowCatalog, onViewInCatalog, enabledActions, primaryColor, messageTextColor, analyticsContext, storeDomain, suggestedPrompts, }: ConversationInterfaceProps): import("react/jsx-runtime").JSX.Element;
+export declare function ConversationInterface({ aiService, onCustomizeItem, onAddToRoomPlanner, onOpenRoomPlanner, onOpenCustomizer, onShowCatalog, onViewInCatalog, enabledActions, primaryColor, messageTextColor, analyticsContext, storeDomain, platform, suggestedPrompts, }: ConversationInterfaceProps): import("react/jsx-runtime").JSX.Element;
 export {};
 //# sourceMappingURL=ConversationInterface.d.ts.map

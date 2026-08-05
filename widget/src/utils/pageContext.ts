@@ -61,12 +61,21 @@ export class PageContextExtractor {
         const url = new URL(context.currentUrl);
         const pathname = url.pathname.toLowerCase();
         
-        if (pathname.includes('/product/') || pathname.includes('/products/') || pathname.includes('/item/')) {
+        // Checked before the product branch: WooCommerce's /product-category/
+        // and /product-tag/ both contain "/product" as a substring, which
+        // would otherwise misfire the '/product/' check below.
+        if (
+          pathname.includes('/category/') ||
+          pathname.includes('/collection/') ||
+          pathname.includes('/collections/') ||
+          pathname.includes('/product-category/') ||
+          pathname.includes('/product-tag/')
+        ) {
+          context.pageType = 'category';
+        } else if (pathname.includes('/product/') || pathname.includes('/products/') || pathname.includes('/item/')) {
           context.pageType = 'product';
         } else if (pathname.includes('/catalog/') || pathname.includes('/shop/')) {
           context.pageType = 'catalog';
-        } else if (pathname.includes('/category/') || pathname.includes('/collection/') || pathname.includes('/collections/')) {
-          context.pageType = 'category';
         } else if (pathname === '/' || pathname === '/index') {
           context.pageType = 'home';
         } else {

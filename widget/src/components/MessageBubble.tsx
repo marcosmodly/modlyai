@@ -22,9 +22,10 @@ interface MessageBubbleProps {
     widgetId?: string;
   };
   storeDomain?: string;
+  platform?: string;
 }
 
-export function MessageBubble({ message, onCustomizeItem, onAddToRoomPlanner, onViewInCatalog, enabledActions, primaryColor, messageTextColor, analyticsContext, storeDomain }: MessageBubbleProps) {
+export function MessageBubble({ message, onCustomizeItem, onAddToRoomPlanner, onViewInCatalog, enabledActions, primaryColor, messageTextColor, analyticsContext, storeDomain, platform }: MessageBubbleProps) {
   const isUser = message.role === 'user';
   const isThinking = message.type === 'thinking';
   const actions = enabledActions ?? { viewInCatalog: true, customize: true, requestQuote: true };
@@ -66,6 +67,7 @@ export function MessageBubble({ message, onCustomizeItem, onAddToRoomPlanner, on
                     primaryColor={primaryColor}
                     analyticsContext={analyticsContext}
                     storeDomain={storeDomain}
+                    platform={platform}
                   />
                 ))}
               </div>
@@ -87,8 +89,8 @@ export function MessageBubble({ message, onCustomizeItem, onAddToRoomPlanner, on
   );
 }
 
-function getProductCatalogUrl(item: FurnitureItem, storeDomain?: string) {
-  return getRealProductUrl(item, storeDomain);
+function getProductCatalogUrl(item: FurnitureItem, storeDomain?: string, platform?: string) {
+  return getRealProductUrl(item, storeDomain, platform);
 }
 
 function RecommendationCard({
@@ -100,6 +102,7 @@ function RecommendationCard({
   primaryColor,
   analyticsContext,
   storeDomain,
+  platform,
 }: {
   recommendation: Recommendation;
   onCustomize?: (item: any) => void;
@@ -117,9 +120,10 @@ function RecommendationCard({
     widgetId?: string;
   };
   storeDomain?: string;
+  platform?: string;
 }) {
   const item = recommendation.item;
-  const catalogUrl = getProductCatalogUrl(item, storeDomain);
+  const catalogUrl = getProductCatalogUrl(item, storeDomain, platform);
   const accentColor = primaryColor || '#3B82F6';
   const accentTextColor = getReadableTextColor(accentColor);
   const thumbnail = (item as any).images?.[0] || (item as any).imageUrl || (item as any).image;
