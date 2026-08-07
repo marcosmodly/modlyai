@@ -130,6 +130,29 @@ export async function POST(request: NextRequest) {
       adminDb.tx.stores[storeId].link({ events: eventId }),
     ])
 
+    if (type === 'widget_opened') {
+      // Latch the dashboard onboarding checklist's "Test your live widget"
+      // item the first time it fires - it must never flip back to incomplete
+      // just because 7 days pass with no further activity. Only queried for
+      // this event type to avoid the extra read on every other event.
+      //
+      // Deliberately outside the event's own transact and wrapped separately:
+      // if this write fails validation (e.g. the widgetVerifiedAt schema
+      // field hasn't been pushed yet), the event above must still be
+      // recorded - losing the flag is fine, losing shopper analytics is not.
+      try {
+        const storeResult = await adminDb.query({
+          stores: { $: { where: { id: storeId } } },
+        })
+        const store = storeResult.stores?.[0] as { widgetVerifiedAt?: string } | undefined
+        if (store && !store.widgetVerifiedAt) {
+          await adminDb.transact([adminDb.tx.stores[storeId].update({ widgetVerifiedAt: createdAt })])
+        }
+      } catch (latchError) {
+        console.error('widgetVerifiedAt latch failed:', latchError)
+      }
+    }
+
     return jsonResponse({ success: true, eventId })
   } catch (error) {
     console.error('Analytics failed:', error)

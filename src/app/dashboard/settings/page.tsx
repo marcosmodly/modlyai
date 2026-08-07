@@ -35,6 +35,7 @@ export default async function SettingsPage() {
   const deleteSection = <DeleteAccountSection />
 
   if (!session.user.storeId) {
+    console.error('[no-store] user has no store', { userId: session.user.id, page: 'Settings' })
     return (
       <div className="space-y-6">
         {accountSection}
@@ -55,6 +56,7 @@ export default async function SettingsPage() {
   const store = result.stores[0]
 
   if (!store) {
+    console.error('[no-store] user has no store', { userId: session.user.id, page: 'Settings' })
     return (
       <div className="space-y-6">
         {accountSection}

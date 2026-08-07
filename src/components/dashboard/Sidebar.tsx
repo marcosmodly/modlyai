@@ -3,39 +3,11 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { signOut, useSession } from 'next-auth/react';
-import { ArrowLeftIcon, BarChart3, CreditCard, Home, Package, Puzzle, Settings, LogOut } from 'lucide-react';
+import { ArrowLeftIcon, LogOut } from 'lucide-react';
 import { db } from '@/lib/instantdb';
+import { dashboardNavigation as navigation, isDashboardNavItemActive } from '@/lib/dashboard-navigation';
 import { useProfileSummary } from '@/lib/use-profile-summary';
-
-const navigation = [
-  { name: 'Overview', href: '/dashboard', icon: Home },
-  { name: 'Products', href: '/dashboard/products', icon: Package },
-  { name: 'Analytics', href: '/dashboard/analytics', icon: BarChart3 },
-  { name: 'Integrations', href: '/dashboard/integrations', icon: Puzzle },
-  { name: 'Billing', href: '/dashboard/billing', icon: CreditCard },
-  { name: 'Settings', href: '/dashboard/settings', icon: Settings },
-];
-
-const widgetActivityTypes = new Set([
-  'widget_opened',
-  'chat_started',
-  'message_sent',
-  'room_analyzed',
-  'quote_requested',
-]);
-
-function isRecentWidgetActivity(event: Record<string, unknown>) {
-  if (typeof event.type !== 'string' || !widgetActivityTypes.has(event.type)) {
-    return false;
-  }
-
-  const timestamp = new Date(String(event.createdAt ?? 0)).getTime();
-  if (!Number.isFinite(timestamp)) {
-    return false;
-  }
-
-  return Date.now() - timestamp <= 7 * 24 * 60 * 60 * 1000;
-}
+import { isRecentWidgetActivity } from '@/lib/widget-activity';
 
 export default function Sidebar() {
   const pathname = usePathname();
@@ -59,7 +31,7 @@ export default function Sidebar() {
   );
   const hasApiKey = Boolean(session?.user?.apiKey);
   const productCount = data?.products?.length ?? 0;
-  const hasRecentWidgetEvents = Boolean(data?.events?.some(isRecentWidgetActivity));
+  const hasRecentWidgetEvents = Boolean(data?.events?.some((event) => isRecentWidgetActivity(event)));
   const storeStatus = !storeId || isLoading
     ? {
         label: 'Checking',
@@ -121,11 +93,12 @@ export default function Sidebar() {
         <nav className="relative mt-8 flex flex-1 flex-col">
           <ul role="list" className="space-y-2">
             {navigation.map((item) => {
-              const isActive = pathname === item.href;
+              const isActive = isDashboardNavItemActive(pathname, item.href);
               return (
                 <li key={item.name}>
                   <Link
                     href={item.href}
+                    aria-current={isActive ? 'page' : undefined}
                     className={[
                       'group flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-semibold transition',
                       isActive

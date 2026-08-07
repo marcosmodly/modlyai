@@ -373,7 +373,7 @@ export default function AccountSettingsForm({
               className="ml-auto inline-flex items-center gap-2 rounded-xl bg-stone-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-stone-800 disabled:cursor-not-allowed disabled:opacity-60"
             >
               <Save className="h-4 w-4" />
-              {profileStatus === 'saving' ? 'Saving...' : 'Save'}
+              {profileStatus === 'saving' ? 'Saving profile...' : 'Save profile'}
             </button>
           </div>
         </form>

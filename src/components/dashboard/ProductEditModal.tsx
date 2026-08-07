@@ -1,7 +1,7 @@
 'use client'
 
 import { X } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useId, useRef, useState } from 'react'
 import ImageUploadField from '@/components/ImageUploadField'
 import type { ProductCustomizationOptions } from '@/lib/product-customization'
 
@@ -125,21 +125,73 @@ export default function ProductEditModal({
 
   const [saveState, setSaveState] = useState<'idle' | 'saving' | 'error'>('idle')
   const [saveMessage, setSaveMessage] = useState('')
+  const [nameError, setNameError] = useState('')
+  const [priceError, setPriceError] = useState('')
+
+  const titleId = useId()
+  const dialogPanelRef = useRef<HTMLDivElement>(null)
+  const nameInputRef = useRef<HTMLInputElement>(null)
+  const priceInputRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    const previouslyFocused = document.activeElement as HTMLElement | null
+    nameInputRef.current?.focus()
+
+    return () => {
+      previouslyFocused?.focus()
+    }
+  }, [])
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        if (saveState === 'saving') return
+        onClose()
+        return
+      }
+
+      if (event.key !== 'Tab' || !dialogPanelRef.current) return
+
+      const focusable = Array.from(
+        dialogPanelRef.current.querySelectorAll<HTMLElement>(
+          'a, button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        )
+      ).filter((element) => element.offsetParent !== null)
+      if (focusable.length === 0) return
+
+      const first = focusable[0]
+      const last = focusable[focusable.length - 1]
+
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault()
+        last.focus()
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault()
+        first.focus()
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [onClose, saveState])
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
+    setNameError('')
+    setPriceError('')
+
     const trimmedName = name.trim()
     if (!trimmedName) {
-      setSaveState('error')
-      setSaveMessage('Product name is required.')
+      setNameError('Product name is required.')
+      nameInputRef.current?.focus()
       return
     }
 
     const priceValue = price.trim() ? Number(price) : undefined
     if (price.trim() && (!Number.isFinite(priceValue) || (priceValue as number) < 0)) {
-      setSaveState('error')
-      setSaveMessage('Price must be a positive number.')
+      setPriceError("Price can't be negative.")
+      priceInputRef.current?.focus()
       return
     }
 
@@ -181,15 +233,32 @@ export default function ProductEditModal({
     }
   }
 
+  const closeIfNotSaving = () => {
+    if (saveState === 'saving') return
+    onClose()
+  }
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-stone-950/50 p-4 opacity-100">
-      <div className="my-8 w-full max-w-2xl rounded-[28px] border border-stone-200 bg-white shadow-xl">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-stone-950/50 p-4 opacity-100"
+      onClick={(event) => {
+        if (event.target === event.currentTarget) closeIfNotSaving()
+      }}
+    >
+      <div
+        ref={dialogPanelRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={titleId}
+        className="my-8 w-full max-w-2xl rounded-[28px] border border-stone-200 bg-white shadow-xl"
+      >
         <div className="flex items-center justify-between border-b border-stone-200 px-6 py-5">
-          <h2 className="text-lg font-bold text-stone-950">{isCreate ? 'Add product' : 'Edit product'}</h2>
+          <h2 id={titleId} className="text-lg font-bold text-stone-950">{isCreate ? 'Add product' : 'Edit product'}</h2>
           <button
             type="button"
-            onClick={onClose}
-            className="rounded-full p-1.5 text-stone-400 transition hover:bg-stone-100 hover:text-stone-700"
+            onClick={closeIfNotSaving}
+            disabled={saveState === 'saving'}
+            className="rounded-full p-3 text-stone-400 transition hover:bg-stone-100 hover:text-stone-700 disabled:cursor-not-allowed disabled:opacity-50"
             aria-label="Close"
           >
             <X className="h-5 w-5" />
@@ -201,12 +270,22 @@ export default function ProductEditModal({
             <label className="block">
               <span className={labelClass}>Name</span>
               <input
+                ref={nameInputRef}
                 type="text"
                 value={name}
-                onChange={(event) => setName(event.target.value)}
+                onChange={(event) => {
+                  setName(event.target.value)
+                  if (nameError) setNameError('')
+                }}
+                aria-invalid={nameError ? true : undefined}
+                aria-describedby={nameError ? 'product-name-error' : undefined}
                 className={`${inputClass} mt-2`}
-                required
               />
+              {nameError ? (
+                <p id="product-name-error" role="alert" className="mt-1.5 text-xs font-medium text-red-700">
+                  {nameError}
+                </p>
+              ) : null}
             </label>
             <label className="block">
               <span className={labelClass}>Category</span>
@@ -220,13 +299,24 @@ export default function ProductEditModal({
             <label className="block">
               <span className={labelClass}>Price</span>
               <input
+                ref={priceInputRef}
                 type="number"
                 step="0.01"
                 min="0"
                 value={price}
-                onChange={(event) => setPrice(event.target.value)}
+                onChange={(event) => {
+                  setPrice(event.target.value)
+                  if (priceError) setPriceError('')
+                }}
+                aria-invalid={priceError ? true : undefined}
+                aria-describedby={priceError ? 'product-price-error' : undefined}
                 className={`${inputClass} mt-2`}
               />
+              {priceError ? (
+                <p id="product-price-error" role="alert" className="mt-1.5 text-xs font-medium text-red-700">
+                  {priceError}
+                </p>
+              ) : null}
             </label>
             <label className="block">
               <span className={labelClass}>Status</span>
@@ -323,7 +413,7 @@ export default function ProductEditModal({
           </div>
 
           {saveMessage ? (
-            <p className={`text-sm font-medium ${saveState === 'error' ? 'text-red-700' : 'text-emerald-700'}`}>
+            <p role="alert" className={`text-sm font-medium ${saveState === 'error' ? 'text-red-700' : 'text-emerald-700'}`}>
               {saveMessage}
             </p>
           ) : null}
@@ -331,8 +421,9 @@ export default function ProductEditModal({
           <div className="flex items-center justify-end gap-3 border-t border-stone-200 pt-5">
             <button
               type="button"
-              onClick={onClose}
-              className="rounded-lg border border-stone-300 px-4 py-2 text-sm font-medium text-stone-700 hover:bg-stone-50"
+              onClick={closeIfNotSaving}
+              disabled={saveState === 'saving'}
+              className="rounded-lg border border-stone-300 px-4 py-2 text-sm font-medium text-stone-700 hover:bg-stone-50 disabled:cursor-not-allowed disabled:opacity-60"
             >
               Cancel
             </button>

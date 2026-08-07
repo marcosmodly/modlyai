@@ -1,5 +1,4 @@
 import { getServerSession } from 'next-auth'
-import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import IntegrationsClient from '@/components/dashboard/IntegrationsClient'
 import NoStoreState from '@/components/dashboard/NoStoreState'
@@ -58,6 +57,7 @@ export default async function IntegrationsPage({
   }
 
   if (!currentStore || !storeId) {
+    console.error('[no-store] user has no store', { userId: session.user.id, page: 'Integrations' })
     return <NoStoreState title="Integrations" />
   }
 
@@ -95,17 +95,11 @@ export default async function IntegrationsPage({
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.24em] text-stone-500">Integrations</p>
-            <h1 className="mt-3 text-4xl font-bold tracking-tight text-stone-950">Connect Your Catalog Sources</h1>
+            <h2 className="mt-3 text-4xl font-bold tracking-tight text-stone-950">Connect Your Catalog Sources</h2>
             <p className="mt-3 max-w-2xl text-sm leading-6 text-stone-600">
-              Integration details here are tied to the ModlyAI merchant account for `{session.user.storeName || session.user.email}`.
+              Integration details here are tied to your ModlyAI merchant account for {session.user.storeName || session.user.email}.
             </p>
           </div>
-          <Link
-            href="/dashboard/widget-config"
-            className="flex items-center gap-2 rounded-lg border border-gray-200 px-4 py-2 text-sm hover:bg-gray-50"
-          >
-            Widget config route
-          </Link>
         </div>
       </section>
 

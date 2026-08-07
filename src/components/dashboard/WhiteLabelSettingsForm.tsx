@@ -4,7 +4,7 @@ import { Save } from 'lucide-react'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import type React from 'react'
-import { Component, useMemo, useState } from 'react'
+import { Component, useEffect, useMemo, useState } from 'react'
 import { FurnitureAIWidget } from '@widget/components/FurnitureAIWidget'
 import ImageUploadField from '@/components/ImageUploadField'
 import { DEMO_CATALOG, FEATURED_DEMO_PRODUCT, demoProductToFurnitureItem } from '@/lib/demo-catalog'
@@ -179,6 +179,11 @@ export default function WhiteLabelSettingsForm({
 }) {
   const { update } = useSession()
   const [form, setForm] = useState<FormState>(() => buildInitialState(store, fallbackStoreName))
+  // Baseline to diff against for the unsaved-changes indicator. Only moves
+  // when a save actually succeeds - not on every keystroke - so it reflects
+  // what's persisted, not what's on screen.
+  const [savedFormState, setSavedFormState] = useState<FormState>(form)
+  const isDirty = JSON.stringify(form) !== JSON.stringify(savedFormState)
   const [status, setStatus] = useState<'idle' | 'saving' | 'success' | 'error'>('idle')
   const [message, setMessage] = useState('')
   const [selectedTextTarget, setSelectedTextTarget] = useState<'title' | 'message'>('title')
@@ -199,6 +204,16 @@ export default function WhiteLabelSettingsForm({
   // Preview-only fixture: this form has no merchant catalog available
   // client-side, and the real catalog isn't the point of a colour preview.
   const previewProduct = useMemo(() => demoProductToFurnitureItem(FEATURED_DEMO_PRODUCT), [])
+
+  useEffect(() => {
+    if (!isDirty) return
+    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+      event.preventDefault()
+      event.returnValue = ''
+    }
+    window.addEventListener('beforeunload', handleBeforeUnload)
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload)
+  }, [isDirty])
 
   const updateField = <Key extends keyof FormState>(key: Key, value: FormState[Key]) => {
     setForm((current) => ({ ...current, [key]: value }))
@@ -323,6 +338,7 @@ export default function WhiteLabelSettingsForm({
 
       setStatus('success')
       setMessage('Settings saved.')
+      setSavedFormState(form)
 
       // Sidebar/Header pull storeName from the session, so refresh it now -
       // otherwise it would only pick up the change after a full re-login (the
@@ -393,7 +409,6 @@ export default function WhiteLabelSettingsForm({
     <form onSubmit={handleSubmit} className="space-y-6">
       <section className="rounded-[32px] border border-stone-200 bg-white p-6 shadow-sm">
         <p className="text-xs font-semibold uppercase tracking-[0.24em] text-stone-500">Settings</p>
-        <h1 className="mt-3 text-4xl font-bold tracking-tight text-stone-950">White-label Widget Settings</h1>
         <p className="mt-3 max-w-2xl text-sm leading-6 text-stone-600">
           Customize how ModlyAI appears on your storefront and where customer actions are sent.
         </p>
@@ -452,6 +467,30 @@ export default function WhiteLabelSettingsForm({
           Pick a preset to colour both the launcher and the chat, or expand &quot;Customise colours&quot; to set exact
           hex values.
         </p>
+
+        <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3">
+          <div className="rounded-2xl border border-stone-200 bg-stone-50 p-4">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-stone-500">Primary color</p>
+            <div className="mt-3 flex items-center gap-2">
+              <span
+                className="h-5 w-5 rounded-full border border-black/10"
+                style={{ backgroundColor: colorSwatchValue }}
+                aria-hidden="true"
+              />
+              <span className="font-mono text-sm text-stone-800">{colorSwatchValue}</span>
+            </div>
+          </div>
+          <div className="rounded-2xl border border-stone-200 bg-stone-50 p-4">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-stone-500">Button position</p>
+            <p className="mt-3 font-medium text-stone-900">{BUTTON_POSITION_LABELS[form.widgetButtonPosition]}</p>
+          </div>
+          <div className="rounded-2xl border border-stone-200 bg-stone-50 p-4">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-stone-500">Customer actions on</p>
+            <p className="mt-3 font-medium text-stone-900">
+              {Object.values(form.enabledActions).filter(Boolean).length} of 3
+            </p>
+          </div>
+        </div>
 
         <div className="mt-6">
           <p className="text-sm font-medium text-stone-700">Appearance</p>
@@ -787,7 +826,7 @@ export default function WhiteLabelSettingsForm({
         </Link>
       </p>
 
-      <div className="flex flex-wrap items-center justify-between gap-3">
+      <div className="sticky bottom-4 z-30 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-stone-200 bg-white/95 p-4 shadow-lg backdrop-blur">
         <div className="flex flex-wrap items-center gap-3">
           <Link
             href="/how-it-works"
@@ -801,14 +840,20 @@ export default function WhiteLabelSettingsForm({
             ) : null}
           </div>
         </div>
-        <button
-          type="submit"
-          disabled={status === 'saving'}
-          className="inline-flex items-center gap-2 rounded-xl bg-stone-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-stone-800 disabled:cursor-not-allowed disabled:opacity-60"
-        >
-          <Save className="h-4 w-4" />
-          {status === 'saving' ? 'Saving...' : 'Save Settings'}
-        </button>
+        <div className="flex flex-col items-end gap-1.5">
+          <p className="text-xs text-stone-500">Saves Store Profile, Widget Branding, and Quote Requests.</p>
+          {isDirty && status !== 'saving' && (
+            <p className="text-xs font-semibold text-amber-700">Unsaved changes</p>
+          )}
+          <button
+            type="submit"
+            disabled={status === 'saving'}
+            className="inline-flex items-center gap-2 rounded-xl bg-stone-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-stone-800 disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            <Save className="h-4 w-4" />
+            {status === 'saving' ? 'Saving...' : 'Save widget & store settings'}
+          </button>
+        </div>
       </div>
     </form>
   )

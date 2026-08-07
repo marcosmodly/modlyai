@@ -121,6 +121,7 @@ const _schema = i.schema({
       widgetId: i.any().optional(),
       widgetLogoUrl: i.string().optional(),
       widgetTitle: i.string().optional(),
+      widgetVerifiedAt: i.string().optional(),
       wooConnectedAt: i.string().optional(),
       wooKey: i.any().optional(),
       wooLastSyncedAt: i.string().optional(),

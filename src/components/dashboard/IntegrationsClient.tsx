@@ -33,6 +33,12 @@ type StoreSummary = {
 const inputClass =
   'w-full rounded-2xl border border-stone-300 bg-stone-50 px-4 py-3 text-sm text-stone-900 outline-none transition placeholder:text-stone-400 focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-100'
 
+const MAX_CSV_SIZE_BYTES = 10 * 1024 * 1024
+
+function isCsvFile(file: File) {
+  return file.type === 'text/csv' || file.name.toLowerCase().endsWith('.csv')
+}
+
 const platformInstructions = [
   {
     platform: 'Shopify',
@@ -89,6 +95,7 @@ export default function IntegrationsClient({
   const [syncedCount, setSyncedCount] = useState<number | null>(null)
   const [shopifyLastSyncedAt, setShopifyLastSyncedAt] = useState(store.shopifyLastSyncedAt || '')
   const fileRef = useRef<HTMLInputElement>(null)
+  const [isDragging, setIsDragging] = useState(false)
   const shopifyConnected = Boolean(store.shopifyConnectedAt || store.hasShopifyAccessToken)
 
   const [wooSiteUrlInput, setWooSiteUrlInput] = useState(store.wooSiteUrl || '')
@@ -127,6 +134,16 @@ export default function IntegrationsClient({
   ]
 
   const uploadFile = async (file: File) => {
+    if (!isCsvFile(file)) {
+      setUploadResult({ success: false, error: 'Please upload a .csv file.' })
+      return
+    }
+
+    if (file.size > MAX_CSV_SIZE_BYTES) {
+      setUploadResult({ success: false, error: 'This file is larger than 10MB. Split it into smaller files and try again.' })
+      return
+    }
+
     setUploading(true)
     setUploadResult(null)
 
@@ -139,10 +156,19 @@ export default function IntegrationsClient({
         method: 'POST',
         body: formData,
       })
-      const result = await res.json()
+      const result = await res.json().catch(() => null)
+
+      if (!res.ok) {
+        setUploadResult({
+          success: false,
+          error: result?.message || result?.error || `Upload failed (status ${res.status}). Please try again.`,
+        })
+        return
+      }
+
       setUploadResult(result)
     } catch {
-      setUploadResult({ error: 'Upload failed' })
+      setUploadResult({ success: false, error: 'Upload failed. Check your connection and try again.' })
     } finally {
       setUploading(false)
       if (fileRef.current) fileRef.current.value = ''
@@ -154,8 +180,9 @@ export default function IntegrationsClient({
     if (file) await uploadFile(file)
   }
 
-  const handleDrop = async (event: React.DragEvent<HTMLDivElement>) => {
+  const handleDrop = async (event: React.DragEvent<HTMLButtonElement>) => {
     event.preventDefault()
+    setIsDragging(false)
     const file = event.dataTransfer.files?.[0]
     if (file) await uploadFile(file)
   }
@@ -350,7 +377,7 @@ export default function IntegrationsClient({
       <section className="rounded-[32px] border border-stone-200 bg-white p-6 shadow-sm">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
-            <h2 className="text-2xl font-bold tracking-tight text-stone-950">Install ModlyAI widget</h2>
+            <h3 className="text-2xl font-bold tracking-tight text-stone-950">Install ModlyAI widget</h3>
             <p className="mt-1 max-w-2xl text-sm leading-6 text-stone-500">
               Copy this full snippet into your storefront. It already includes the store and widget identifiers needed to load ModlyAI.
             </p>
@@ -383,7 +410,7 @@ export default function IntegrationsClient({
         </div>
 
         <div className="mt-6">
-          <h3 className="text-lg font-semibold tracking-tight text-stone-950">Where to paste this code</h3>
+          <h4 className="text-lg font-semibold tracking-tight text-stone-950">Where to paste this code</h4>
           <div className="mt-3 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
             {platformInstructions.map((item) => (
               <article key={item.platform} className="rounded-2xl border border-stone-200 bg-stone-50 p-4">
@@ -407,7 +434,7 @@ export default function IntegrationsClient({
       <section className="rounded-[32px] border border-stone-200 bg-white p-6 shadow-sm">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
-            <h2 className="text-2xl font-bold tracking-tight text-stone-950">Shopify</h2>
+            <h3 className="text-2xl font-bold tracking-tight text-stone-950">Shopify</h3>
             <p className="mt-1 text-sm text-stone-500">
               Optional: connect Shopify to sync your catalog automatically.
             </p>
@@ -493,7 +520,7 @@ export default function IntegrationsClient({
       <section className="rounded-[32px] border border-stone-200 bg-white p-6 shadow-sm">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
-            <h2 className="text-2xl font-bold tracking-tight text-stone-950">WooCommerce</h2>
+            <h3 className="text-2xl font-bold tracking-tight text-stone-950">WooCommerce</h3>
             <p className="mt-1 text-sm text-stone-500">
               Optional: connect WooCommerce to sync your catalog automatically.
             </p>
@@ -594,7 +621,7 @@ export default function IntegrationsClient({
       <section className="rounded-[32px] border border-stone-200 bg-white p-6 shadow-sm">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
-            <h2 className="text-2xl font-bold tracking-tight text-stone-950">CSV Catalog Upload</h2>
+            <h3 className="text-2xl font-bold tracking-tight text-stone-950">CSV Catalog Upload</h3>
             <p className="mt-1 text-sm text-stone-500">
               CSV upload works without Shopify. Upload your products manually and ModlyAI will use them in the widget.
             </p>
@@ -643,11 +670,24 @@ export default function IntegrationsClient({
           </p>
         </div>
 
-        <div
+        <button
+          type="button"
           onClick={() => fileRef.current?.click()}
-          onDragOver={(event) => event.preventDefault()}
+          onDragOver={(event) => {
+            event.preventDefault()
+            setIsDragging(true)
+          }}
+          onDragEnter={(event) => {
+            event.preventDefault()
+            setIsDragging(true)
+          }}
+          onDragLeave={() => setIsDragging(false)}
           onDrop={handleDrop}
-          className="mt-5 flex min-h-48 cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed border-stone-300 p-8 text-center transition hover:border-blue-400 hover:bg-blue-50"
+          disabled={uploading}
+          className={[
+            'mt-5 flex min-h-48 w-full flex-col items-center justify-center rounded-2xl border-2 border-dashed p-8 text-center transition disabled:cursor-not-allowed',
+            isDragging ? 'border-blue-400 bg-blue-50' : 'border-stone-300 hover:border-blue-400 hover:bg-blue-50',
+          ].join(' ')}
         >
           {uploading ? (
             <div className="flex flex-col items-center gap-3">
@@ -665,9 +705,19 @@ export default function IntegrationsClient({
               </div>
             </div>
           )}
-        </div>
+        </button>
 
-        <input ref={fileRef} type="file" accept=".csv,text/csv" onChange={handleCSVUpload} className="hidden" />
+        <label htmlFor="csv-file-input" className="sr-only">
+          CSV file
+        </label>
+        <input
+          ref={fileRef}
+          id="csv-file-input"
+          type="file"
+          accept=".csv,text/csv"
+          onChange={handleCSVUpload}
+          className="sr-only"
+        />
 
         {uploadResult ? (
           <div
@@ -699,7 +749,7 @@ export default function IntegrationsClient({
           <article key={item.name} className="rounded-[32px] border border-stone-200 bg-white p-6 shadow-sm">
             <div className="flex items-start justify-between gap-4">
               <div>
-                <h2 className="text-lg font-bold text-stone-950">{item.name}</h2>
+                <h3 className="text-lg font-bold text-stone-950">{item.name}</h3>
                 <p className="text-sm text-stone-500">{item.status}</p>
               </div>
               {item.connected ? (

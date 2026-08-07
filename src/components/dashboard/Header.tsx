@@ -11,27 +11,13 @@ import {
   Home,
   Link as LinkIcon,
   LogOut,
-  Search,
+  Menu,
   Settings,
+  X,
 } from 'lucide-react';
+import { dashboardNavigation, isDashboardNavItemActive } from '@/lib/dashboard-navigation';
 import { formatRelativeTime } from '@/lib/format-session';
 import { useProfileSummary } from '@/lib/use-profile-summary';
-
-const navItems = [
-  { name: 'Overview', href: '/dashboard' },
-  { name: 'Products', href: '/dashboard/products' },
-  { name: 'Analytics', href: '/dashboard/analytics' },
-  { name: 'Integrations', href: '/dashboard/integrations' },
-  { name: 'Settings', href: '/dashboard/settings' },
-];
-
-const titles: Record<string, string> = {
-  '/dashboard': 'Overview',
-  '/dashboard/products': 'Products',
-  '/dashboard/analytics': 'Analytics',
-  '/dashboard/integrations': 'Integrations',
-  '/dashboard/settings': 'Settings',
-};
 
 type NotificationRow = {
   id: string;
@@ -60,9 +46,13 @@ export default function Header() {
   const [notifications, setNotifications] = useState<NotificationRow[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const [loadingNotifications, setLoadingNotifications] = useState(false);
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const notificationsRef = useRef<HTMLDivElement>(null);
-  const currentTitle = titles[pathname] ?? 'Dashboard';
+  const mobileNavPanelRef = useRef<HTMLDivElement>(null);
+  const mobileNavTriggerRef = useRef<HTMLButtonElement>(null);
+  const currentTitle =
+    dashboardNavigation.find((item) => isDashboardNavItemActive(pathname, item.href))?.name ?? 'Dashboard';
   const userEmail = session?.user?.email ?? 'store@example.com';
   const userInitial = userEmail[0]?.toUpperCase() ?? 'S';
   const userName = session?.user?.name || 'Store Owner';
@@ -138,12 +128,58 @@ export default function Header() {
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         setNotificationsOpen(false);
+        setMobileNavOpen(false);
       }
     };
 
     document.addEventListener('keydown', handleEscape);
     return () => document.removeEventListener('keydown', handleEscape);
   }, []);
+
+  // Auto-close on route change - covers both link clicks inside the drawer
+  // and any other navigation (back/forward) while it happens to be open.
+  useEffect(() => {
+    setMobileNavOpen(false);
+  }, [pathname]);
+
+  useEffect(() => {
+    if (!mobileNavOpen) return;
+
+    const previousBodyOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    mobileNavPanelRef.current?.querySelector<HTMLElement>('a, button')?.focus();
+
+    const handleTrapFocus = (event: KeyboardEvent) => {
+      if (event.key !== 'Tab' || !mobileNavPanelRef.current) return;
+
+      const focusable = Array.from(
+        mobileNavPanelRef.current.querySelectorAll<HTMLElement>(
+          'a, button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        )
+      ).filter((element) => element.offsetParent !== null);
+      if (focusable.length === 0) return;
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+
+    document.addEventListener('keydown', handleTrapFocus);
+    const trigger = mobileNavTriggerRef.current;
+    return () => {
+      document.removeEventListener('keydown', handleTrapFocus);
+      document.body.style.overflow = previousBodyOverflow;
+      trigger?.focus();
+    };
+  }, [mobileNavOpen]);
 
   return (
     <header className="sticky top-0 z-30 border-b border-stone-200/70 bg-[#f7f4ee]/90 backdrop-blur">
@@ -155,19 +191,22 @@ export default function Header() {
               <ChevronRight className="h-3.5 w-3.5" />
               <span>{currentTitle}</span>
             </div>
-            <h2 className="mt-2 text-2xl font-bold tracking-tight text-stone-900">{currentTitle}</h2>
+            <h1 className="mt-2 text-2xl font-bold tracking-tight text-stone-900">{currentTitle}</h1>
           </div>
 
           <div className="flex items-center gap-3">
-            <label className="hidden items-center gap-2 rounded-2xl border border-stone-200 bg-white px-4 py-2.5 shadow-sm sm:flex">
-              <Search className="h-4 w-4 text-stone-400" />
-              <input
-                type="search"
-                placeholder="Search products, stores, sync logs..."
-                className="w-64 border-0 bg-transparent p-0 text-sm text-stone-700 outline-none placeholder:text-stone-400"
-              />
-            </label>
-            <div className="relative hidden sm:block" ref={notificationsRef}>
+            <button
+              ref={mobileNavTriggerRef}
+              type="button"
+              onClick={() => setMobileNavOpen(true)}
+              className="flex h-11 w-11 items-center justify-center rounded-2xl border border-stone-200 bg-white text-stone-600 shadow-sm transition hover:border-blue-200 hover:text-blue-700 lg:hidden"
+              aria-label="Open navigation menu"
+              aria-expanded={mobileNavOpen}
+              aria-haspopup="dialog"
+            >
+              <Menu className="h-5 w-5" />
+            </button>
+            <div className="relative" ref={notificationsRef}>
               <button
                 type="button"
                 onClick={() => {
@@ -312,28 +351,60 @@ export default function Header() {
           </div>
         </div>
 
-        <nav className="overflow-x-auto lg:hidden">
-          <div className="flex gap-2 pb-1">
-            {navItems.map((item) => {
-              const isActive = pathname === item.href;
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={[
-                    'whitespace-nowrap rounded-full px-4 py-2 text-sm font-semibold transition',
-                    isActive
-                      ? 'bg-stone-900 text-white'
-                      : 'border border-stone-200 bg-white text-stone-700',
-                  ].join(' ')}
-                >
-                  {item.name}
-                </Link>
-              );
-            })}
-          </div>
-        </nav>
       </div>
+
+      {mobileNavOpen && (
+        <div className="fixed inset-0 z-50 lg:hidden">
+          <div
+            className="absolute inset-0 bg-stone-950/50"
+            onClick={() => setMobileNavOpen(false)}
+            aria-hidden="true"
+          />
+          <div
+            ref={mobileNavPanelRef}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Dashboard navigation"
+            className="absolute inset-y-0 left-0 flex w-72 max-w-[85vw] flex-col bg-[#f8f4ec] p-4 shadow-xl"
+          >
+            <div className="flex items-center justify-between px-2 py-2">
+              <span className="text-sm font-bold uppercase tracking-[0.22em] text-stone-500">Menu</span>
+              <button
+                type="button"
+                onClick={() => setMobileNavOpen(false)}
+                className="flex h-11 w-11 items-center justify-center rounded-2xl text-stone-600 transition hover:bg-white"
+                aria-label="Close navigation menu"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+            <nav aria-label="Dashboard" className="mt-2 flex-1">
+              <ul role="list" className="space-y-2">
+                {dashboardNavigation.map((item) => {
+                  const isActive = isDashboardNavItemActive(pathname, item.href);
+                  return (
+                    <li key={item.href}>
+                      <Link
+                        href={item.href}
+                        aria-current={isActive ? 'page' : undefined}
+                        className={[
+                          'flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-semibold transition',
+                          isActive
+                            ? 'bg-stone-900 text-white'
+                            : 'text-stone-700 hover:bg-white',
+                        ].join(' ')}
+                      >
+                        <item.icon className={['h-5 w-5 shrink-0', isActive ? 'text-amber-300' : 'text-stone-500'].join(' ')} />
+                        {item.name}
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            </nav>
+          </div>
+        </div>
+      )}
     </header>
   );
 }

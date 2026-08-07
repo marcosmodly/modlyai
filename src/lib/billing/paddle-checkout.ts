@@ -1,6 +1,7 @@
 'use client'
 
 import type { CheckoutOpenOptions } from '@paddle/paddle-js'
+import { BILLING_CHECKOUT_START_KEY } from '@/lib/billing/checkout-status-storage'
 import { getPaddleClient } from '@/lib/paddle-client'
 import type { CheckoutPlanId } from '@/lib/plans'
 
@@ -52,6 +53,11 @@ export async function openPaddleCheckout({
     customData: { storeId: normalizedStoreId, plan },
   }
   console.log('[Paddle Checkout Payload]', JSON.stringify(checkoutPayload))
+
+  // Clear any leftover confirmation timer from an earlier attempt - otherwise
+  // a stale timestamp can make BillingCheckoutStatus read this brand new
+  // checkout as already timed out the instant it succeeds.
+  window.sessionStorage.removeItem(BILLING_CHECKOUT_START_KEY)
 
   paddle.Checkout.open(checkoutPayload)
 }

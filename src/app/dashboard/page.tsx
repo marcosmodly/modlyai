@@ -6,6 +6,7 @@ import NoStoreState from '@/components/dashboard/NoStoreState'
 import { authOptions } from '@/lib/auth-options'
 import { normalizeStorePublicIdentity } from '@/lib/current-store'
 import { adminDb } from '@/lib/instant-admin'
+import { hasWidgetOpenedEver } from '@/lib/widget-activity'
 
 type AnalyticsEvent = {
   id: string
@@ -78,6 +79,7 @@ export default async function DashboardPage() {
   const isDeveloper = false
 
   if (!session.user.storeId) {
+    console.error('[no-store] user has no store', { userId: session.user.id, page: 'Dashboard' })
     return <NoStoreState title="Dashboard" />
   }
 
@@ -121,6 +123,11 @@ export default async function DashboardPage() {
   const assistedActions = events.filter((event) => event.type && assistedActionTypes.has(event.type)).length
   const conversionRate = aiSessions > 0 ? `${((assistedActions / aiSessions) * 100).toFixed(1)}%` : 'Coming soon'
   const recentEvents = events.slice(0, 8)
+  const widgetInstalled = hasWidgetOpenedEver(events)
+  // Latched at event-ingest time (see /api/analytics/events) the first time a
+  // widget_opened event arrives - an onboarding checklist item must not flip
+  // back to incomplete just because 7 days pass with no further activity.
+  const widgetTested = Boolean(store?.widgetVerifiedAt)
   const onboardingItems = [
     {
       title: 'Add your store details',
@@ -137,17 +144,18 @@ export default async function DashboardPage() {
     {
       title: 'Install the widget snippet',
       href: '/dashboard/integrations',
-      complete: true,
-      action: 'Get snippet',
+      complete: widgetInstalled,
+      action: widgetInstalled ? 'View snippet' : 'Get snippet',
     },
     {
       title: 'Test your live widget',
       href: storeUrl || '/dashboard/integrations',
-      complete: false,
+      complete: widgetTested,
       action: storeUrl ? 'Open website' : 'Set store URL',
       external: Boolean(storeUrl),
     },
   ]
+  const completedOnboardingCount = onboardingItems.filter((item) => item.complete).length
 
   const stats = [
     {
@@ -199,9 +207,9 @@ export default async function DashboardPage() {
               <Sparkles className="h-3.5 w-3.5 text-blue-700" />
               Account overview
             </div>
-            <h1 className="mt-5 max-w-xl text-4xl font-bold tracking-tight text-stone-950 sm:text-5xl">
+            <h2 className="mt-5 max-w-xl text-4xl font-bold tracking-tight text-stone-950 sm:text-5xl">
               Welcome back, {session.user.storeName || session.user.email}.
-            </h1>
+            </h2>
             <p className="mt-4 max-w-2xl text-base leading-7 text-stone-600">
               This dashboard is now scoped to your store account, so every stat and activity item below is filtered to your own `storeId`.
             </p>
@@ -212,15 +220,21 @@ export default async function DashboardPage() {
           <div className="flex items-start justify-between gap-4">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.24em] text-stone-500">Widget setup</p>
-              <h2 className="mt-3 text-2xl font-bold tracking-tight text-stone-950">Install your widget</h2>
+              <h3 className="mt-3 text-2xl font-bold tracking-tight text-stone-950">Install your widget</h3>
             </div>
-            <div className="rounded-2xl bg-emerald-50 px-3 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-emerald-700">
-              Ready
+            <div
+              className={`rounded-2xl px-3 py-2 text-xs font-semibold uppercase tracking-[0.18em] ${
+                widgetInstalled ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-700'
+              }`}
+            >
+              {widgetInstalled ? 'Installed' : 'Not installed yet'}
             </div>
           </div>
 
           <p className="mt-6 text-sm leading-6 text-stone-600">
-            Copy your install snippet from Integrations to add ModlyAI to your storefront.
+            {widgetInstalled
+              ? 'Your widget has been opened on your storefront at least once.'
+              : 'Copy your install snippet from Integrations to add ModlyAI to your storefront.'}
           </p>
 
           <div className="mt-6">
@@ -237,7 +251,7 @@ export default async function DashboardPage() {
       <section className="rounded-[32px] border border-stone-200 bg-white p-6 shadow-sm">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
-            <h2 className="text-2xl font-bold tracking-tight text-stone-950">Get started with ModlyAI</h2>
+            <h3 className="text-2xl font-bold tracking-tight text-stone-950">Get started with ModlyAI</h3>
             <p className="mt-2 text-sm leading-6 text-stone-600">
               Complete these steps to launch your AI shopping assistant.
             </p>
@@ -247,7 +261,11 @@ export default async function DashboardPage() {
           </span>
         </div>
 
-        <div className="mt-5 grid gap-3 md:grid-cols-2">
+        <p className="mt-4 text-sm font-semibold text-stone-700">
+          {completedOnboardingCount} of {onboardingItems.length} complete
+        </p>
+
+        <div className="mt-3 grid gap-3 md:grid-cols-2">
           {onboardingItems.map((item) => {
             const Icon = item.complete ? CheckCircle2 : Circle
             return (
@@ -294,7 +312,7 @@ export default async function DashboardPage() {
 
       <section className="rounded-[32px] border border-stone-200 bg-white p-6 shadow-sm">
         <div className="flex items-center justify-between gap-4">
-          <h2 className="text-2xl font-bold tracking-tight text-stone-950">Recent Store Activity</h2>
+          <h3 className="text-2xl font-bold tracking-tight text-stone-950">Recent Store Activity</h3>
           <span className="rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-blue-700">
             {recentEvents.length} recent events
           </span>

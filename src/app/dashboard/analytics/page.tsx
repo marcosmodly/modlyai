@@ -61,6 +61,7 @@ export default async function AnalyticsPage() {
   }
 
   if (!session.user.storeId) {
+    console.error('[no-store] user has no store', { userId: session.user.id, page: 'Analytics' })
     return <NoStoreState title="Analytics" />
   }
 
@@ -123,7 +124,7 @@ export default async function AnalyticsPage() {
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.24em] text-stone-500">Analytics</p>
-            <h1 className="mt-3 text-4xl font-bold tracking-tight text-stone-950">Store Performance</h1>
+            <h2 className="mt-3 text-4xl font-bold tracking-tight text-stone-950">Store Performance</h2>
             <p className="mt-3 max-w-2xl text-sm leading-6 text-stone-600">
               Every metric on this page is filtered to `{session.user.storeName || session.user.email}` using your authenticated `storeId`.
             </p>
@@ -152,7 +153,7 @@ export default async function AnalyticsPage() {
 
       <section className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
         <div className="rounded-[32px] border border-stone-200 bg-white p-6 shadow-sm">
-          <h2 className="text-2xl font-bold tracking-tight text-stone-950">Recent Event Timeline</h2>
+          <h3 className="text-2xl font-bold tracking-tight text-stone-950">Recent Event Timeline</h3>
           <div className="mt-6 max-h-[520px] space-y-3 overflow-y-auto pr-1">
             {recentEvents.length === 0 ? (
               <div className="rounded-2xl border border-dashed border-stone-300 bg-stone-50 px-5 py-6 text-sm text-stone-600">
@@ -189,7 +190,7 @@ export default async function AnalyticsPage() {
         </div>
 
         <div className="rounded-[32px] border border-stone-200 bg-white p-6 shadow-sm">
-          <h2 className="text-2xl font-bold tracking-tight text-stone-950">Conversion Snapshot</h2>
+          <h3 className="text-2xl font-bold tracking-tight text-stone-950">Conversion Snapshot</h3>
           <div className="mt-6 space-y-4">
             <div className="rounded-2xl border border-stone-200 bg-stone-50 px-4 py-4">
               <div className="text-xs font-semibold uppercase tracking-[0.18em] text-stone-500">Sessions</div>
@@ -224,7 +225,7 @@ export default async function AnalyticsPage() {
       </section>
       <section className="rounded-[32px] border border-stone-200 bg-white p-6 shadow-sm">
         <div className="flex flex-wrap items-center justify-between gap-4">
-          <h2 className="text-2xl font-bold tracking-tight text-stone-950">Quote Requests by Product</h2>
+          <h3 className="text-2xl font-bold tracking-tight text-stone-950">Quote Requests by Product</h3>
           <span className="rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-blue-700">
             {quoteEvents.length} total {quoteEvents.length === 1 ? 'quote' : 'quotes'}
           </span>
@@ -236,7 +237,7 @@ export default async function AnalyticsPage() {
 
         <div className="mt-6 grid gap-6 lg:grid-cols-2">
           <div>
-            <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-stone-500">Top quoted products</h3>
+            <h4 className="text-xs font-semibold uppercase tracking-[0.18em] text-stone-500">Top quoted products</h4>
             <div className="mt-3 max-h-[360px] space-y-2 overflow-y-auto pr-1">
               {topQuotedProducts.length === 0 ? (
                 <div className="rounded-2xl border border-dashed border-stone-300 bg-stone-50 px-4 py-6 text-sm text-stone-500">
@@ -259,7 +260,7 @@ export default async function AnalyticsPage() {
           </div>
 
           <div>
-            <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-stone-500">Recent quote requests</h3>
+            <h4 className="text-xs font-semibold uppercase tracking-[0.18em] text-stone-500">Recent quote requests</h4>
             <div className="mt-3 max-h-[360px] space-y-2 overflow-y-auto pr-1">
               {quoteEvents.length === 0 ? (
                 <div className="rounded-2xl border border-dashed border-stone-300 bg-stone-50 px-4 py-6 text-sm text-stone-500">

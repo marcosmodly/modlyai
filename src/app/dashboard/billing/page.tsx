@@ -22,11 +22,17 @@ export default async function BillingPage({
     redirect('/auth/signin')
   }
 
-  const checkoutCompleted = searchParams?.billing === 'success'
+  const checkoutParam = searchParams?.billing
+  const checkoutStatus =
+    checkoutParam === 'success' || checkoutParam === 'cancelled' || checkoutParam === 'error'
+      ? checkoutParam
+      : undefined
+  const checkoutCompleted = checkoutStatus === 'success'
   const currentStore = await getCurrentStoreForUser(session.user)
   const storeId = currentStore?.id ? String(currentStore.id) : ''
 
   if (!currentStore || !storeId) {
+    console.error('[no-store] user has no store', { userId: session.user.id, page: 'Billing' })
     return <NoStoreState title="Billing" />
   }
 
@@ -57,7 +63,7 @@ export default async function BillingPage({
   return (
     <div className="space-y-6">
       <BillingCheckoutStatus
-        checkoutCompleted={checkoutCompleted}
+        status={checkoutStatus}
         subscriptionPlan={store.subscriptionPlan ?? undefined}
         subscriptionStatus={store.subscriptionStatus ?? undefined}
       />

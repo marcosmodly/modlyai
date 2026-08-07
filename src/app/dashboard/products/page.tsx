@@ -68,6 +68,7 @@ export default function ProductsPage() {
   }
 
   if (!storeId) {
+    console.error('[no-store] user has no store', { userId: session?.user?.id, page: 'Products' })
     return <NoStoreState title="Products" />
   }
 
@@ -77,7 +78,6 @@ export default function ProductsPage() {
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.28em] text-stone-500">Catalog</p>
-            <h1 className="mt-3 text-4xl font-bold tracking-tight text-stone-950">Products</h1>
             <p className="mt-3 text-sm leading-6 text-stone-600">
               {formatCatalogCountLabel(catalog)} in your catalog.
             </p>
