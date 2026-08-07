@@ -395,7 +395,7 @@ export function QuoteRequestForm({
                   <span className="text-right font-semibold text-gray-950">{productName}</span>
                 </div>
                 {estimatedTotal && (
-                  <div className="flex justify-between gap-4 border-t border-stone-100 pt-3">
+                  <div className="modly-widget-numeric flex justify-between gap-4 border-t border-stone-100 pt-3">
                     <span className="text-gray-500">Estimated total</span>
                     <span className="text-right font-bold text-gray-950">{estimatedTotal}</span>
                   </div>
@@ -439,7 +439,7 @@ export function QuoteRequestForm({
                     )}
                   </div>
                   {estimatedTotal && (
-                    <div className="rounded-full bg-blue-50 px-3 py-1 text-sm font-bold text-blue-900">
+                    <div className="modly-widget-numeric rounded-full bg-blue-50 px-3 py-1 text-sm font-bold text-blue-900">
                       {estimatedTotal}
                     </div>
                   )}
@@ -473,7 +473,7 @@ export function QuoteRequestForm({
                         </div>
                       )}
                       {estimatedTotal && (
-                        <div className="flex justify-between gap-4 border-t border-stone-100 pt-3">
+                        <div className="modly-widget-numeric flex justify-between gap-4 border-t border-stone-100 pt-3">
                           <span className="text-gray-500">Estimated total</span>
                           <span className="text-right font-bold text-gray-950">{estimatedTotal}</span>
                         </div>

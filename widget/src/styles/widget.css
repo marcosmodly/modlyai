@@ -194,6 +194,16 @@
   color: var(--modly-color-text) !important;
 }
 
+/* A theme's fontFamily (see FurnitureAIWidget.tsx) can be a serif stack.
+   Georgia's old-style figures have uneven baselines/heights across digits
+   (measured: 3/4/5/7/9 drop below the baseline, 6/8 stand taller than the
+   rest) and font-variant-numeric: lining-nums does not fix this reliably -
+   so numeric-bearing surfaces (dimensions, prices, quote totals) opt back
+   into the plain sans stack regardless of the active theme. */
+.modly-widget-root .modly-widget-numeric {
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif !important;
+}
+
 .modly-widget-root .furniture-widget-ai > .bg-gray-50 {
   background: #f8fafc !important;
   color: var(--modly-color-text) !important;

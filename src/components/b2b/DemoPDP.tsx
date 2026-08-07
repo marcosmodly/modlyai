@@ -11,14 +11,19 @@ import {
 } from "@/lib/demo-catalog";
 import DemoDisclaimer from "@/components/DemoDisclaimer";
 import TrackedLink from "@/components/b2b/TrackedLink";
+import { WIDGET_THEMES } from "@/lib/widget-themes";
 
-type ThemeKey = "scandi" | "luxe" | "traditional";
+// Kept in sync with WIDGET_THEMES' ids by isThemeKey below - this is the
+// single source of truth for widget colours, imported (not duplicated) so a
+// preset picked here has the same name in the dashboard after signup.
+type ThemeKey = "charcoal" | "forest" | "walnut" | "brass";
 
 type Theme = {
   label: string;
   primaryColor: string;
   titleColor: string;
   messageTextColor: string;
+  fontFamily: string;
   pageBg: string;
   cardBg: string;
   textColor: string;
@@ -27,29 +32,10 @@ type Theme = {
   fontClassName: string;
 };
 
-const THEMES: Record<ThemeKey, Theme> = {
-  scandi: {
-    label: "Scandi",
-    primaryColor: "#3D543F",
-    titleColor: "#FFFFFF",
-    messageTextColor: "#1F2937",
-    pageBg: "#FAF8F4",
-    cardBg: "#FFFFFF",
-    textColor: "#1F2937",
-    mutedColor: "#6B7280",
-    borderColor: "#E1D7CA",
-    fontClassName: "font-sans",
-  },
-  luxe: {
-    label: "Luxe",
-    primaryColor: "#1A1A1A",
-    titleColor: "#FFFFFF",
-    // The widget's own chat message bubbles are always a white card
-    // (hardcoded in ConversationInterface/MessageBubble, independent of
-    // this page's theme) - messageTextColor needs to stay dark/readable
-    // against that white background regardless of how dark the page theme
-    // is, unlike pageBg/textColor which govern the page itself.
-    messageTextColor: "#1F2937",
+// Store-shell chrome only (page/card background, body text, font) - the
+// widget colours themselves come from WIDGET_THEMES, not from here.
+const DEMO_THEME_CHROME: Record<ThemeKey, Omit<Theme, "label" | "primaryColor" | "titleColor" | "messageTextColor" | "fontFamily">> = {
+  charcoal: {
     pageBg: "#111111",
     cardBg: "#1C1C1C",
     textColor: "#F5F5F5",
@@ -57,11 +43,15 @@ const THEMES: Record<ThemeKey, Theme> = {
     borderColor: "#2E2E2E",
     fontClassName: "font-heading",
   },
-  traditional: {
-    label: "Traditional",
-    primaryColor: "#7A4A2B",
-    titleColor: "#FFFFFF",
-    messageTextColor: "#1F2937",
+  forest: {
+    pageBg: "#FAF8F4",
+    cardBg: "#FFFFFF",
+    textColor: "#1F2937",
+    mutedColor: "#6B7280",
+    borderColor: "#E1D7CA",
+    fontClassName: "font-sans",
+  },
+  walnut: {
     pageBg: "#FDF6EC",
     cardBg: "#FFFFFF",
     textColor: "#3C342B",
@@ -69,7 +59,34 @@ const THEMES: Record<ThemeKey, Theme> = {
     borderColor: "#E7D8C2",
     fontClassName: "font-heading",
   },
+  brass: {
+    pageBg: "#FBF7EE",
+    cardBg: "#FFFFFF",
+    textColor: "#3A2F1B",
+    mutedColor: "#8A7550",
+    borderColor: "#E6D9B0",
+    fontClassName: "font-sans",
+  },
 };
+
+const THEMES: Record<ThemeKey, Theme> = Object.fromEntries(
+  WIDGET_THEMES.map((preset) => [
+    preset.id,
+    {
+      label: preset.name,
+      primaryColor: preset.primaryColor,
+      titleColor: preset.titleColor,
+      // The widget's own chat message bubbles are always a white card
+      // (hardcoded in ConversationInterface/MessageBubble, independent of
+      // this page's theme) - messageTextColor needs to stay dark/readable
+      // against that white background regardless of how dark the page theme
+      // is, unlike pageBg/textColor which govern the page itself.
+      messageTextColor: preset.messageTextColor,
+      fontFamily: preset.fontFamily,
+      ...DEMO_THEME_CHROME[preset.id as ThemeKey],
+    },
+  ])
+) as Record<ThemeKey, Theme>;
 
 type QuoteResult = {
   quoteRequest: QuoteRequest;
@@ -83,7 +100,7 @@ function formatMoney(value: number) {
 const INCHES_TO_METERS = 0.0254;
 
 function isThemeKey(value: string | null | undefined): value is ThemeKey {
-  return value === "scandi" || value === "luxe" || value === "traditional";
+  return WIDGET_THEMES.some((theme) => theme.id === value);
 }
 
 interface DemoPDPProps {
@@ -95,7 +112,7 @@ interface DemoPDPProps {
 }
 
 export default function DemoPDP({ framed = false, initialTheme }: DemoPDPProps) {
-  const [themeKey, setThemeKey] = useState<ThemeKey>(isThemeKey(initialTheme) ? initialTheme : "scandi");
+  const [themeKey, setThemeKey] = useState<ThemeKey>(isThemeKey(initialTheme) ? initialTheme : "forest");
   const [viewport, setViewport] = useState<"desktop" | "mobile">("desktop");
   const [finishIndex, setFinishIndex] = useState(0);
   const [sizeIndex, setSizeIndex] = useState(1);
@@ -402,6 +419,7 @@ export default function DemoPDP({ framed = false, initialTheme }: DemoPDPProps) 
                   primaryColor: theme.primaryColor,
                   titleColor: theme.titleColor,
                   messageTextColor: theme.messageTextColor,
+                  fontFamily: theme.fontFamily,
                   welcomeMessage:
                     "Hi, I'm the ModlyAI demo assistant. Ask whether this piece fits your space, see it in a sample room, or customize the finish and size.",
                   enabledActions: { viewInCatalog: false, customize: true, requestQuote: true },

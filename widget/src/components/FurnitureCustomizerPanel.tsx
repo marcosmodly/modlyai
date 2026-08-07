@@ -609,7 +609,7 @@ export default function FurnitureCustomizerPanel({
                 )}
               </div>
 
-              <div className="space-y-3 text-sm border-t border-gray-200 pt-4">
+              <div className="modly-widget-numeric space-y-3 text-sm border-t border-gray-200 pt-4">
                 <div className="flex justify-between text-gray-600">
                   <span>Base Price:</span>
                   <span className="font-medium text-gray-900">

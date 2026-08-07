@@ -17,6 +17,16 @@ body {
   min-height: 100vh;
 }
 
+/* Mirrors the rule in widget/src/styles/widget.css - that stylesheet only
+   ships inside the standalone widget bundle (src/generated/widget-bundle.ts),
+   so FurnitureAIWidget rendered directly in this app (the /demo page, the
+   dashboard settings preview) needs its own copy to keep numeric surfaces
+   (dimensions, prices, quote totals) on the sans stack when a theme's
+   fontFamily is a serif (Georgia's old-style figures misalign digits). */
+.modly-widget-numeric {
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif !important;
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;

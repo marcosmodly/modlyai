@@ -9,7 +9,7 @@ import { SubmitFlowModal } from './SubmitFlowModal';
 import { AIService } from '../utils/aiService';
 import { ApiClient } from '../utils/apiClient';
 import { Storage } from '../utils/storage';
-import { DEFAULT_WIDGET_TITLE, getEnabledActions, getPrimaryColor, getReadableTextColor, mergeConfig } from '../utils/config';
+import { DEFAULT_WIDGET_TITLE, getEnabledActions, getFontFamily, getPrimaryColor, getReadableTextColor, mergeConfig } from '../utils/config';
 import { getRealProductUrl } from '../utils/productUrl';
 import { trackWidgetEvent } from '../utils/analytics';
 import { SpecSheet } from '../utils/specSheetGenerator';
@@ -87,6 +87,7 @@ export function FurnitureAIWidget({
   const primaryTextColor = getReadableTextColor(primaryColor);
   const titleColor = mergedConfig.titleColor || mergedConfig.theme?.titleColor || primaryTextColor;
   const messageTextColor = mergedConfig.messageTextColor || mergedConfig.theme?.messageTextColor;
+  const fontFamily = getFontFamily(mergedConfig);
   const displayTitle =
     widgetTitle ||
     config.widgetTitle ||
@@ -305,7 +306,10 @@ export function FurnitureAIWidget({
   };
 
   return (
-    <div className="furniture-widget-ai h-full flex flex-col" style={{ ['--modly-panel-accent' as any]: primaryColor }}>
+    <div
+      className="furniture-widget-ai h-full flex flex-col"
+      style={{ ['--modly-panel-accent' as any]: primaryColor, ...(fontFamily ? { fontFamily } : {}) }}
+    >
       {/* Header */}
       <div
         className="modly-widget-header border-b border-transparent px-5 py-3.5 pr-16 flex items-center gap-4"

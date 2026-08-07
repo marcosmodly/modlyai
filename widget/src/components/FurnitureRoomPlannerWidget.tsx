@@ -774,7 +774,7 @@ export function FurnitureRoomPlannerWidget({
                       </select>
                     </div>
 
-                    <div>
+                    <div className="modly-widget-numeric">
                       <div className="mb-3 flex items-center justify-between gap-3">
                         <label className="text-sm font-medium text-gray-700">
                           Room Dimensions
@@ -937,7 +937,7 @@ export function FurnitureRoomPlannerWidget({
                   </div>
 
                   <div className="space-y-4">
-                    <div className="grid grid-cols-2 gap-3">
+                    <div className="modly-widget-numeric grid grid-cols-2 gap-3">
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
                           Budget Min ($)

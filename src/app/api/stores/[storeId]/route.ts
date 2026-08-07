@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { authOptions } from '@/lib/auth-options'
 import { adminDb } from '@/lib/instant-admin'
 import { findStoreById, getStoreAnalytics } from '@/lib/store-catalog'
+import { WIDGET_THEMES } from '@/lib/widget-themes'
 import { isRealProductUrl } from '@widget/utils/productUrl'
 
 type Params = { params: { storeId: string } }
@@ -75,6 +76,15 @@ export async function PATCH(request: NextRequest, { params }: Params) {
     if (typeof body.primaryColor === 'string') updatePayload.primaryColor = body.primaryColor.trim()
     if (typeof body.titleColor === 'string') updatePayload.titleColor = body.titleColor.trim()
     if (typeof body.messageTextColor === 'string') updatePayload.messageTextColor = body.messageTextColor.trim()
+    if (typeof body.widgetFontFamily === 'string') {
+      // Only ever set by clicking a preset, so whitelist against the known
+      // stacks (empty string clears back to the widget's own default) rather
+      // than accepting arbitrary text into an inline style.
+      const trimmedFontFamily = body.widgetFontFamily.trim()
+      if (trimmedFontFamily === '' || WIDGET_THEMES.some((theme) => theme.fontFamily === trimmedFontFamily)) {
+        updatePayload.widgetFontFamily = trimmedFontFamily
+      }
+    }
     if (body.widgetButtonStyle === 'text' || body.widgetButtonStyle === 'logo') {
       updatePayload.widgetButtonStyle = body.widgetButtonStyle
     }

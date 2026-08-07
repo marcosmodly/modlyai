@@ -182,7 +182,7 @@ export default function CustomizedFurnitureList({
                 </div>
 
                 {dimensionRows.length > 0 && (
-                  <div className="rounded-xl border border-gray-200 bg-gray-50 p-3">
+                  <div className="modly-widget-numeric rounded-xl border border-gray-200 bg-gray-50 p-3">
                     <p className="mb-2 text-xs font-semibold uppercase text-gray-500">Dimensions</p>
                     <div className="grid grid-cols-3 gap-2">
                       {dimensionRows.map(([label, value]) => (
@@ -245,7 +245,7 @@ export default function CustomizedFurnitureList({
                 )}
 
                 {(basePrice || customizationPrice || estimatedTotal || item.pricingMode === 'quote_required') && (
-                  <div className="space-y-2 rounded-xl border border-gray-200 bg-gray-50 p-3 text-sm">
+                  <div className="modly-widget-numeric space-y-2 rounded-xl border border-gray-200 bg-gray-50 p-3 text-sm">
                     {basePrice && (
                       <div className="flex items-center justify-between gap-3">
                         <span className="text-gray-500">Base price</span>

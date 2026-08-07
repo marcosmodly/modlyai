@@ -40,6 +40,7 @@ export interface Store {
   primaryColor?: string
   titleColor?: string
   messageTextColor?: string
+  widgetFontFamily?: string
   welcomeMessage?: string
   enableViewInCatalog?: boolean
   enableCustomize?: boolean
@@ -141,6 +142,11 @@ function mapStore(store: any): Store {
     primaryColor: store.primaryColor ? String(store.primaryColor) : undefined,
     titleColor: store.titleColor ? String(store.titleColor) : undefined,
     messageTextColor: store.messageTextColor ? String(store.messageTextColor) : undefined,
+    // Unlike the other branding fields above, '' is a real, intentional
+    // value here (an untouched store hasn't opted into a preset's font) -
+    // coercing it to undefined would make the settings form's post-save
+    // persistence check fail on every save that hasn't picked a font preset.
+    widgetFontFamily: typeof store.widgetFontFamily === 'string' ? store.widgetFontFamily : undefined,
     welcomeMessage: store.welcomeMessage ? String(store.welcomeMessage) : undefined,
     enableViewInCatalog: typeof store.enableViewInCatalog === 'boolean' ? store.enableViewInCatalog : undefined,
     enableCustomize: typeof store.enableCustomize === 'boolean' ? store.enableCustomize : undefined,

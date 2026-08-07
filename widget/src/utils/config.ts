@@ -11,6 +11,7 @@ export interface WidgetConfig {
   primaryColor?: string;
   titleColor?: string;
   messageTextColor?: string;
+  fontFamily?: string;
   welcomeMessage?: string;
   // Inline catalog override: when set, the widget answers/analyzes/customizes
   // using this catalog instead of looking one up server-side by storeId.
@@ -41,6 +42,7 @@ export interface WidgetConfig {
     primaryColor?: string;
     titleColor?: string;
     messageTextColor?: string;
+    fontFamily?: string;
     buttonText?: string; // NEW
     buttonPosition?: 'bottom-right' | 'bottom-left' | 'top-right' | 'top-left'; // NEW
     buttonStyle?: 'text' | 'logo';
@@ -76,7 +78,7 @@ function hasText(value: unknown): value is string {
   return typeof value === 'string' && value.trim().length > 0;
 }
 
-export const defaultConfig: Required<Omit<WidgetConfig, 'apiBaseUrl' | 'storeId' | 'shop' | 'apiKey' | 'publicApiKey' | 'storeDomain' | 'platform' | 'productUrlTemplate' | 'configUrl' | 'widgetId' | 'onError' | 'onRoomAnalyzed' | 'onFurnitureCustomized' | 'theme' | 'catalog'>> = {
+export const defaultConfig: Required<Omit<WidgetConfig, 'apiBaseUrl' | 'storeId' | 'shop' | 'apiKey' | 'publicApiKey' | 'storeDomain' | 'platform' | 'productUrlTemplate' | 'configUrl' | 'widgetId' | 'onError' | 'onRoomAnalyzed' | 'onFurnitureCustomized' | 'theme' | 'catalog' | 'fontFamily'>> = {
   storeName: '',
   storeUrl: '',
   supportEmail: '',
@@ -176,6 +178,18 @@ export function getPrimaryColor(config: WidgetConfig = {}): string {
     : hasText(config.theme?.primaryColor)
       ? config.theme.primaryColor.trim()
       : DEFAULT_PRIMARY_COLOR;
+}
+
+// Unlike getPrimaryColor, this has no hardcoded fallback: an unset
+// fontFamily must resolve to undefined so callers add no inline style at
+// all, leaving .modly-widget-root's own CSS default (Inter) in charge -
+// existing installs that never touch this field see zero change.
+export function getFontFamily(config: WidgetConfig = {}): string | undefined {
+  return hasText(config.fontFamily)
+    ? config.fontFamily.trim()
+    : hasText(config.theme?.fontFamily)
+      ? config.theme!.fontFamily!.trim()
+      : undefined;
 }
 
 export function getButtonStyle(config: WidgetConfig = {}): 'text' | 'logo' {

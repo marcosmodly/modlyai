@@ -5,6 +5,7 @@ import { adminDb } from '@/lib/instant-admin'
 import { publicWidgetOptionsResponse, withPublicWidgetCors } from '@/lib/public-widget-cors'
 import { getBillingAccess } from '@/lib/billing/access'
 import { resolveStorePlatform } from '@/lib/platformUrls'
+import { WIDGET_THEMES } from '@/lib/widget-themes'
 
 export const dynamic = 'force-dynamic'
 
@@ -24,6 +25,7 @@ type WidgetStore = CurrentStore & {
   supportEmail?: unknown
   widgetTitle?: unknown
   primaryColor?: unknown
+  widgetFontFamily?: unknown
   welcomeMessage?: unknown
   enabledActions?: unknown
   enableViewInCatalog?: unknown
@@ -82,6 +84,16 @@ function getButtonPosition(value: unknown): ButtonPosition {
 
 function getOptionalColor(value: unknown) {
   return typeof value === 'string' && /^#[0-9a-f]{6}$/i.test(value) ? value : undefined
+}
+
+const WIDGET_FONT_FAMILIES = new Set(WIDGET_THEMES.map((theme) => theme.fontFamily))
+
+// Whitelisted the same way as the PATCH route: this is only ever set by
+// clicking a preset, so any other value (including a store record from
+// before this field existed) resolves to undefined - no inline style is
+// added and the widget's own CSS default keeps rendering.
+function getOptionalFontFamily(value: unknown) {
+  return typeof value === 'string' && WIDGET_FONT_FAMILIES.has(value) ? value : undefined
 }
 
 function readText(value: unknown, fallback = '') {
@@ -175,6 +187,7 @@ async function handleGET(req: Request) {
     const primaryColor = getPrimaryColor(store.primaryColor)
     const titleColor = getOptionalColor((store as any).titleColor)
     const messageTextColor = getOptionalColor((store as any).messageTextColor)
+    const fontFamily = getOptionalFontFamily(store.widgetFontFamily)
     const buttonStyle = (store as any).widgetButtonStyle === 'logo' ? 'logo' : 'text'
     const buttonPosition = getButtonPosition((store as any).widgetButtonPosition)
     const logoUrl = readField(store, 'widgetLogoUrl')
@@ -188,6 +201,7 @@ async function handleGET(req: Request) {
         primaryColor,
         titleColor,
         messageTextColor,
+        fontFamily,
         buttonText: widgetTitle,
         buttonPosition,
         buttonStyle,
@@ -208,6 +222,7 @@ async function handleGET(req: Request) {
       primaryColor,
       titleColor,
       messageTextColor,
+      fontFamily,
       welcomeMessage,
       enabledActions,
       quoteEmail,
