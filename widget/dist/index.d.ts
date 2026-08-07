@@ -436,6 +436,7 @@ interface WidgetConfig {
     primaryColor?: string;
     titleColor?: string;
     messageTextColor?: string;
+    fontFamily?: string;
     welcomeMessage?: string;
     catalog?: ChatCatalogPayload;
     enabledActions?: {
@@ -464,6 +465,7 @@ interface WidgetConfig {
         primaryColor?: string;
         titleColor?: string;
         messageTextColor?: string;
+        fontFamily?: string;
         buttonText?: string;
         buttonPosition?: 'bottom-right' | 'bottom-left' | 'top-right' | 'top-left';
         buttonStyle?: 'text' | 'logo';

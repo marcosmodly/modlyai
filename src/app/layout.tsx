@@ -6,7 +6,6 @@ import AuthSessionProvider from "@/components/AuthSessionProvider";
 import PaddleProvider from "@/components/PaddleProvider";
 import Navbar from "@/components/Navbar";
 import ConditionalWidgetButton from "@/components/ConditionalWidgetButton";
-import SiteFooter from "@/components/SiteFooter";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
 
@@ -17,7 +16,6 @@ const fraunces = Fraunces({
   axes: ["opsz", "SOFT"],
   display: "swap",
 });
-const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === 'true';
 
 export const metadata: Metadata = {
   title: "ModlyAI - Intelligent Customization & Data-Driven Recommendations",
@@ -55,8 +53,7 @@ export default function RootLayout({
               strategy="lazyOnload"
             />
             <Navbar />
-            <div className="flex-1">{children}</div>
-            <SiteFooter showDemoDisclaimer={isDemoMode} />
+            <div className="flex flex-1 flex-col">{children}</div>
             <ConditionalWidgetButton />
           </PaddleProvider>
         </AuthSessionProvider>

@@ -10,6 +10,7 @@ export interface WidgetConfig {
     primaryColor?: string;
     titleColor?: string;
     messageTextColor?: string;
+    fontFamily?: string;
     welcomeMessage?: string;
     catalog?: ChatCatalogPayload;
     enabledActions?: {
@@ -38,6 +39,7 @@ export interface WidgetConfig {
         primaryColor?: string;
         titleColor?: string;
         messageTextColor?: string;
+        fontFamily?: string;
         buttonText?: string;
         buttonPosition?: 'bottom-right' | 'bottom-left' | 'top-right' | 'top-left';
         buttonStyle?: 'text' | 'logo';
@@ -66,10 +68,11 @@ export declare const DEFAULT_ENABLED_ACTIONS: {
     customize: boolean;
     requestQuote: boolean;
 };
-export declare const defaultConfig: Required<Omit<WidgetConfig, 'apiBaseUrl' | 'storeId' | 'shop' | 'apiKey' | 'publicApiKey' | 'storeDomain' | 'platform' | 'productUrlTemplate' | 'configUrl' | 'widgetId' | 'onError' | 'onRoomAnalyzed' | 'onFurnitureCustomized' | 'theme' | 'catalog'>>;
+export declare const defaultConfig: Required<Omit<WidgetConfig, 'apiBaseUrl' | 'storeId' | 'shop' | 'apiKey' | 'publicApiKey' | 'storeDomain' | 'platform' | 'productUrlTemplate' | 'configUrl' | 'widgetId' | 'onError' | 'onRoomAnalyzed' | 'onFurnitureCustomized' | 'theme' | 'catalog' | 'fontFamily'>>;
 export declare function mergeConfig(userConfig?: WidgetConfig): WidgetConfig;
 export declare function getWidgetTitle(config?: WidgetConfig): string;
 export declare function getPrimaryColor(config?: WidgetConfig): string;
+export declare function getFontFamily(config?: WidgetConfig): string | undefined;
 export declare function getButtonStyle(config?: WidgetConfig): 'text' | 'logo';
 export declare function getButtonLogoUrl(config?: WidgetConfig): string | undefined;
 export declare function isDarkColor(color: string): boolean;

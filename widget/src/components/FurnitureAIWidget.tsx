@@ -315,7 +315,7 @@ export function FurnitureAIWidget({
         className="modly-widget-header border-b border-transparent px-5 py-3.5 pr-16 flex items-center gap-4"
         style={{ backgroundColor: primaryColor }}
       >
-        <h1 className="modly-widget-title text-base font-semibold shrink-0" style={{ color: titleColor }}>
+        <h2 className="modly-widget-title text-base font-semibold shrink-0" style={{ color: titleColor }}>
           {displayTitle === DEFAULT_WIDGET_TITLE ? (
             <>
               <span>Modly</span>
@@ -324,7 +324,7 @@ export function FurnitureAIWidget({
           ) : (
             <span>{displayTitle}</span>
           )}
-        </h1>
+        </h2>
 
         {/* Persistent pill tab switcher, visible in every mode */}
         {!hideNav && (

@@ -96,9 +96,9 @@ export function CatalogView({ onCustomizeItem, highlightItemId }: CatalogViewPro
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
             Furniture Catalog
-          </h1>
+          </h2>
           <p className="text-lg md:text-xl text-white/80 max-w-2xl mx-auto">
             Browse our collection of customizable furniture pieces
           </p>
