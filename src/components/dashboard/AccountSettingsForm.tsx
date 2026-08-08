@@ -3,7 +3,8 @@
 import { useSession } from 'next-auth/react'
 import { Eye, EyeOff, KeyRound, LogOut, Mail, Save, User } from 'lucide-react'
 import type React from 'react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useSettingsTabDirty } from '@/lib/settings-tab-dirty'
 import ImageUploadField from '@/components/ImageUploadField'
 import { notifyProfileUpdated } from '@/lib/use-profile-summary'
 
@@ -88,6 +89,12 @@ export default function AccountSettingsForm({
   // Profile (name + email) state
   const [name, setName] = useState(initialName)
   const [email, setEmail] = useState(initialEmail)
+  // Baseline to diff against for the tab's dirty indicator - separate from
+  // initialName/initialEmail (which are static props from the server render
+  // and never update), so it can move forward after a successful save the
+  // same way WhiteLabelSettingsForm's savedFormState does.
+  const [savedName, setSavedName] = useState(initialName)
+  const [savedEmail, setSavedEmail] = useState(initialEmail)
   const [avatarUrl, setAvatarUrl] = useState(initialAvatarUrl || '')
   const [avatarStatus, setAvatarStatus] = useState<'idle' | 'saving' | 'success' | 'error'>('idle')
   const [avatarMessage, setAvatarMessage] = useState('')
@@ -111,6 +118,28 @@ export default function AccountSettingsForm({
   // Sign out other devices state
   const [signOutStatus, setSignOutStatus] = useState<'idle' | 'saving' | 'success' | 'error'>('idle')
   const [signOutMessage, setSignOutMessage] = useState('')
+
+  const isDirty =
+    name !== savedName ||
+    email !== savedEmail ||
+    currentPassword !== '' ||
+    newPassword !== '' ||
+    confirmPassword !== ''
+
+  const reportTabDirty = useSettingsTabDirty('account')
+  useEffect(() => {
+    reportTabDirty(isDirty)
+  }, [isDirty, reportTabDirty])
+
+  useEffect(() => {
+    if (!isDirty) return
+    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+      event.preventDefault()
+      event.returnValue = ''
+    }
+    window.addEventListener('beforeunload', handleBeforeUnload)
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload)
+  }, [isDirty])
 
   const handleAvatarChange = async (url: string) => {
     setAvatarUrl(url)
@@ -186,11 +215,15 @@ export default function AccountSettingsForm({
         throw new Error(result?.error || 'Unable to save changes')
       }
 
+      // Name always saves immediately, regardless of the email branch below.
+      setSavedName(name)
+
       if (result.pendingEmailVerificationRequired) {
         setPendingEmailConfirm(true)
         setProfileStatus('success')
         setProfileMessage(`We sent a confirmation code to ${email}. Enter it below to finish changing your email.`)
       } else {
+        setSavedEmail(email)
         await update()
         setProfileStatus('success')
         setProfileMessage('Saved.')
@@ -218,6 +251,7 @@ export default function AccountSettingsForm({
         throw new Error(result?.error || 'Invalid or expired code')
       }
 
+      setSavedEmail(email)
       await update()
       setPendingEmailConfirm(false)
       setEmailCode('')

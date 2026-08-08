@@ -21,10 +21,15 @@ async function safeJson(res: Response): Promise<{ error?: string; [key: string]:
   }
 }
 
+function isLocalDevIp(ip: string) {
+  return ip === '::1' || ip === '127.0.0.1'
+}
+
 export default function ActiveSessionsList() {
   const [sessions, setSessions] = useState<SessionRow[] | null>(null)
   const [error, setError] = useState('')
   const [revokingId, setRevokingId] = useState<string | null>(null)
+  const [revokingGroup, setRevokingGroup] = useState(false)
 
   const load = () => {
     fetch('/api/account/sessions')
@@ -60,11 +65,41 @@ export default function ActiveSessionsList() {
     }
   }
 
+  const handleRevokeGroup = async (sessionIds: string[]) => {
+    setRevokingGroup(true)
+    setError('')
+
+    try {
+      const results = await Promise.all(
+        sessionIds.map((id) => fetch(`/api/account/sessions/${id}/revoke`, { method: 'POST' }))
+      )
+      if (results.some((res) => !res.ok)) {
+        throw new Error('Unable to sign out some of those sessions.')
+      }
+
+      setSessions((prev) => (prev ? prev.filter((s) => !sessionIds.includes(s.id)) : prev))
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Unable to sign out those sessions.')
+    } finally {
+      setRevokingGroup(false)
+    }
+  }
+
+  // Seven near-identical "Chrome on Windows" rows read as alarming rather
+  // than expected, and most of them are just the same developer hitting
+  // localhost repeatedly. Group those separately from real devices - the
+  // current session stays visible on its own regardless, since that's the
+  // one the merchant actually needs to identify.
+  const localSessions = sessions?.filter((s) => isLocalDevIp(s.ip) && !s.isCurrent) ?? []
+  const visibleSessions = sessions?.filter((s) => !isLocalDevIp(s.ip) || s.isCurrent) ?? []
+
   return (
     <section className="rounded-[32px] border border-stone-200 bg-white p-6 shadow-sm">
       <div className="flex items-center gap-2">
         <Laptop className="h-5 w-5 text-stone-500" />
-        <h2 className="text-2xl font-bold tracking-tight text-stone-950">Active sessions</h2>
+        <h2 className="text-2xl font-bold tracking-tight text-stone-950">
+          Active sessions{sessions ? ` (${sessions.length})` : ''}
+        </h2>
       </div>
       <p className="mt-2 text-sm text-stone-600">Devices and browsers currently signed in to your account.</p>
 
@@ -76,7 +111,7 @@ export default function ActiveSessionsList() {
         <p className="mt-4 text-sm text-stone-500">No active sessions found.</p>
       ) : (
         <ul className="mt-4 divide-y divide-stone-100">
-          {sessions.map((s) => (
+          {visibleSessions.map((s) => (
             <li key={s.id} className="flex flex-wrap items-center justify-between gap-3 py-3">
               <div>
                 <p className="text-sm font-medium text-stone-900">
@@ -104,6 +139,23 @@ export default function ActiveSessionsList() {
               ) : null}
             </li>
           ))}
+          {localSessions.length > 0 ? (
+            <li className="flex flex-wrap items-center justify-between gap-3 py-3">
+              <div>
+                <p className="text-sm font-medium text-stone-900">Local development ({localSessions.length})</p>
+                <p className="mt-1 text-xs text-stone-500">Sessions from localhost - not a real device or browser.</p>
+              </div>
+              <button
+                type="button"
+                onClick={() => handleRevokeGroup(localSessions.map((s) => s.id))}
+                disabled={revokingGroup}
+                className="inline-flex items-center gap-1.5 rounded-lg border border-stone-300 bg-white px-3 py-2 text-xs font-semibold text-stone-700 transition hover:bg-stone-50 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                <X className="h-3.5 w-3.5" />
+                {revokingGroup ? 'Signing out...' : 'Sign out all'}
+              </button>
+            </li>
+          ) : null}
         </ul>
       )}
     </section>

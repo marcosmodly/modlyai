@@ -1,13 +1,13 @@
 'use client'
 
 import { Save } from 'lucide-react'
-import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import type React from 'react'
 import { Component, useEffect, useMemo, useState } from 'react'
 import { FurnitureAIWidget } from '@widget/components/FurnitureAIWidget'
 import ImageUploadField from '@/components/ImageUploadField'
 import { DEMO_CATALOG, FEATURED_DEMO_PRODUCT, demoProductToFurnitureItem } from '@/lib/demo-catalog'
+import { useSettingsTabDirty } from '@/lib/settings-tab-dirty'
 import { notifyProfileUpdated } from '@/lib/use-profile-summary'
 import { WIDGET_THEMES, type WidgetTheme } from '@/lib/widget-themes'
 
@@ -35,11 +35,6 @@ type EnabledActions = {
 
 type SettingsStore = {
   id: string
-  name?: string
-  storeUrl?: string
-  url?: string
-  productUrlTemplate?: string
-  supportEmail?: string
   widgetTitle?: string
   primaryColor?: string
   titleColor?: string
@@ -53,14 +48,9 @@ type SettingsStore = {
   enableCustomize?: boolean
   enableRequestQuote?: boolean
   enabledActions?: Partial<EnabledActions>
-  quoteEmail?: string
 }
 
 type FormState = {
-  storeName: string
-  storeUrl: string
-  productUrlTemplate: string
-  supportEmail: string
   widgetTitle: string
   primaryColor: string
   titleColor: string
@@ -71,15 +61,10 @@ type FormState = {
   widgetLogoUrl: string
   welcomeMessage: string
   enabledActions: EnabledActions
-  quoteEmail: string
 }
 
-function buildInitialState(store: SettingsStore, fallbackStoreName?: string): FormState {
+function buildInitialState(store: SettingsStore): FormState {
   return {
-    storeName: store.name || fallbackStoreName || '',
-    storeUrl: store.storeUrl || store.url || '',
-    productUrlTemplate: store.productUrlTemplate || '',
-    supportEmail: store.supportEmail || '',
     widgetTitle: store.widgetTitle || DEFAULT_WIDGET_TITLE,
     primaryColor: isHexColor(store.primaryColor) ? store.primaryColor : DEFAULT_PRIMARY_COLOR,
     titleColor: isHexColor(store.titleColor) ? store.titleColor : DEFAULT_TITLE_COLOR,
@@ -100,7 +85,6 @@ function buildInitialState(store: SettingsStore, fallbackStoreName?: string): Fo
       customize: store.enableCustomize ?? store.enabledActions?.customize ?? true,
       requestQuote: store.enableRequestQuote ?? store.enabledActions?.requestQuote ?? true,
     },
-    quoteEmail: store.quoteEmail || store.supportEmail || '',
   }
 }
 
@@ -172,13 +156,10 @@ const inputClass =
 
 export default function WhiteLabelSettingsForm({
   store,
-  fallbackStoreName,
 }: {
   store: SettingsStore
-  fallbackStoreName?: string
 }) {
-  const { update } = useSession()
-  const [form, setForm] = useState<FormState>(() => buildInitialState(store, fallbackStoreName))
+  const [form, setForm] = useState<FormState>(() => buildInitialState(store))
   // Baseline to diff against for the unsaved-changes indicator. Only moves
   // when a save actually succeeds - not on every keystroke - so it reflects
   // what's persisted, not what's on screen.
@@ -214,6 +195,11 @@ export default function WhiteLabelSettingsForm({
     window.addEventListener('beforeunload', handleBeforeUnload)
     return () => window.removeEventListener('beforeunload', handleBeforeUnload)
   }, [isDirty])
+
+  const reportTabDirty = useSettingsTabDirty('widget')
+  useEffect(() => {
+    reportTabDirty(isDirty)
+  }, [isDirty, reportTabDirty])
 
   const updateField = <Key extends keyof FormState>(key: Key, value: FormState[Key]) => {
     setForm((current) => ({ ...current, [key]: value }))
@@ -281,22 +267,12 @@ export default function WhiteLabelSettingsForm({
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
-    if (form.productUrlTemplate.trim() && !form.productUrlTemplate.includes('{handle}')) {
-      setStatus('error')
-      setMessage('Product page URL pattern must include {handle}.')
-      return
-    }
-
     setStatus('saving')
     setMessage('')
 
     try {
       const url = `/api/stores/${store.id}`
       const payload = {
-        storeName: form.storeName,
-        storeUrl: form.storeUrl,
-        productUrlTemplate: form.productUrlTemplate,
-        supportEmail: form.supportEmail,
         widgetTitle: form.widgetTitle,
         primaryColor: form.primaryColor,
         titleColor: form.titleColor,
@@ -306,7 +282,6 @@ export default function WhiteLabelSettingsForm({
         widgetButtonPosition: form.widgetButtonPosition,
         widgetLogoUrl: form.widgetLogoUrl,
         welcomeMessage: form.welcomeMessage,
-        quoteEmail: form.quoteEmail,
         enableViewInCatalog: form.enabledActions.viewInCatalog,
         enableCustomize: form.enabledActions.customize,
         enableRequestQuote: form.enabledActions.requestQuote,
@@ -340,12 +315,9 @@ export default function WhiteLabelSettingsForm({
       setMessage('Settings saved.')
       setSavedFormState(form)
 
-      // Sidebar/Header pull storeName from the session, so refresh it now -
-      // otherwise it would only pick up the change after a full re-login (the
-      // same staleness bug we fixed for the account name field). The logo
-      // itself is fetched separately (see use-profile-summary.ts) since it
-      // can be too large to fit in the session cookie.
-      await update()
+      // The logo is fetched separately (see use-profile-summary.ts) since it
+      // can be too large to fit in the session cookie - this is what makes
+      // a new widgetLogoUrl show up in Header/Sidebar without a reload.
       notifyProfileUpdated()
     } catch (error) {
       setStatus('error')
@@ -412,53 +384,6 @@ export default function WhiteLabelSettingsForm({
         <p className="mt-3 max-w-2xl text-sm leading-6 text-stone-600">
           Customize how ModlyAI appears on your storefront and where customer actions are sent.
         </p>
-      </section>
-
-      <section className="rounded-[32px] border border-stone-200 bg-white p-6 shadow-sm">
-        <h2 className="text-2xl font-bold tracking-tight text-stone-950">Store Profile</h2>
-        <div className="mt-6 grid gap-5 md:grid-cols-2">
-          <Field label="Store name">
-            <input
-              type="text"
-              value={form.storeName}
-              onChange={(event) => updateField('storeName', event.target.value)}
-              className={inputClass}
-              placeholder="Acme Furniture"
-            />
-          </Field>
-          <Field label="Store website URL">
-            <input
-              type="url"
-              value={form.storeUrl}
-              onChange={(event) => updateField('storeUrl', event.target.value)}
-              className={inputClass}
-              placeholder="https://example.com"
-            />
-          </Field>
-          <Field label="Product page URL pattern (optional)">
-            <input
-              type="text"
-              value={form.productUrlTemplate}
-              onChange={(event) => updateField('productUrlTemplate', event.target.value)}
-              className={inputClass}
-              placeholder="https://mystore.com/shop/{handle}"
-            />
-            <p className="mt-2 text-xs text-stone-500">
-              How your product URLs are built. Use {'{handle}'} where the product handle or slug goes - for
-              example https://mystore.com/shop/{'{handle}'}. Leave blank on Shopify or WooCommerce, we detect
-              those automatically.
-            </p>
-          </Field>
-          <Field label="Support email">
-            <input
-              type="email"
-              value={form.supportEmail}
-              onChange={(event) => updateField('supportEmail', event.target.value)}
-              className={inputClass}
-              placeholder="support@example.com"
-            />
-          </Field>
-        </div>
       </section>
 
       <section className="rounded-[32px] border border-stone-200 bg-white p-6 shadow-sm">
@@ -804,21 +729,6 @@ export default function WhiteLabelSettingsForm({
         </div>
       </section>
 
-      <section className="rounded-[32px] border border-stone-200 bg-white p-6 shadow-sm">
-        <h2 className="text-2xl font-bold tracking-tight text-stone-950">Quote Requests</h2>
-        <div className="mt-6 max-w-md">
-          <Field label="Quote request email">
-            <input
-              type="email"
-              value={form.quoteEmail}
-              onChange={(event) => updateField('quoteEmail', event.target.value)}
-              className={inputClass}
-              placeholder="quotes@example.com"
-            />
-          </Field>
-        </div>
-      </section>
-
       <p className="rounded-2xl border border-stone-200 bg-white px-4 py-3 text-sm text-stone-600 shadow-sm">
         Need to install the widget?{' '}
         <Link href="/dashboard/integrations" className="font-semibold text-blue-700 hover:underline">
@@ -841,7 +751,7 @@ export default function WhiteLabelSettingsForm({
           </div>
         </div>
         <div className="flex flex-col items-end gap-1.5">
-          <p className="text-xs text-stone-500">Saves Store Profile, Widget Branding, and Quote Requests.</p>
+          <p className="text-xs text-stone-500">Saves Widget Branding.</p>
           {isDirty && status !== 'saving' && (
             <p className="text-xs font-semibold text-amber-700">Unsaved changes</p>
           )}
@@ -851,7 +761,7 @@ export default function WhiteLabelSettingsForm({
             className="inline-flex items-center gap-2 rounded-xl bg-stone-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-stone-800 disabled:cursor-not-allowed disabled:opacity-60"
           >
             <Save className="h-4 w-4" />
-            {status === 'saving' ? 'Saving...' : 'Save widget & store settings'}
+            {status === 'saving' ? 'Saving...' : 'Save widget settings'}
           </button>
         </div>
       </div>
