@@ -1,9 +1,10 @@
 'use client'
 
-import { Save } from 'lucide-react'
+import { Save, X } from 'lucide-react'
 import Link from 'next/link'
 import type React from 'react'
-import { Component, useEffect, useMemo, useState } from 'react'
+import { Component, useEffect, useId, useMemo, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { FurnitureAIWidget } from '@widget/components/FurnitureAIWidget'
 import ImageUploadField from '@/components/ImageUploadField'
 import { DEMO_CATALOG, FEATURED_DEMO_PRODUCT, demoProductToFurnitureItem } from '@/lib/demo-catalog'
@@ -114,6 +115,107 @@ class WidgetPreviewBoundary extends Component<
   }
 }
 
+// Portaled to document.body rather than rendered in place: the dashboard
+// Header is `sticky` with `backdrop-blur`, which makes it a containing
+// block for `position: fixed` descendants of *its own* subtree - not this
+// one, since this form renders inside <main>, a sibling of <Header>. Still,
+// portaling is what keeps that true regardless of how the page around this
+// form changes later, the same reasoning behind portaling the mobile nav
+// drawer's fixed layer.
+function FullPreviewModal({
+  onClose,
+  children,
+}: {
+  onClose: () => void
+  children: React.ReactNode
+}) {
+  const titleId = useId()
+  const dialogPanelRef = useRef<HTMLDivElement>(null)
+  const closeButtonRef = useRef<HTMLButtonElement>(null)
+
+  useEffect(() => {
+    const previouslyFocused = document.activeElement as HTMLElement | null
+    const previousBodyOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    closeButtonRef.current?.focus()
+
+    return () => {
+      document.body.style.overflow = previousBodyOverflow
+      previouslyFocused?.focus()
+    }
+  }, [])
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        onClose()
+        return
+      }
+
+      if (event.key !== 'Tab' || !dialogPanelRef.current) return
+
+      const focusable = Array.from(
+        dialogPanelRef.current.querySelectorAll<HTMLElement>(
+          'a, button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        )
+      ).filter((element) => element.offsetParent !== null)
+      if (focusable.length === 0) return
+
+      const first = focusable[0]
+      const last = focusable[focusable.length - 1]
+
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault()
+        last.focus()
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault()
+        first.focus()
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [onClose])
+
+  return createPortal(
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-stone-950/50 p-4"
+      onClick={(event) => {
+        if (event.target === event.currentTarget) onClose()
+      }}
+    >
+      <div
+        ref={dialogPanelRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={titleId}
+        className="my-8 w-full max-w-3xl rounded-[28px] border border-stone-200 bg-white shadow-xl"
+      >
+        <div className="flex items-center justify-between border-b border-stone-200 px-6 py-5">
+          <h2 id={titleId} className="text-lg font-bold text-stone-950">
+            Full widget preview
+          </h2>
+          <button
+            ref={closeButtonRef}
+            type="button"
+            onClick={onClose}
+            className="rounded-full p-3 text-stone-400 transition hover:bg-stone-100 hover:text-stone-700"
+            aria-label="Close"
+          >
+            <X className="h-5 w-5" />
+          </button>
+        </div>
+        <div className="p-6">
+          <div className="overflow-hidden rounded-3xl border border-stone-200 shadow-sm" style={{ height: 720 }}>
+            {children}
+          </div>
+        </div>
+      </div>
+    </div>,
+    document.body
+  )
+}
+
 function Field({
   label,
   children,
@@ -171,6 +273,7 @@ export default function WhiteLabelSettingsForm({
   const [logoWarning, setLogoWarning] = useState('')
   const [logoChecking, setLogoChecking] = useState(false)
   const [colorsExpanded, setColorsExpanded] = useState(false)
+  const [fullPreviewOpen, setFullPreviewOpen] = useState(false)
   const colorSwatchValue = isHexColor(form.primaryColor) ? form.primaryColor : DEFAULT_PRIMARY_COLOR
   const titleColorValue = isHexColor(form.titleColor) ? form.titleColor : DEFAULT_TITLE_COLOR
   const messageTextColorValue = isHexColor(form.messageTextColor) ? form.messageTextColor : DEFAULT_MESSAGE_TEXT_COLOR
@@ -185,6 +288,48 @@ export default function WhiteLabelSettingsForm({
   // Preview-only fixture: this form has no merchant catalog available
   // client-side, and the real catalog isn't the point of a colour preview.
   const previewProduct = useMemo(() => demoProductToFurnitureItem(FEATURED_DEMO_PRODUCT), [])
+
+  // Shared by both the inline chat-only preview and the full-preview modal -
+  // they only differ in hideNav, passed separately at each call site.
+  const previewConfig = useMemo(
+    () => ({
+      // No storeId/apiKey/publicApiKey/storeDomain on purpose: findStoreForUsage
+      // (chat + room-planner routes) then resolves no store, so previewing
+      // colours never spends the merchant's aiChats/roomPlannerAnalyses allowance.
+      catalog: { source: 'manual' as const, products: DEMO_CATALOG },
+      widgetTitle: form.widgetTitle || DEFAULT_WIDGET_TITLE,
+      primaryColor: colorSwatchValue,
+      titleColor: titleColorValue,
+      messageTextColor: messageTextColorValue,
+      welcomeMessage: form.welcomeMessage || DEFAULT_WELCOME_MESSAGE,
+      theme: {
+        buttonStyle: form.widgetButtonStyle,
+        logoUrl: form.widgetLogoUrl || undefined,
+        fontFamily: form.widgetFontFamily || undefined,
+      },
+      enabledActions: {
+        viewInCatalog: false,
+        customize: form.enabledActions.customize,
+        requestQuote: form.enabledActions.requestQuote,
+      },
+      apiEndpoints: {
+        quoteRequest: '/api/demo/quote-request',
+        catalog: '/api/demo/catalog-items',
+      },
+    }),
+    [
+      form.widgetTitle,
+      colorSwatchValue,
+      titleColorValue,
+      messageTextColorValue,
+      form.welcomeMessage,
+      form.widgetButtonStyle,
+      form.widgetLogoUrl,
+      form.widgetFontFamily,
+      form.enabledActions.customize,
+      form.enabledActions.requestQuote,
+    ]
+  )
 
   useEffect(() => {
     if (!isDirty) return
@@ -442,7 +587,7 @@ export default function WhiteLabelSettingsForm({
           </div>
         </div>
 
-        <div className="mt-6 space-y-8">
+        <div className="mt-6 grid gap-8 xl:grid-cols-[minmax(0,1fr)_400px]">
           <div className="space-y-5">
             <Field label="Widget title">
               <input
@@ -686,48 +831,40 @@ export default function WhiteLabelSettingsForm({
             </div>
           </div>
 
-          <div>
-            <p className="text-sm font-medium text-stone-700">Live preview</p>
+          <div className="xl:sticky xl:top-24 xl:self-start">
+            <div className="flex items-center justify-between gap-3">
+              <p className="text-sm font-medium text-stone-700">Live preview</p>
+              <button
+                type="button"
+                onClick={() => setFullPreviewOpen(true)}
+                className="text-sm font-medium text-blue-700 hover:underline"
+              >
+                Open full preview
+              </button>
+            </div>
             <p className="mt-1 text-xs text-stone-500">
-              This is the real widget, full-width so its own layout renders the same way it will on your storefront -
-              a narrow preview column would squeeze the Room Planner and Customizer tabs into broken, cramped grids.
+              This is the real widget, chat only, at roughly the size shoppers see it on your storefront. Open the
+              full preview to check Room Planner and Customizer.
             </p>
-            <div className="mt-3 overflow-hidden rounded-3xl border border-stone-200 shadow-sm" style={{ height: 720 }}>
+            <div
+              className="mt-3 w-full overflow-hidden rounded-3xl border border-stone-200 shadow-sm"
+              style={{ maxHeight: 'min(70vh, 560px)' }}
+            >
               <WidgetPreviewBoundary fallback={staticPreviewFallback}>
-                <FurnitureAIWidget
-                  initialProduct={previewProduct}
-                  config={{
-                    // No storeId/apiKey/publicApiKey/storeDomain on purpose:
-                    // findStoreForUsage (chat + room-planner routes) then
-                    // resolves no store, so previewing colours never spends
-                    // the merchant's aiChats/roomPlannerAnalyses allowance.
-                    catalog: { source: 'manual', products: DEMO_CATALOG },
-                    widgetTitle: form.widgetTitle || DEFAULT_WIDGET_TITLE,
-                    primaryColor: colorSwatchValue,
-                    titleColor: titleColorValue,
-                    messageTextColor: messageTextColorValue,
-                    welcomeMessage: form.welcomeMessage || DEFAULT_WELCOME_MESSAGE,
-                    theme: {
-                      buttonStyle: form.widgetButtonStyle,
-                      logoUrl: form.widgetLogoUrl || undefined,
-                      fontFamily: form.widgetFontFamily || undefined,
-                    },
-                    enabledActions: {
-                      viewInCatalog: false,
-                      customize: form.enabledActions.customize,
-                      requestQuote: form.enabledActions.requestQuote,
-                    },
-                    apiEndpoints: {
-                      quoteRequest: '/api/demo/quote-request',
-                      catalog: '/api/demo/catalog-items',
-                    },
-                  }}
-                />
+                <FurnitureAIWidget hideNav initialProduct={previewProduct} config={previewConfig} />
               </WidgetPreviewBoundary>
             </div>
           </div>
         </div>
       </section>
+
+      {fullPreviewOpen && (
+        <FullPreviewModal onClose={() => setFullPreviewOpen(false)}>
+          <WidgetPreviewBoundary fallback={staticPreviewFallback}>
+            <FurnitureAIWidget initialProduct={previewProduct} config={previewConfig} />
+          </WidgetPreviewBoundary>
+        </FullPreviewModal>
+      )}
 
       <p className="rounded-2xl border border-stone-200 bg-white px-4 py-3 text-sm text-stone-600 shadow-sm">
         Need to install the widget?{' '}
