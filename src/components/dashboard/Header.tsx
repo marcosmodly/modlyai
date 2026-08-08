@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
 import { signOut, useSession } from 'next-auth/react';
@@ -47,6 +48,7 @@ export default function Header() {
   const [unreadCount, setUnreadCount] = useState(0);
   const [loadingNotifications, setLoadingNotifications] = useState(false);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const notificationsRef = useRef<HTMLDivElement>(null);
   const mobileNavPanelRef = useRef<HTMLDivElement>(null);
@@ -181,7 +183,12 @@ export default function Header() {
     };
   }, [mobileNavOpen]);
 
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   return (
+    <>
     <header className="sticky top-0 z-30 border-b border-stone-200/70 bg-[#f7f4ee]/90 backdrop-blur">
       <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between gap-4">
@@ -352,59 +359,61 @@ export default function Header() {
         </div>
 
       </div>
-
-      {mobileNavOpen && (
-        <div className="fixed inset-0 z-50 lg:hidden">
-          <div
-            className="absolute inset-0 bg-stone-950/50"
-            onClick={() => setMobileNavOpen(false)}
-            aria-hidden="true"
-          />
-          <div
-            ref={mobileNavPanelRef}
-            role="dialog"
-            aria-modal="true"
-            aria-label="Dashboard navigation"
-            className="absolute inset-y-0 left-0 flex w-72 max-w-[85vw] flex-col bg-[#f8f4ec] p-4 shadow-xl"
-          >
-            <div className="flex items-center justify-between px-2 py-2">
-              <span className="text-sm font-bold uppercase tracking-[0.22em] text-stone-500">Menu</span>
-              <button
-                type="button"
-                onClick={() => setMobileNavOpen(false)}
-                className="flex h-11 w-11 items-center justify-center rounded-2xl text-stone-600 transition hover:bg-white"
-                aria-label="Close navigation menu"
-              >
-                <X className="h-5 w-5" />
-              </button>
-            </div>
-            <nav aria-label="Dashboard" className="mt-2 flex-1">
-              <ul role="list" className="space-y-2">
-                {dashboardNavigation.map((item) => {
-                  const isActive = isDashboardNavItemActive(pathname, item.href);
-                  return (
-                    <li key={item.href}>
-                      <Link
-                        href={item.href}
-                        aria-current={isActive ? 'page' : undefined}
-                        className={[
-                          'flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-semibold transition',
-                          isActive
-                            ? 'bg-stone-900 text-white'
-                            : 'text-stone-700 hover:bg-white',
-                        ].join(' ')}
-                      >
-                        <item.icon className={['h-5 w-5 shrink-0', isActive ? 'text-amber-300' : 'text-stone-500'].join(' ')} />
-                        {item.name}
-                      </Link>
-                    </li>
-                  );
-                })}
-              </ul>
-            </nav>
-          </div>
-        </div>
-      )}
     </header>
+
+    {mounted && mobileNavOpen && createPortal(
+      <div className="fixed inset-0 z-50 lg:hidden">
+        <div
+          className="absolute inset-0 bg-stone-950/50"
+          onClick={() => setMobileNavOpen(false)}
+          aria-hidden="true"
+        />
+        <div
+          ref={mobileNavPanelRef}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Dashboard navigation"
+          className="absolute inset-y-0 left-0 flex w-72 max-w-[85vw] flex-col bg-[#f8f4ec] p-4 shadow-xl"
+        >
+          <div className="flex items-center justify-between px-2 py-2">
+            <span className="text-sm font-bold uppercase tracking-[0.22em] text-stone-500">Menu</span>
+            <button
+              type="button"
+              onClick={() => setMobileNavOpen(false)}
+              className="flex h-11 w-11 items-center justify-center rounded-2xl text-stone-600 transition hover:bg-white"
+              aria-label="Close navigation menu"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </div>
+          <nav aria-label="Dashboard" className="mt-2 flex-1">
+            <ul role="list" className="space-y-2">
+              {dashboardNavigation.map((item) => {
+                const isActive = isDashboardNavItemActive(pathname, item.href);
+                return (
+                  <li key={item.href}>
+                    <Link
+                      href={item.href}
+                      aria-current={isActive ? 'page' : undefined}
+                      className={[
+                        'flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-semibold transition',
+                        isActive
+                          ? 'bg-stone-900 text-white'
+                          : 'text-stone-700 hover:bg-white',
+                      ].join(' ')}
+                    >
+                      <item.icon className={['h-5 w-5 shrink-0', isActive ? 'text-amber-300' : 'text-stone-500'].join(' ')} />
+                      {item.name}
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </nav>
+        </div>
+      </div>,
+      document.body
+    )}
+    </>
   );
 }
