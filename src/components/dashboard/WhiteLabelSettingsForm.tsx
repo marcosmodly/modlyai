@@ -189,7 +189,7 @@ function FullPreviewModal({
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
-        className="my-8 w-full max-w-3xl rounded-[28px] border border-stone-200 bg-white shadow-xl"
+        className="my-8 w-[min(1240px,94vw)] max-w-none rounded-[28px] border border-stone-200 bg-white shadow-xl"
       >
         <div className="flex items-center justify-between border-b border-stone-200 px-6 py-5">
           <h2 id={titleId} className="text-lg font-bold text-stone-950">
@@ -206,7 +206,7 @@ function FullPreviewModal({
           </button>
         </div>
         <div className="p-6">
-          <div className="overflow-hidden rounded-3xl border border-stone-200 shadow-sm" style={{ height: 720 }}>
+          <div className="h-[min(78vh,760px)] overflow-hidden rounded-3xl border border-stone-200 shadow-sm">
             {children}
           </div>
         </div>
@@ -538,57 +538,33 @@ export default function WhiteLabelSettingsForm({
           hex values.
         </p>
 
-        <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3">
-          <div className="rounded-2xl border border-stone-200 bg-stone-50 p-4">
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-stone-500">Primary color</p>
-            <div className="mt-3 flex items-center gap-2">
-              <span
-                className="h-5 w-5 rounded-full border border-black/10"
-                style={{ backgroundColor: colorSwatchValue }}
-                aria-hidden="true"
-              />
-              <span className="font-mono text-sm text-stone-800">{colorSwatchValue}</span>
-            </div>
-          </div>
-          <div className="rounded-2xl border border-stone-200 bg-stone-50 p-4">
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-stone-500">Button position</p>
-            <p className="mt-3 font-medium text-stone-900">{BUTTON_POSITION_LABELS[form.widgetButtonPosition]}</p>
-          </div>
-          <div className="rounded-2xl border border-stone-200 bg-stone-50 p-4">
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-stone-500">Customer actions on</p>
-            <p className="mt-3 font-medium text-stone-900">
-              {Object.values(form.enabledActions).filter(Boolean).length} of 3
-            </p>
-          </div>
-        </div>
-
-        <div className="mt-6">
-          <p className="text-sm font-medium text-stone-700">Appearance</p>
-          <div className="mt-2 grid grid-cols-2 gap-3 sm:grid-cols-4">
-            {WIDGET_THEMES.map((theme) => (
-              <button
-                key={theme.id}
-                type="button"
-                onClick={() => applyTheme(theme)}
-                className={`flex items-center gap-2 rounded-2xl border-2 px-3 py-2.5 text-left text-sm font-medium transition ${
-                  activeThemeId === theme.id
-                    ? 'border-blue-500 bg-blue-50 text-stone-900'
-                    : 'border-stone-200 bg-stone-50 text-stone-600 hover:border-stone-300'
-                }`}
-              >
-                <span
-                  className="h-6 w-6 shrink-0 rounded-full border border-black/10"
-                  style={{ backgroundColor: theme.primaryColor }}
-                  aria-hidden="true"
-                />
-                {theme.name}
-              </button>
-            ))}
-          </div>
-        </div>
-
         <div className="mt-6 grid gap-8 xl:grid-cols-[minmax(0,1fr)_400px]">
           <div className="space-y-5">
+            <div>
+              <p className="text-sm font-medium text-stone-700">Appearance</p>
+              <div className="mt-2 grid grid-cols-2 gap-3 sm:grid-cols-4">
+                {WIDGET_THEMES.map((theme) => (
+                  <button
+                    key={theme.id}
+                    type="button"
+                    onClick={() => applyTheme(theme)}
+                    className={`flex items-center gap-2 rounded-2xl border-2 px-3 py-2.5 text-left text-sm font-medium transition ${
+                      activeThemeId === theme.id
+                        ? 'border-blue-500 bg-blue-50 text-stone-900'
+                        : 'border-stone-200 bg-stone-50 text-stone-600 hover:border-stone-300'
+                    }`}
+                  >
+                    <span
+                      className="h-6 w-6 shrink-0 rounded-full border border-black/10"
+                      style={{ backgroundColor: theme.primaryColor }}
+                      aria-hidden="true"
+                    />
+                    {theme.name}
+                  </button>
+                ))}
+              </div>
+            </div>
+
             <Field label="Widget title">
               <input
                 type="text"
@@ -723,28 +699,6 @@ export default function WhiteLabelSettingsForm({
               </div>
             </Field>
 
-            <Field label="Button position">
-              <div className="grid grid-cols-2 gap-3">
-                {BUTTON_POSITIONS.map((position) => (
-                  <button
-                    key={position}
-                    type="button"
-                    onClick={() => updateField('widgetButtonPosition', position)}
-                    className={`rounded-2xl border-2 px-4 py-3 text-left text-sm font-medium transition ${
-                      form.widgetButtonPosition === position
-                        ? 'border-blue-500 bg-blue-50 text-stone-900'
-                        : 'border-stone-200 bg-stone-50 text-stone-600 hover:border-stone-300'
-                    }`}
-                  >
-                    {BUTTON_POSITION_LABELS[position]}
-                  </button>
-                ))}
-              </div>
-              <p className="mt-2 text-xs text-stone-500">
-                Move the launcher if another widget already sits in this corner of your site.
-              </p>
-            </Field>
-
             {form.widgetButtonStyle === 'logo' && (
               <Field label="Logo image">
                 <ImageUploadField
@@ -811,6 +765,28 @@ export default function WhiteLabelSettingsForm({
               </div>
             )}
 
+            <Field label="Button position">
+              <div className="grid grid-cols-2 gap-3">
+                {BUTTON_POSITIONS.map((position) => (
+                  <button
+                    key={position}
+                    type="button"
+                    onClick={() => updateField('widgetButtonPosition', position)}
+                    className={`rounded-2xl border-2 px-4 py-3 text-left text-sm font-medium transition ${
+                      form.widgetButtonPosition === position
+                        ? 'border-blue-500 bg-blue-50 text-stone-900'
+                        : 'border-stone-200 bg-stone-50 text-stone-600 hover:border-stone-300'
+                    }`}
+                  >
+                    {BUTTON_POSITION_LABELS[position]}
+                  </button>
+                ))}
+              </div>
+              <p className="mt-2 text-xs text-stone-500">
+                Move the launcher if another widget already sits in this corner of your site.
+              </p>
+            </Field>
+
             <div className="space-y-3">
               <p className="text-sm font-medium text-stone-700">Customer actions</p>
               <Toggle
@@ -853,6 +829,34 @@ export default function WhiteLabelSettingsForm({
               <WidgetPreviewBoundary fallback={staticPreviewFallback}>
                 <FurnitureAIWidget hideNav initialProduct={previewProduct} config={previewConfig} />
               </WidgetPreviewBoundary>
+            </div>
+
+            <div className="mt-4 grid grid-cols-3 gap-3">
+              <div className="rounded-2xl border border-stone-200 bg-stone-50 p-3">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-stone-500">Primary color</p>
+                <div className="mt-2 flex items-center gap-1.5">
+                  <span
+                    className="h-4 w-4 shrink-0 rounded-full border border-black/10"
+                    style={{ backgroundColor: colorSwatchValue }}
+                    aria-hidden="true"
+                  />
+                  <span className="truncate font-mono text-xs text-stone-800">{colorSwatchValue}</span>
+                </div>
+              </div>
+              <div className="rounded-2xl border border-stone-200 bg-stone-50 p-3">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-stone-500">Button position</p>
+                <p className="mt-2 text-xs font-medium text-stone-900">
+                  {BUTTON_POSITION_LABELS[form.widgetButtonPosition]}
+                </p>
+              </div>
+              <div className="rounded-2xl border border-stone-200 bg-stone-50 p-3">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-stone-500">
+                  Customer actions on
+                </p>
+                <p className="mt-2 text-xs font-medium text-stone-900">
+                  {Object.values(form.enabledActions).filter(Boolean).length} of 3
+                </p>
+              </div>
             </div>
           </div>
         </div>
