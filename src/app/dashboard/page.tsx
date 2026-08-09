@@ -1,6 +1,7 @@
-import { CheckCircle2, Circle, Package, Sparkles, TrendingUp, Users } from 'lucide-react'
+import { CheckCircle2, Circle, Package, Sparkles, Users } from 'lucide-react'
 import { getServerSession } from 'next-auth'
 import Link from 'next/link'
+import EventTimestamp from '@/components/dashboard/EventTimestamp'
 import NoStoreState from '@/components/dashboard/NoStoreState'
 import SessionExpiredState from '@/components/dashboard/SessionExpiredState'
 import { authOptions } from '@/lib/auth-options'
@@ -76,8 +77,6 @@ export default async function DashboardPage() {
     return <SessionExpiredState title="Dashboard" />
   }
 
-  const isDeveloper = false
-
   if (!session.user.storeId) {
     console.error('[no-store] user has no store', { userId: session.user.id, page: 'Dashboard' })
     return <NoStoreState title="Dashboard" />
@@ -121,8 +120,21 @@ export default async function DashboardPage() {
       .filter(Boolean)
   ).size
   const assistedActions = events.filter((event) => event.type && assistedActionTypes.has(event.type)).length
-  const conversionRate = aiSessions > 0 ? `${((assistedActions / aiSessions) * 100).toFixed(1)}%` : 'Coming soon'
+  const conversionRate = aiSessions > 0 ? `${((assistedActions / aiSessions) * 100).toFixed(1)}%` : '0%'
   const recentEvents = events.slice(0, 8)
+
+  const sevenDaysAgo = Date.now() - 7 * 24 * 60 * 60 * 1000
+  const eventsThisWeek = events.filter((event) => {
+    if (!event.createdAt) return false
+    const createdAtMs = new Date(event.createdAt).getTime()
+    return !Number.isNaN(createdAtMs) && createdAtMs >= sevenDaysAgo
+  })
+  const chatsThisWeek = eventsThisWeek.filter((event) => event.type === 'chat_started').length
+  const quoteRequestsThisWeek = eventsThisWeek.filter((event) => event.type === 'quote_requested').length
+  const headline =
+    chatsThisWeek > 0 || quoteRequestsThisWeek > 0
+      ? `${chatsThisWeek} shopper chat${chatsThisWeek === 1 ? '' : 's'} this week · ${quoteRequestsThisWeek} quote request${quoteRequestsThisWeek === 1 ? '' : 's'}`
+      : 'No shopper activity yet this week.'
   const widgetInstalled = hasWidgetOpenedEver(events)
   // Latched at event-ingest time (see /api/analytics/events) the first time a
   // widget_opened event arrives - an onboarding checklist item must not flip
@@ -160,14 +172,14 @@ export default async function DashboardPage() {
   const stats = [
     {
       name: 'Products Synced',
-      value: String(productsSynced),
+      value: productsSynced.toLocaleString(),
       note: 'Real products currently linked to your InstantDB store account.',
       icon: Package,
       accent: 'bg-blue-100 text-blue-700',
     },
     {
       name: 'AI Sessions',
-      value: String(aiSessions),
+      value: aiSessions.toLocaleString(),
       note: aiSessions > 0 ? 'Unique widget sessions with shopper activity.' : 'Waiting for widget traffic.',
       icon: Users,
       accent: 'bg-stone-900 text-amber-300',
@@ -175,30 +187,21 @@ export default async function DashboardPage() {
     {
       name: 'Conversion Rate',
       value: conversionRate,
-      note: aiSessions > 0 ? 'Assisted action rate from catalog views and quote requests.' : 'Waiting for widget traffic.',
+      note:
+        aiSessions > 0 ? (
+          'Assisted action rate from catalog views and quote requests.'
+        ) : (
+          <Link href="/dashboard/integrations" className="font-semibold text-blue-700 hover:underline">
+            Test your widget &rarr;
+          </Link>
+        ),
       icon: Sparkles,
       accent: 'bg-emerald-100 text-emerald-700',
-    },
-    {
-      name: 'Revenue Impact',
-      value: 'Coming soon',
-      note: 'Revenue attribution requires checkout/order tracking.',
-      icon: TrendingUp,
-      accent: 'bg-amber-100 text-amber-700',
     },
   ]
 
   return (
     <div className="space-y-8">
-      {isDeveloper && (
-        <div className="mb-4 flex items-center gap-2 rounded-lg bg-gray-900 px-4 py-2 font-mono text-xs text-green-400">
-          🛠️ Developer mode — hello@modlyai.tech
-          <span className="text-gray-500">
-            | Real users will see onboarding flow
-          </span>
-        </div>
-      )}
-
       <section className="grid gap-6 xl:grid-cols-[1.45fr_0.95fr]">
         <div className="relative overflow-hidden rounded-[32px] border border-stone-200 bg-[linear-gradient(135deg,#fefaf3_0%,#ffffff_36%,#eef4ff_100%)] p-8 shadow-sm">
           <div className="pointer-events-none absolute inset-y-0 right-0 w-1/2 bg-[radial-gradient(circle_at_top_right,rgba(59,130,246,0.16),transparent_45%),radial-gradient(circle_at_bottom_right,rgba(180,143,93,0.16),transparent_40%)]" />
@@ -207,12 +210,12 @@ export default async function DashboardPage() {
               <Sparkles className="h-3.5 w-3.5 text-blue-700" />
               Account overview
             </div>
-            <h2 className="mt-5 max-w-xl text-4xl font-bold tracking-tight text-stone-950 sm:text-5xl">
+            <p className="mt-5 text-2xl font-semibold text-stone-700">
               Welcome back, {session.user.storeName || session.user.email}.
-            </h2>
-            <p className="mt-4 max-w-2xl text-base leading-7 text-stone-600">
-              This dashboard is now scoped to your store account, so every stat and activity item below is filtered to your own `storeId`.
             </p>
+            <h2 className="mt-2 max-w-xl text-4xl font-bold tracking-tight text-stone-950 sm:text-5xl">
+              {headline}
+            </h2>
           </div>
         </div>
 
@@ -223,7 +226,7 @@ export default async function DashboardPage() {
               <h3 className="mt-3 text-2xl font-bold tracking-tight text-stone-950">Install your widget</h3>
             </div>
             <div
-              className={`rounded-2xl px-3 py-2 text-xs font-semibold uppercase tracking-[0.18em] ${
+              className={`rounded-2xl px-4 py-3 text-sm font-semibold uppercase tracking-[0.18em] ${
                 widgetInstalled ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-700'
               }`}
             >
@@ -271,7 +274,7 @@ export default async function DashboardPage() {
             return (
               <div key={item.title} className="rounded-2xl border border-stone-200 bg-stone-50 p-4">
                 <div className="flex items-start gap-3">
-                  <Icon className={`mt-0.5 h-5 w-5 ${item.complete ? 'text-emerald-600' : 'text-stone-300'}`} />
+                  <Icon className={`mt-0.5 h-5 w-5 ${item.complete ? 'text-emerald-600' : 'text-stone-400'}`} />
                   <div className="min-w-0 flex-1">
                     <p className="font-semibold text-stone-950">{item.title}</p>
                     <p className="mt-1 text-xs font-medium text-stone-500">
@@ -282,7 +285,7 @@ export default async function DashboardPage() {
                     href={item.href}
                     target={item.external ? '_blank' : undefined}
                     rel={item.external ? 'noreferrer' : undefined}
-                    className="shrink-0 rounded-lg border border-stone-200 bg-white px-3 py-2 text-xs font-semibold text-stone-700 transition hover:border-blue-200 hover:text-blue-700"
+                    className="shrink-0 rounded-lg border border-stone-200 bg-white px-4 py-3 text-sm font-semibold text-stone-700 transition hover:border-blue-200 hover:text-blue-700"
                   >
                     {item.action}
                   </Link>
@@ -293,7 +296,7 @@ export default async function DashboardPage() {
         </div>
       </section>
 
-      <section className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
+      <section className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
         {stats.map((stat) => (
           <div key={stat.name} className="rounded-[28px] border border-stone-200 bg-white p-6 shadow-sm">
             <div className="flex items-start justify-between gap-4">
@@ -314,33 +317,32 @@ export default async function DashboardPage() {
         <div className="flex items-center justify-between gap-4">
           <h3 className="text-2xl font-bold tracking-tight text-stone-950">Recent Store Activity</h3>
           <span className="rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-blue-700">
-            {recentEvents.length} recent events
+            Latest {recentEvents.length}
           </span>
         </div>
 
         <div className="mt-6 max-h-[420px] space-y-3 overflow-y-auto pr-1">
           {recentEvents.length === 0 ? (
-            <div className="rounded-2xl border border-dashed border-stone-300 bg-stone-50 px-4 py-6 text-sm text-stone-500">
-              No events recorded for this store yet.
+            <div className="rounded-2xl border border-dashed border-stone-300 bg-stone-50 px-4 py-6 text-center text-sm text-stone-500">
+              <p>Install your widget to start seeing shopper activity.</p>
+              <Link
+                href="/dashboard/integrations"
+                className="mt-3 inline-flex items-center justify-center rounded-xl bg-stone-950 px-4 py-3 text-sm font-semibold text-white transition hover:bg-stone-800"
+              >
+                Get snippet
+              </Link>
             </div>
           ) : (
             recentEvents.map((event) => (
               <div key={event.id} className="rounded-2xl border border-stone-200 bg-stone-50 px-4 py-4">
-                <div className="flex items-center justify-between gap-4">
-                  <div>
-                    <p className="text-sm font-semibold text-stone-900">{getEventLabel(event.type)}</p>
-                    {getProductName(event) && (
-                      <p className="mt-1 text-xs text-stone-600">{getProductName(event)}</p>
-                    )}
-                    <p className="mt-1 text-xs text-stone-500">
-                      {event.createdAt ? new Date(event.createdAt).toLocaleString() : 'No timestamp'}
-                    </p>
-                  </div>
-                  {event.type && (
-                    <span className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-stone-500">
-                      {event.type}
-                    </span>
+                <div>
+                  <p className="text-sm font-semibold text-stone-900">{getEventLabel(event.type)}</p>
+                  {getProductName(event) && (
+                    <p className="mt-1 text-xs text-stone-600">{getProductName(event)}</p>
                   )}
+                  <p className="mt-1 text-xs text-stone-500">
+                    <EventTimestamp createdAt={event.createdAt} />
+                  </p>
                 </div>
               </div>
             ))
