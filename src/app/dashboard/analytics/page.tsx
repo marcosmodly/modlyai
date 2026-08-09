@@ -1,8 +1,12 @@
-import { ArrowUpRight, Clock3, MousePointerClick, Sofa, Target } from 'lucide-react'
+import { ArrowUpRight, Clock3, MousePointerClick, Target } from 'lucide-react'
 import { getServerSession } from 'next-auth'
+import Link from 'next/link'
+import AnalyticsRangeSelector from './AnalyticsRangeSelector'
+import EventTimestamp from '@/components/dashboard/EventTimestamp'
 import NoStoreState from '@/components/dashboard/NoStoreState'
 import SessionExpiredState from '@/components/dashboard/SessionExpiredState'
 import { authOptions } from '@/lib/auth-options'
+import { getRangeLabel, getRangeStartMs, isAnalyticsRange, type AnalyticsRange } from '@/lib/analytics-range'
 import { adminDb } from '@/lib/instant-admin'
 
 type AnalyticsEvent = {
@@ -19,6 +23,8 @@ const sessionEventTypes = new Set([
   'room_analyzed',
   'quote_requested',
 ])
+
+const assistedActionTypes = new Set(['view_in_catalog_clicked', 'quote_requested'])
 
 const eventLabels: Record<string, string> = {
   widget_opened: 'Widget opened',
@@ -49,11 +55,53 @@ function getProductName(event: AnalyticsEvent) {
   return typeof value === 'string' && value.trim() ? value : null
 }
 
-function formatEventTime(value?: string) {
-  return value ? new Date(value).toLocaleString() : 'No timestamp'
+function eventTimeMs(event: AnalyticsEvent): number | null {
+  if (!event.createdAt) return null
+  const ms = new Date(event.createdAt).getTime()
+  return Number.isNaN(ms) ? null : ms
 }
 
-export default async function AnalyticsPage() {
+// 0% conversion reads as healthy in an unconditional green pill, and a
+// store with no traffic yet isn't "0%" - it's "no data". Both need their
+// own treatment instead of always looking like good news.
+function getConversionTone(guidedSessions: number, conversionRateNum: number): { label: string; className: string } {
+  if (guidedSessions === 0) {
+    return { label: 'No data yet', className: 'bg-stone-100 text-stone-500' }
+  }
+  if (conversionRateNum === 0) {
+    return { label: '0% conversion rate', className: 'bg-amber-50 text-amber-700' }
+  }
+  return { label: `${conversionRateNum.toFixed(1)}% conversion rate`, className: 'bg-emerald-50 text-emerald-700' }
+}
+
+// A delta that just repeats the card's own value isn't a delta. This period
+// vs the one immediately before it (same length) is - null previous means
+// there's no prior period to compare against (All time is selected).
+function getPeriodDelta(current: number, previous: number | null): { label: string; className: string } {
+  if (previous === null) {
+    return { label: 'All-time total', className: 'bg-stone-100 text-stone-600' }
+  }
+  if (previous === 0 && current === 0) {
+    return { label: 'No change', className: 'bg-stone-100 text-stone-600' }
+  }
+  if (previous === 0) {
+    return { label: 'New this period', className: 'bg-emerald-50 text-emerald-700' }
+  }
+  const change = Math.round(((current - previous) / previous) * 100)
+  if (change === 0) {
+    return { label: 'No change', className: 'bg-stone-100 text-stone-600' }
+  }
+  return {
+    label: `${change > 0 ? '+' : ''}${change}% vs prior period`,
+    className: change > 0 ? 'bg-emerald-50 text-emerald-700' : 'bg-red-50 text-red-700',
+  }
+}
+
+export default async function AnalyticsPage({
+  searchParams,
+}: {
+  searchParams?: { range?: string }
+}) {
   // Auth is enforced by src/middleware.ts before this ever renders, but that
   // only checks the JWT is present and well-formed - getServerSession also
   // re-validates against the DB (tokenVersion, per-device revocation) and
@@ -71,6 +119,8 @@ export default async function AnalyticsPage() {
   }
 
   const storeId = session.user.storeId
+  const requestedRange = searchParams?.range
+  const activeRange: AnalyticsRange = isAnalyticsRange(requestedRange) ? requestedRange : '30'
 
   const result = await adminDb.query({
     stores: {
@@ -82,28 +132,58 @@ export default async function AnalyticsPage() {
   })
 
   const store = result.stores[0]
-  const recentEvents = [...((result.events ?? []) as AnalyticsEvent[])].sort((a, b) => {
-    return new Date(b.createdAt ?? 0).getTime() - new Date(a.createdAt ?? 0).getTime()
+  // events.createdAt isn't an indexed attribute (see src/lib/analytics-range.ts),
+  // so the range is applied here in JS after the fetch rather than as a
+  // $gte where clause.
+  const allEvents = [...((result.events ?? []) as AnalyticsEvent[])].sort((a, b) => {
+    return (eventTimeMs(b) ?? 0) - (eventTimeMs(a) ?? 0)
   })
+
+  const now = Date.now()
+  const rangeStartMs = getRangeStartMs(activeRange, now)
+  const periodEvents =
+    rangeStartMs === null
+      ? allEvents
+      : allEvents.filter((event) => {
+          const t = eventTimeMs(event)
+          return t !== null && t >= rangeStartMs
+        })
+
+  // Equal-length window immediately before the current one, for the
+  // period-over-period delta below. No previous period exists for "all time".
+  const previousPeriodEvents =
+    rangeStartMs === null
+      ? null
+      : allEvents.filter((event) => {
+          const t = eventTimeMs(event)
+          return t !== null && t >= rangeStartMs - (now - rangeStartMs) && t < rangeStartMs
+        })
+
   const guidedSessions = new Set(
-    recentEvents
+    periodEvents
       .filter((event) => event.type && sessionEventTypes.has(event.type))
       .map(getSessionId)
       .filter(Boolean)
   ).size
-  const quoteRequests = recentEvents.filter((event) => event.type === 'quote_requested').length
-  const viewInCatalogClicks = recentEvents.filter((event) => event.type === 'view_in_catalog_clicked').length
-  const customizeClicks = recentEvents.filter((event) => event.type === 'customize_clicked').length
-  const roomAnalyses = recentEvents.filter((event) => event.type === 'room_analyzed').length
+  const quoteRequests = periodEvents.filter((event) => event.type === 'quote_requested').length
+  const viewInCatalogClicks = periodEvents.filter((event) => event.type === 'view_in_catalog_clicked').length
+  const customizeClicks = periodEvents.filter((event) => event.type === 'customize_clicked').length
+  const roomAnalyses = periodEvents.filter((event) => event.type === 'room_analyzed').length
   const conversions = quoteRequests + viewInCatalogClicks
-  const latestEvent = recentEvents[0]
-  const recentConversion = recentEvents.find(
+  const latestEvent = periodEvents[0]
+  const recentConversion = periodEvents.find(
     (event) => event.type === 'quote_requested' || event.type === 'view_in_catalog_clicked'
   )
 
-  const conversionRate = guidedSessions > 0 ? ((conversions / guidedSessions) * 100).toFixed(1) : '0.0'
+  const conversionRateNum = guidedSessions > 0 ? (conversions / guidedSessions) * 100 : 0
+  const conversionTone = getConversionTone(guidedSessions, conversionRateNum)
 
-  const quoteEvents = recentEvents.filter((event) => event.type === 'quote_requested')
+  const previousConversions = previousPeriodEvents
+    ? previousPeriodEvents.filter((event) => event.type && assistedActionTypes.has(event.type)).length
+    : null
+  const conversionsDelta = getPeriodDelta(conversions, previousConversions)
+
+  const quoteEvents = periodEvents.filter((event) => event.type === 'quote_requested')
   const quotesByProduct = new Map<string, number>()
   quoteEvents.forEach((event) => {
     const name = getProductName(event) || 'Unspecified product'
@@ -112,15 +192,27 @@ export default async function AnalyticsPage() {
   const topQuotedProducts = [...quotesByProduct.entries()].sort((a, b) => b[1] - a[1]).slice(0, 8)
 
   const metricCards = [
-    { label: 'Guided sessions', value: String(guidedSessions), delta: `${conversionRate}% conv.`, icon: MousePointerClick },
-    { label: 'Assisted conversions', value: String(conversions), delta: `${conversions} total`, icon: Target },
+    {
+      label: 'Guided sessions',
+      value: guidedSessions.toLocaleString(),
+      delta: conversionTone.label,
+      deltaClassName: conversionTone.className,
+      icon: MousePointerClick,
+    },
+    {
+      label: 'Assisted conversions',
+      value: conversions.toLocaleString(),
+      delta: conversionsDelta.label,
+      deltaClassName: conversionsDelta.className,
+      icon: Target,
+    },
     {
       label: 'Latest session',
-      value: latestEvent ? new Date(latestEvent.createdAt ?? 0).toLocaleDateString() : 'No data',
-      delta: latestEvent ? new Date(latestEvent.createdAt ?? 0).toLocaleTimeString() : 'Waiting for traffic',
+      value: latestEvent ? <EventTimestamp createdAt={latestEvent.createdAt} /> : 'No data',
+      delta: latestEvent ? getEventLabel(latestEvent.type) : 'Waiting for traffic',
+      deltaClassName: 'bg-stone-100 text-stone-600',
       icon: Clock3,
     },
-    { label: 'Store', value: store?.name || session.user.storeName || 'Unassigned', delta: 'Current account scope', icon: Sofa },
   ]
 
   return (
@@ -131,21 +223,26 @@ export default async function AnalyticsPage() {
             <p className="text-xs font-semibold uppercase tracking-[0.24em] text-stone-500">Analytics</p>
             <h2 className="mt-3 text-4xl font-bold tracking-tight text-stone-950">Store Performance</h2>
             <p className="mt-3 max-w-2xl text-sm leading-6 text-stone-600">
-              Every metric on this page is filtered to `{session.user.storeName || session.user.email}` using your authenticated `storeId`.
+              Showing activity from {getRangeLabel(activeRange).toLowerCase()}.
             </p>
           </div>
-          <span className="inline-flex items-center gap-2 rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-blue-700">
-            <ArrowUpRight className="h-3.5 w-3.5" />
-            {conversionRate}% conversion rate
-          </span>
+          <div className="flex flex-col items-end gap-3">
+            <AnalyticsRangeSelector activeRange={activeRange} />
+            <span
+              className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] ${conversionTone.className}`}
+            >
+              <ArrowUpRight className="h-3.5 w-3.5" />
+              {conversionTone.label}
+            </span>
+          </div>
         </div>
 
-        <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+        <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {metricCards.map((card) => (
             <div key={card.label} className="rounded-[28px] border border-stone-200 bg-stone-50 p-5">
               <div className="flex items-center justify-between">
                 <card.icon className="h-5 w-5 text-blue-700" />
-                <span className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">
+                <span className={`rounded-full px-3 py-1 text-xs font-semibold ${card.deltaClassName}`}>
                   {card.delta}
                 </span>
               </div>
@@ -160,34 +257,44 @@ export default async function AnalyticsPage() {
         <div className="rounded-[32px] border border-stone-200 bg-white p-6 shadow-sm">
           <h3 className="text-2xl font-bold tracking-tight text-stone-950">Recent Event Timeline</h3>
           <div className="mt-6 max-h-[520px] space-y-3 overflow-y-auto pr-1">
-            {recentEvents.length === 0 ? (
-              <div className="rounded-2xl border border-dashed border-stone-300 bg-stone-50 px-5 py-6 text-sm text-stone-600">
-                <p className="font-semibold text-stone-900">
-                  Analytics will appear after your widget starts receiving traffic.
-                </p>
-                <div className="mt-4 grid gap-2 text-stone-600">
-                  <div>Install widget snippet</div>
-                  <div>Connect catalog</div>
-                  <div>Start receiving shopper interactions</div>
+            {periodEvents.length === 0 ? (
+              allEvents.length === 0 ? (
+                <div className="rounded-2xl border border-dashed border-stone-300 bg-stone-50 px-5 py-6 text-sm text-stone-600">
+                  <p className="font-semibold text-stone-900">
+                    Analytics will appear after your widget starts receiving traffic.
+                  </p>
+                  <ol className="mt-4 list-inside list-decimal space-y-2 text-stone-600">
+                    <li>
+                      <Link href="/dashboard/integrations" className="font-semibold text-blue-700 hover:underline">
+                        Install widget snippet
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/dashboard/products" className="font-semibold text-blue-700 hover:underline">
+                        Connect catalog
+                      </Link>
+                    </li>
+                    <li>Start receiving shopper interactions</li>
+                  </ol>
                 </div>
-              </div>
+              ) : (
+                <div className="rounded-2xl border border-dashed border-stone-300 bg-stone-50 px-5 py-6 text-sm text-stone-600">
+                  <p className="font-semibold text-stone-900">
+                    No activity in {getRangeLabel(activeRange).toLowerCase()}.
+                  </p>
+                  <p className="mt-2 text-stone-600">Try a wider date range to see historical activity.</p>
+                </div>
+              )
             ) : (
-              recentEvents.slice(0, 12).map((event) => (
+              periodEvents.slice(0, 12).map((event) => (
                 <div key={event.id} className="rounded-2xl border border-stone-200 bg-stone-50 px-4 py-4">
-                  <div className="flex items-start justify-between gap-4">
-                    <div>
-                      <div className="text-sm font-semibold text-stone-900">{getEventLabel(event.type)}</div>
-                      {getProductName(event) && (
-                        <p className="mt-1 text-sm text-stone-600">{getProductName(event)}</p>
-                      )}
-                      <p className="mt-2 text-sm leading-6 text-stone-700">{formatEventTime(event.createdAt)}</p>
-                    </div>
-                    {event.type && (
-                      <span className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-stone-500">
-                        {event.type}
-                      </span>
-                    )}
-                  </div>
+                  <div className="text-sm font-semibold text-stone-900">{getEventLabel(event.type)}</div>
+                  {getProductName(event) && (
+                    <p className="mt-1 text-sm text-stone-600">{getProductName(event)}</p>
+                  )}
+                  <p className="mt-2 text-sm leading-6 text-stone-700">
+                    <EventTimestamp createdAt={event.createdAt} />
+                  </p>
                 </div>
               ))
             )}
@@ -220,9 +327,16 @@ export default async function AnalyticsPage() {
             <div className="rounded-2xl border border-stone-200 bg-stone-50 px-4 py-4">
               <div className="text-xs font-semibold uppercase tracking-[0.18em] text-stone-500">Most recent assisted action</div>
               <p className="mt-2 text-sm text-stone-700">
-                {recentConversion
-                  ? `${getEventLabel(recentConversion.type)}${getProductName(recentConversion) ? ` - ${getProductName(recentConversion)}` : ''} - ${formatEventTime(recentConversion.createdAt)}`
-                  : 'No assisted action yet'}
+                {recentConversion ? (
+                  <>
+                    {getEventLabel(recentConversion.type)}
+                    {getProductName(recentConversion) ? ` - ${getProductName(recentConversion)}` : ''}
+                    {' - '}
+                    <EventTimestamp createdAt={recentConversion.createdAt} />
+                  </>
+                ) : (
+                  'No assisted action yet'
+                )}
               </p>
             </div>
           </div>
@@ -275,7 +389,9 @@ export default async function AnalyticsPage() {
                 quoteEvents.slice(0, 20).map((event) => (
                   <div key={event.id} className="rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3">
                     <p className="text-sm font-semibold text-stone-900">{getProductName(event) || 'Unspecified product'}</p>
-                    <p className="mt-1 text-xs text-stone-500">{formatEventTime(event.createdAt)}</p>
+                    <p className="mt-1 text-xs text-stone-500">
+                      <EventTimestamp createdAt={event.createdAt} />
+                    </p>
                   </div>
                 ))
               )}
