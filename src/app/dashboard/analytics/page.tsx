@@ -1,7 +1,7 @@
 import { ArrowUpRight, Clock3, MousePointerClick, Sofa, Target } from 'lucide-react'
 import { getServerSession } from 'next-auth'
-import { redirect } from 'next/navigation'
 import NoStoreState from '@/components/dashboard/NoStoreState'
+import SessionExpiredState from '@/components/dashboard/SessionExpiredState'
 import { authOptions } from '@/lib/auth-options'
 import { adminDb } from '@/lib/instant-admin'
 
@@ -54,10 +54,15 @@ function formatEventTime(value?: string) {
 }
 
 export default async function AnalyticsPage() {
+  // Auth is enforced by src/middleware.ts before this ever renders, but that
+  // only checks the JWT is present and well-formed - getServerSession also
+  // re-validates against the DB (tokenVersion, per-device revocation) and
+  // can still come back null for a token middleware let through. Render a
+  // fallback instead of asserting non-null so that rarer case is a normal
+  // page, not a crash.
   const session = await getServerSession(authOptions)
-
   if (!session) {
-    redirect('/auth/signin')
+    return <SessionExpiredState title="Analytics" />
   }
 
   if (!session.user.storeId) {

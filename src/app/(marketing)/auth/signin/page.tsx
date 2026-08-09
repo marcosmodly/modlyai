@@ -5,11 +5,23 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { Suspense, useState } from 'react'
 import PasswordInput from '@/components/PasswordInput'
 
+// Only ever a same-origin relative path: middleware.ts sets this to wherever
+// an unauthenticated visitor was headed (e.g. /dashboard/settings?tab=security)
+// so signing in lands them back there instead of always on Overview. A
+// missing/malformed value (including an absolute or protocol-relative URL,
+// which would be an open-redirect risk since this is attacker-controllable
+// query input) falls back to /dashboard.
+function getSafeCallbackUrl(raw: string | null): string {
+  if (!raw || !raw.startsWith('/') || raw.startsWith('//')) return '/dashboard'
+  return raw
+}
+
 function SignInForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const justVerified = searchParams.get('verified') === '1'
   const justReset = searchParams.get('reset') === '1'
+  const callbackUrl = getSafeCallbackUrl(searchParams.get('callbackUrl'))
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
@@ -23,7 +35,7 @@ function SignInForm() {
       const result = await signIn('credentials', {
         email,
         password,
-        callbackUrl: '/dashboard',
+        callbackUrl,
         redirect: false,
       })
 
@@ -32,7 +44,7 @@ function SignInForm() {
         return
       }
 
-      router.push('/dashboard')
+      router.push(callbackUrl)
       router.refresh()
     } catch (err) {
       console.error('Sign in failed:', err)

@@ -1,9 +1,9 @@
 import { getServerSession } from 'next-auth'
 import { unstable_noStore as noStore } from 'next/cache'
-import { redirect } from 'next/navigation'
 import BillingCard from '@/components/dashboard/BillingCard'
 import BillingCheckoutStatus from '@/components/dashboard/BillingCheckoutStatus'
 import NoStoreState from '@/components/dashboard/NoStoreState'
+import SessionExpiredState from '@/components/dashboard/SessionExpiredState'
 import { authOptions } from '@/lib/auth-options'
 import { syncMissingCurrentPeriodEndForBillingStore } from '@/lib/billing/sync-current-period-end'
 import { getCurrentStoreForUser } from '@/lib/current-store'
@@ -16,10 +16,15 @@ export default async function BillingPage({
 }) {
   noStore()
 
+  // Auth is enforced by src/middleware.ts before this ever renders, but that
+  // only checks the JWT is present and well-formed - getServerSession also
+  // re-validates against the DB (tokenVersion, per-device revocation) and
+  // can still come back null for a token middleware let through. Render a
+  // fallback instead of asserting non-null so that rarer case is a normal
+  // page, not a crash.
   const session = await getServerSession(authOptions)
-
   if (!session) {
-    redirect('/auth/signin')
+    return <SessionExpiredState title="Billing" />
   }
 
   const checkoutParam = searchParams?.billing

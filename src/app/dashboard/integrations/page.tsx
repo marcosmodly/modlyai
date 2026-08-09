@@ -1,7 +1,7 @@
 import { getServerSession } from 'next-auth'
-import { redirect } from 'next/navigation'
 import IntegrationsClient from '@/components/dashboard/IntegrationsClient'
 import NoStoreState from '@/components/dashboard/NoStoreState'
+import SessionExpiredState from '@/components/dashboard/SessionExpiredState'
 import { authOptions } from '@/lib/auth-options'
 import { getCurrentStoreForUser, normalizeStorePublicIdentity } from '@/lib/current-store'
 import { adminDb } from '@/lib/instant-admin'
@@ -31,10 +31,15 @@ export default async function IntegrationsPage({
 }: {
   searchParams?: { shopify?: string; message?: string }
 }) {
+  // Auth is enforced by src/middleware.ts before this ever renders, but that
+  // only checks the JWT is present and well-formed - getServerSession also
+  // re-validates against the DB (tokenVersion, per-device revocation) and
+  // can still come back null for a token middleware let through. Render a
+  // fallback instead of asserting non-null so that rarer case is a normal
+  // page, not a crash.
   const session = await getServerSession(authOptions)
-
   if (!session) {
-    redirect('/auth/signin')
+    return <SessionExpiredState title="Integrations" />
   }
 
   let currentStore = await getCurrentStoreForUser(session.user)

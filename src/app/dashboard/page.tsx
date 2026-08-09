@@ -1,8 +1,8 @@
 import { CheckCircle2, Circle, Package, Sparkles, TrendingUp, Users } from 'lucide-react'
 import { getServerSession } from 'next-auth'
 import Link from 'next/link'
-import { redirect } from 'next/navigation'
 import NoStoreState from '@/components/dashboard/NoStoreState'
+import SessionExpiredState from '@/components/dashboard/SessionExpiredState'
 import { authOptions } from '@/lib/auth-options'
 import { normalizeStorePublicIdentity } from '@/lib/current-store'
 import { adminDb } from '@/lib/instant-admin'
@@ -65,15 +65,15 @@ function externalUrl(value: unknown) {
 }
 
 export default async function DashboardPage() {
+  // Auth and email verification are both enforced by src/middleware.ts
+  // before this ever renders, but that only checks the JWT's own claims -
+  // getServerSession also re-validates against the DB (tokenVersion,
+  // per-device revocation) and can still come back null for a token
+  // middleware let through. Render a fallback instead of asserting non-null
+  // so that rarer case is a normal page, not a crash.
   const session = await getServerSession(authOptions)
-
   if (!session) {
-    redirect('/auth/signin')
-  }
-
-  if (session.user.emailVerified !== true) {
-    const email = session.user.email ?? ''
-    redirect(`/auth/verify-email?email=${encodeURIComponent(email)}`)
+    return <SessionExpiredState title="Dashboard" />
   }
 
   const isDeveloper = false
