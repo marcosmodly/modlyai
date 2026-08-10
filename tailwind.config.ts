@@ -44,11 +44,19 @@ const config: Config = {
           accent: '#8DA38E',
           glow: 'rgba(141, 163, 142, 0.3)',
         },
+        // Flat surfaces that need to match the dashboard-shell gradient's
+        // start stop (sticky header, mobile nav panel) rather than render
+        // the full gradient across their own, much shorter box.
+        shell: '#f7f4ee',
       },
       backgroundImage: {
         'gradient-ai': 'linear-gradient(135deg, #3D543F 0%, #8DA38E 100%)',
         'gradient-ai-subtle': 'linear-gradient(135deg, rgba(141, 163, 142, 0.08) 0%, rgba(141, 163, 142, 0.05) 100%)',
         'pro-tips': 'linear-gradient(135deg, rgba(141, 163, 142, 0.05) 0%, rgba(141, 163, 142, 0.02) 100%)',
+        // Single source for the dashboard shell's background - DashboardShell,
+        // Sidebar, and Header each had their own hand-typed version of this
+        // with slightly different stops before this token existed.
+        'dashboard-shell': 'linear-gradient(180deg, #f7f4ee 0%, #f3efe6 20%, #eff2f4 100%)',
       },
       boxShadow: {
         'soft': '0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2)',

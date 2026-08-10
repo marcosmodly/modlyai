@@ -50,6 +50,7 @@ export default function Header() {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const accountTriggerRef = useRef<HTMLButtonElement>(null);
   const notificationsRef = useRef<HTMLDivElement>(null);
   const mobileNavPanelRef = useRef<HTMLDivElement>(null);
   const mobileNavTriggerRef = useRef<HTMLButtonElement>(null);
@@ -130,6 +131,7 @@ export default function Header() {
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         setNotificationsOpen(false);
+        setDropdownOpen(false);
         setMobileNavOpen(false);
       }
     };
@@ -137,6 +139,16 @@ export default function Header() {
     document.addEventListener('keydown', handleEscape);
     return () => document.removeEventListener('keydown', handleEscape);
   }, []);
+
+  // Returns focus to the trigger whenever the dropdown closes, regardless of
+  // how (Escape, outside click, or picking a menu item) - same approach the
+  // mobile nav drawer already uses below.
+  useEffect(() => {
+    if (!dropdownOpen) return;
+    return () => {
+      accountTriggerRef.current?.focus();
+    };
+  }, [dropdownOpen]);
 
   // Auto-close on route change - covers both link clicks inside the drawer
   // and any other navigation (back/forward) while it happens to be open.
@@ -189,7 +201,7 @@ export default function Header() {
 
   return (
     <>
-    <header className="sticky top-0 z-30 border-b border-stone-200/70 bg-[#f7f4ee]/90 backdrop-blur">
+    <header className="sticky top-0 z-30 border-b border-stone-200/70 bg-shell/90 backdrop-blur">
       <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between gap-4">
           <div>
@@ -223,11 +235,11 @@ export default function Header() {
                 className="relative flex h-11 w-11 items-center justify-center rounded-2xl border border-stone-200 bg-white text-stone-600 shadow-sm transition hover:border-blue-200 hover:text-blue-700"
                 aria-label="Open notifications"
                 aria-expanded={notificationsOpen}
-                aria-haspopup="dialog"
+                aria-haspopup="true"
               >
                 <Bell className="h-5 w-5" />
                 {unreadCount > 0 && (
-                  <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-bold text-white">
+                  <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-red-600 px-1 text-xs font-bold text-white">
                     {unreadCount > 9 ? '9+' : unreadCount}
                   </span>
                 )}
@@ -275,7 +287,7 @@ export default function Header() {
                             <div className={notification.read ? 'pl-3.5' : ''}>
                               <p className="text-sm font-medium text-stone-900">{notification.title}</p>
                               <p className="mt-0.5 text-xs text-stone-600">{notification.message}</p>
-                              <p className="mt-1 text-xs text-stone-400">
+                              <p className="mt-1 text-xs text-stone-600">
                                 {formatRelativeTime(notification.createdAt)}
                               </p>
                             </div>
@@ -289,9 +301,13 @@ export default function Header() {
             </div>
             <div className="relative" ref={dropdownRef}>
               <button
+                ref={accountTriggerRef}
                 type="button"
                 onClick={() => setDropdownOpen((open) => !open)}
                 className="flex items-center gap-2 rounded-xl bg-gray-900 px-4 py-2 text-sm text-white shadow-sm transition-colors hover:bg-gray-700"
+                aria-label="Account menu"
+                aria-expanded={dropdownOpen}
+                aria-haspopup="true"
               >
                 <div className="flex h-7 w-7 shrink-0 items-center justify-center overflow-hidden rounded-full bg-blue-600 text-sm font-bold text-white">
                   {avatarUrl ? <img src={avatarUrl} alt="" className="h-full w-full object-cover" /> : userInitial}
@@ -373,7 +389,7 @@ export default function Header() {
           role="dialog"
           aria-modal="true"
           aria-label="Dashboard navigation"
-          className="absolute inset-y-0 left-0 flex w-72 max-w-[85vw] flex-col bg-[#f8f4ec] p-4 shadow-xl"
+          className="absolute inset-y-0 left-0 flex w-72 max-w-[85vw] flex-col bg-shell p-4 shadow-xl"
         >
           <div className="flex items-center justify-between px-2 py-2">
             <span className="text-sm font-bold uppercase tracking-[0.22em] text-stone-500">Menu</span>

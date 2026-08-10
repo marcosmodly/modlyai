@@ -64,11 +64,11 @@ export default function Sidebar() {
 
   return (
     <aside className="hidden lg:fixed lg:inset-y-0 lg:z-40 lg:flex lg:w-72 lg:flex-col">
-      <div className="relative flex grow flex-col overflow-y-auto border-r border-stone-200/70 bg-[linear-gradient(180deg,#f8f4ec_0%,#f5efe4_30%,#f3f5f7_100%)] px-6 pb-6 pt-8">
+      <div className="relative flex grow flex-col overflow-y-auto border-r border-stone-200/70 bg-dashboard-shell px-6 pb-6 pt-8">
         <div className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-[radial-gradient(circle_at_top_left,rgba(180,143,93,0.16),transparent_55%),radial-gradient(circle_at_top_right,rgba(29,78,216,0.08),transparent_45%)]" />
 
         <div className="relative px-4 py-3">
-          <p className="mb-1 text-xs uppercase tracking-wider text-gray-400">Control Panel</p>
+          <p className="mb-1 text-xs uppercase tracking-wider text-stone-600">Control Panel</p>
           <div className="flex items-center gap-2">
             <div className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-blue-600 text-sm font-bold text-white">
               {controlPanelAvatarUrl ? (
@@ -90,7 +90,7 @@ export default function Sidebar() {
           <p className="mt-2 text-sm text-stone-600">{storeStatus.helper}</p>
         </div>
 
-        <nav className="relative mt-8 flex flex-1 flex-col">
+        <nav aria-label="Main" className="relative mt-8 flex flex-1 flex-col">
           <ul role="list" className="space-y-2">
             {navigation.map((item) => {
               const isActive = isDashboardNavItemActive(pathname, item.href);

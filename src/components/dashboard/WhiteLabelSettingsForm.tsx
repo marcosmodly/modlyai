@@ -727,7 +727,7 @@ export default function WhiteLabelSettingsForm({
                   Uploaded images are stored directly - up to 2MB. If this is left empty or fails to load, the
                   widget will fall back to the text button automatically.
                 </p>
-                {logoChecking && <p className="mt-2 text-xs text-stone-400">Checking image...</p>}
+                {logoChecking && <p className="mt-2 text-xs text-stone-500">Checking image...</p>}
                 {logoWarning && !logoChecking && (
                   <p className="mt-2 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-800">
                     {logoWarning}

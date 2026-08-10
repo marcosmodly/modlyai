@@ -173,7 +173,7 @@ export default async function DashboardPage() {
     {
       name: 'Products Synced',
       value: productsSynced.toLocaleString(),
-      note: 'Real products currently linked to your InstantDB store account.',
+      note: 'Real products currently linked to your store.',
       icon: Package,
       accent: 'bg-blue-100 text-blue-700',
     },

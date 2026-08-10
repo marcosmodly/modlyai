@@ -127,7 +127,7 @@ export default function IntegrationsClient({
     {
       name: 'Sync History',
       status: syncCount > 0 ? 'Catalog synced' : 'No sync events',
-      description: 'Each sync is logged as an event against your storeId for per-account analytics.',
+      description: 'Each sync is logged so you can see catalog activity in your analytics.',
       action: `${syncCount} sync events`,
       connected: syncCount > 0,
     },
@@ -701,7 +701,7 @@ export default function IntegrationsClient({
               </div>
               <div>
                 <p className="font-medium text-stone-800">Click to upload CSV</p>
-                <p className="mt-1 text-sm text-stone-400">or drag and drop</p>
+                <p className="mt-1 text-sm text-stone-500">or drag and drop</p>
               </div>
             </div>
           )}
@@ -755,7 +755,7 @@ export default function IntegrationsClient({
               {item.connected ? (
                 <CheckCircle2 className="h-6 w-6 text-emerald-600" />
               ) : (
-                <Circle className="h-6 w-6 text-stone-300" />
+                <Circle className="h-6 w-6 text-stone-500" />
               )}
             </div>
 
