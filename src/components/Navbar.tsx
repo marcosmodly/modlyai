@@ -48,13 +48,16 @@ export default function Navbar() {
     <nav className="sticky top-0 z-50 border-b border-gray-200 bg-white/95 shadow-sm backdrop-blur-sm">
       <div className="max-w-7xl mx-auto px-6 md:px-8 py-5">
         <div className="grid grid-cols-[auto_1fr_auto] items-center gap-4">
-          <Link 
-            href="/" 
-            className="justify-self-start text-3xl font-bold transition-colors duration-300 md:text-4xl"
+          <Link
+            href="/"
+            className="justify-self-start flex items-center gap-2 text-3xl font-bold transition-colors duration-300 md:text-4xl"
             onClick={closeMobileMenu}
           >
-            <span className="text-gray-900">Modly</span>
-            <span className="text-[#3B82F6]">AI</span>
+            <img src="/logo-mark.png" alt="" className="h-7 w-auto md:h-8" />
+            <span>
+              <span className="text-gray-900">Modly</span>
+              <span className="text-[#3B82F6]">AI</span>
+            </span>
           </Link>
 
           <div className="hidden md:flex items-center justify-center gap-4 md:gap-6">
