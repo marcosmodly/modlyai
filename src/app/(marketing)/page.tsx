@@ -13,6 +13,7 @@ export const metadata: Metadata = {
   title: "ModlyAI - AI Room Matching for Furniture Retailers",
   description:
     "ModlyAI helps furniture retailers add catalog-grounded room matching, product recommendations, and customization requests to their storefront.",
+  alternates: { canonical: "/" },
 };
 
 const sectionLabel = "text-sm font-semibold uppercase tracking-[0.18em] text-[#8a714f]";

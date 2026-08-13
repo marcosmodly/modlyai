@@ -1,6 +1,12 @@
-'use client';
-
+import type { Metadata } from 'next';
 import Link from 'next/link';
+
+export const metadata: Metadata = {
+  title: 'AI Furniture Customizer | ModlyAI',
+  description:
+    "Use AI to customize furniture designs with natural language, changing colors, materials, and dimensions to match a shopper's vision.",
+  alternates: { canonical: '/customizer' },
+};
 
 export default function CustomizerPage() {
   return (

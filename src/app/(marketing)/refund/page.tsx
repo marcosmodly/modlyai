@@ -5,6 +5,7 @@ import LegalPageLayout, { LegalSection } from "@/components/legal/LegalPageLayou
 export const metadata: Metadata = {
   title: "Refund Policy | ModlyAI",
   description: "ModlyAI refund policy for SaaS subscriptions, including our 30-day money-back guarantee, worldwide.",
+  alternates: { canonical: "/refund" },
 };
 
 const LAST_UPDATED = "July 13, 2026";

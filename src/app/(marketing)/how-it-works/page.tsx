@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import TryWidgetHint from "@/components/TryWidgetHint";
 import {
@@ -14,6 +15,13 @@ import {
   Tag,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "How ModlyAI Works | Room Matching for Furniture Retailers",
+  description:
+    "Connect your catalog, add the ModlyAI widget to your product pages, and let shoppers get fit guidance, product recommendations, and customization requests grounded in your real inventory.",
+  alternates: { canonical: "/how-it-works" },
+};
 
 const steps = [
   {

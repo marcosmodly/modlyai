@@ -5,6 +5,7 @@ import LegalPageLayout, { LegalSection } from "@/components/legal/LegalPageLayou
 export const metadata: Metadata = {
   title: "Terms of Service | ModlyAI",
   description: "Terms of Service for ModlyAI, the B2B AI room-matching widget for furniture retailers.",
+  alternates: { canonical: "/terms" },
 };
 
 const LAST_UPDATED = "July 13, 2026";

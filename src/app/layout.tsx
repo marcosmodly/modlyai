@@ -17,12 +17,34 @@ const fraunces = Fraunces({
   display: "swap",
 });
 
+const title = "ModlyAI - Room visualizer and product customizer for furniture retailers";
+const description =
+  "Let shoppers upload a photo of their room and see your furniture in it, change fabrics and finishes, and request a quote - without leaving your product page. Works with Shopify, WooCommerce, and CSV catalogs.";
+
 export const metadata: Metadata = {
-  title: "ModlyAI - Intelligent Customization & Data-Driven Recommendations",
-  description: "Premium AI platform for intelligent customization, data analysis, and personalized recommendations. Built for B2B and professional users.",
+  title,
+  description,
   metadataBase: new URL("https://modlyai.tech"),
-  alternates: {
-    canonical: "/",
+  openGraph: {
+    type: "website",
+    siteName: "ModlyAI",
+    title: "See your furniture in their room",
+    description,
+    url: "https://modlyai.tech",
+    images: [
+      {
+        url: "/og-default.png",
+        width: 1200,
+        height: 630,
+        alt: "A sofa shown in a customer's living room photo",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "See your furniture in their room",
+    description,
+    images: ["/og-default.png"],
   },
   manifest: "/site.webmanifest",
   icons: {

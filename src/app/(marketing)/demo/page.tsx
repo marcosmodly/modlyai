@@ -1,10 +1,27 @@
 import type { Metadata } from "next";
 import DemoPDP from "@/components/b2b/DemoPDP";
 
+const demoTitle = "Try the ModlyAI Demo — No Signup Required";
+const demoDescription =
+  "See ModlyAI answer a fit question, place a piece in a room, customize it, and send a quote request with the full spec attached. No signup, no calendar.";
+
 export const metadata: Metadata = {
-  title: "Try the ModlyAI Demo — No Signup Required",
-  description:
-    "See ModlyAI answer a fit question, place a piece in a room, customize it, and send a quote request with the full spec attached. No signup, no calendar.",
+  title: demoTitle,
+  description: demoDescription,
+  alternates: { canonical: "/demo" },
+  openGraph: {
+    siteName: "ModlyAI",
+    title: demoTitle,
+    description: demoDescription,
+    url: "https://modlyai.tech/demo",
+    images: [{ url: "/og-default.png", width: 1200, height: 630, alt: "A sofa shown in a customer's living room photo" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: demoTitle,
+    description: demoDescription,
+    images: ["/og-default.png"],
+  },
 };
 
 export default function DemoPage({

@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "FAQ | ModlyAI",
   description: "Answers to common questions furniture retailers ask about ModlyAI's AI room-matching widget.",
+  alternates: { canonical: "/faq" },
 };
 
 const sectionLabel = "text-sm font-semibold uppercase tracking-[0.18em] text-[#8a714f]";

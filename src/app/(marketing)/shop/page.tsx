@@ -1,4 +1,11 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Shop | ModlyAI",
+  description: "Browse furniture and use AI room matching to see how each piece fits your space before you buy.",
+  alternates: { canonical: "/shop" },
+};
 
 export default function Shop() {
   return (

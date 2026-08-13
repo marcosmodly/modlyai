@@ -4,6 +4,7 @@ import PricingPlans from "@/components/billing/PricingPlans";
 export const metadata: Metadata = {
   title: "Pricing | ModlyAI",
   description: "Plans that scale with your furniture catalog. Starter, Growth, and custom Scale plans for ModlyAI.",
+  alternates: { canonical: "/pricing" },
 };
 
 const sectionLabel = "text-sm font-semibold uppercase tracking-[0.18em] text-[#8a714f]";

@@ -1,6 +1,12 @@
-'use client';
-
+import type { Metadata } from 'next';
 import Link from 'next/link';
+
+export const metadata: Metadata = {
+  title: 'Product Configurator | ModlyAI',
+  description:
+    'Configure furniture products with AI-guided customization or rule-based manual configuration, grounded in your real catalog.',
+  alternates: { canonical: '/configurator' },
+};
 
 export default function ConfiguratorPage() {
   return (

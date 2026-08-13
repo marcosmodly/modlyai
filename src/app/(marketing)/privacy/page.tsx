@@ -5,6 +5,7 @@ import LegalPageLayout, { LegalSection } from "@/components/legal/LegalPageLayou
 export const metadata: Metadata = {
   title: "Privacy Policy | ModlyAI",
   description: "How ModlyAI collects, uses, and protects personal data for retailers and their shoppers, worldwide.",
+  alternates: { canonical: "/privacy" },
 };
 
 const LAST_UPDATED = "July 13, 2026";
