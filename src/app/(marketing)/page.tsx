@@ -233,14 +233,8 @@ function OriginSection() {
 
         <Reveal
           delayMs={160}
-          className="mt-8 flex flex-col gap-5 rounded-2xl border border-[#ded1c2] bg-white p-7 sm:flex-row sm:items-center"
+          className="mt-8 flex flex-col gap-5 rounded-2xl border border-[#ded1c2] bg-white p-7"
         >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/images/founder-king-joshua-marcos.jpg"
-            alt="King Joshua Marcos, founder of ModlyAI"
-            className="h-20 w-20 shrink-0 rounded-full border border-[#e1d7ca] object-cover"
-          />
           <div>
             <p className="text-base font-semibold text-[#171411]">King Joshua Marcos</p>
             <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#8a714f]">Founder, ModlyAI</p>
@@ -351,7 +345,8 @@ export default function Home() {
     "@type": "Organization",
     name: "ModlyAI",
     url: "https://modlyai.tech",
-    logo: "https://modlyai.tech/favicon.ico",
+    logo: "https://modlyai.tech/logo-schema.png",
+    image: "https://modlyai.tech/images/walnut-dining-room-demo.png",
     description:
       "ModlyAI helps furniture retailers add catalog-grounded room matching, product recommendations, and customization requests to their storefront.",
     sameAs: [],

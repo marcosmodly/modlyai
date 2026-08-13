@@ -46,6 +46,11 @@ export const metadata: Metadata = {
     description,
     images: ["/og-default.png"],
   },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large" },
+  },
   manifest: "/site.webmanifest",
   icons: {
     icon: "/favicon.ico",
