@@ -1,88 +1,49 @@
-# Furniture AI Website
+# ModlyAI — Furniture AI
 
-An AI-powered furniture recommendation and customization platform with earthy-toned design.
+AI-powered furniture recommendation and customization platform with an earthy-toned design. Upload a photo of your room, get catalog-matched furniture suggestions, customize colors and materials with AI, and preview it all in 3D before you buy.
 
-## Prerequisites
-
-You need Node.js installed on your system. If `node` or `npm` commands don't work:
-
-1. **Download and install Node.js** from https://nodejs.org (choose LTS version)
-2. **Restart your terminal/PowerShell** after installation
-3. **Verify installation** by running:
-   ```powershell
-   node -v
-   npm -v
-   ```
-   Both should show version numbers.
-
-## Getting Started
-
-1. **Install dependencies:**
-   ```powershell
-   npm install
-   ```
-
-2. **Configure environment variables:**
-   Create a `.env.local` file in the root directory with:
-   ```env
-   OPENAI_API_KEY=your-openai-api-key-here
-   OPENAI_CHAT_MODEL=gpt-4o-mini          # For chat, preferences, filtering
-   OPENAI_VISION_MODEL=gpt-4o              # For image understanding (room analysis)
-   OPENAI_IMAGE_MODEL=dall-e-3            # For material rendering (optional)
-   ```
-
-3. **Start the development server:**
-   ```powershell
-   npm run dev
-   ```
-
-4. **Open your browser:**
-   Navigate to `http://localhost:3000`
+**Live:** https://modlyai.vercel.app
 
 ## Features
 
-- **Room Planner**: Upload room photos and get catalog-based furniture and customization suggestions using user-provided room details
-- **Furniture Customizer**: Customize furniture with AI assistance (colors, materials, dimensions) with optional DALL-E 3 material previews
-- **Catalog**: Browse furniture catalog with AI-powered recommendations
-- **AI Chat Widget**: Conversational AI assistant for furniture selection (uses GPT-4o-mini for cost-effective chat)
+- **Room Planner** — upload room photos and get catalog-based furniture and customization suggestions
+- **Furniture Customizer** — adjust colors, materials, and dimensions with AI assistance, with optional DALL-E 3 material previews
+- **Catalog** — browse the furniture catalog with AI-powered recommendations
+- **AI Chat Widget** — a conversational assistant for furniture selection
+- **Live 3D preview** of customized furniture via Three.js
 
-## AI Model Architecture
+## Stack
 
-The application uses different OpenAI models optimized for specific tasks:
+- Next.js + TypeScript + Tailwind
+- OpenAI: `gpt-4o-mini` for chat/filtering, `gpt-4o` for room photo understanding, `dall-e-3` for material previews
+- InstantDB for data
+- Three.js for 3D preview
+- Vercel for hosting
 
-- **GPT-4o-mini**: Chat conversations, user preferences, filtering, and configuration assistance
-- **GPT-4o**: Image understanding and analysis (room photos, furniture recommendations)
-- **DALL-E 3**: Material change rendering and furniture preview generation (optional)
-- **Three.js**: Live 3D preview of customized furniture (already integrated)
+## Running it locally
 
-## Project Structure
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
+2. Create a `.env.local` with:
+   ```env
+   OPENAI_API_KEY=your-openai-api-key-here
+   OPENAI_CHAT_MODEL=gpt-4o-mini
+   OPENAI_VISION_MODEL=gpt-4o
+   OPENAI_IMAGE_MODEL=dall-e-3
+   ```
+3. Start the dev server:
+   ```bash
+   npm run dev
+   ```
+4. Open `http://localhost:3000`
 
-- `src/app/` - Next.js pages and API routes
-- `src/components/` - Reusable React components
-- `src/types/` - TypeScript type definitions
-- `tailwind.config.ts` - Earthy color theme configuration
+See [.env.example](./.env.example) for the full list of environment variables, and [VERCEL_DEPLOYMENT.md](./VERCEL_DEPLOYMENT.md) for deployment notes.
 
-## Deployment
+## Project structure
 
-For deploying to Vercel, see [VERCEL_DEPLOYMENT.md](./VERCEL_DEPLOYMENT.md) for detailed instructions.
-
-**Quick Vercel Setup:**
-1. Connect your repository to Vercel
-2. Add environment variables in Vercel dashboard:
-   - `RESEND_API_KEY` (required for pilot request form)
-   - `PILOT_TO_EMAIL` (required for pilot request form)
-3. Deploy!
-
-See [.env.example](./.env.example) for all available environment variables.
-
-## Troubleshooting
-
-**"npm is not recognized"**:
-- Make sure Node.js is installed
-- Restart your PowerShell/terminal window
-- Check if Node.js is in your PATH (run `$env:PATH` in PowerShell to see)
-
-**"Site can't be reached"**:
-- Make sure `npm run dev` is running without errors
-- Check that it says "Ready" and shows `http://localhost:3000`
-- Try `http://127.0.0.1:3000` instead
+- `src/app/` — Next.js pages and API routes
+- `src/components/` — reusable React components
+- `src/types/` — TypeScript type definitions
+- `tailwind.config.ts` — earthy color theme configuration
