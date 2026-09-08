@@ -2,7 +2,7 @@
 
 AI-powered furniture recommendation and customization platform with an earthy-toned design. Upload a photo of your room, get catalog-matched furniture suggestions, customize colors and materials with AI, and preview it all in 3D before you buy.
 
-**Live:** https://modlyai.vercel.app
+**Live:** https://modlyai.tech
 
 ## Features
 
